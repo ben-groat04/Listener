@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/user/Listener/v1/scripts/05_visual_features.py", line 9, in <module>
+    face = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+           ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'cv2' has no attribute 'CascadeClassifier'

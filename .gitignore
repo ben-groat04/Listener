@@ -2,3 +2,5 @@
 __pycache__/
 stems_raw/
 testvideos/.tmp/
+v1/logs/stems.log
+v1/logs/extract_testvideos.log

@@ -1,0 +1,25 @@
+# faster-whisper medium on mix_nl_translate (lang=nl p=1.00)
+[0:10.20 - 0:12.32] 18th of January, 1963.
+[0:13.72 - 0:15.92] The state marathon without a winner.
+[0:17.06 - 0:18.48] 6.30 in the morning.
+[0:19.26 - 0:21.26] 200 visitors through a free country,
+[0:21.54 - 0:23.94] where only the strongest have been selected.
+[0:24.44 - 0:26.36] The city is for the twelfth of November.
+[0:26.36 - 0:31.62] Where everyone is ready, that is the Elfstevental.
+[0:40.36 - 0:42.36] The twelfth Elfstevental.
+[0:50.64 - 0:53.34] Temperature 16 degrees below zero.
+[0:53.34 - 0:56.34] A monster ride of more than 200 kilometers.
+[1:19.10 - 1:21.02] 575 race drivers.
+[1:21.02 - 1:27.02] Around 9500 Tour riders, a number of Dutchmen, Canadians, Swiss and Belgians.
+[2:18.18 - 2:21.00] In the meantime, we're going to check out the new
+[2:21.00 - 2:22.00] Schotten
+[2:24.40 - 2:25.00] Staveren
+[2:25.80 - 2:27.24] Hindelopen
+[2:27.24 - 2:28.32] Warken
+[2:29.00 - 2:30.16] Noltswacht
+[2:31.00 - 2:31.38] Hartingen
+[2:32.00 - 2:33.34] Vranenkarren
+[2:34.00 - 2:34.16] Dokken
+[2:38.32 - 2:39.72] Leeuwarden
+[2:44.00 - 2:46.16] Where everyone has to make a move
+[2:46.16 - 2:48.28] That is the Elf-Stedentocht

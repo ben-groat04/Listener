@@ -9,3 +9,8 @@
 
 ## Next (after reset)
 - Multi-agent workflows: per-segment viewing agents (read contact sheets/keyframes like a viewer), music listeners (from features/spectrogram/lyrics), historical-context researchers, then conversing interpretation panels (debate rounds), synthesis, and cold-read critique loops.
+
+## 23:50 Research done (pre-reset, Sonnet)
+- **Artist identified:** Public Service Broadcasting, "Elfstedentocht Part 1" (video1) and "Part 2" (video2), 2013, commissioned by Explore the North (Leeuwarden) for the 50th anniversary; footage and voice-over from the Fries Film Archief. Files: `analysis/research/{artist_and_tracks,elfstedentocht_1963,cultural_context}.md`.
+- Toolkit made video-agnostic: `scripts/extract_all.sh`, `workflows/perceive.js` (args: videos list), per-video `data/<video>/context.md`.
+- 23:52 Launched perceive on video1 (10 segment viewers + music listener).

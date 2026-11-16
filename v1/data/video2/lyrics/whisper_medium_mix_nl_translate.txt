@@ -1,0 +1,9 @@
+# faster-whisper medium on mix_nl_translate (lang=nl p=1.00)
+[0:42.46 - 0:45.52] 18th of January, 1963
+[0:45.52 - 0:48.14] 18th of January, 1963
+[0:51.00 - 0:54.04] The Marathon Without Rain
+[0:58.80 - 1:14.04] In the morning, 6.30 in the morning, 200 km through a frieze, against which only the strongest have been taken care of.
+[1:19.78 - 1:22.40] The city is called the twelfth elven stone.
+[1:24.22 - 1:28.10] Where everyone stands up for themselves, that is the elven stone.
+[1:49.28 - 1:56.12] Temperature 16 degrees below zero, a monster ride of more than 200 kilometers.
+[2:25.56 - 2:36.02] 575 motorway riders, around 9500 tour riders, Nato Zweden, Kaladezen, Zwitsers and Belgium.

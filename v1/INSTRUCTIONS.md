@@ -32,3 +32,4 @@ Source: the user's message that kicked off v1. These are the rules for this atte
 16. **Ensure accuracy** (verify claims; adversarial checks).
 17. **Never end on "I am waiting on…" or "I stopped here because…".** Keep work flowing; leave a finished, useful state.
 18. **Build to survive a container reset**: commit and push often, keep everything reproducible from the repo (setup script, regenerate ignored files), keep workflow scripts and a RESUME guide in the repo.
+19. **The toolkit must be video-agnostic** and work across many videos: no subject-specific assumptions in scripts or workflow templates; per-video facts live in per-video context files. Still do specific, in-depth work on these videos, and don't use generality as an excuse to avoid anything.

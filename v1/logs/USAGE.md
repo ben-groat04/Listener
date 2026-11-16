@@ -9,3 +9,4 @@
 | 23:50 | 85% | 52% | 3 Sonnet researchers = 262k subagent tokens, about 1-2% (shared with another session). Launched video1 perceive (10 viewers + music) with a hard stop at 93% |
 | 23:56 | 89% | 53% | +4% in 6 min while 10 viewers ran (plus the other session). **Stop launching until reset**; let the running video1 workflow finish. |
 | 23:58 | 90% | 53% | status allowed_warning. Paused all agent work until 01:40 reset |
+| 23:59 | 90% | 53% | user: the other session has stopped, so further increases are this session only |

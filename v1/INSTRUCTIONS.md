@@ -22,3 +22,13 @@ Source: the user's message that kicked off v1. These are the rules for this atte
 - 5-hour window: 80% used at 23:38 UTC, resets **2026-11-17 01:40 UTC**.
 - 7-day window: 52% used, resets 2026-11-20 10:00 UTC.
 - Plan: cheap local extraction before the reset; heavy multi-agent workflows after it.
+
+## Additional instructions (received ~23:50 UTC)
+11. **Track usage periodically** and log the rate of increase (`logs/USAGE.md`). It's a Max plan, so there is room, but **don't edge it**: stop starting new work with a safety margin before 100%.
+12. **Don't be too simplistic.** Use workflows, especially with cold reads. Do things very well with the usage available after the reset.
+13. The user has a **companion video that precedes this one** (the predecessor `video1.mp4` arrived at 23:42; if another file arrives, add it and name it by order).
+14. If a cold start is needed (a fresh version that hasn't seen the videos), make **v2, v3…** sensibly; keep learning via logging and cold reads of lessons learned. **Don't let drift and mistakes recur.**
+15. **Chat in English** (the user is English; use British spelling in chat).
+16. **Ensure accuracy** (verify claims; adversarial checks).
+17. **Never end on "I am waiting on…" or "I stopped here because…".** Keep work flowing; leave a finished, useful state.
+18. **Build to survive a container reset**: commit and push often, keep everything reproducible from the repo (setup script, regenerate ignored files), keep workflow scripts and a RESUME guide in the repo.

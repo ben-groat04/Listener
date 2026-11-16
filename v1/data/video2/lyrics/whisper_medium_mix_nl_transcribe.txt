@@ -1,0 +1,21 @@
+# faster-whisper medium on mix_nl_transcribe (lang=nl p=1.00)
+[0:28.58 - 0:29.98] MUZIEK
+[0:41.66 - 0:45.78] 18 januari 1963.
+[0:50.56 - 0:54.26] Van het schaatsmarathon Zonderweg.
+[1:19.66 - 1:22.50] Stort zijn voor de twaalfde elfsteen vluit.
+[1:23.96 - 1:28.50] Waar iedereen zich voor opmaakt, dat is de Elfsteenpast.
+[1:49.38 - 1:51.68] Temperatuur 16 graden beneden.
+[1:52.50 - 1:56.10] Een monsteret van ruim 200 kilometer.
+[2:25.76 - 2:36.08] 575 metstrijdrijders, rond 9500 toerrijders, Nato Zweden, Kaladezen, Zwitters en Belgen.
+[3:21.08 - 3:22.48] MUZIEK
+[3:25.88 - 3:27.28] Stief
+[3:30.58 - 3:31.98] Eerst
+[3:34.50 - 3:35.90] Slop
+[3:35.90 - 3:37.50] Stapen
+[3:38.28 - 3:39.94] In de lopen
+[3:39.94 - 3:41.50] In de banken
+[3:42.14 - 3:43.50] In de bonswacht
+[3:44.26 - 3:45.82] Vrijdiger
+[3:45.82 - 3:48.14] Vrijdiger
+[4:16.50 - 4:17.90] MUZIEK
+[4:58.92 - 5:00.32] MUZIEK

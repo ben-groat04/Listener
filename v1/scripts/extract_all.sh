@@ -1,9 +1,10 @@
 #!/bin/bash
 # Video-agnostic entry point: runs the whole extraction pipeline for every videos/*.mp4 (or the names given).
-# Usage: v1/scripts/extract_all.sh [video_name ...]   (names without .mp4)
+# Usage: [VIDEO_DIR=testvideos] v1/scripts/extract_all.sh [video_name ...]   (names without .mp4; default folder videos/)
 cd "$(dirname "$0")/../.."
 S=v1/scripts; L=v1/logs; mkdir -p $L
-NAMES=${@:-$(ls videos/*.mp4 | xargs -n1 basename | sed 's/\.mp4$//')}
+export VIDEO_DIR=${VIDEO_DIR:-videos}
+NAMES=${@:-$(ls $VIDEO_DIR/*.mp4 | xargs -n1 basename | sed 's/\.mp4$//')}
 for V in $NAMES; do
   export VID=$V
   [ -d v1/data/$V/contact_sheets ] || $S/01_extract.sh > $L/${V}_extract.log 2>&1

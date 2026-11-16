@@ -2,7 +2,7 @@
 # Basic media extraction: audio, 1fps frames, contact sheets, scene cuts.
 set -e
 cd "$(dirname "$0")/../.."
-VID=${VID:-video2}; V=videos/$VID.mp4; D=v1/data/$VID
+VID=${VID:-video2}; V=${VIDEO_DIR:-videos}/$VID.mp4; D=v1/data/$VID
 mkdir -p $D/audio $D/frames_1fps $D/contact_sheets $D/scenes
 ffmpeg -loglevel error -y -i $V -vn -ac 2 -ar 44100 $D/audio/song.wav
 ffmpeg -loglevel error -y -i $V -vn -ac 1 -ar 16000 $D/audio/song_16k_mono.wav

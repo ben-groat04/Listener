@@ -4,7 +4,7 @@ import numpy as np, cv2, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 VID = os.environ.get("VID", "video2")
-V = os.path.join(root, f"videos/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/visual_features"); os.makedirs(D, exist_ok=True)
+V = os.path.join(root, f"{os.environ.get('VIDEO_DIR', 'videos')}/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/visual_features"); os.makedirs(D, exist_ok=True)
 cap = cv2.VideoCapture(V); fps = cap.get(cv2.CAP_PROP_FPS)
 face = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 per = {}; prev = None; i = 0

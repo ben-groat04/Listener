@@ -3,7 +3,7 @@ import json, os, subprocess, sys
 from scenedetect import detect, ContentDetector
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 VID = os.environ.get("VID", "video2")
-V = os.path.join(root, f"videos/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/scenes")
+V = os.path.join(root, f"{os.environ.get('VIDEO_DIR', 'videos')}/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/scenes")
 os.makedirs(os.path.join(D, "keyframes"), exist_ok=True)
 scenes = detect(V, ContentDetector(threshold=27.0))
 out = []

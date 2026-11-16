@@ -1,0 +1,24 @@
+# Core instructions (logged verbatim intent, 2026-11-16 23:38 UTC)
+
+Source: the user's message that kicked off v1. These are the rules for this attempt.
+
+1. **Think hard. Be creative.**
+2. **Use workflows so agents can converse** with each other (debate, respond, build on each other).
+3. **The subject is a music video** (`videos/video.mp4`). Do all you can, and mean *all*, to analyse
+   everything about the video and the music **as a human would interpret it**: meaning, emotion,
+   story, symbolism, not just technical data.
+4. **Usage pacing:**
+   - First check when usage resets.
+   - Do NOT hit the usage limit before the reset (at full tilt it would be hit).
+   - After it resets, **go crazy. Keep going. Do not stop until the limit is hit after the reset.** This is key.
+5. **There is always more to analyse.** Treat it as a human would see it.
+6. If it seems everything has been extracted, **run a workflow of cold-read agents on the project** to see what can be improved.
+7. **Keep it organised.** Cold-read agents and especially workflows will be useful.
+8. **Keep track of errors and mistakes** made along the way (see `logs/ERRORS.md`).
+9. **Use Sonnet as often as possible** for agents.
+10. The user is hands-off and has given approval for everything, **but cannot sign up for or pay for anything**: work around that.
+
+## Usage facts found at start
+- 5-hour window: 80% used at 23:38 UTC, resets **2026-11-17 01:40 UTC**.
+- 7-day window: 52% used, resets 2026-11-20 10:00 UTC.
+- Plan: cheap local extraction before the reset; heavy multi-agent workflows after it.

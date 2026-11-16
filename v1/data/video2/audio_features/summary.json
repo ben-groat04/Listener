@@ -1,0 +1,2110 @@
+{
+ "duration_s": 305.95,
+ "tempo_bpm": 161.4990234375,
+ "n_beats": 693,
+ "key_whole_song_top3": [
+  [
+   "B minor",
+   0.882
+  ],
+  [
+   "D major",
+   0.731
+  ],
+  [
+   "G major",
+   0.641
+  ]
+ ],
+ "keys_per_30s": [
+  {
+   "start_s": 0.0,
+   "top": [
+    [
+     "B minor",
+     0.942
+    ],
+    [
+     "D major",
+     0.606
+    ],
+    [
+     "B major",
+     0.555
+    ]
+   ]
+  },
+  {
+   "start_s": 30.0,
+   "top": [
+    [
+     "E minor",
+     0.78
+    ],
+    [
+     "B minor",
+     0.766
+    ],
+    [
+     "G major",
+     0.746
+    ]
+   ]
+  },
+  {
+   "start_s": 60.0,
+   "top": [
+    [
+     "G major",
+     0.822
+    ],
+    [
+     "B minor",
+     0.819
+    ],
+    [
+     "E minor",
+     0.71
+    ]
+   ]
+  },
+  {
+   "start_s": 89.9,
+   "top": [
+    [
+     "G major",
+     0.695
+    ],
+    [
+     "E minor",
+     0.634
+    ],
+    [
+     "D major",
+     0.588
+    ]
+   ]
+  },
+  {
+   "start_s": 119.9,
+   "top": [
+    [
+     "G major",
+     0.798
+    ],
+    [
+     "D major",
+     0.702
+    ],
+    [
+     "E minor",
+     0.701
+    ]
+   ]
+  },
+  {
+   "start_s": 149.9,
+   "top": [
+    [
+     "D major",
+     0.743
+    ],
+    [
+     "B minor",
+     0.634
+    ],
+    [
+     "G major",
+     0.505
+    ]
+   ]
+  },
+  {
+   "start_s": 179.9,
+   "top": [
+    [
+     "B minor",
+     0.761
+    ],
+    [
+     "D major",
+     0.613
+    ],
+    [
+     "G major",
+     0.437
+    ]
+   ]
+  },
+  {
+   "start_s": 209.8,
+   "top": [
+    [
+     "B minor",
+     0.727
+    ],
+    [
+     "D major",
+     0.714
+    ],
+    [
+     "A major",
+     0.508
+    ]
+   ]
+  },
+  {
+   "start_s": 239.8,
+   "top": [
+    [
+     "B minor",
+     0.8
+    ],
+    [
+     "D major",
+     0.621
+    ],
+    [
+     "A major",
+     0.51
+    ]
+   ]
+  },
+  {
+   "start_s": 269.8,
+   "top": [
+    [
+     "B minor",
+     0.666
+    ],
+    [
+     "D major",
+     0.466
+    ],
+    [
+     "E major",
+     0.382
+    ]
+   ]
+  },
+  {
+   "start_s": 299.8,
+   "top": [
+    [
+     "B minor",
+     0.614
+    ],
+    [
+     "B major",
+     0.564
+    ],
+    [
+     "E major",
+     0.314
+    ]
+   ]
+  }
+ ],
+ "sections_auto": [
+  {
+   "start": 0.0,
+   "end": 75.72,
+   "label": "C",
+   "mean_rms": 0.0985
+  },
+  {
+   "start": 75.72,
+   "end": 84.96,
+   "label": "C",
+   "mean_rms": 0.1211
+  },
+  {
+   "start": 84.96,
+   "end": 88.65,
+   "label": "D",
+   "mean_rms": 0.0813
+  },
+  {
+   "start": 88.65,
+   "end": 101.29,
+   "label": "A",
+   "mean_rms": 0.1548
+  },
+  {
+   "start": 101.29,
+   "end": 157.29,
+   "label": "C",
+   "mean_rms": 0.2499
+  },
+  {
+   "start": 157.29,
+   "end": 177.15,
+   "label": "A",
+   "mean_rms": 0.2059
+  },
+  {
+   "start": 177.15,
+   "end": 217.15,
+   "label": "A",
+   "mean_rms": 0.2469
+  },
+  {
+   "start": 217.15,
+   "end": 277.29,
+   "label": "B",
+   "mean_rms": 0.2993
+  },
+  {
+   "start": 277.29,
+   "end": 301.12,
+   "label": "A",
+   "mean_rms": 0.2214
+  },
+  {
+   "start": 301.12,
+   "end": 305.95,
+   "label": "E",
+   "mean_rms": 0.0338
+  }
+ ],
+ "loudness_rms_mean": 0.2033822238445282,
+ "loudest_moment_s": 288.1364172335601,
+ "quietest_moment_s_after_5s": 304.32072562358275,
+ "tempo_local_percentiles": {
+  "10": 95.703125,
+  "50": 123.046875,
+  "90": 161.4990234375
+ },
+ "per_second": [
+  {
+   "t": 0,
+   "rms": 0.0561,
+   "brightness_hz": 597,
+   "onset": 0.858
+  },
+  {
+   "t": 1,
+   "rms": 0.0372,
+   "brightness_hz": 627,
+   "onset": 0.665
+  },
+  {
+   "t": 2,
+   "rms": 0.0327,
+   "brightness_hz": 700,
+   "onset": 0.615
+  },
+  {
+   "t": 3,
+   "rms": 0.0365,
+   "brightness_hz": 700,
+   "onset": 0.661
+  },
+  {
+   "t": 4,
+   "rms": 0.0376,
+   "brightness_hz": 711,
+   "onset": 0.674
+  },
+  {
+   "t": 5,
+   "rms": 0.0442,
+   "brightness_hz": 711,
+   "onset": 0.628
+  },
+  {
+   "t": 6,
+   "rms": 0.0414,
+   "brightness_hz": 724,
+   "onset": 0.695
+  },
+  {
+   "t": 7,
+   "rms": 0.0431,
+   "brightness_hz": 727,
+   "onset": 0.634
+  },
+  {
+   "t": 8,
+   "rms": 0.0629,
+   "brightness_hz": 583,
+   "onset": 0.792
+  },
+  {
+   "t": 9,
+   "rms": 0.0494,
+   "brightness_hz": 707,
+   "onset": 0.629
+  },
+  {
+   "t": 10,
+   "rms": 0.0533,
+   "brightness_hz": 741,
+   "onset": 0.652
+  },
+  {
+   "t": 11,
+   "rms": 0.0487,
+   "brightness_hz": 742,
+   "onset": 0.653
+  },
+  {
+   "t": 12,
+   "rms": 0.0691,
+   "brightness_hz": 585,
+   "onset": 0.669
+  },
+  {
+   "t": 13,
+   "rms": 0.0432,
+   "brightness_hz": 703,
+   "onset": 0.639
+  },
+  {
+   "t": 14,
+   "rms": 0.0481,
+   "brightness_hz": 694,
+   "onset": 0.651
+  },
+  {
+   "t": 15,
+   "rms": 0.0388,
+   "brightness_hz": 765,
+   "onset": 0.672
+  },
+  {
+   "t": 16,
+   "rms": 0.0457,
+   "brightness_hz": 741,
+   "onset": 0.669
+  },
+  {
+   "t": 17,
+   "rms": 0.0499,
+   "brightness_hz": 763,
+   "onset": 0.668
+  },
+  {
+   "t": 18,
+   "rms": 0.0521,
+   "brightness_hz": 729,
+   "onset": 0.71
+  },
+  {
+   "t": 19,
+   "rms": 0.0594,
+   "brightness_hz": 750,
+   "onset": 0.685
+  },
+  {
+   "t": 20,
+   "rms": 0.0819,
+   "brightness_hz": 578,
+   "onset": 0.718
+  },
+  {
+   "t": 21,
+   "rms": 0.048,
+   "brightness_hz": 754,
+   "onset": 0.678
+  },
+  {
+   "t": 22,
+   "rms": 0.0616,
+   "brightness_hz": 775,
+   "onset": 0.66
+  },
+  {
+   "t": 23,
+   "rms": 0.066,
+   "brightness_hz": 745,
+   "onset": 0.66
+  },
+  {
+   "t": 24,
+   "rms": 0.0807,
+   "brightness_hz": 631,
+   "onset": 0.725
+  },
+  {
+   "t": 25,
+   "rms": 0.0677,
+   "brightness_hz": 772,
+   "onset": 0.684
+  },
+  {
+   "t": 26,
+   "rms": 0.0792,
+   "brightness_hz": 785,
+   "onset": 0.668
+  },
+  {
+   "t": 27,
+   "rms": 0.0549,
+   "brightness_hz": 790,
+   "onset": 0.662
+  },
+  {
+   "t": 28,
+   "rms": 0.1226,
+   "brightness_hz": 487,
+   "onset": 0.736
+  },
+  {
+   "t": 29,
+   "rms": 0.0938,
+   "brightness_hz": 506,
+   "onset": 0.631
+  },
+  {
+   "t": 30,
+   "rms": 0.1003,
+   "brightness_hz": 488,
+   "onset": 0.641
+  },
+  {
+   "t": 31,
+   "rms": 0.1032,
+   "brightness_hz": 468,
+   "onset": 0.646
+  },
+  {
+   "t": 32,
+   "rms": 0.1463,
+   "brightness_hz": 413,
+   "onset": 0.679
+  },
+  {
+   "t": 33,
+   "rms": 0.1278,
+   "brightness_hz": 456,
+   "onset": 0.62
+  },
+  {
+   "t": 34,
+   "rms": 0.1147,
+   "brightness_hz": 472,
+   "onset": 0.71
+  },
+  {
+   "t": 35,
+   "rms": 0.0984,
+   "brightness_hz": 555,
+   "onset": 0.655
+  },
+  {
+   "t": 36,
+   "rms": 0.1323,
+   "brightness_hz": 467,
+   "onset": 0.739
+  },
+  {
+   "t": 37,
+   "rms": 0.0976,
+   "brightness_hz": 530,
+   "onset": 0.636
+  },
+  {
+   "t": 38,
+   "rms": 0.1042,
+   "brightness_hz": 519,
+   "onset": 0.656
+  },
+  {
+   "t": 39,
+   "rms": 0.1166,
+   "brightness_hz": 528,
+   "onset": 0.668
+  },
+  {
+   "t": 40,
+   "rms": 0.1585,
+   "brightness_hz": 465,
+   "onset": 0.668
+  },
+  {
+   "t": 41,
+   "rms": 0.0972,
+   "brightness_hz": 521,
+   "onset": 0.626
+  },
+  {
+   "t": 42,
+   "rms": 0.1101,
+   "brightness_hz": 848,
+   "onset": 1.062
+  },
+  {
+   "t": 43,
+   "rms": 0.1203,
+   "brightness_hz": 1361,
+   "onset": 1.052
+  },
+  {
+   "t": 44,
+   "rms": 0.133,
+   "brightness_hz": 1375,
+   "onset": 1.209
+  },
+  {
+   "t": 45,
+   "rms": 0.132,
+   "brightness_hz": 1154,
+   "onset": 0.869
+  },
+  {
+   "t": 46,
+   "rms": 0.15,
+   "brightness_hz": 550,
+   "onset": 0.817
+  },
+  {
+   "t": 47,
+   "rms": 0.1087,
+   "brightness_hz": 574,
+   "onset": 0.726
+  },
+  {
+   "t": 48,
+   "rms": 0.1448,
+   "brightness_hz": 524,
+   "onset": 0.749
+  },
+  {
+   "t": 49,
+   "rms": 0.0952,
+   "brightness_hz": 595,
+   "onset": 0.68
+  },
+  {
+   "t": 50,
+   "rms": 0.0993,
+   "brightness_hz": 624,
+   "onset": 0.708
+  },
+  {
+   "t": 51,
+   "rms": 0.1335,
+   "brightness_hz": 1054,
+   "onset": 1.262
+  },
+  {
+   "t": 52,
+   "rms": 0.173,
+   "brightness_hz": 1019,
+   "onset": 1.01
+  },
+  {
+   "t": 53,
+   "rms": 0.1081,
+   "brightness_hz": 1008,
+   "onset": 0.856
+  },
+  {
+   "t": 54,
+   "rms": 0.1262,
+   "brightness_hz": 662,
+   "onset": 0.733
+  },
+  {
+   "t": 55,
+   "rms": 0.1002,
+   "brightness_hz": 621,
+   "onset": 0.706
+  },
+  {
+   "t": 56,
+   "rms": 0.1404,
+   "brightness_hz": 581,
+   "onset": 0.794
+  },
+  {
+   "t": 57,
+   "rms": 0.1024,
+   "brightness_hz": 665,
+   "onset": 0.742
+  },
+  {
+   "t": 58,
+   "rms": 0.103,
+   "brightness_hz": 643,
+   "onset": 0.761
+  },
+  {
+   "t": 59,
+   "rms": 0.1472,
+   "brightness_hz": 1514,
+   "onset": 1.341
+  },
+  {
+   "t": 60,
+   "rms": 0.1341,
+   "brightness_hz": 1048,
+   "onset": 0.883
+  },
+  {
+   "t": 61,
+   "rms": 0.1432,
+   "brightness_hz": 619,
+   "onset": 0.804
+  },
+  {
+   "t": 62,
+   "rms": 0.1102,
+   "brightness_hz": 655,
+   "onset": 0.919
+  },
+  {
+   "t": 63,
+   "rms": 0.0945,
+   "brightness_hz": 718,
+   "onset": 0.801
+  },
+  {
+   "t": 64,
+   "rms": 0.181,
+   "brightness_hz": 898,
+   "onset": 1.172
+  },
+  {
+   "t": 65,
+   "rms": 0.1262,
+   "brightness_hz": 1054,
+   "onset": 0.937
+  },
+  {
+   "t": 66,
+   "rms": 0.1459,
+   "brightness_hz": 1308,
+   "onset": 1.071
+  },
+  {
+   "t": 67,
+   "rms": 0.2033,
+   "brightness_hz": 1153,
+   "onset": 1.154
+  },
+  {
+   "t": 68,
+   "rms": 0.2068,
+   "brightness_hz": 1135,
+   "onset": 1.146
+  },
+  {
+   "t": 69,
+   "rms": 0.1333,
+   "brightness_hz": 1222,
+   "onset": 1.095
+  },
+  {
+   "t": 70,
+   "rms": 0.1137,
+   "brightness_hz": 869,
+   "onset": 0.916
+  },
+  {
+   "t": 71,
+   "rms": 0.1014,
+   "brightness_hz": 810,
+   "onset": 1.046
+  },
+  {
+   "t": 72,
+   "rms": 0.1028,
+   "brightness_hz": 796,
+   "onset": 1.121
+  },
+  {
+   "t": 73,
+   "rms": 0.1263,
+   "brightness_hz": 767,
+   "onset": 1.133
+  },
+  {
+   "t": 74,
+   "rms": 0.1282,
+   "brightness_hz": 759,
+   "onset": 1.128
+  },
+  {
+   "t": 75,
+   "rms": 0.0989,
+   "brightness_hz": 922,
+   "onset": 1.287
+  },
+  {
+   "t": 76,
+   "rms": 0.1297,
+   "brightness_hz": 798,
+   "onset": 1.219
+  },
+  {
+   "t": 77,
+   "rms": 0.1041,
+   "brightness_hz": 938,
+   "onset": 1.382
+  },
+  {
+   "t": 78,
+   "rms": 0.1095,
+   "brightness_hz": 918,
+   "onset": 1.195
+  },
+  {
+   "t": 79,
+   "rms": 0.1271,
+   "brightness_hz": 1034,
+   "onset": 1.374
+  },
+  {
+   "t": 80,
+   "rms": 0.1746,
+   "brightness_hz": 1519,
+   "onset": 1.397
+  },
+  {
+   "t": 81,
+   "rms": 0.1557,
+   "brightness_hz": 1536,
+   "onset": 1.405
+  },
+  {
+   "t": 82,
+   "rms": 0.1095,
+   "brightness_hz": 1285,
+   "onset": 1.09
+  },
+  {
+   "t": 83,
+   "rms": 0.1041,
+   "brightness_hz": 1496,
+   "onset": 1.612
+  },
+  {
+   "t": 84,
+   "rms": 0.0854,
+   "brightness_hz": 1305,
+   "onset": 1.093
+  },
+  {
+   "t": 85,
+   "rms": 0.0963,
+   "brightness_hz": 1538,
+   "onset": 1.088
+  },
+  {
+   "t": 86,
+   "rms": 0.0608,
+   "brightness_hz": 1488,
+   "onset": 1.185
+  },
+  {
+   "t": 87,
+   "rms": 0.0754,
+   "brightness_hz": 1457,
+   "onset": 1.327
+  },
+  {
+   "t": 88,
+   "rms": 0.1179,
+   "brightness_hz": 1380,
+   "onset": 1.168
+  },
+  {
+   "t": 89,
+   "rms": 0.1381,
+   "brightness_hz": 1629,
+   "onset": 1.625
+  },
+  {
+   "t": 90,
+   "rms": 0.1475,
+   "brightness_hz": 1852,
+   "onset": 1.809
+  },
+  {
+   "t": 91,
+   "rms": 0.1503,
+   "brightness_hz": 1654,
+   "onset": 1.907
+  },
+  {
+   "t": 92,
+   "rms": 0.1613,
+   "brightness_hz": 1906,
+   "onset": 1.694
+  },
+  {
+   "t": 93,
+   "rms": 0.1659,
+   "brightness_hz": 1571,
+   "onset": 1.835
+  },
+  {
+   "t": 94,
+   "rms": 0.156,
+   "brightness_hz": 1826,
+   "onset": 1.858
+  },
+  {
+   "t": 95,
+   "rms": 0.1463,
+   "brightness_hz": 1663,
+   "onset": 1.745
+  },
+  {
+   "t": 96,
+   "rms": 0.1473,
+   "brightness_hz": 1903,
+   "onset": 1.779
+  },
+  {
+   "t": 97,
+   "rms": 0.14,
+   "brightness_hz": 1677,
+   "onset": 1.724
+  },
+  {
+   "t": 98,
+   "rms": 0.141,
+   "brightness_hz": 1748,
+   "onset": 1.804
+  },
+  {
+   "t": 99,
+   "rms": 0.1445,
+   "brightness_hz": 1715,
+   "onset": 1.76
+  },
+  {
+   "t": 100,
+   "rms": 0.1896,
+   "brightness_hz": 2313,
+   "onset": 1.793
+  },
+  {
+   "t": 101,
+   "rms": 0.235,
+   "brightness_hz": 1500,
+   "onset": 1.344
+  },
+  {
+   "t": 102,
+   "rms": 0.2179,
+   "brightness_hz": 1596,
+   "onset": 1.855
+  },
+  {
+   "t": 103,
+   "rms": 0.2439,
+   "brightness_hz": 1391,
+   "onset": 1.736
+  },
+  {
+   "t": 104,
+   "rms": 0.2201,
+   "brightness_hz": 1788,
+   "onset": 1.852
+  },
+  {
+   "t": 105,
+   "rms": 0.2954,
+   "brightness_hz": 1284,
+   "onset": 1.77
+  },
+  {
+   "t": 106,
+   "rms": 0.2525,
+   "brightness_hz": 1530,
+   "onset": 1.878
+  },
+  {
+   "t": 107,
+   "rms": 0.2888,
+   "brightness_hz": 1340,
+   "onset": 1.808
+  },
+  {
+   "t": 108,
+   "rms": 0.2577,
+   "brightness_hz": 1559,
+   "onset": 1.877
+  },
+  {
+   "t": 109,
+   "rms": 0.2653,
+   "brightness_hz": 1512,
+   "onset": 1.6
+  },
+  {
+   "t": 110,
+   "rms": 0.2456,
+   "brightness_hz": 2078,
+   "onset": 1.643
+  },
+  {
+   "t": 111,
+   "rms": 0.2303,
+   "brightness_hz": 1704,
+   "onset": 1.376
+  },
+  {
+   "t": 112,
+   "rms": 0.2277,
+   "brightness_hz": 1851,
+   "onset": 1.712
+  },
+  {
+   "t": 113,
+   "rms": 0.2149,
+   "brightness_hz": 1711,
+   "onset": 1.863
+  },
+  {
+   "t": 114,
+   "rms": 0.2204,
+   "brightness_hz": 1822,
+   "onset": 1.44
+  },
+  {
+   "t": 115,
+   "rms": 0.2247,
+   "brightness_hz": 1830,
+   "onset": 1.535
+  },
+  {
+   "t": 116,
+   "rms": 0.2331,
+   "brightness_hz": 1909,
+   "onset": 1.61
+  },
+  {
+   "t": 117,
+   "rms": 0.2595,
+   "brightness_hz": 1394,
+   "onset": 1.502
+  },
+  {
+   "t": 118,
+   "rms": 0.2318,
+   "brightness_hz": 1491,
+   "onset": 1.829
+  },
+  {
+   "t": 119,
+   "rms": 0.2481,
+   "brightness_hz": 1332,
+   "onset": 1.782
+  },
+  {
+   "t": 120,
+   "rms": 0.2583,
+   "brightness_hz": 1480,
+   "onset": 1.8
+  },
+  {
+   "t": 121,
+   "rms": 0.2737,
+   "brightness_hz": 1333,
+   "onset": 1.876
+  },
+  {
+   "t": 122,
+   "rms": 0.2599,
+   "brightness_hz": 1497,
+   "onset": 1.775
+  },
+  {
+   "t": 123,
+   "rms": 0.2711,
+   "brightness_hz": 1341,
+   "onset": 1.85
+  },
+  {
+   "t": 124,
+   "rms": 0.2742,
+   "brightness_hz": 1435,
+   "onset": 1.708
+  },
+  {
+   "t": 125,
+   "rms": 0.2245,
+   "brightness_hz": 1350,
+   "onset": 1.75
+  },
+  {
+   "t": 126,
+   "rms": 0.2058,
+   "brightness_hz": 1588,
+   "onset": 1.778
+  },
+  {
+   "t": 127,
+   "rms": 0.2467,
+   "brightness_hz": 1427,
+   "onset": 1.858
+  },
+  {
+   "t": 128,
+   "rms": 0.2804,
+   "brightness_hz": 1912,
+   "onset": 1.573
+  },
+  {
+   "t": 129,
+   "rms": 0.2529,
+   "brightness_hz": 1284,
+   "onset": 1.675
+  },
+  {
+   "t": 130,
+   "rms": 0.2256,
+   "brightness_hz": 1505,
+   "onset": 1.858
+  },
+  {
+   "t": 131,
+   "rms": 0.2735,
+   "brightness_hz": 1336,
+   "onset": 1.761
+  },
+  {
+   "t": 132,
+   "rms": 0.2554,
+   "brightness_hz": 1584,
+   "onset": 1.742
+  },
+  {
+   "t": 133,
+   "rms": 0.2708,
+   "brightness_hz": 1273,
+   "onset": 1.804
+  },
+  {
+   "t": 134,
+   "rms": 0.2633,
+   "brightness_hz": 1442,
+   "onset": 1.874
+  },
+  {
+   "t": 135,
+   "rms": 0.2934,
+   "brightness_hz": 1286,
+   "onset": 1.903
+  },
+  {
+   "t": 136,
+   "rms": 0.2591,
+   "brightness_hz": 1531,
+   "onset": 1.528
+  },
+  {
+   "t": 137,
+   "rms": 0.2284,
+   "brightness_hz": 1296,
+   "onset": 1.799
+  },
+  {
+   "t": 138,
+   "rms": 0.2278,
+   "brightness_hz": 1476,
+   "onset": 1.816
+  },
+  {
+   "t": 139,
+   "rms": 0.2544,
+   "brightness_hz": 1318,
+   "onset": 1.789
+  },
+  {
+   "t": 140,
+   "rms": 0.2131,
+   "brightness_hz": 1634,
+   "onset": 1.637
+  },
+  {
+   "t": 141,
+   "rms": 0.2154,
+   "brightness_hz": 1354,
+   "onset": 1.799
+  },
+  {
+   "t": 142,
+   "rms": 0.2022,
+   "brightness_hz": 1603,
+   "onset": 1.83
+  },
+  {
+   "t": 143,
+   "rms": 0.2185,
+   "brightness_hz": 1837,
+   "onset": 1.891
+  },
+  {
+   "t": 144,
+   "rms": 0.2545,
+   "brightness_hz": 1963,
+   "onset": 1.477
+  },
+  {
+   "t": 145,
+   "rms": 0.2795,
+   "brightness_hz": 1492,
+   "onset": 1.666
+  },
+  {
+   "t": 146,
+   "rms": 0.2501,
+   "brightness_hz": 1827,
+   "onset": 1.579
+  },
+  {
+   "t": 147,
+   "rms": 0.2818,
+   "brightness_hz": 1796,
+   "onset": 1.419
+  },
+  {
+   "t": 148,
+   "rms": 0.2635,
+   "brightness_hz": 1581,
+   "onset": 1.485
+  },
+  {
+   "t": 149,
+   "rms": 0.3091,
+   "brightness_hz": 1570,
+   "onset": 1.635
+  },
+  {
+   "t": 150,
+   "rms": 0.2605,
+   "brightness_hz": 1612,
+   "onset": 1.538
+  },
+  {
+   "t": 151,
+   "rms": 0.2887,
+   "brightness_hz": 1524,
+   "onset": 1.489
+  },
+  {
+   "t": 152,
+   "rms": 0.2455,
+   "brightness_hz": 1847,
+   "onset": 1.706
+  },
+  {
+   "t": 153,
+   "rms": 0.2636,
+   "brightness_hz": 1593,
+   "onset": 1.549
+  },
+  {
+   "t": 154,
+   "rms": 0.2167,
+   "brightness_hz": 1948,
+   "onset": 1.547
+  },
+  {
+   "t": 155,
+   "rms": 0.2615,
+   "brightness_hz": 1859,
+   "onset": 1.536
+  },
+  {
+   "t": 156,
+   "rms": 0.2636,
+   "brightness_hz": 1697,
+   "onset": 1.807
+  },
+  {
+   "t": 157,
+   "rms": 0.2001,
+   "brightness_hz": 1719,
+   "onset": 1.38
+  },
+  {
+   "t": 158,
+   "rms": 0.1681,
+   "brightness_hz": 1864,
+   "onset": 1.851
+  },
+  {
+   "t": 159,
+   "rms": 0.1911,
+   "brightness_hz": 1466,
+   "onset": 2.156
+  },
+  {
+   "t": 160,
+   "rms": 0.1794,
+   "brightness_hz": 1901,
+   "onset": 1.941
+  },
+  {
+   "t": 161,
+   "rms": 0.1909,
+   "brightness_hz": 1332,
+   "onset": 2.134
+  },
+  {
+   "t": 162,
+   "rms": 0.1691,
+   "brightness_hz": 1868,
+   "onset": 2.111
+  },
+  {
+   "t": 163,
+   "rms": 0.1973,
+   "brightness_hz": 1388,
+   "onset": 2.208
+  },
+  {
+   "t": 164,
+   "rms": 0.2128,
+   "brightness_hz": 1661,
+   "onset": 2.037
+  },
+  {
+   "t": 165,
+   "rms": 0.229,
+   "brightness_hz": 1296,
+   "onset": 2.164
+  },
+  {
+   "t": 166,
+   "rms": 0.1865,
+   "brightness_hz": 1781,
+   "onset": 2.006
+  },
+  {
+   "t": 167,
+   "rms": 0.2298,
+   "brightness_hz": 2001,
+   "onset": 2.324
+  },
+  {
+   "t": 168,
+   "rms": 0.2538,
+   "brightness_hz": 1866,
+   "onset": 1.79
+  },
+  {
+   "t": 169,
+   "rms": 0.2155,
+   "brightness_hz": 1640,
+   "onset": 1.475
+  },
+  {
+   "t": 170,
+   "rms": 0.2016,
+   "brightness_hz": 1659,
+   "onset": 1.92
+  },
+  {
+   "t": 171,
+   "rms": 0.2067,
+   "brightness_hz": 1399,
+   "onset": 2.082
+  },
+  {
+   "t": 172,
+   "rms": 0.2052,
+   "brightness_hz": 1757,
+   "onset": 2.001
+  },
+  {
+   "t": 173,
+   "rms": 0.2158,
+   "brightness_hz": 1340,
+   "onset": 1.931
+  },
+  {
+   "t": 174,
+   "rms": 0.2025,
+   "brightness_hz": 1798,
+   "onset": 1.93
+  },
+  {
+   "t": 175,
+   "rms": 0.2174,
+   "brightness_hz": 1404,
+   "onset": 2.023
+  },
+  {
+   "t": 176,
+   "rms": 0.2378,
+   "brightness_hz": 1864,
+   "onset": 1.901
+  },
+  {
+   "t": 177,
+   "rms": 0.2428,
+   "brightness_hz": 1379,
+   "onset": 1.95
+  },
+  {
+   "t": 178,
+   "rms": 0.2195,
+   "brightness_hz": 1882,
+   "onset": 2.094
+  },
+  {
+   "t": 179,
+   "rms": 0.2473,
+   "brightness_hz": 2047,
+   "onset": 1.75
+  },
+  {
+   "t": 180,
+   "rms": 0.2795,
+   "brightness_hz": 1773,
+   "onset": 2.14
+  },
+  {
+   "t": 181,
+   "rms": 0.2448,
+   "brightness_hz": 1526,
+   "onset": 1.471
+  },
+  {
+   "t": 182,
+   "rms": 0.2173,
+   "brightness_hz": 1541,
+   "onset": 1.847
+  },
+  {
+   "t": 183,
+   "rms": 0.2264,
+   "brightness_hz": 1396,
+   "onset": 2.116
+  },
+  {
+   "t": 184,
+   "rms": 0.2157,
+   "brightness_hz": 1609,
+   "onset": 1.716
+  },
+  {
+   "t": 185,
+   "rms": 0.2187,
+   "brightness_hz": 1367,
+   "onset": 2.069
+  },
+  {
+   "t": 186,
+   "rms": 0.2315,
+   "brightness_hz": 1604,
+   "onset": 1.829
+  },
+  {
+   "t": 187,
+   "rms": 0.2378,
+   "brightness_hz": 1379,
+   "onset": 1.946
+  },
+  {
+   "t": 188,
+   "rms": 0.2565,
+   "brightness_hz": 1827,
+   "onset": 1.857
+  },
+  {
+   "t": 189,
+   "rms": 0.2341,
+   "brightness_hz": 1426,
+   "onset": 1.977
+  },
+  {
+   "t": 190,
+   "rms": 0.2328,
+   "brightness_hz": 1895,
+   "onset": 1.928
+  },
+  {
+   "t": 191,
+   "rms": 0.2387,
+   "brightness_hz": 1937,
+   "onset": 1.826
+  },
+  {
+   "t": 192,
+   "rms": 0.2623,
+   "brightness_hz": 2058,
+   "onset": 1.588
+  },
+  {
+   "t": 193,
+   "rms": 0.2312,
+   "brightness_hz": 1525,
+   "onset": 1.468
+  },
+  {
+   "t": 194,
+   "rms": 0.2227,
+   "brightness_hz": 1642,
+   "onset": 1.738
+  },
+  {
+   "t": 195,
+   "rms": 0.2507,
+   "brightness_hz": 1329,
+   "onset": 1.978
+  },
+  {
+   "t": 196,
+   "rms": 0.2464,
+   "brightness_hz": 1809,
+   "onset": 1.797
+  },
+  {
+   "t": 197,
+   "rms": 0.2306,
+   "brightness_hz": 1367,
+   "onset": 1.905
+  },
+  {
+   "t": 198,
+   "rms": 0.2299,
+   "brightness_hz": 1584,
+   "onset": 1.615
+  },
+  {
+   "t": 199,
+   "rms": 0.2337,
+   "brightness_hz": 1393,
+   "onset": 1.976
+  },
+  {
+   "t": 200,
+   "rms": 0.2642,
+   "brightness_hz": 1717,
+   "onset": 1.788
+  },
+  {
+   "t": 201,
+   "rms": 0.2615,
+   "brightness_hz": 1391,
+   "onset": 1.886
+  },
+  {
+   "t": 202,
+   "rms": 0.2314,
+   "brightness_hz": 1635,
+   "onset": 1.678
+  },
+  {
+   "t": 203,
+   "rms": 0.2701,
+   "brightness_hz": 1752,
+   "onset": 1.835
+  },
+  {
+   "t": 204,
+   "rms": 0.2626,
+   "brightness_hz": 2095,
+   "onset": 1.391
+  },
+  {
+   "t": 205,
+   "rms": 0.2522,
+   "brightness_hz": 1439,
+   "onset": 1.531
+  },
+  {
+   "t": 206,
+   "rms": 0.2513,
+   "brightness_hz": 1624,
+   "onset": 1.708
+  },
+  {
+   "t": 207,
+   "rms": 0.2407,
+   "brightness_hz": 1443,
+   "onset": 1.807
+  },
+  {
+   "t": 208,
+   "rms": 0.2674,
+   "brightness_hz": 1777,
+   "onset": 1.747
+  },
+  {
+   "t": 209,
+   "rms": 0.2594,
+   "brightness_hz": 1451,
+   "onset": 1.484
+  },
+  {
+   "t": 210,
+   "rms": 0.2463,
+   "brightness_hz": 1642,
+   "onset": 1.704
+  },
+  {
+   "t": 211,
+   "rms": 0.2549,
+   "brightness_hz": 1524,
+   "onset": 1.99
+  },
+  {
+   "t": 212,
+   "rms": 0.273,
+   "brightness_hz": 1879,
+   "onset": 1.53
+  },
+  {
+   "t": 213,
+   "rms": 0.2583,
+   "brightness_hz": 1455,
+   "onset": 1.575
+  },
+  {
+   "t": 214,
+   "rms": 0.2479,
+   "brightness_hz": 1846,
+   "onset": 1.729
+  },
+  {
+   "t": 215,
+   "rms": 0.2744,
+   "brightness_hz": 1894,
+   "onset": 1.596
+  },
+  {
+   "t": 216,
+   "rms": 0.3057,
+   "brightness_hz": 1779,
+   "onset": 1.794
+  },
+  {
+   "t": 217,
+   "rms": 0.2481,
+   "brightness_hz": 1652,
+   "onset": 1.283
+  },
+  {
+   "t": 218,
+   "rms": 0.2606,
+   "brightness_hz": 1695,
+   "onset": 1.574
+  },
+  {
+   "t": 219,
+   "rms": 0.2677,
+   "brightness_hz": 1510,
+   "onset": 1.551
+  },
+  {
+   "t": 220,
+   "rms": 0.274,
+   "brightness_hz": 1827,
+   "onset": 1.708
+  },
+  {
+   "t": 221,
+   "rms": 0.2555,
+   "brightness_hz": 1526,
+   "onset": 1.507
+  },
+  {
+   "t": 222,
+   "rms": 0.2569,
+   "brightness_hz": 1685,
+   "onset": 1.575
+  },
+  {
+   "t": 223,
+   "rms": 0.2706,
+   "brightness_hz": 1655,
+   "onset": 1.588
+  },
+  {
+   "t": 224,
+   "rms": 0.2878,
+   "brightness_hz": 1803,
+   "onset": 1.463
+  },
+  {
+   "t": 225,
+   "rms": 0.2809,
+   "brightness_hz": 1503,
+   "onset": 1.579
+  },
+  {
+   "t": 226,
+   "rms": 0.2658,
+   "brightness_hz": 1687,
+   "onset": 1.542
+  },
+  {
+   "t": 227,
+   "rms": 0.3001,
+   "brightness_hz": 1865,
+   "onset": 1.449
+  },
+  {
+   "t": 228,
+   "rms": 0.3176,
+   "brightness_hz": 1798,
+   "onset": 1.526
+  },
+  {
+   "t": 229,
+   "rms": 0.2963,
+   "brightness_hz": 1636,
+   "onset": 1.215
+  },
+  {
+   "t": 230,
+   "rms": 0.2804,
+   "brightness_hz": 1783,
+   "onset": 1.437
+  },
+  {
+   "t": 231,
+   "rms": 0.2798,
+   "brightness_hz": 1651,
+   "onset": 1.363
+  },
+  {
+   "t": 232,
+   "rms": 0.2913,
+   "brightness_hz": 1967,
+   "onset": 1.475
+  },
+  {
+   "t": 233,
+   "rms": 0.2825,
+   "brightness_hz": 1811,
+   "onset": 1.473
+  },
+  {
+   "t": 234,
+   "rms": 0.2768,
+   "brightness_hz": 1813,
+   "onset": 1.454
+  },
+  {
+   "t": 235,
+   "rms": 0.2824,
+   "brightness_hz": 1861,
+   "onset": 1.422
+  },
+  {
+   "t": 236,
+   "rms": 0.3023,
+   "brightness_hz": 1968,
+   "onset": 1.403
+  },
+  {
+   "t": 237,
+   "rms": 0.3012,
+   "brightness_hz": 1782,
+   "onset": 1.43
+  },
+  {
+   "t": 238,
+   "rms": 0.2971,
+   "brightness_hz": 1890,
+   "onset": 1.477
+  },
+  {
+   "t": 239,
+   "rms": 0.3215,
+   "brightness_hz": 1778,
+   "onset": 1.379
+  },
+  {
+   "t": 240,
+   "rms": 0.3259,
+   "brightness_hz": 1758,
+   "onset": 1.511
+  },
+  {
+   "t": 241,
+   "rms": 0.2784,
+   "brightness_hz": 1750,
+   "onset": 1.246
+  },
+  {
+   "t": 242,
+   "rms": 0.2882,
+   "brightness_hz": 1776,
+   "onset": 1.492
+  },
+  {
+   "t": 243,
+   "rms": 0.2926,
+   "brightness_hz": 1815,
+   "onset": 1.496
+  },
+  {
+   "t": 244,
+   "rms": 0.3003,
+   "brightness_hz": 1894,
+   "onset": 1.455
+  },
+  {
+   "t": 245,
+   "rms": 0.2918,
+   "brightness_hz": 1820,
+   "onset": 1.428
+  },
+  {
+   "t": 246,
+   "rms": 0.2905,
+   "brightness_hz": 1742,
+   "onset": 1.427
+  },
+  {
+   "t": 247,
+   "rms": 0.2958,
+   "brightness_hz": 1823,
+   "onset": 1.4
+  },
+  {
+   "t": 248,
+   "rms": 0.3054,
+   "brightness_hz": 1951,
+   "onset": 1.376
+  },
+  {
+   "t": 249,
+   "rms": 0.3083,
+   "brightness_hz": 1809,
+   "onset": 1.339
+  },
+  {
+   "t": 250,
+   "rms": 0.298,
+   "brightness_hz": 1830,
+   "onset": 1.46
+  },
+  {
+   "t": 251,
+   "rms": 0.3236,
+   "brightness_hz": 1895,
+   "onset": 1.191
+  },
+  {
+   "t": 252,
+   "rms": 0.3408,
+   "brightness_hz": 1796,
+   "onset": 1.453
+  },
+  {
+   "t": 253,
+   "rms": 0.2981,
+   "brightness_hz": 1773,
+   "onset": 1.214
+  },
+  {
+   "t": 254,
+   "rms": 0.3075,
+   "brightness_hz": 1868,
+   "onset": 1.487
+  },
+  {
+   "t": 255,
+   "rms": 0.3053,
+   "brightness_hz": 1842,
+   "onset": 1.458
+  },
+  {
+   "t": 256,
+   "rms": 0.3123,
+   "brightness_hz": 1982,
+   "onset": 1.382
+  },
+  {
+   "t": 257,
+   "rms": 0.2974,
+   "brightness_hz": 1848,
+   "onset": 1.411
+  },
+  {
+   "t": 258,
+   "rms": 0.2997,
+   "brightness_hz": 1892,
+   "onset": 1.342
+  },
+  {
+   "t": 259,
+   "rms": 0.3066,
+   "brightness_hz": 1898,
+   "onset": 1.399
+  },
+  {
+   "t": 260,
+   "rms": 0.3258,
+   "brightness_hz": 1998,
+   "onset": 1.25
+  },
+  {
+   "t": 261,
+   "rms": 0.3054,
+   "brightness_hz": 1856,
+   "onset": 1.323
+  },
+  {
+   "t": 262,
+   "rms": 0.3151,
+   "brightness_hz": 1856,
+   "onset": 1.409
+  },
+  {
+   "t": 263,
+   "rms": 0.3312,
+   "brightness_hz": 1929,
+   "onset": 1.276
+  },
+  {
+   "t": 264,
+   "rms": 0.3356,
+   "brightness_hz": 1940,
+   "onset": 1.412
+  },
+  {
+   "t": 265,
+   "rms": 0.3092,
+   "brightness_hz": 1976,
+   "onset": 1.293
+  },
+  {
+   "t": 266,
+   "rms": 0.3052,
+   "brightness_hz": 1908,
+   "onset": 1.334
+  },
+  {
+   "t": 267,
+   "rms": 0.3323,
+   "brightness_hz": 1944,
+   "onset": 1.415
+  },
+  {
+   "t": 268,
+   "rms": 0.3155,
+   "brightness_hz": 1938,
+   "onset": 1.373
+  },
+  {
+   "t": 269,
+   "rms": 0.3043,
+   "brightness_hz": 1956,
+   "onset": 1.403
+  },
+  {
+   "t": 270,
+   "rms": 0.3144,
+   "brightness_hz": 1871,
+   "onset": 1.362
+  },
+  {
+   "t": 271,
+   "rms": 0.3202,
+   "brightness_hz": 2019,
+   "onset": 1.315
+  },
+  {
+   "t": 272,
+   "rms": 0.3253,
+   "brightness_hz": 2004,
+   "onset": 1.292
+  },
+  {
+   "t": 273,
+   "rms": 0.3139,
+   "brightness_hz": 1928,
+   "onset": 1.328
+  },
+  {
+   "t": 274,
+   "rms": 0.3209,
+   "brightness_hz": 1964,
+   "onset": 1.397
+  },
+  {
+   "t": 275,
+   "rms": 0.3135,
+   "brightness_hz": 2118,
+   "onset": 1.134
+  },
+  {
+   "t": 276,
+   "rms": 0.3174,
+   "brightness_hz": 2025,
+   "onset": 1.307
+  },
+  {
+   "t": 277,
+   "rms": 0.248,
+   "brightness_hz": 1881,
+   "onset": 1.358
+  },
+  {
+   "t": 278,
+   "rms": 0.2285,
+   "brightness_hz": 2161,
+   "onset": 1.599
+  },
+  {
+   "t": 279,
+   "rms": 0.2295,
+   "brightness_hz": 2102,
+   "onset": 1.71
+  },
+  {
+   "t": 280,
+   "rms": 0.2312,
+   "brightness_hz": 2138,
+   "onset": 1.59
+  },
+  {
+   "t": 281,
+   "rms": 0.2325,
+   "brightness_hz": 2117,
+   "onset": 1.695
+  },
+  {
+   "t": 282,
+   "rms": 0.2113,
+   "brightness_hz": 2147,
+   "onset": 1.58
+  },
+  {
+   "t": 283,
+   "rms": 0.2277,
+   "brightness_hz": 2123,
+   "onset": 1.727
+  },
+  {
+   "t": 284,
+   "rms": 0.2446,
+   "brightness_hz": 2191,
+   "onset": 1.579
+  },
+  {
+   "t": 285,
+   "rms": 0.2526,
+   "brightness_hz": 1986,
+   "onset": 1.754
+  },
+  {
+   "t": 286,
+   "rms": 0.2171,
+   "brightness_hz": 2107,
+   "onset": 1.659
+  },
+  {
+   "t": 287,
+   "rms": 0.2586,
+   "brightness_hz": 2093,
+   "onset": 1.77
+  },
+  {
+   "t": 288,
+   "rms": 0.2699,
+   "brightness_hz": 2098,
+   "onset": 1.629
+  },
+  {
+   "t": 289,
+   "rms": 0.1998,
+   "brightness_hz": 2359,
+   "onset": 1.671
+  },
+  {
+   "t": 290,
+   "rms": 0.2098,
+   "brightness_hz": 2046,
+   "onset": 1.77
+  },
+  {
+   "t": 291,
+   "rms": 0.2021,
+   "brightness_hz": 2171,
+   "onset": 1.757
+  },
+  {
+   "t": 292,
+   "rms": 0.2109,
+   "brightness_hz": 2168,
+   "onset": 1.83
+  },
+  {
+   "t": 293,
+   "rms": 0.1991,
+   "brightness_hz": 2277,
+   "onset": 1.766
+  },
+  {
+   "t": 294,
+   "rms": 0.221,
+   "brightness_hz": 2081,
+   "onset": 1.703
+  },
+  {
+   "t": 295,
+   "rms": 0.205,
+   "brightness_hz": 2193,
+   "onset": 1.838
+  },
+  {
+   "t": 296,
+   "rms": 0.234,
+   "brightness_hz": 2290,
+   "onset": 1.678
+  },
+  {
+   "t": 297,
+   "rms": 0.2059,
+   "brightness_hz": 2227,
+   "onset": 1.886
+  },
+  {
+   "t": 298,
+   "rms": 0.213,
+   "brightness_hz": 2178,
+   "onset": 1.88
+  },
+  {
+   "t": 299,
+   "rms": 0.1948,
+   "brightness_hz": 2255,
+   "onset": 1.789
+  },
+  {
+   "t": 300,
+   "rms": 0.1998,
+   "brightness_hz": 1695,
+   "onset": 1.463
+  },
+  {
+   "t": 301,
+   "rms": 0.0251,
+   "brightness_hz": 331,
+   "onset": 0.239
+  },
+  {
+   "t": 302,
+   "rms": 0.1428,
+   "brightness_hz": 568,
+   "onset": 1.695
+  },
+  {
+   "t": 303,
+   "rms": 0.0011,
+   "brightness_hz": 1461,
+   "onset": 0.114
+  },
+  {
+   "t": 304,
+   "rms": 0.0,
+   "brightness_hz": 1326,
+   "onset": 0.0
+  }
+ ]
+}

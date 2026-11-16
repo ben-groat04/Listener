@@ -1,0 +1,23 @@
+# faster-whisper small on mix (lang=en p=0.60)
+[0:41.52 - 0:44.06] 18 January 1963
+[0:44.06 - 0:45.06] 18 January 1963
+[0:51.00 - 0:53.50] The Schatmarathon without rain
+[0:58.62 - 1:09.90] 1.5-6 in the afternoon, 200 km through a free-slot where only the strongest are allowed to pass.
+[1:19.40 - 1:27.90] The city is called the 12th Elfstegendpachter, where everyone takes care of the Elfstegendpachter.
+[1:49.44 - 1:55.68] Temperature 16°C below 0°C. A monster ride of around 200 km.
+[2:25.08 - 2:31.40] 575 Fettstreet Riders, around 9500 Hoareiders,
+[2:32.10 - 2:35.66] Now, to Sweden, all at ease, switch us to Belgium.
+[3:32.14 - 3:32.82] Stuck
+[3:36.10 - 3:36.78] Stuck
+[3:37.62 - 3:39.22] End of the road
+[3:39.22 - 3:40.90] End of the border
+[3:41.60 - 3:43.30] End of the road starts
+[3:44.32 - 3:45.00] Climbing
+[3:46.34 - 3:47.70] Climbing up
+[3:48.82 - 3:49.66] Climbing up
+[3:49.66 - 3:50.86] End of the road to me
+[3:50.86 - 3:52.72] End of the speed
+[3:53.40 - 3:55.08] End of the exit
+[3:55.08 - 3:56.80] End of the road
+[3:58.18 - 3:58.86] Stuck
+[5:02.58 - 5:03.98] You

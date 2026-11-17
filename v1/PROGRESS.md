@@ -14,3 +14,8 @@
 - **Artist identified:** Public Service Broadcasting, "Elfstedentocht Part 1" (video1) and "Part 2" (video2), 2013, commissioned by Explore the North (Leeuwarden) for the 50th anniversary; footage and voice-over from the Fries Film Archief. Files: `analysis/research/{artist_and_tracks,elfstedentocht_1963,cultural_context}.md`.
 - Toolkit made video-agnostic: `scripts/extract_all.sh`, `workflows/perceive.js` (args: videos list), per-video `data/<video>/context.md`.
 - 23:52 Launched perceive on video1 (10 segment viewers + music listener).
+
+## 00:00 Pre-reset batch 2
+- Container restarted at 23:58 (lost the music agent, stems and autosave; recovered via RESUME steps).
+- video1: all 10 segment viewer notes done. Now running: video1 music + words, video2 segments 1-8.
+- Wrote `workflows/interpret.js`: dossier -> 3-round conversing panel (first-timer, film critic, music critic, insider, symbolist, sceptic) -> moderator -> 3-lens adversarial fact-check -> fixes. Supports `blind: true`.

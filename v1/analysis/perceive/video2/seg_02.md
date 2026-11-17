@@ -1,0 +1,53 @@
+# video2, seg_02: 0:20-0:40 (eyes report)
+
+Material used: contact sheet 02; keyframes for shots 4-9; individual 1 fps frames at 0:20, 0:24, 0:28, 0:30, 0:38 (f_0021, f_0025, f_0029, f_0031, f_0039 plus keyframes); lyrics (whisper medium nl, nl-translate, small); audio_features/summary.json. Note: visual_features/ and stems/ do not exist for video2, so no visual per-second numbers, no cut/beat file and no stem data. All visual claims below come from looking at frames.
+
+## 1. Shot-by-shot (shot numbers from shots.json)
+
+All footage here is archival, colour, small-gauge film (probably 8 mm or 16 mm amateur or regional-archive film; this is inference from the look). The frame has a dark rounded edge and film gate, visible grain, and in several shots a thin vertical scratch line. Images are soft and low in detail. Contact sheet shows the whole range is a static, empty winter landscape: no people, no vehicles, no skaters, no text.
+
+- Shot 4 (12.16-24.16, continuing from before 0:20; I see 0:20-0:23.9): close, upward-angled view into the crown of a tree thickly furred with hoar frost. Pale blue-white sky glows through a dense lattice of branches. Camera is held close and tilts or drifts slightly (the 0:20 and 0:24 frames differ in branch placement; I read a slow pan or sway). Cold cyan/blue-white palette. At the bottom edge of the 0:20-0:23 frames a pale rounded roof or gable is just visible, which hints that this is the same garden as the next shot. The image is a texture almost as much as a picture (frost crystals = grain).
+- Shot 5 (24.16-28.08): hard cut to a wider, static (or nearly static) shot of a snowy park or garden. Deep clear blue sky, a bare frosted tree group, and a white-roofed small pavilion or summer-house with a round, columned or open lower part, beside a larger dark-roofed building (house or barn; I cannot say which). In the foreground, flat snow with a dark oval shape (a frozen pond or boat-shaped patch; I am not sure) and a strip of dry golden reeds on the right at 0:24. The 0:25-0:27 frames look like a slow pan to the left to right, or the same view slightly shifted; the pavilion moves from left-centre to right edge across 0:24-0:26. Most saturated, sunniest image in the range: a rare blue-sky day.
+- Shot 6 (28.08-33.72): cut to a much colder, darker, purple-grey image. Dusk or overcast light. At 0:28 a low tilt from a line of black bare trees against a lilac sky; there is a tall thin vertical scratch on the film and a stray twig in the top of the frame. From 0:29 the camera moves in close among bare branches and a thick dark tree trunk with a small patch of snow stuck on it (clearest at 0:30). Handheld, drifting upward/sideways, branches fan across the frame. The effect is of a person walking along a hedge or woodland edge and looking up. At the lower edge of 0:30 there is a pale snowy ground and at 0:32-0:33 smaller twigs and a few dead leaves.
+- Shot 7 (33.72-36.04): cut to a wide, almost white field of snow under a pale lilac-grey sky. A long, flat tree-line on the far horizon, a dark tree and bush at the left edge, a thin bare sapling at right with a few small stumps or posts in the snow. Vertical scratch line down the centre. Static or very slow movement. Empty, flat, and very quiet.
+- Shot 8 (36.04-37.6): brief shot, same field seen from a slightly different position. Fence post with barbed wire in the foreground right, corner of a wooden structure (jetty, bridge or gate; unclear) at bottom left. Far horizon with, I think, a tiny dark object or distant animal/person in the snow at centre (very small at 0:36; I am not certain). Cooler, bluer-purple.
+- Shot 9 (37.6-40.04): snowy bank or slope in the foreground leading to a wall of black tree trunks at right and, on the left, a few fence posts leading toward a pale expanse that could be a frozen waterway or flat white field on the horizon (at 0:38 a flat pale strip behind the trees looks like open white ground or ice; this could be a canal, lake or polder; I cannot confirm). Same lilac-grey palette. Shot 10 begins at 40.04 (out of range).
+
+Editing: cuts at 24.16, 28.08, 33.72, 36.04, 37.6 and 40.04. Shot lengths 3.9, 5.6, 2.3, 1.6, 2.4 s: after a long held opening (shot 4, 12 s) the cutting gets faster in the 33-40 s stretch. No dissolves or effects seen; hard cuts. Cut at 28.08 coincides with an abrupt colour/light change (sunny blue to cold purple), which suggests footage from different films or different days/times, spliced together.
+
+## 2. People, places, objects, text
+
+- People: none visible in 0:20-0:40. (A possible tiny figure or animal on the horizon at about 0:36, unconfirmed.)
+- Places: a Dutch-looking (inference from context.md, not from anything signed) flat, snow-covered landscape: a frosted garden with a pavilion and large building; hedgerows/woodland edge; open snow-covered fields or frozen water; fence and barbed wire. I cannot tell whether it is Friesland.
+- Objects: hoar-frosted branches, white-roofed pavilion, dark-roofed building, dark oval in the snow, dry reeds, tree trunk with snow patch, fence post and barbed wire, wooden structure, small stumps.
+- On-screen text: none. (Burned-in yellow timestamps on contact sheet are tooling, not part of the film.)
+- Audio-visual overlap with spoken text: the first narration ("18 januari 1963") arrives at about 0:41.7, just after this segment. So 0:20-0:40 is a silent, wordless prelude of pure landscape before the date is named.
+
+## 3. Sound in this stretch
+
+- Words: none in 0:20-0:40. Whisper medium transcribe tags "MUZIEK" at 0:28.58-0:29.98 (a music tag, not a lyric). The first real speech is "18 januari 1963." at 0:41.66-0:45.78 (nl), translated "18th of January, 1963" (medium translate 0:42.46; small 0:41.5). Out of range but the timing matters: the music is building toward it.
+- Music (inferred from features only; I cannot hear it; confidence moderate for energy, low for instrumentation): RMS rises steps from about 0.05-0.08 in 0:16-0:27 to 0.12 at 0:28, 0.09-0.10 at 0:29-0:31, 0.146 at 0:32, 0.11-0.13 around 0:33-0:36, around 0.10-0.12 at 0:37-0:39 and 0.159 at 0:40. So loudness roughly doubles around 0:28 and stays high. Spectral brightness falls at the same moment (about 750-790 Hz before 0:28 to about 410-530 Hz after), which suggests the sound gets darker/fuller, with more low-frequency content (perhaps bass or low synth/drums entering) rather than brighter. Automatic whole-song section labels start a long "C" section at 0:00-75.7 so the track as a whole does not segment at 0:28; the lift is within a section. Local key estimate for 0:00-30 is B minor (0.94 confidence); 30-60 is ambiguous (E minor / B minor / G major) which is consistent with a modal or minor-leaning harmonic area. Global tempo estimate is about 161 BPM, which I consider unreliable here (could be half-time, about 80, given the slow feel in the loudness). Onset strength stays flat about 0.62-0.74, so no strong rhythmic attack: it reads as sustained/pad-like rather than drum-driven (low confidence).
+- Picture-sound alignment: The big loudness/darkening step at 0:28 lines up with the hard cut at 28.08 from sunny blue garden to cold purple woodland. That is the clearest sync in this stretch: the cut falls on the music change. The other smaller RMS peaks (0:24 = 0.081, 0:32 = 0.146, 0:36 = 0.132, 0:40 = 0.159) sit at or near cut points 24.16, (33.72 is 1.7 s later), 36.04 and 40.04, so cuts at 24, 36 and 40 appear to fall on musical accents; the one at 0:32 is mid-shot. Cut/beat alignment data are not available for me to confirm. Image does not echo words (no words); it contrasts with later narration, which will name a race, while here there is nothing but stillness.
+
+## 4. What a viewer feels here, and why
+
+OBSERVATION-based feelings: calm, cold, hushed, and a little lonely. The images are empty of people, soft, grainy and washed in blue/lilac, which reads as old home-film memory. The frosted branches (0:20-0:23) are beautiful, almost abstract. The sunny garden (0:24-0:27) offers a short moment of warmth-by-light (blue sky) before the cut to the dusky woods and wide white field, which feel colder and more uneasy. As the music thickens and darkens from 0:28, the mood turns from admiring a winter morning to anticipating something: a growing sense of weight and expectation. Long empty horizons (0:34-0:37) feel vast and isolating, with a hint of threat or endurance, since the landscape is huge compared with the viewer. INTERPRETATION: this is set-up, establishing the stage (cold, flat, exposed) before humans and the event appear. The wordless first 40 s ask the viewer to feel the weather before they hear the facts.
+
+## 5. Symbols, motifs, visual rhymes to track
+
+- Bare branches / tree lattice: frost-laden (0:20) then black against the sky (0:28-0:33). Could rhyme later with crowds (dark vertical figures against white ice), skate blades or lines of skaters; worth checking whether the vertical-tree-trunks-in-white image (0:38) recurs as rows of people.
+- The empty white horizon line (0:34-0:37): the flat Frisian-style horizon as the "track" of the race; look for the same horizon later with skaters on it.
+- Blue/cyan to purple palette: cold colour codes. Track if warmer colours (orange, red, yellow) appear later with people, speech or the finish.
+- Film damage: vertical scratch line and dark gate edge; marks the footage as archive. Track whether the scratch or grain is added or varies in later sections.
+- Small hints of human trace: fence post, barbed wire, wooden structure, stumps, the pavilion. Humans are implied before they appear.
+- A possible frozen waterway (0:38): possibly the first visual hint of the ice itself.
+
+## 6. Open questions for the team
+
+1. Is the 0:24-0:27 pavilion garden in Friesland and is it from the same film as 0:00-0:12? (Check what shots 1-3 show.)
+2. Does the music's step at about 0:28 correspond to a new instrument entering? Stems are not available for video2; could someone run separation or listen to the audio features in more detail?
+3. Is the tempo about 161 or about 80 BPM? Does the cutting pace (3.9, 5.6, 2.3, 1.6, 2.4 s) lock to bars?
+4. Is the dark object at about 0:36 (shot 8) an animal or person, or just a mark on the film?
+5. Does the 0:38 white strip behind the trees show ice/water (a canal on the race route)?
+6. Does the opening wordless prelude mimic the original archive film's own opening (pre-race scenery before the date title), or is it the band's/editor's construction? The research notes may answer this.
+7. visual_features (per-second brightness/motion/colour, cut_beat_alignment) is missing for video2; it should be generated so later segments can be checked quantitatively.

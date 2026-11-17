@@ -34,3 +34,4 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Overstated CLAP "distorted guitar" (0.6 to 1.0 throughout; real: top label in about a third of windows, mean 0.44).
 - Town list filled from route knowledge; dropped Hindelopen which Whisper did transcribe.
 - Voice spectral figures (3.7 kHz, 4 to 5 dB under band) stated without per-passage checking.
+- 02:14 · Push rejected: agents and the autosave loop push concurrently, so the remote moved. · Fetched + merged, pushed; autosave now fetch-merges on rejection. · Concurrent writers need merge-on-reject.

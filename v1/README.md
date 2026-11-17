@@ -8,7 +8,7 @@ The toolkit takes a music video and produces a checked reading of the **music fi
 | Read the finished piece on video1 | [analysis/video1/REPORT.md](analysis/video1/REPORT.md) |
 | Read the finished piece on video2 | [analysis/video2/REPORT.md](analysis/video2/REPORT.md) if present, else [analysis/video2/interpretation.md](analysis/video2/interpretation.md) (status in [analysis/INDEX.md](analysis/INDEX.md)) |
 | See every deliverable and its status | [analysis/INDEX.md](analysis/INDEX.md) |
-| Run the toolkit on a new video | [../TOOLKIT.md](../TOOLKIT.md) ("New video quickstart") |
+| Run the toolkit on a new video | [../TOOLKIT.md](../TOOLKIT.md) (stages and usage policy) |
 | Recover after a container reset | [RESUME.md](RESUME.md) |
 | See the current state, then the history | [PROGRESS.md](PROGRESS.md) (state table at the top, diary below) |
 | Check the rules and past mistakes | [INSTRUCTIONS.md](INSTRUCTIONS.md), [logs/ERRORS.md](logs/ERRORS.md), [logs/](logs/) (also USAGE.md, BACKLOG_*.md) |

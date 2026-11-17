@@ -20,6 +20,8 @@ export const meta = {
 // blind_first: true -> after the blind stages and leak check, an informed lane researches the unknowns (web allowed, context.md
 //   allowed) and writes v1/data/<vid>/informed_extension.md, then runs interpret.js unblinded into v1/analysis/. The informed lane
 //   EXTENDS the frozen claims (adds, confirms, or lists a disagreement beside them); it never rewrites them.
+//   PREREQUISITE: interpret.js reads informed perceive/listen outputs (v1/analysis/perceive, v1/analysis/music/<vid>); for a video that
+//   has none yet, run perceive.js and listen.js with {out:'analysis', blind:false} first (this chain does not do it, to avoid overwriting).
 // compare_after: true -> blindcmp.js is the final stage (the documented default final stage for any blind-first run; set it true
 //   there). It diffs frozen claims against informed outputs on time/count claims and decides disagreements from raw data in
 //   v1/data/<vid>/, not from either side's say-so.

@@ -2,13 +2,15 @@
 
 Written from the ten window notes (`win_0000` to `win_0180`) and all three rounds of the seven specialist files (form, harmony, rhythm, sound, voice, feeling, lineage). Where rounds conflict, the latest, best-measured statement is used and the conflict is listed in section 9. I cannot hear audio. Every claim rests on measurements and each carries a confidence tag: **H** high, **M** medium, **L** low.
 
-Evidence shorthand: [lv] `per_second_levels.json`; [ch] `chords.json`; [ln] `lead_notes.json`; [clap] `clap_tags.json`; [img NNNN] `music_views/window_NNNNs.png`; [ab] `audio_features/`; [lyr] `lyrics/` (Whisper); [Rn-x] specialist x, round n; [win NNNN] window note. CLAP is a noisy zero-shot model and is used only as weak support. Times are m:ss. The track is 3:08.7 long (the official length is 3:09, per `context.md`).
+Evidence shorthand: [lv] `per_second_levels.json`; [ch] `chords.json`; [ln] `lead_notes.json`; [clap] `clap_tags.json`; [img NNNN] `music_views/window_NNNNs.png`; [ab] `audio_features/`; [lyr] `lyrics/` (Whisper); [Rn-x] specialist x, round n; [win NNNN] window note. CLAP is a noisy zero-shot model and is used only as weak support. Its scores are softmax-relative within each label set (they sum to 1 per category), so a top label shows only that it beat the other listed options, not that the quality is present: song-average mood is nostalgic 0.34, triumphant 0.27, aggressive 0.19 (`clap_tags.json` `song_average`), which is a ranking among the 14 offered moods and not proof of any of them. Times are m:ss. The track is 3:08.7 long (the official length is 3:09, per `context.md`).
+
+See also `harmony.md` and `voice_as_music.md` in this folder: produced in a later pass; may not exist yet.
 
 ---
 
 ## 1. The track in a paragraph
 
-This is a loud, relentless, instrumental-rock groove built around one note, D, with a Dutch archive narrator talking over it. It is about 78 BPM at the slow beat, with a fast flutter of drums over it. The drums run for the whole piece, and it has no verse, chorus or tune. The drama comes from three things being switched on and off on a regular bar grid: the bass, the dense distorted "wall" layer (probably guitars, unproven), and the spoken voice. The result feels like "disciplined urgency": a heavy step with a fast heartbeat [R3-feeling, M]. It opens with a short swell and a hit, builds layer by layer, floats on a bass-less lift (1:15 to 1:40), lands hard when the bass returns (1:40), pulls down to a thin, high, hollow block with six slow sub-bass thumps (about 2:00 to 2:38), re-ignites with the narrator reading out a list of Frisian towns, then ends with the narrator's last line, a half-second hole (2:47.8), and a bright, wide, loud run to a short taper-out at 3:08.4 [R3-form, R3-rhythm, R3-feeling]. The harmony stays on a D pedal throughout, with a missing or ambiguous third, so it sounds stern and driven rather than sad or triumphant [R3-harmony, M].
+This is a loud, relentless, instrumental-rock groove built on a D tonic (D dominates the chroma and bass; the end riff circles C, A, B and E around it, so it is not literally one note), with a Dutch archive narrator talking over it. It is about 78 BPM at the slow beat (78 versus 156 as the quarter note is open, not settled; section 5), with a fast flutter of drums over it. The drums run for the whole piece, and it has no verse, chorus or tune. The drama comes from three things being switched on and off on a regular bar grid: the bass, the dense distorted "wall" layer (probably guitars, unproven), and the spoken voice. The result feels like "disciplined urgency": a heavy step with a fast heartbeat [R3-feeling, M]. It opens with a short swell and a hit, builds layer by layer, floats on a bass-less lift (1:15 to 1:40), lands hard when the bass returns (1:40), pulls down to a thin, high, hollow block with six slow sub-bass thumps (about 2:00 to 2:38), re-ignites with the narrator reading out a list of Frisian towns, then ends with the narrator's last line, a half-second hole (2:47.8), and a bright, wide, loud run to a short taper-out at 3:08.4 [R3-form, R3-rhythm, R3-feeling]. The harmony stays on a D pedal throughout, with a weak or ambiguous third (weak: KS and chroma on the whole mix; see section 3), so it sounds stern and driven rather than sad or triumphant [R3-harmony, M].
 
 ---
 
@@ -31,7 +33,7 @@ Boundaries are high confidence (from stem on/off events [lv], [img], and the bar
 | 2:14 to 2:38 | Re-ignition and town list | The wall thickens (+6 dB) at 2:13. Width goes 0.3 to 0.55. The narrator reads a town list from 2:16 to 2:36. The chord walk (A, D, G) starts 2.2 s after each thump. | Lift-off: "setting off", an itinerary being read (M). |
 | 2:38 to 2:47.8 | Run-up | Bass returns (-64 dB to -19 dB by 2:39). Chords turn (F, C, D, C). The final line, "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht", starts about 2:44.4 (vocal-stem onset; Whisper 2:43.8) and ends about 2:48.2. | Weight returns; a resumed journey (M-H). |
 | 2:47.83 to 2:48.21 | The hole | Drums out about 0.4 s (167.8 to 168.2 s), bass out about 0.65 s (167.55 to 168.2 s); timing against the beat grid is within 0.1 s, not exact. The guitar holds (instrument unproven). The narrator's last syllable decays inside it [R2-form 2.3, H on timing]. | Held breath, then release (M). |
-| 2:48.2 to 3:08.4 | Bright release plateau | One chord, D. The drum energy above 5 kHz rises from about 1% to 9 to 12%. Width 0.7 to 0.86. Mix steadily about -11 dBFS. K-weighted loudness -7.0 to -6.4 LUFS, the loudest and steadiest stretch. No voice. | Hard, driven, grinding. The band takes over (M-H). |
+| 2:48.2 to 3:08.4 | Bright release plateau | The chord detector gives a single D label from 2:47.97 to the end [ch]; chroma shows short stabs on C, A, B and E over the D (section 3), so "one chord" is a detector label, not a measured fact. The drum energy above 5 kHz rises from about 1% to 9 to 12%. Width 0.7 to 0.86. Mix steadily about -11 dBFS (raw dBFS mean -11.5 over 2:48 to 3:08; 1:40 to 1:55 is higher by raw dBFS, mean -10.7, peak -9.5 at 1:52 [lv]). K-weighted loudness -7.0 to -6.4 LUFS-short (own BS.1770-style implementation, not a calibrated meter), level with the 1:07 to 1:15 peak (about -6.6) and very steady (about +/-0.3 LU); 1:40 to 1:55 is the loudest stretch only by raw dBFS. No voice. | Hard, driven, grinding. The band takes over (M-H). |
 | 3:06 to 3:08.4 | Close | Denser drum onsets from about 3:06. Chroma shifts toward G and E just before the end (L). Level -11 dB at 3:07, -15.5 dB at 3:08.0, below -60 dB by 3:08.4, -72 dB by 3:08.5. | A cut-off, as if the effort carries on offscreen (M). |
 
 Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass events at 1:15, 1:27 and 1:40, then odd blocks of 5, 2, 2, 2, 8 and 3 bars, and a final run of about 6.5 bars [R2-form, R3-form]. Bar one is tracker-derived. The drum kick band cannot confirm which beat is "one" [R3-form, M].
@@ -43,12 +45,12 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 **Key and mode (H on D, L on mode).**
 - D is the tonic everywhere. Whole-song key is D major 0.76 against D minor 0.756, effectively a tie [ab summary].
 - Power chroma shows D 1.00 in every window, with the fifth A and the flat seven C always present [R3-harmony].
-- The third (F or F sharp) never rises above about 0.16 in power, except one flicker (F 0.39 at 1:47) [R3-harmony]. So the sound is a bare D5 power-chord world. Dorian or Mixolydian by pitch content, undecided because the third is missing.
+- The third (F or F sharp) never rises above about 0.16 in power chroma on the mix, except one flicker (F 0.39 in `other` at 1:46.6 to 1:48.4) [R3-harmony]. Reading this as "a bare D5 power-chord world with the third absent" is weak: it rests on whole-mix key-profile (KS) and chroma values, and the only stem-level check is that one 2 s span, where `bass` has D 1.00, C 0.36, G 0.31 and no third. A distorted wall can mask a third, so "absent" is not shown. Dorian, Mixolydian or major or minor: undecided.
 - "Stoic" and "stern" are texture and rhythm, not mode. "Sad" and "triumphant" by mode are unsupported [R3-feeling].
 
 **Almost no progression (M-H).**
 - [ch] logs 125 chord changes. Most are detector labels on a static D. The Cm at 1:48, the Fm and Cm at 0:43 to 0:45, and the 20 s "D" at the end are all examples [R3-harmony, R2-harmony].
-- Across the track there is no 8-beat harmonic cycle and no V to I cadence. Resolution comes from the bass returning and the stop at 2:48, not from chords.
+- Across the track (chord-label level, with the caveat above) there is no 8-beat harmonic cycle and no V to I cadence. Resolution comes from the bass returning and the stop at 2:48, not from chords.
 
 **The two places where pitch does move.**
 1. **1:15 to 1:40, the one melody (M).** The `other` stem plays a slow stepwise line. The pyin contour (per 0.5 s, polyphonic and rough) reads A3 about 1:16 to 1:18.5, C4 to 1:21, B3 to 1:23, G3 to 1:24, D3/D4 from 1:24.5 to 1:27.5, then a D2 drone from 1:27.5 (source: pyin on the other stem, not lead_notes.json, which does not show this line). Against D that is fifth, flat seven, sixth, fourth, root. The tonic D is nearly absent from the wall from 1:15 to about 1:24 (D 0.08 to 0.26; other-stem chroma: C top at 1:18, B at 1:21, D back at 1:24) and the bass is also out. A slow attack (median 0.22 s to peak, L) suggests a sustained or swelled tone rather than a pluck [R3-sound]. This is the only candidate for the track's "yearning".
@@ -149,7 +151,7 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 **What the voice does (M).**
 - It supplies facts (date, crowd, cold, distance, riders, route). The band supplies the emotion; the narrator adds no excitement of its own [R3-voice, R3-feeling].
 - Entries come into space made by subtraction: 1:19.7 after the bass leaves at 1:15, and 2:15 on the A, D, G walk. Exits sit at changes of state (0:31.7 on a bar line, 2:48 into the hole) [R3-voice].
-- The longest voice-free block (1:27 to 2:15) coincides with the loudest, densest sections and the thin block. The story is told in the sparse passages and held back when the band is at full weight (M-H).
+- The longest voice-free block (1:27 to 2:15) coincides with the densest section by raw dBFS (1:40 to 1:55) and the thin block. The story is told in the sparse passages and held back when the band is at full weight (M-H).
 
 **Not sung.** The lead-pitch tracker [ln] finds only speech inflection and instrument bleed. There is no sung melody anywhere (H).
 
@@ -171,7 +173,7 @@ The feelings below are my interpretation of measured causes, not listener data (
 - **2:15 to 2:36, the itinerary.** The wall thickens, width opens, the narrator reads towns one by one over an Am, D, G walk. Setting off, checkpoints being called. Cause: +6 dB wall, width 0.3 to 0.55, and moving chords (M).
 - **2:38 to 2:47, weight resumes.** Bass back, chords turning F, C, D, C, the sentence returns. Resuming a journey (M-H).
 - **2:47.8, the hole.** A 0.4 s rest with the narrator's last syllable inside it and the guitar holding. A held breath that ends in release, not a shock (M).
-- **2:48 to 3:08, the sprint.** The loudest, steadiest, brightest, widest stretch. Hard, driven, grinding, with chromatic friction around D and a cymbal-led kit. Cause: one chord with a circling riff, hat and crash share up to 12%, width 0.7 to 0.86 (M-H).
+- **2:48 to 3:08, the sprint.** The steadiest, brightest, widest stretch, and, by K-weighting, level with the loudest stretch (1:07 to 1:15; not above it). Hard, driven, grinding, with chromatic friction around D and a cymbal-led kit. Cause: a D-based wall with a circling riff (the detector labels one D), hat and crash share up to 12%, width 0.7 to 0.86 (M-H).
 - **3:08.4, the end.** A half-second taper to silence with no cadence. The effort seems to continue offscreen. Whether it is the studio ending or an edit of the video is unknown (M on the feel, L on the cause).
 
 Overall character: "disciplined urgency, heavy step with a fast heartbeat" [R3-feeling, M].
@@ -184,7 +186,7 @@ Overall character: "disciplined urgency, heavy step with a fast heartbeat" [R3-f
 2. **2:47.8, the half-second hole after "dat is de Elfstedentocht".** The narrator's key sentence ends, the drums and bass drop out for about 0.4 s while the guitar holds, then the band returns brighter and wider. It is the track's only drum event and a callback to the 0:27 line [R2-form, R3-rhythm, R3-voice] (M-H).
 3. **1:15 to 1:27, the floor falling away.** The bass cuts dead at 1:15.0, the mix drops about 6 LU and the wall turns thin. The listener feels the lightness and loss before the voice returns at 1:19.7 [lv, R2-form] (H on measurement, M on feeling).
 4. **The 6.15 s sub thumps (2:01 to 2:31).** A slow, very low gesture repeated six times over an unchanged fast pulse, in the quietest, thinnest part. It is the clearest designed sound in the piece, though it is largely lost on small speakers [R3-sound, R3-rhythm] (M).
-5. **The 2:48 to 3:08 bright finish and the cut.** After the hole the band is at its loudest, steadiest, widest and most cymbal-bright, with a circling riff on D. It then ends abruptly with no cadence [R3-form, R3-sound, win 0180] (M-H). The opening swell-and-hit at 0:00.7 is a minor candidate (M).
+5. **The 2:48 to 3:08 bright finish and the cut.** After the hole the band is at its steadiest, widest and most cymbal-bright, and by K-weighting level with its loudest (1:07 to 1:15), with a circling riff on D. It then ends abruptly with no cadence [R3-form, R3-sound, win 0180] (M-H). The opening swell-and-hit at 0:00.7 is a minor candidate (M).
 
 Two honourable mentions: the key sentence of narration at 0:27 to 0:31.7 landing on a bar line before the band opens up, and the narrator's list of towns at 2:16 to 2:36 (M).
 
@@ -194,7 +196,7 @@ Two honourable mentions: the key sentence of narration at 0:27 to 0:31.7 landing
 
 | Issue | Positions | Best-supported view |
 |---|---|---|
-| Climax: 1:27, 1:40 or 2:48? | Round 1: various (1:40 by dBFS; 2:48 by level). Feeling ranked 1:40 first, Form ranked 2:48 first. | Two peaks: emotional arrival at 1:40 (weight, width, relief), physical release at 2:48 to 3:08 (loudest, steadiest, brightest). 1:27 is a lift, not a peak [R3-form, R3-feeling, M-H]. |
+| Climax: 1:27, 1:40 or 2:48? | Round 1: various (1:40 by dBFS; 2:48 by level). Feeling ranked 1:40 first, Form ranked 2:48 first. | Two peaks: emotional arrival at 1:40 (weight, width, relief), physical release at 2:48 to 3:08 (K-weighted level with 1:07 to 1:15, steadiest, brightest). 1:27 is a lift, not a peak [R3-form, R3-feeling, M-H]. |
 | Loudness at 1:40 | Window notes said loudest around 1:40 (dBFS). Form's K-weighting: 1:07 to 1:15 and 2:48 to 3:08. | Accept K-weighting. 1:40 adds about 0.1 LU; loudness returns at 1:27 [R2-form, R3-sound, M-H]. |
 | Bass jump size at 1:40 | Window note: about 34 dB. Feeling: +42.6 dB. | The 1 s bins in [lv] give -53.8 to -19.1 dB (about 35 dB). Feeling's +42.6 dB comes from its own before/after table (F2), whose windows I did not re-derive, so the gap is probably a difference in the averaging windows (my inference). Both agree on a very large step [lv, R3-feeling, H on size, L on the exact figure]. |
 | Tempo octave | Round 1 rhythm: 60/40 for 156. Round 3: 55/45 for 78. | Unsettled. 78.0 BPM at 0.769 s is certain. Hat on 0.385 s with a kick on sixteenth offbeats mildly favours 78 as the quarter note. Felt weight is the same either way [R3-rhythm, L-M on octave]. |
@@ -216,7 +218,7 @@ Two honourable mentions: the key sentence of narration at 0:27 to 0:31.7 landing
 | Does the narrator speed up? | Feeling suggested a quickening build. | No. A steady 4 to 5 peaks per second, no quickening [R3-voice, M-H]. |
 | Bass-stem silences | Sound R3: muted stems or a programmed bass. | Suggestive; demucs gating confounds it [R3-sound, M-L]. |
 | Section blocks: strictly 2/4/8 bars? | Form R2: first half square (24, 28, 32). Lineage R3: not square (5, 3, 6.5). | Square in the first half, odd in the second; the 6.15 s sub cycle is exact [R3-form, R3-lineage, M]. |
-| Mode | Windows lean major, minor or modal depending on the window. | Undecided. The third never exceeds about 0.16 in power chroma; stern, not sad [R3-harmony, L]. |
+| Mode | Windows lean major, minor or modal depending on the window. | Undecided. The third never exceeds about 0.16 in power chroma on the whole mix (weak: KS on whole mix; stem evidence only at 1:47); stern, not sad [R3-harmony, L]. |
 
 ---
 
@@ -227,7 +229,8 @@ Two honourable mentions: the key sentence of narration at 0:27 to 0:31.7 landing
 - **Live versus programmed drums.** Kick and hat consistency fits either. Flat bass floors fit muted stems but are confounded by demucs gating.
 - **Where beat 1 is.** The drum kick band cannot say. All structure statements are tied to the tracker grid, with the drum-slot count given where it matters [R3-form, R3-rhythm].
 - **Octave of the tempo** (78 versus 156 as quarter note).
-- **Major or minor.** The third is missing or flickers.
+- **Major or minor.** The third is weak or flickers on the mix; its absence is not shown (weak: KS on whole mix).
+- **Not recoverable from stems:** which instruments play the wall and bass, the exact notes of the end riff, whether the kit is played or programmed, and whether the third is truly absent under the distortion.
 - **Riff notes.** The exact notes of the final riff and of the wall's rhythmic figure.
 - **The final seconds.** Whether the end at 3:08.4 is the studio ending or an edit of the video. The beat tracker has no beats after 2:48; the drum-slot fit covers it [R3-rhythm]. The chroma shift toward G and E at 3:06.5 is not recorded in [ch] (L).
 

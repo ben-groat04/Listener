@@ -3,7 +3,7 @@ Lower threshold than PySceneDetect, so it also catches soft, blurred and whip cu
 Usage: python3 v1/scripts/agents/dense_cuts.py <video name> [--thr 3.0]
 Writes v1/data/<video>/scenes/dense_cuts.json (every candidate with scores and whether shots.json has a cut within 0.2 s).
 Score = z-like ratio of the frame's combined change to the local (+-1 s) median change; a candidate is a local peak above --thr
-and above an absolute floor. Caveat: flicker/burn artefacts in old film can give false candidates; check with frame_at.py."""
+and above an absolute floor. Tiers: strong = histogram distance >=0.12 (new picture content); medium = big pixel change with some histogram change; weak = rest (often motion within a shot, flicker). Spot checks: 55.12 (skaters moving within a shot) was a false positive at medium/weak level. Caveat: flicker/burn artefacts in old film can give false candidates; check with frame_at.py."""
 import argparse, json, os, subprocess, sys
 import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -45,12 +45,15 @@ cuts = []
 for j in range(1, len(comb)):
     lo, hi = max(1, j - 2), min(len(comb), j + 3)
     if score[j] >= a.thr and comb[j] >= 0.25 and score[j] == score[lo:hi].max():
-        t = j / fps
+        t = j / fps; hist_ = float(hd[j])
         near = min(sb, key=lambda x: abs(x - t)) if sb else None
         cuts.append({"t": round(t, 2), "frame": j, "score": round(float(score[j]), 1), "diff": round(float(diffs[j]), 2),
-                     "hist": round(float(hd[j]), 3), "in_shots_json": bool(near is not None and abs(near - t) <= 0.2),
+                     "hist": round(float(hd[j]), 3), "tier": ("strong" if hist_ >= 0.12 else "medium" if (diffs[j] >= 30 and hist_ >= 0.05) else "weak"),
+                     "in_shots_json": bool(near is not None and abs(near - t) <= 0.2),
                      "nearest_shots_json": near})
 out = {"video": a.video, "fps": fps, "frames": i, "threshold": a.thr, "n_cuts": len(cuts),
+       "n_missed_strong_or_medium": sum(1 for c in cuts if not c["in_shots_json"] and c["tier"] != "weak"),
        "n_missed_by_shots_json": sum(1 for c in cuts if not c["in_shots_json"]), "cuts": cuts}
 od = os.path.join(root, f"v1/data/{a.video}/scenes"); json.dump(out, open(os.path.join(od, "dense_cuts.json"), "w"), indent=1)
-print(out["n_cuts"], "candidates;", out["n_missed_by_shots_json"], "not in shots.json; shots.json boundaries:", len(sb))
+print(out["n_cuts"], "candidates;", out["n_missed_strong_or_medium": sum(1 for c in cuts if not c["in_shots_json"] and c["tier"] != "weak"),
+       "n_missed_by_shots_json"], "not in shots.json; shots.json boundaries:", len(sb))

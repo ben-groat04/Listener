@@ -1,5 +1,7 @@
 # Verdict: human-voice pieces vs the old reports (2026-11-17)
 
+> Correction 2026-11-17: video2 picture does cut on the 1:28.6 drop (frames at 88.3 s and 88.7 s); the 'cut 1.7 s later' objection below came from shots.json, which missed a blurred whip.
+
 User complaint: "This is absolutely not how a human thinks and listens about music." Six judges (casual listener, writer, stickler; each on video1 and video2) compared the old REPORT.md (A) with the new human piece (B).
 
 ## Scores
@@ -36,7 +38,7 @@ B won 6 of 6 on "more human" and "would rather read". Accuracy: A wins video2 (3
 
 ## Accuracy faults in B (fix first, A had already caught them)
 
-- video2: "the picture cuts from an empty road to a crowd on the same instant" as the drop (and the same in the picture section and sidecar). The static shot runs 1:22.1 to 1:30.3; the cut is about 1.7 s after the drop.
+- video2: "the picture cuts from an empty road to a crowd on the same instant" as the drop (and the same in the picture section and sidecar). (Correction 2026-11-17: the cut does land on the drop, about 1:28.5; the claim was right and the earlier objection, based on shots.json, was wrong.)
 - video2: "two drum hits and three bass notes" stated as fact; the stem shows one tone with a dip.
 - video2: "no fill, no rise, nothing to announce it" contradicts its own point that the drums thin beforehand; sidecar lists this as withdrawn but the page keeps it.
 - video1: "nobody smiles" and "sounds like longing" are stronger than the evidence (faces too small; pitch track on a polyphonic stem).

@@ -11,7 +11,8 @@ Current fact sheet. Per-video facts live here; the toolkit stays video-agnostic.
 - **Archive source:** Fries Film Archief (now Fries Film en Audio Archief, FFAA), footage and voice-over. Which films, and who the narrator is: NOT confirmed. Polygoon/NTS newsreels are not shown to be used (low).
 
 ## Confirmed vs uncertain
-- Confirmed: artist, commission, archive credit, official length, part order, Part 2 described as calmer and more electronic; our CLAP tags synth-pop/electronic, drum machine (model tags). Own observation: colour footage with intertitle 'De Winter van 1963 in Friesland', Dutch narration (date 18 januari 1963, -16 degrees, over 200 km, 575 racers, about 9,500 tourists; garbled by ASR). The 3:32-3:58 words ('Stuck', 'End of the road') are low-confidence ASR.
+- Confirmed: artist, commission, archive credit, official length, part order, Part 2 described as calmer and more electronic. Own observation: colour footage with intertitle 'De Winter van 1963 in Friesland', Dutch narration (date 18 januari 1963, -16 degrees, over 200 km, 575 racers, about 9,500 tourists; garbled by ASR). The 3:32-3:58 words ('Stuck', 'End of the road') are low-confidence ASR.
+- Weak model evidence (CLAP zero-shot tags, not proof; scores are softmax-relative across the candidate labels, so they rank labels against each other and are not absolute probabilities): genre synth-pop 0.35, electronic 0.23, krautrock 0.16; instrument drum machine 0.63; mood nostalgic 0.58, calm 0.22.
 - Uncertain: exact source films; narrator identity; whether narration is newsreel, club film or sponsor/regional film (e.g. "Dit is Friesland", Esso); whether our file is the official upload; director/editor credits (do not assume Mr B, who is credited for live visuals only).
 - Interpretation only (ours, not reception): hauntology/memory readings. Documented reception is thin: drive, physical effort, image and sound fused (Record Rewind Play, KindaMuzik, 2013-14).
 

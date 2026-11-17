@@ -11,7 +11,8 @@ Current fact sheet. Per-video facts live here; the toolkit stays video-agnostic.
 - **Archive source:** Fries Film Archief (now Fries Film en Audio Archief, FFAA), footage and voice-over. Which films, and who the narrator is: NOT confirmed. Polygoon/NTS newsreels are not shown to be used (low).
 
 ## Confirmed vs uncertain
-- Confirmed: artist, commission, archive credit, official length, part order, Part 1 described as loud, rock-oriented with a 'simple blood-pumping guitar riff'; our CLAP tags post-rock 0.84, distorted guitar (model tags, not proof). Own observation: b/w footage, newspaper headlines, night crowds, 'DOKKUM' sign and 'Reportage ELFSTEDENTOCHT' banner. No title card or credits seen.
+- Confirmed: artist, commission, archive credit, official length, part order, Part 1 described as loud, rock-oriented with a 'simple blood-pumping guitar riff'. Own observation: b/w footage, newspaper headlines, night crowds, 'DOKKUM' sign and 'Reportage ELFSTEDENTOCHT' banner. No title card or credits seen.
+- Weak model evidence (CLAP zero-shot tags, not proof; scores are softmax-relative across the candidate labels, so they rank labels against each other and are not absolute probabilities): genre post-rock 0.84, instrument distorted guitar 0.44, mood nostalgic 0.34, triumphant 0.27, aggressive 0.19.
 - Uncertain: exact source films; narrator identity; whether narration is newsreel, club film or sponsor/regional film (e.g. "Dit is Friesland", Esso); whether our file is the official upload; director/editor credits (do not assume Mr B, who is credited for live visuals only).
 - Interpretation only (ours, not reception): hauntology/memory readings. Documented reception is thin: drive, physical effort, image and sound fused (Record Rewind Play, KindaMuzik, 2013-14).
 

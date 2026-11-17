@@ -1,12 +1,24 @@
-import json,numpy as np,librosa
-d=json.load(open('/home/user/Listener/v1/data/video1/music_views/per_second_levels.json'))
-db=np.array([x['dbfs'] for x in d]);w=np.array([x['width'] for x in d])
-i=np.argsort(db)[::-1][:8];print('loudest s',[(int(d[k]['t']),db[k]) for k in i])
-for a,b in [(0,9),(9,32),(32,50),(50,75),(75,87),(87,100),(100,115),(115,121),(121,133),(133,158),(158,168),(168,188)]:
-    print(a,b,'mix %.1f width %.2f'%(db[a:b].mean(),w[a:b].mean()))
-# spectral: hiss >8k fraction & hf per window; mix mono
-y,sr=librosa.load('/home/user/Listener/v1/data/video1/audio/song.wav',sr=22050,mono=True)
-S=np.abs(librosa.stft(y,n_fft=2048))**2;f=librosa.fft_frequencies(sr=sr,n_fft=2048)
-for a,b in [(20,30),(60,70),(88,98),(125,135),(150,160),(170,180),(185,188)]:
-    s=S[:,int(a*sr/512):int(b*sr/512)].sum(1)
-    print(a,'frac>5k %.4f >8k %.5f centroid %.0f'%(s[f>5000].sum()/s.sum(),s[f>8000].sum()/s.sum(),(s*f).sum()/s.sum()))
+import numpy as np, soundfile as sf
+D='/home/user/Listener/v1/data/t_cshells_cshore/'
+def ld(p):
+    x,sr=sf.read(p); 
+    return (x.mean(1) if x.ndim>1 else x),sr
+mix,sr=ld(D+'audio/song.wav')
+st={k:ld(D+f'stems_raw/htdemucs/song/{k}.wav')[0] for k in ['vocals','other']}
+def db(x): return 10*np.log10(np.mean(x**2)+1e-20)
+print('sr',sr)
+for a in range(326,343,2):
+    s=slice(int(a*sr),int((a+2)*sr))
+    print(a, 'mix %.1f other %.1f vocals %.1f voc-other %.1f'%(db(mix[s]),db(st['other'][s]),db(st['vocals'][s]),db(st['vocals'][s])-db(st['other'][s])))
+print('2:20-2:30')
+for a in range(140,150,2):
+    s=slice(int(a*sr),int((a+2)*sr))
+    print(a,'mix %.1f voc %.1f voc-mix %.1f'%(db(mix[s]),db(st['vocals'][s]),db(st['vocals'][s])-db(mix[s])))
+# end step in 10ms envelope
+e=np.array([db(mix[i:i+int(.01*sr)]) for i in range(int(342.4*sr),int(343.1*sr),int(.01*sr))])
+print(np.round(e,0))
+# modulation rate of murmur (syllable) 5:31-5:41 voc env
+v=st['vocals'][int(331*sr):int(341*sr)]
+h=int(.02*sr); env=np.sqrt(np.convolve(v**2,np.ones(h)/h,'same'))[::h]
+env=env-env.mean(); f=np.fft.rfftfreq(len(env),.02); P=abs(np.fft.rfft(env))
+m=(f>0.5)&(f<12); print('mod peak Hz',f[m][P[m].argmax()])

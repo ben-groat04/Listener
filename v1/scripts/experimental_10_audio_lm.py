@@ -1,4 +1,6 @@
-"""A second pair of 'ears': an open audio-language model (Qwen2.5-Omni-3B, thinker only, CPU) listens to each 20 s window
+"""EXPERIMENTAL / NOT WORKING (2026-11-17): on this 4-core CPU it took ~15 min per 20 s window and the audio was not actually
+received by the thinker (it replied that it could not hear; token-id/config mismatch warnings). Kept for reference only.
+A second pair of 'ears': an open audio-language model (Qwen2.5-Omni-3B, thinker only, CPU) listens to each 20 s window
 of the mix and of the vocal stem and describes it in words. Video-agnostic. Slow on CPU (minutes per window); idempotent per window.
 Output: v1/data/<VID>/audio_lm/window_NNNNs.json (+ all.md). Treat as one more noisy witness, not ground truth."""
 import json, os, sys, time

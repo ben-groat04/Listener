@@ -53,3 +53,4 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Left out supported narration at 1:00 to 1:14 ("200 km through Friesland") and called it unclear; also called a "misread" what is contradictory across passes.
 - Ending misread as a quiet "tap": it is a full-level kick-and-bass hit at 5:02.3 after a pad ring-out.
 - Cited CLAP only as song means (vinyl crackle, instruments, no-vocals), hiding strong time structure; overstated "no vinyl" and bass "28 dB down".
+- 02:30 · Audio-language model (Qwen2.5-Omni-3B on CPU) failed: audio not received (config/token mismatch) and ~15 min per window. Wasted ~25 min of CPU, no usage. · Abandoned; script kept as experimental_10_audio_lm.py with a warning; deleted its misleading output and the 8 GB model cache. · Budget a quick feasibility check (speed + a sanity answer) before building around a heavy local model.

@@ -13,9 +13,10 @@ Key rules (short form):
 - Log mistakes in `v1/logs/ERRORS.md`. Commit and push often (survive container resets).
 - English with British spelling. Never stop on "waiting on…"; leave a finished, useful state.
 - **Benchmark against reality early:** prototype the final output first and test it against real human examples, not AI judges alone.
+- **Human output:** FACTS.md -> listening.js/plainvoice.js is the main human output; measurement is the checking layer; Turing test vs real human writing is the acceptance test (`v1/analysis/human_listening/`, currently not passed).
 - Shell: put `cd` on its own line before backgrounding jobs; filter noisy logs before reading.
 
-**Entry points:** `TOOLKIT.md` (repo root) is the single manual for running the toolkit on a new video (stages, workflows, usage policy); `v1/README.md` ('Start here') is the map of results and layout; `v1/RESUME.md` is for after a container reset; `v1/DO_NOT_CLAIM.md` lists readings the frames cannot support; `python3 v1/scripts/make_index.py --write` regenerates `v1/analysis/INDEX.md`.
+**Entry points:** `TOOLKIT.md` (repo root) is the single manual for running the toolkit on a new video (stages, workflows, usage policy); `v1/README.md` ('Start here') is the map of results and layout; `v1/RESUME.md` is for after a container reset; `v1/analysis/human_listening/` (STYLE, TURING, VERDICT, PROPOSAL, corpus) holds the human-listening lessons; `v1/DO_NOT_CLAIM.md` lists readings the frames cannot support; `python3 v1/scripts/make_index.py --write` regenerates `v1/analysis/INDEX.md`.
 
 **Read in this order** (the rest is reference):
 1. `TOOLKIT.md` (repo root): the single manual; follow it to run a video.

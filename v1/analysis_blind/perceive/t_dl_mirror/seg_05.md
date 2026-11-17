@@ -18,7 +18,7 @@ Frame format of the whole video (OBSERVED): picture sits in a letterbox with bla
 | 1:38-1:39.6 (shot 44, 98.03-99.6) | 44 | A woman with long dark curly hair, in a doorway or gap between white clapboard/louvred panels, bare shoulders, a pink-striped strap. At 1:38 she looks down with mouth slightly open; at 1:39 she looks off to the left of frame, brows lifted. | Medium close-up, mostly static | Colour, cool blue-white, low saturation (return to the "real colour" of 1:20-1:21) |
 | 1:39.6-1:40+ (shot 45, from 99.6) | 45 | Street scene: a pale car driving down a tree-lined residential street towards camera, lamp post at left, three-storey houses at right (keyframe at 1:42.9) | Static wide | Sepia |
 
-Editing effects: no dissolves or titles seen in the frames opened; all transitions look like hard cuts (OBSERVED in the frames opened; the detector lists 6 cuts at 1:21.95, 1:26.15, 1:29.42, 1:30.39, 1:30.92, 1:34.73, 1:38.03, 1:39.6, i.e. 8 inside 20 s). The grade alternates: sepia for the street/car material, cool colour for the indoor couple and the woman (OBSERVED).
+Editing effects: no dissolves or titles seen in the frames opened; all transitions look like hard cuts (OBSERVED in the frames opened; the detector lists 8 cuts at 1:21.95, 1:26.15, 1:29.42, 1:30.39, 1:30.92, 1:34.73, 1:38.03, 1:39.6, i.e. 8 inside 20 s). The grade alternates: sepia for the street/car material, cool colour for the indoor couple and the woman (OBSERVED).
 
 ## 2. Pivotal frames
 
@@ -54,7 +54,7 @@ Editing effects: no dissolves or titles seen in the frames opened; all transitio
 - literal: extreme close-up; a blurred hand/fingers at upper left pinch a flat round object with a central hole (silver/greyish, like a disc) near a slot, a metal arm and screws at right. Very dark.
 - reading: INFERRED inserting a disc into a player. SPECULATED: a CD going into a car stereo, consistent with the next frame.
 
-**f_0097 (1:36) and f_0099-f_0100 are below**
+**f_0097 (1:36) and the 1:37 stereo frame**
 - f_0097 literal: a dark, blurred, out-of-focus mass with a brown curved surface and a few shiny metal parts at lower centre and upper right. Almost unreadable. reading: INFERRED a transitional macro movement (hand or arm passing) between the disc and the stereo. Also keyframe/sheet 1:37: a car-stereo faceplate with two round knobs and a small display strip, brand print on it unread.
 
 **f_0099 (1:38)**
@@ -92,7 +92,7 @@ Words. The mix transcript has nothing between 1:11.26 and 2:32 (the "translate" 
 My correction: the intro and hook look like they close at about 1:30 and a new verse starts at about 1:31, where the sung/spoken text appears to describe getting in a car and playing a CD. The pictures at 1:31-1:37 show exactly that (door, disc, stereo). Confidence: moderate for "get in my [car]... put my CD on", low for the rest. Whisper may be wrong on the car model; "95 Nissan" is read as heard only, I do not link it to the number plate (unread).
 Whisper's translation file (mix) gives no lines here either.
 
-Energy and structure (OBSERVED in data): auto-section 'B' runs 71.9-92.9 s (mean rms 0.285), 'A' begins 92.9 s. Loudness steady 0.20-0.35 (peaks 1:19 0.338, 1:26 0.344, 1:29 0.349, 1:30 0.350, 1:36 0.353). Dip at 1:22 (0.199) coincides with the cut from the couple to the house and the colour jump. Stems: vocals rise from about 0.06-0.10 before 1:31 to 0.13-0.18 from 1:32 onwards, i.e. the voice becomes more prominent when the car section starts (OBSERVED); the vocal dips to 0.003-0.005 at 1:23 and 1:25 (gaps in the voice). Bass stem is strong at 1:19-1:20 (0.22-0.24), 1:25-1:26 (0.18-0.21), 1:30 (0.26), then collapses to near zero at 1:38-1:41 (0.0004-0.003) while the vocal stays 0.15-0.18 and drums continue 0.09-0.13: the bass drops out at the moment of the woman's face. Tempo about 96 bpm (beat 0.63 s), key estimate D minor (confidence moderate from the 30-s analysis).
+Energy and structure (OBSERVED in data): auto-section 'B' runs 71.9-92.9 s (mean rms 0.285), 'A' begins 92.9 s. Loudness steady 0.20-0.35 (peaks 1:19 0.338, 1:26 0.344, 1:29 0.349, 1:30 0.350, 1:36 0.353). Dip at 1:22 (0.199) coincides with the cut from the couple to the house and the colour jump. Stems: vocals rise from about 0.06-0.10 before 1:31 to 0.13-0.18 from 1:32 onwards, i.e. the voice becomes more prominent when the car section starts (OBSERVED); the vocal dips to 0.031 at 1:23 and 0.005 at 1:25 (gaps in the voice). Bass stem is strong at 1:19-1:20 (0.22-0.24), 1:25-1:26 (0.18-0.21), 1:30 (0.26), then collapses to near zero at 1:38-1:41 (0.0004-0.003) while the vocal stays 0.15-0.18 and drums continue 0.09-0.13: the bass drops out at the moment of the woman's face. Tempo about 96 bpm (beat 0.63 s), key estimate D minor (confidence moderate from the 30-s analysis).
 
 Picture vs sound (measured):
 - Cut rate: 8 cuts in these 20 s, about 4 per 10 s, in line with the film's average; the shortest shot (0.53 s, the bat) follows the loudest bass second (1:30, 0.26), so the flash falls right on a bass hit: OBSERVED coincidence, not proven causal.
@@ -134,5 +134,5 @@ Other questions:
 - Exact cut times vs beats within the segment (frames at 1:21.95, 1:34.73, 1:38.03).
 - Hook word (hear? ear? carry? hair?): five transcripts disagree; needs a listen from someone who can hear, or a vocal-stem re-run with a different model.
 - Is 1:31-1:41 really a new verse about driving? Re-run whisper on the vocal stem for 1:28-1:45 with a smaller window.
-- Why does the vocals stem collapse at 1:23 and 1:25 (0.003-0.005) when the music keeps running? A gap in the voice between hook and verse (INFERRED), worth checking at the picture cut points.
+- Why does the vocals stem dip at 1:23 and 1:25 when the music keeps running (1:23 0.031, 1:25 0.005)? A gap in the voice between hook and verse (INFERRED), worth checking at the picture cut points.
 - Why does the bass stem vanish after 1:38 (the woman's face)? Is it a break, or separation error?

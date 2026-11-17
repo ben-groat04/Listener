@@ -5,7 +5,19 @@ Give a fresh Claude Code session this repo and a video. It should end with a che
 ## For the person
 1. Put the video in `videos/` as `<name>.mp4` (or attach it in chat and ask Claude to add it).
 2. Start a Claude session on this repo and say: **"Run the Listener toolkit on videos/<name>.mp4."** Add "blind" for a run with no web research, or "blind first" for the blind-then-informed route (below).
-3. Results appear in `v1/analysis/` (informed) or `v1/analysis_blind/` (blind). Start with `v1/analysis/<name>/REPORT.md`; [v1/analysis/INDEX.md](v1/analysis/INDEX.md) lists what exists.
+3. Results appear in `v1/analysis/` (informed) or `v1/analysis_blind/` (blind). Start with the human piece, `v1/analysis/<name>/LISTENING.md` (one listener's account) and/or `v1/analysis/<name>/VOICES.md` (plain registers from `plainvoice.js`), once they exist; `v1/analysis/<name>/REPORT.md` is the evidence report behind them. [v1/analysis/INDEX.md](v1/analysis/INDEX.md) lists what exists.
+
+## Product order: what the toolkit makes, and in what order
+The product is a **human reading of the music and video**, not an audit. The order is fixed (sources: `v1/analysis/human_listening/VERDICT.md`, `PROPOSAL.md` sections 4.8-4.10, `TURING.md`):
+
+1. **Measurement stack and reading workflows** (extraction, `listen.js`, `perceive.js`, `interpret.js`, and optionally `compare.js`, `coldread.js`) produce the checked notes.
+2. **Verified fact sheet** `v1/analysis/<vid>/FACTS.md`: key moments, what the voice can and cannot be said to be, the overall shape in plain words, and a 'do not say' list of refuted or withdrawn claims. It is built, and verified line by line against the raw data, inside `listening.js`.
+3. **THE main human output**, written only from the verified `FACTS.md`: `listening.js` (verified FACTS.md -> one listener's account, `LISTENING.md`) and/or `plainvoice.js` (plain registers in the style of real people, `VOICES.md`, Turing-tested against real writing).
+4. **Evidence report and sidecar**: `report.js` makes `REPORT.md`. It is the evidence behind the human piece, kept at a separate path and out of the human file. It is not the main reading. (`listening.js` reads `REPORT.md` as a private note if it exists, so running `report.js` first helps.)
+
+**Measurement is the checking layer, not the voice** (`PROPOSAL.md` 4.8). Nothing in the measurement stack is deleted; it (a) licenses each human sentence, (b) refutes a human sentence that is wrong, and (c) suggests new things for a human to say. If a sentence's licence fails, fix the sentence; do not defend it.
+
+**Acceptance test for the human output: the Turing test against real human writing** (real excerpts are in `v1/analysis/human_listening/corpus/`; history in [TURING.md](v1/analysis/human_listening/TURING.md)). Judges label a shuffled pool of our pieces and real excerpts as human or AI. So far, over 3 rounds, ours were flagged AI 83%, 92% and 50% of the time against 0%, 0% and 2% for real writing: **not yet passed**. The short texts and one forum post now pass; the reviews and the longer, more structured pieces are still caught. The only true human data is a real listener's answer to 'what stayed with you, and which sentence rang falsest?' (`PROPOSAL.md` 4.7 item 6 plans `v1/analysis/human_listening/real_listener/<video>.md`; none has been collected yet). The scores in `VERDICT.md` come from AI judges (a panel of six), not human readers, so read them as a guide, not as proof. Keep the OBS/INT (observation/interpretation) distinction and the confidence tags in the evidence layer; the human piece commits to a felt account but adds no fact beyond `FACTS.md`.
 
 ## For Claude: stages in order
 Convention: `VID` is the bare video name (no extension, no folder); `VIDEO_DIR` is the folder holding `<VID>.mp4` (default `videos`; `testvideos` for the test folder). Long steps (extraction, stems, transcription, CLAP) always go under `nohup ... &` with output in `v1/logs/`; poll with `tail`, never `cat` noisy logs. Put `cd` on its own line before backgrounding.
@@ -27,7 +39,7 @@ Convention: `VID` is the bare video name (no extension, no folder); `VIDEO_DIR` 
    ```
    `extract_all.sh` skips what is done: frames and contact sheets, shot cuts, music features, visual features, transcripts (original + English), demucs stems (+ vocal-only transcript), music views (chords, melody, levels, per-window stem spectrograms), CLAP tags, then `check_outputs.py`. It also prints the workflow `args` JSON with the duration. **Do not launch agents until the check prints OK.** Run one extraction at a time (see the model and network note).
 3. **Choose a route.**
-   - **Informed** (default when there is material online): stage 4, then workflows a, b, (c), d, e, then blindcmp if a blind run exists.
+   - **Informed** (default when there is material online): stage 4, then workflows a, b, (c), d, e, f, (g), then blindcmp if a blind run exists.
    - **Blind only** (obscure video, or a test of the toolkit): `blind_chain.js`; stage 4 is just the 'no external sources found' note below.
    - **Blind first, then informed** (recommended when both are wanted): run the blind route first and freeze its claims, then the informed extension, then blindcmp. `blind_chain.js` does this with `"blind_first": true, "compare_after": true`; or run the blind chain, do stage 4, then the informed workflows by hand. Doing blind first keeps the context file from priming the blind reading.
 4. **Context** (informed runs only). Research the artist, song and subject with citations into `v1/analysis/research/`, and put verified facts in `v1/data/<name>/context.md`.
@@ -43,13 +55,27 @@ Convention: `VID` is the bare video name (no extension, no folder); `VIDEO_DIR` 
    | b | `v1/workflows/interpret.js` (conversing panel) | `{"videos":["<name>"]}` | `analysis/<name>/interpretation.md` |
    | c | `v1/workflows/compare.js` (related videos; optional) | `{"videos":["a","b"],"name":"set","relation":"..."}` | `analysis/compare/<set>/comparison.md` |
    | d | `v1/workflows/coldread.js` (improve) | `{"scope":"all","videos":["<name>"],"tag":"cr1"}` | fixes and `logs/BACKLOG_*.md` |
-   | f | `v1/workflows/listening.js` (THE human output: verified fact sheet + one listener's account, judged) | `{"videos":["<name>"]}` | `analysis/<name>/LISTENING.md` |
-   | e | `v1/workflows/report.js` (evidence report) | `{"videos":["<name>"],"compare":"<set>"}` | `analysis/<name>/REPORT.md` |
+   | e | `v1/workflows/report.js` (evidence report and sidecar; not the main reading) | `{"videos":["<name>"],"compare":"<set>"}` | `analysis/<name>/REPORT.md` |
+   | f | `v1/workflows/listening.js` (THE human output: builds and verifies `FACTS.md`, then one listener's account, linted, fact-checked and judged) | `{"videos":["<name>"],"out":"analysis","max_iters":3,"blind":false}` | `analysis/<name>/FACTS.md`, `analysis/<name>/LISTENING.md` |
+   | g | `v1/workflows/plainvoice.js` (plain registers: text to a mate, forum post, short review; Turing-tested against real excerpts) | `{"videos":["video2","video1"],"rounds":3,"seed":false}` (`seed: true` starts from the existing `VOICES.md`) | `analysis/<name>/VOICES.md`, `analysis/human_listening/STYLE.md`, `TURING.md`, `corpus/` |
    | last | `v1/workflows/blindcmp.js` (default final step once a blind and an informed run both exist) | `{"videos":["<name>"]}` | `analysis/blind_vs_informed/<name>.md`, `LESSONS.md` |
    | alt | `v1/workflows/blind_chain.js` (whole blind route) | `{"videos":[{"vid":"<name>"}],"video_dir":"videos"}` | `analysis_blind/...` |
+   | once | `v1/workflows/human.js` (the debate that designed the human approach: panel, proposal, prototype, blind judging; already run, not part of a normal video run) | `{"videos":["video2","video1"],"rounds":3}` | `analysis/human_listening/round_N/`, `PROPOSAL.md`, `<video>_human.md`, `VERDICT.md` |
    | helper | `v1/workflows/backlog.js` (triage, fix, verify the backlog files) | `{"sources":["v1/logs/BACKLOG_x.md"]}` | fixes and updated `logs/BACKLOG_*.md` |
 
-   Add `"blind": true, "out": "analysis_blind"` to any of a-e for a no-context run.
+   `plainvoice.js` and `human.js` use their own defaults for `videos` (`['video2','video1']`) and, for `human.js`, `rounds` 3; pass the video you mean. `listening.js` needs `FACTS.md` to be buildable from the notes in `analysis/music/<name>/` and `analysis/<name>/`, so run a, b and (preferably) e first.
+
+   Add `"blind": true, "out": "analysis_blind"` to any of a, b, c, e, f for a no-context run (`coldread.js` and `plainvoice.js` take no `blind` or `out`).
+
+   **Writing the human piece** (the rules `listening.js` and `plainvoice.js` carry; from `VERDICT.md` 'Next changes'):
+   - One voice, first person, as someone who has just watched and listened; no personas, no 'who hears what', no review-blurb opener, no survey ending.
+   - Reaction first: state the felt response, then name only one or two moments, not a timeline. Comparisons to other music are allowed, offered as comparisons.
+   - Landmarks, not clock times ('when the voice stops', 'the last third'); at most two clock times in a whole piece.
+   - No craft or measurement jargon ('on the one', 'no fill', 'held sound', 'subtraction', 'the wall', dB, Hz, BPM, stems); lint for it.
+   - Disclose once, in a page-level note, that this is built from analysis and nobody here heard it; then stop apologising and stop hedging every line.
+   - Describe the voice as a sound and let facts land as feeling, not as decoding keys.
+   - Withdrawn or refuted claims are deleted from the page, not only listed in the sidecar; check sync and count claims mechanically against `FACTS.md` before publishing.
+   - Keep the sidecar (`REPORT.md`) at a separate path from the human file.
 
    **If the repo is not at /home/user/Listener pass "root": "<abs path>" to every workflow.** The workflow scripts cannot find their own location, so without `root` they use the literal `/home/user/Listener`.
 
@@ -58,12 +84,14 @@ Convention: `VID` is the bare video name (no extension, no folder); `VIDEO_DIR` 
    | name | type | default | workflow |
    |---|---|---|---|
    | `root` | string, absolute path | `/home/user/Listener` | all |
-   | `videos` | array of names, or `{vid, dur}` objects (required) | none | all except backlog |
+   | `videos` | array of names, or `{vid, dur}` objects (required, except human and plainvoice, which default to `['video2','video1']`) | none | all except backlog |
    | `dur` (inside a `videos` object) | seconds | read from `data/<vid>/audio_features/summary.json` (`duration_s`) | listen, blind_chain, compare |
-   | `blind` | boolean | `false` | listen, perceive, interpret, compare, report |
-   | `out` | string, folder under `v1/` | `analysis` (use `analysis_blind` with `blind`) | listen, perceive, interpret, compare, report |
+   | `blind` | boolean | `false` | listen, perceive, interpret, compare, report, listening |
+   | `out` | string, folder under `v1/` | `analysis` (use `analysis_blind` with `blind`) | listen, perceive, interpret, compare, report, listening |
    | `video_dir` | string | `videos` | perceive, blind_chain |
-   | `rounds` | integer | listen 2, interpret 3, compare 2, coldread 1, backlog 1 | listen, interpret, compare, coldread, backlog |
+   | `rounds` | integer | listen 2, interpret 3, compare 2, coldread 1, backlog 1; human 3; plainvoice 3 (as in its header example) | listen, interpret, compare, coldread, backlog, human, plainvoice |
+| `max_iters` | integer | 3 | listening |
+| `seed` | boolean | `false` (true starts from the existing `VOICES.md`) | plainvoice |
    | `skip_windows` | array like `"video1:0040"` | `[]` | listen |
    | `windows_only` | boolean | `false` | listen |
    | `skip_done` | array | `[]` | perceive |
@@ -114,6 +142,7 @@ Honest status, from `v1/analysis/INDEX.md` and the files in `v1/data/` and `v1/a
 - **t_birdwalk** (test video, 188 s) is the furthest cold test: extraction, blind perceive, blind music_reading, blind interpretation, blind REPORT and a leak check exist in `analysis_blind/`. It has no informed run and no blindcmp. A fresh `check_outputs.py t_birdwalk` currently reports a frame-count mismatch (201 frames against 188.2 s) and an unfilled `context.md`; that was not investigated here.
 - **t_cshells_cshore** (361 s, i.e. right at the 6-minute recommended maximum): data extracted; blind perceive (segments and `music.md`) and 12 blind music windows exist; no blind interpretation, no music_reading, nothing informed. Its blind chain was started and not finished.
 - **t_dl_mirror** (239 s): data folders exist, but `analysis/INDEX.md` marks its extraction partial (no stems or music views were recorded then, although some files are now present), only a partial blind perceive exists (8 files), and there is no music_reading, interpretation or informed run.
+- **Human output (Turing test):** it has had 3 Turing rounds against real human writing (`v1/analysis/human_listening/TURING.md`): ours flagged AI 83%, 92%, 50%; real writing flagged 0%, 0%, 2%. It is **not yet passing**: the short texts and the video2 forum post now pass (0/2), while the reviews of both videos and the video1 forum post are still flagged 2/2. No real listener has yet answered 'what stayed with you, which sentence rang falsest?'; the `VERDICT.md` scores are from AI judges.
 - **Why unfinished:** the 5-hour limit was hit at 03:11 on 2026-11-17 and the weekly cap was nearing 70%; the test-video chains were cut off or deferred, and container restarts killed extraction jobs. The toolkit has therefore been shown to work end-to-end blind on one test video only; the informed and blind-first routes are proven on the two subject videos but not on an unknown video. Treat the first run on a new video as part of the proof, and log what breaks in `v1/logs/ERRORS.md`.
 
 ## What the agents can and cannot perceive

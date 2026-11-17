@@ -19,3 +19,9 @@
 - Container restarted at 23:58 (lost the music agent, stems and autosave; recovered via RESUME steps).
 - video1: all 10 segment viewer notes done. Now running: video1 music + words, video2 segments 1-8.
 - Wrote `workflows/interpret.js`: dossier -> 3-round conversing panel (first-timer, film critic, music critic, insider, symbolist, sceptic) -> moderator -> 3-lens adversarial fact-check -> fixes. Supports `blind: true`.
+
+## 00:10 Music-first rebalance (user: focus more on the music)
+- video2 segments 1-8 viewed; video1 music + words done (run without stems/visual data, see ERRORS 00:08).
+- New CPU tools: `06_stem_one.sh` (demucs stems for any video), `07_audio_views.py` (per-20 s stem spectrogram windows, chords, lead melody, levels/stereo width), `08_clap_tags.py` (CLAP zero-shot genre/instrument/mood/voice/sound tags every 5 s), `check_outputs.py` (pipeline completeness gate). All wired into `extract_all.sh`.
+- Fixed silent failure of visual features (OpenCV 5). Re-running for both videos.
+- Next (after reset): music-first workflow (per-section listeners + specialist music panel), then interpret panel, cross-video comparison, blind runs, test videos, cold-read loops.

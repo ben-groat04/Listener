@@ -6,7 +6,7 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 VID = os.environ.get("VID", "video2")
 V = os.path.join(root, f"{os.environ.get('VIDEO_DIR', 'videos')}/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/visual_features"); os.makedirs(D, exist_ok=True)
 cap = cv2.VideoCapture(V); fps = cap.get(cv2.CAP_PROP_FPS)
-face = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+face = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml") if hasattr(cv2, "CascadeClassifier") else None  # removed in OpenCV 5
 per = {}; prev = None; i = 0
 while True:
     ok, f = cap.read()
@@ -17,7 +17,7 @@ while True:
     b, gg, r = [f[..., k].mean() for k in range(3)]; d["warm"].append(r - b)
     if prev is not None: d["motion"].append(cv2.absdiff(g, prev).mean())
     if i % int(fps) == 0:
-        d["faces"].append(len(face.detectMultiScale(g, 1.2, 5, minSize=(30, 30))))
+        d["faces"].append(len(face.detectMultiScale(g, 1.2, 5, minSize=(30, 30))) if face is not None else -1)
         d["px"].append(cv2.resize(f, (60, 48)).reshape(-1, 3))
     prev = g; i += 1
 rows = []

@@ -2,7 +2,7 @@
 # Rebuild the working environment after a container reset. Idempotent.
 set -e
 cd "$(dirname "$0")/../.."
-pip install -q faster-whisper librosa opencv-python-headless scenedetect soundfile matplotlib demucs 2>&1 | grep -v WARNING || true
+pip install -q faster-whisper librosa "opencv-python-headless<5" scenedetect soundfile matplotlib demucs 2>&1 | grep -v WARNING || true
 which tesseract >/dev/null || (apt-get update -qq && apt-get install -y -qq tesseract-ocr) || true
 for V in video1 video2; do   # regenerate git-ignored WAVs
   mkdir -p v1/data/$V/audio

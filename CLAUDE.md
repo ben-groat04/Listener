@@ -5,6 +5,7 @@
 **Before acting, read** `v1/INSTRUCTIONS.md` (all user rules), `v1/logs/ERRORS.md` (mistakes not to repeat), and `v1/PROGRESS.md` (state). Resume steps: `v1/RESUME.md`.
 
 Key rules (short form):
+- **Music first**: weight analysis towards the music; read the video in relation to it.
 - Accuracy first: never invent what you did not see or hear; separate observation from interpretation; verify claims.
 - Use Sonnet for agents where possible; converse via workflows; use cold-read reviews to improve.
 - Keep the toolkit video-agnostic; video-specific facts go in `v1/data/<video>/context.md`.

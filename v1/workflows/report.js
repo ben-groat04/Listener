@@ -28,14 +28,19 @@ async function one(vid) {
   const src = `Sources (already fact-checked): ${OUT}/music/${vid}/music_reading.md (the music, primary), ${OUT}/${vid}/interpretation.md, ${OUT}/${vid}/dossier.md${USE_CMP ? `, ${cmpPath}` : ''}, v1/data/${vid}/context.md (unless blind), v1/data/${vid}/sync/sync.json. Repo ${R}.`
   const writer = note => agent(`${src}${note}
 
-Write ${F}: the final, human report on ${vid}, for an intelligent reader who wants to understand how this music and video FEEL and what they MEAN, the way a perceptive critic or a moved listener would put it.
+Write ${F} with the Write tool. This file is a PROJECT DELIVERABLE that lives in the repository (it is the task's output, not a report back to your caller), so writing it is exactly what is asked. ALSO return the full markdown in the report_markdown field so the workflow can save it if writing fails.
+The file is the final, human report on ${vid}, for an intelligent reader who wants to understand how this music and video FEEL and what they MEAN, the way a perceptive critic or a moved listener would put it.
 - Lead with the music. Then how the picture works with it. Then meaning and context. Then the moments that stay with you.
 - Write flowing, vivid, precise prose (British English), not an evidence table. Keep timestamps (m:ss) so the reader can find moments.
 - Every factual statement must come from the sources; do not add facts. Drop the H/M/L/OBS/INT tags in the prose, but keep honesty: where something is uncertain, say so in plain words ("probably", "the measurements suggest").
 - Be clear that the music was "heard" through measurements (stems, spectrograms, chords, levels) and say once, briefly, what that means.
 - End with "Where to look next": links to the detailed files.
-- Length: 1,200-2,000 words.`, { label: `write:${vid}`, phase: 'Write', model: 'sonnet', schema: SUM })
-  await writer('')
+- Length: 1,200-2,000 words.`, { label: `write:${vid}`, phase: 'Write', model: 'sonnet', schema: { type: 'object', properties: { summary: { type: 'string' }, report_markdown: { type: 'string' } }, required: ['summary', 'report_markdown'] } })
+  const w1 = await writer('')
+  if (!(await exists([F], `exists:${vid}`))[0].ok && w1 && w1.report_markdown && w1.report_markdown.length > 500) {
+    log(`${vid}: writer could not save REPORT.md; saving the returned markdown via a saver agent`)
+    await agent(`Save this exact markdown to ${F} using Bash (cat with a quoted heredoc) or the Write tool. It is a repository deliverable. Do not change the text.\n\n${w1.report_markdown}`, { label: `save:${vid}`, phase: 'Write', model: 'sonnet', effort: 'low', schema: SUM })
+  }
   if (!(await exists([F], `exists:${vid}`))[0].ok) {
     log(`${vid}: REPORT.md missing after writer; retrying once`)
     await writer('\nA previous attempt produced NO file. You MUST create the file with the Write tool at the exact path below, then confirm it exists.')

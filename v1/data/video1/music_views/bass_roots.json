@@ -3300,6 +3300,11 @@
    "t": 121.0,
    "what": "first sub thump of six (pyin F#/F, 42.6 Hz per music_reading): no root claim",
    "src": "probe.py + music_reading.md"
+  },
+  {
+   "t": 158.25,
+   "what": "bass returns after the 2:01 to 2:32 thumps: -39 dB at 158.25, floor (-52) before (music_reading gives 2:38.4)",
+   "src": "probe.py"
   }
  ],
  "helper_scripts": [

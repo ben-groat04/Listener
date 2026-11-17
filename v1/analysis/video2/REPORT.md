@@ -33,7 +33,7 @@ In the same stretch the voice becomes something else. From about 3:28.6 it retur
 - At 4:36.8 the bright layer falls away (about 13 dB at the top). The pulse goes on, so the energy seems to drain while the machine continues.
 - At about 4:48.6 the bass is cut into short stabs, and a single unpitched voice-like call lands on each bar. The pad loses its third and goes hollow, so the texture is brittle and lurching.
 - At about 5:00.8 the groove stops dead, and the pad rings out alone for about one and a half seconds.
-- **The closing tag, 5:02.3 to 5:02.9.** Two drum hits (5:02.33 and 5:02.58) and three bass notes a quarter-second apart (5:02.33, 5:02.58 and 5:02.83; the last is bass only and ends about 5:02.85). The first two are as loud as the groove. Then silence, with digital zero from about 5:04.25.
+- **The closing tag, 5:02.3 to 5:02.9.** Two drum hits (5:02.33 and 5:02.58), measured. Under them the bass sounds as one sustained tone from 5:02.33 to about 5:02.86, with a brief dip at 5:02.6; the music analysis hears this as three notes a quarter-second apart (5:02.33, 5:02.58, 5:02.83), but the signal alone resolves only the dip and the end (INT). The drum hits are as loud as the groove. Then silence, with digital zero from about 5:04.25.
 
 It reads as withdrawal and a stop, not arrival (INT). "Calm" fits the surface and the gesture, not the energy.
 
@@ -57,14 +57,14 @@ The race was held on 18 January 1963, the twelfth Elfstedentocht, about 200 km t
 
 The shape is announcement, endurance, withdrawal. The voice speaks in sentences until 2:36. A long loudness-led stretch with no explanation follows. Then layer, low end, people, sound and picture are removed in turn. A free-timed human voice sits over a rigid modern grid and lines up with it only where its sentences end, at 1:28 and 2:36 (OBS). The recurring subject is a place: a road receding into white, with small figures on it and sometimes none.
 
-Elegy or celebration is genuinely open. The minor key, cold palette and subtraction ending point towards mourning. The festive four-on-the-floor kick and the forward-looking words point towards communal effort. The best-supported word is withdrawal; "mourning" is weaker (INT). "Thaw" or "the end of winters" is a cultural reading carried by the 2012 cancellation, not by the pictures, which show only ice that is no longer a floor (INT). A fair short description is an unspoken afterword: a confident voice recites its figures and leaves, and a steady modern pulse carries anonymous bodies across the ice, brightens, and is taken apart until only water and the closing tag remain, two drum hits and three bass notes at 5:02.3 to 5:02.9. Whether you feel grief, pride or a quiet leaving depends on what you bring.
+Elegy or celebration is genuinely open. The minor key, cold palette and subtraction ending point towards mourning. The festive four-on-the-floor kick and the forward-looking words point towards communal effort. The best-supported word is withdrawal; "mourning" is weaker (INT). "Thaw" or "the end of winters" is a cultural reading carried by the 2012 cancellation, not by the pictures, which show only ice that is no longer a floor (INT). A fair short description is an unspoken afterword: a confident voice recites its figures and leaves, and a steady modern pulse carries anonymous bodies across the ice, brightens, and is taken apart until only water and the closing tag remain, two drum hits at 5:02.33 and 5:02.58 over a bass tone that lasts to about 5:02.86. Whether you feel grief, pride or a quiet leaving depends on what you bring.
 
 ## The moments that stay with you
 
 1. **1:24 to 1:30, the hole, the drop and the empty road.** A gap, a named subject, then force with no preparation. The picture stays on the empty road until 1:30.3, then cuts to the first crowd.
 2. **2:36, the last sentence.** The head-count ends, the loop changes, the layer thins, and the voice never returns as speech.
 3. **0:42, the date over the churchyard.** The first human sound after 42 seconds of pad.
-4. **The last 25 seconds.** The bright layer gone, bass stabs, ducks and floes, the stop at about 5:00.8, the closing tag (two drum hits, three bass notes, 5:02.3 to 5:02.9), the fade.
+4. **The last 25 seconds.** The bright layer gone, bass stabs, ducks and floes, the stop at about 5:00.8, the closing tag (two drum hits, 5:02.33 and 5:02.58, over a bass tone to about 5:02.86), the fade.
 5. **4:10 to 4:12.** A young man glancing at the lens, then the golden skater: a glance within a flurry, not a held close-up.
 6. **0:28.** The stride begins, and sound and picture turn together within a few hundredths of a second.
 
@@ -89,8 +89,9 @@ Elegy or celebration is genuinely open. The minor key, cold palette and subtract
 
 A reader with only this file found these problems, and they were fixed (2026-11-17):
 
-- The ending was stated two ways (a single hit against two drum plus three bass hits). Re-measured from the audio and stems; now stated identically in the music section, the short description, the moments list and the open questions. The pad rings alone for about 1.5 s (not two) after the stop at 5:00.8.
+- The ending was stated two ways (a single hit against two drum hits plus a bass figure). Re-measured from the audio and stems; now stated identically in the music section, the short description, the moments list and the open questions. The pad rings alone for about 1.5 s (not two) after the stop at 5:00.8.
 - The picture was said to cut on the drop at 1:28.5. The shot list shows one static shot from 1:22.1 to 1:30.3 and the cut 1.7 s after the drop; corrected in the picture section and the moments list. The 2:36.6 cut is now timed against both the last word and the new loop.
 - Sync statistics now name their grid (120 BPM kick grid; the 161 BPM tracker grid is flagged as wrong). The bar test is marked as assuming a four-beat bar. The early-cuts clustering is a hint only. "Cuts sit at chance" is now "not distinguishable from chance" with figures.
 - Unflagged statements are now tagged INT or marked untested (cuts near phrase boundaries, bar-timed voice fragments).
 - Jargon replaced with plain words (root, gated, bar-locked, tracker); brightening figure aligned with the data (about 22 dB in the layer, about 3 dB in the full mix); "tonal centre hauntological" line removed; process wording trimmed and the listening limitation stated once, at the top.
+- Follow-up check: raw envelopes confirm exactly two drum hits (5:02.33, 5:02.58). The bass stem shows one continuous tone with a 6 to 8 dB dip at about 5:02.60 and an end at about 5:02.86, so the 'three bass notes' were softened to a tagged reading (INT), as in `sync/bar120_check.json`.

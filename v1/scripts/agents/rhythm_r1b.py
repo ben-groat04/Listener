@@ -1,35 +1,35 @@
-import numpy as np, librosa, json, scipy.signal as ss
+import librosa, numpy as np, json
 D='/home/user/Listener/v1/data/video1/stems_raw/htdemucs/song/'
-y,sr=librosa.load(D+'drums.wav',sr=22050,mono=True); hop=256; fps=sr/hop
-bt=np.array(json.load(open('/home/user/Listener/v1/data/video1/audio_features/beat_times.json')))
-S=np.abs(librosa.stft(y,n_fft=2048,hop_length=hop)); f=librosa.fft_frequencies(sr=sr,n_fft=2048)
-def on(lo,hi):
-    B=S[(f>=lo)&(f<hi)].sum(0); return np.maximum(0,np.diff(np.log1p(B*10),prepend=0))
-def prof(lo,hi,t0=0,t1=999,shift=0.0):
-    o=on(lo,hi); out=np.zeros(16); 
-    for i in range(len(bt)-1):
-        if not(t0<=bt[i]<t1): continue
-        for s in range(4):
-            # sample onset strength max in window around slot centre
-            c=bt[i]+(bt[i+1]-bt[i])*(s/4+shift)
-            a=int((c-0.04)*fps); b=int((c+0.04)*fps)
-            out[(i%4)*4+s]+=o[a:b].max()
-    return out
-# estimate shift: lag of peak in phase hist ~ 2/16 beat after beat time -> shift
-for sh in [0.0,0.125]:
-    pass
-for name,(lo,hi) in {'kick':(40,120),'snare':(150,2500),'snarehi(1.5-5k)':(1500,5000),'hat':(6000,11000)}.items():
-    p=prof(lo,hi,shift=0.15); print(name,'16 steps over 4 beats (offset mod4 unknown):',np.round(p/p.max(),2).tolist())
-# section-wise kick density per second and fill detection: onsets/sec
-o=on(150,11000); pk,_=ss.find_peaks(o,height=np.percentile(o,80),distance=int(0.08*fps)); t=pk/fps
-dens=np.histogram(t,bins=np.arange(0,190,10))[0]/10
-print('onsets/s per 10s:',np.round(dens,1).tolist())
-# tempo curve via autocorr of mixed onset in 10s windows (global 78 vs 156 test)
-oenv=librosa.onset.onset_strength(y=y,sr=sr,hop_length=hop)
-tg=librosa.feature.tempogram(onset_envelope=oenv,sr=sr,hop_length=hop,win_length=384)
-bpms=librosa.tempo_frequencies(tg.shape[0],sr=sr,hop_length=hop)
-m=(bpms>30)&(bpms<320)
-avg=tg.mean(1)
-idx=np.argsort(avg[m])[::-1][:6]; print('tempogram top bpm',[(round(bpms[m][i],1),round(avg[m][i],2)) for i in idx])
-# beat-interval stability & beat-vs-drum-peak alignment
-ib=np.diff(bt); print('IBI std',ib.std(),'min',ib.min(),'max',ib.max(), 'gaps>0.8:',[(round(bt[i],1),round(ib[i],2)) for i in range(len(ib)) if ib[i]>0.82])
+sr=22050;hop=128
+dr,_=librosa.load(D+'drums.wav',sr=sr)
+S=np.abs(librosa.stft(dr,n_fft=1024,hop_length=hop));f=librosa.fft_frequencies(sr=sr,n_fft=1024);fr=sr/hop
+def env(lo,hi):
+    e=S[(f>=lo)&(f<hi)].sum(0);return np.maximum(0,np.diff(np.log1p(e*10),prepend=0))
+E={'low':env(30,150),'mid':env(150,2500),'high':env(5000,10000)}
+# global fit: period T, phase, using autocorr-proof: fold at beat period 4*0.19227
+T=0.76906
+oe=sum(E.values())
+def fold(e,t0,t1,nb=32,per=T):
+    idx=np.arange(int(t0*fr),min(int(t1*fr),len(e)));ph=((idx/fr)%per)/per
+    h=np.zeros(nb);c=np.zeros(nb)
+    np.add.at(h,(ph*nb).astype(int),e[idx]);np.add.at(c,(ph*nb).astype(int),1);return h/np.maximum(c,1)
+for name,e in E.items():
+    h=fold(e,10,180);print(name,np.round(h/h.max(),2))
+# check tempo stability: fit period per 30s
+for t0 in range(0,180,30):
+    best=max(((fold(oe,t0,t0+30,32,p).max()/fold(oe,t0,t0+30,32,p).mean()),p) for p in np.arange(0.755,0.785,0.0005))
+    print(t0,'best beat period',round(best[1],4),'bpm',round(60/best[1],2))
+print('--- bar folds (16 steps, step0 = first strong slot at beat-phase 6.8/32)')
+def barfold(e,t0,t1,off):
+    idx=np.arange(int(t0*fr),min(int(t1*fr),len(e)));P=4*T;t=idx/fr
+    ph=((t-off)%P)/P
+    st=np.round(ph*16).astype(int)%16   # nearest step
+    # use max over +-1 frame? use mean energy within +-15ms of step centre
+    d=np.abs(((ph*16)-np.round(ph*16)))*P/16
+    m=d<0.02
+    h=np.zeros(16);c=np.zeros(16);np.add.at(h,st[m],e[idx][m]);np.add.at(c,st[m],1);return h/np.maximum(c,1)
+off0=6.8/32*T
+np.set_printoptions(linewidth=200)
+for name in E:
+    for (a,b) in [(10,75),(90,120),(130,165),(170,185)]:
+        h=barfold(E[name],a,b,off0);print(name,a,b,np.round(h/h.max(),2))

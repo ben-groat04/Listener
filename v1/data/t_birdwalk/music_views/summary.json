@@ -1,0 +1,47 @@
+{
+ "has_stems": true,
+ "chord_time_share_top10": [
+  [
+   "N",
+   47.6
+  ],
+  [
+   "Am",
+   40.0
+  ],
+  [
+   "A",
+   20.3
+  ],
+  [
+   "F#m",
+   9.7
+  ],
+  [
+   "F",
+   5.5
+  ],
+  [
+   "D",
+   3.6
+  ],
+  [
+   "Gm",
+   0.9
+  ],
+  [
+   "Dm",
+   0.4
+  ],
+  [
+   "Fm",
+   0.4
+  ]
+ ],
+ "n_chord_changes": 155,
+ "lead_note_range": [
+  "C\u266f2",
+  "C\u266f5"
+ ],
+ "files": "chords.json, lead_notes.json, per_second_levels.json, window_XXXXs.png (one per 20 s)"
+}

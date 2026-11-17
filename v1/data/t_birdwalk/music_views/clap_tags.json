@@ -1,0 +1,2993 @@
+{
+"window_s": 5,
+"labels": {
+"genre": [
+"rock",
+"post-rock",
+"electronic music",
+"ambient music",
+"techno",
+"hip hop",
+"pop",
+"folk",
+"classical music",
+"jazz",
+"metal",
+"soul",
+"country",
+"krautrock",
+"orchestral film score",
+"drum and bass",
+"indie rock",
+"synth-pop",
+"R&B",
+"reggae"
+],
+"instrument": [
+"electric guitar",
+"distorted guitar",
+"acoustic guitar",
+"bass guitar",
+"synthesizer",
+"piano",
+"drum kit",
+"drum machine",
+"strings",
+"brass",
+"banjo",
+"organ",
+"choir",
+"glockenspiel",
+"violin",
+"saxophone",
+"sampled voice"
+],
+"mood": [
+"happy",
+"sad",
+"tense",
+"calm",
+"triumphant",
+"melancholic",
+"eerie",
+"energetic",
+"hopeful",
+"nostalgic",
+"aggressive",
+"dreamy",
+"solemn",
+"playful"
+],
+"voice": [
+"male singing",
+"female singing",
+"male speech",
+"female speech",
+"radio announcer speech",
+"crowd chanting",
+"rapping",
+"no vocals",
+"choir singing"
+],
+"sound": [
+"wind",
+"crowd cheering",
+"applause",
+"ice skating",
+"footsteps in snow",
+"engine",
+"tape hiss",
+"vinyl crackle",
+"silence",
+"bells"
+]
+},
+"windows": [
+{
+"t": 0,
+"genre": [
+[
+"hip hop",
+0.852
+],
+[
+"country",
+0.148
+],
+[
+"R&B",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.959
+],
+[
+"synthesizer",
+0.024
+],
+[
+"bass guitar",
+0.017
+]
+],
+"mood": [
+[
+"aggressive",
+0.776
+],
+[
+"hopeful",
+0.177
+],
+[
+"playful",
+0.029
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male speech",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.675
+],
+[
+"ice skating",
+0.319
+],
+[
+"bells",
+0.003
+]
+]
+},
+{
+"t": 5,
+"genre": [
+[
+"hip hop",
+0.962
+],
+[
+"country",
+0.038
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"synthesizer",
+0.987
+],
+[
+"distorted guitar",
+0.008
+],
+[
+"sampled voice",
+0.002
+]
+],
+"mood": [
+[
+"playful",
+0.967
+],
+[
+"aggressive",
+0.033
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+0.53
+],
+[
+"vinyl crackle",
+0.47
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 10,
+"genre": [
+[
+"hip hop",
+0.998
+],
+[
+"country",
+0.002
+],
+[
+"pop",
+0.0
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.49
+],
+[
+"drum machine",
+0.226
+],
+[
+"banjo",
+0.192
+]
+],
+"mood": [
+[
+"playful",
+1.0
+],
+[
+"aggressive",
+0.0
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.978
+],
+[
+"ice skating",
+0.021
+],
+[
+"bells",
+0.001
+]
+]
+},
+{
+"t": 15,
+"genre": [
+[
+"hip hop",
+1.0
+],
+[
+"country",
+0.0
+],
+[
+"metal",
+0.0
+]
+],
+"instrument": [
+[
+"banjo",
+0.712
+],
+[
+"drum machine",
+0.264
+],
+[
+"sampled voice",
+0.023
+]
+],
+"mood": [
+[
+"playful",
+0.891
+],
+[
+"aggressive",
+0.109
+],
+[
+"hopeful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.953
+],
+[
+"ice skating",
+0.032
+],
+[
+"silence",
+0.014
+]
+]
+},
+{
+"t": 20,
+"genre": [
+[
+"hip hop",
+1.0
+],
+[
+"country",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"sampled voice",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+0.99
+],
+[
+"aggressive",
+0.01
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.974
+],
+[
+"ice skating",
+0.025
+],
+[
+"bells",
+0.001
+]
+]
+},
+{
+"t": 25,
+"genre": [
+[
+"hip hop",
+0.752
+],
+[
+"country",
+0.234
+],
+[
+"folk",
+0.013
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.583
+],
+[
+"drum machine",
+0.382
+],
+[
+"synthesizer",
+0.032
+]
+],
+"mood": [
+[
+"playful",
+1.0
+],
+[
+"eerie",
+0.0
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"footsteps in snow",
+0.0
+]
+]
+},
+{
+"t": 30,
+"genre": [
+[
+"hip hop",
+0.938
+],
+[
+"country",
+0.062
+],
+[
+"folk",
+0.0
+]
+],
+"instrument": [
+[
+"synthesizer",
+0.981
+],
+[
+"drum machine",
+0.016
+],
+[
+"sampled voice",
+0.003
+]
+],
+"mood": [
+[
+"playful",
+1.0
+],
+[
+"hopeful",
+0.0
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male speech",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.982
+],
+[
+"silence",
+0.007
+],
+[
+"ice skating",
+0.006
+]
+]
+},
+{
+"t": 35,
+"genre": [
+[
+"country",
+0.994
+],
+[
+"hip hop",
+0.005
+],
+[
+"folk",
+0.001
+]
+],
+"instrument": [
+[
+"brass",
+0.565
+],
+[
+"bass guitar",
+0.254
+],
+[
+"drum machine",
+0.086
+]
+],
+"mood": [
+[
+"playful",
+0.534
+],
+[
+"aggressive",
+0.344
+],
+[
+"hopeful",
+0.118
+]
+],
+"voice": [
+[
+"no vocals",
+0.963
+],
+[
+"male speech",
+0.037
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.835
+],
+[
+"silence",
+0.141
+],
+[
+"ice skating",
+0.012
+]
+]
+},
+{
+"t": 40,
+"genre": [
+[
+"country",
+0.984
+],
+[
+"hip hop",
+0.015
+],
+[
+"folk",
+0.0
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.965
+],
+[
+"drum machine",
+0.019
+],
+[
+"distorted guitar",
+0.008
+]
+],
+"mood": [
+[
+"playful",
+0.993
+],
+[
+"aggressive",
+0.006
+],
+[
+"hopeful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.895
+],
+[
+"silence",
+0.101
+],
+[
+"ice skating",
+0.004
+]
+]
+},
+{
+"t": 45,
+"genre": [
+[
+"hip hop",
+0.561
+],
+[
+"country",
+0.439
+],
+[
+"metal",
+0.0
+]
+],
+"instrument": [
+[
+"brass",
+0.56
+],
+[
+"sampled voice",
+0.365
+],
+[
+"synthesizer",
+0.054
+]
+],
+"mood": [
+[
+"playful",
+0.972
+],
+[
+"aggressive",
+0.028
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.59
+],
+[
+"footsteps in snow",
+0.254
+],
+[
+"ice skating",
+0.116
+]
+]
+},
+{
+"t": 50,
+"genre": [
+[
+"country",
+0.955
+],
+[
+"jazz",
+0.024
+],
+[
+"drum and bass",
+0.019
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.607
+],
+[
+"banjo",
+0.342
+],
+[
+"drum machine",
+0.036
+]
+],
+"mood": [
+[
+"playful",
+0.997
+],
+[
+"aggressive",
+0.002
+],
+[
+"triumphant",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"rapping",
+0.001
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.653
+],
+[
+"bells",
+0.333
+],
+[
+"ice skating",
+0.014
+]
+]
+},
+{
+"t": 55,
+"genre": [
+[
+"country",
+0.764
+],
+[
+"hip hop",
+0.195
+],
+[
+"drum and bass",
+0.037
+]
+],
+"instrument": [
+[
+"synthesizer",
+0.755
+],
+[
+"sampled voice",
+0.181
+],
+[
+"drum machine",
+0.032
+]
+],
+"mood": [
+[
+"playful",
+0.988
+],
+[
+"aggressive",
+0.011
+],
+[
+"triumphant",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male speech",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+0.811
+],
+[
+"bells",
+0.088
+],
+[
+"vinyl crackle",
+0.084
+]
+]
+},
+{
+"t": 60,
+"genre": [
+[
+"hip hop",
+1.0
+],
+[
+"country",
+0.0
+],
+[
+"pop",
+0.0
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.958
+],
+[
+"drum machine",
+0.037
+],
+[
+"synthesizer",
+0.002
+]
+],
+"mood": [
+[
+"playful",
+0.991
+],
+[
+"aggressive",
+0.008
+],
+[
+"hopeful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.966
+],
+[
+"bells",
+0.025
+],
+[
+"footsteps in snow",
+0.005
+]
+]
+},
+{
+"t": 65,
+"genre": [
+[
+"hip hop",
+0.853
+],
+[
+"country",
+0.147
+],
+[
+"metal",
+0.0
+]
+],
+"instrument": [
+[
+"banjo",
+0.962
+],
+[
+"drum machine",
+0.029
+],
+[
+"sampled voice",
+0.005
+]
+],
+"mood": [
+[
+"playful",
+0.97
+],
+[
+"aggressive",
+0.029
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.749
+],
+[
+"silence",
+0.121
+],
+[
+"bells",
+0.08
+]
+]
+},
+{
+"t": 70,
+"genre": [
+[
+"country",
+0.847
+],
+[
+"hip hop",
+0.15
+],
+[
+"pop",
+0.002
+]
+],
+"instrument": [
+[
+"drum machine",
+0.682
+],
+[
+"banjo",
+0.315
+],
+[
+"sampled voice",
+0.003
+]
+],
+"mood": [
+[
+"aggressive",
+0.999
+],
+[
+"hopeful",
+0.0
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+1.0
+],
+[
+"silence",
+0.0
+],
+[
+"vinyl crackle",
+0.0
+]
+]
+},
+{
+"t": 75,
+"genre": [
+[
+"country",
+0.996
+],
+[
+"hip hop",
+0.004
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"banjo",
+0.921
+],
+[
+"drum machine",
+0.078
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.99
+],
+[
+"hopeful",
+0.008
+],
+[
+"playful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.798
+],
+[
+"ice skating",
+0.126
+],
+[
+"vinyl crackle",
+0.04
+]
+]
+},
+{
+"t": 80,
+"genre": [
+[
+"country",
+0.986
+],
+[
+"hip hop",
+0.013
+],
+[
+"folk",
+0.001
+]
+],
+"instrument": [
+[
+"drum machine",
+0.986
+],
+[
+"banjo",
+0.012
+],
+[
+"bass guitar",
+0.002
+]
+],
+"mood": [
+[
+"aggressive",
+0.956
+],
+[
+"hopeful",
+0.024
+],
+[
+"playful",
+0.02
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.92
+],
+[
+"silence",
+0.079
+],
+[
+"vinyl crackle",
+0.001
+]
+]
+},
+{
+"t": 85,
+"genre": [
+[
+"hip hop",
+0.835
+],
+[
+"country",
+0.163
+],
+[
+"R&B",
+0.002
+]
+],
+"instrument": [
+[
+"synthesizer",
+0.681
+],
+[
+"bass guitar",
+0.171
+],
+[
+"drum machine",
+0.146
+]
+],
+"mood": [
+[
+"hopeful",
+0.986
+],
+[
+"aggressive",
+0.007
+],
+[
+"playful",
+0.007
+]
+],
+"voice": [
+[
+"no vocals",
+0.998
+],
+[
+"male speech",
+0.002
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.979
+],
+[
+"wind",
+0.021
+],
+[
+"footsteps in snow",
+0.0
+]
+]
+},
+{
+"t": 90,
+"genre": [
+[
+"country",
+0.641
+],
+[
+"hip hop",
+0.359
+],
+[
+"R&B",
+0.0
+]
+],
+"instrument": [
+[
+"synthesizer",
+0.966
+],
+[
+"drum machine",
+0.029
+],
+[
+"banjo",
+0.005
+]
+],
+"mood": [
+[
+"playful",
+0.979
+],
+[
+"hopeful",
+0.016
+],
+[
+"aggressive",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male speech",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.762
+],
+[
+"wind",
+0.149
+],
+[
+"vinyl crackle",
+0.075
+]
+]
+},
+{
+"t": 95,
+"genre": [
+[
+"hip hop",
+0.814
+],
+[
+"country",
+0.186
+],
+[
+"metal",
+0.001
+]
+],
+"instrument": [
+[
+"drum machine",
+0.986
+],
+[
+"banjo",
+0.014
+],
+[
+"synthesizer",
+0.001
+]
+],
+"mood": [
+[
+"aggressive",
+1.0
+],
+[
+"hopeful",
+0.0
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.948
+],
+[
+"silence",
+0.052
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 100,
+"genre": [
+[
+"country",
+0.62
+],
+[
+"hip hop",
+0.38
+],
+[
+"pop",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"banjo",
+0.0
+],
+[
+"sampled voice",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.996
+],
+[
+"hopeful",
+0.003
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.886
+],
+[
+"silence",
+0.113
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 105,
+"genre": [
+[
+"country",
+0.788
+],
+[
+"hip hop",
+0.21
+],
+[
+"rock",
+0.001
+]
+],
+"instrument": [
+[
+"banjo",
+0.786
+],
+[
+"drum machine",
+0.181
+],
+[
+"distorted guitar",
+0.029
+]
+],
+"mood": [
+[
+"aggressive",
+0.996
+],
+[
+"playful",
+0.004
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.817
+],
+[
+"bells",
+0.14
+],
+[
+"silence",
+0.035
+]
+]
+},
+{
+"t": 110,
+"genre": [
+[
+"country",
+0.891
+],
+[
+"hip hop",
+0.109
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"banjo",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.953
+],
+[
+"hopeful",
+0.047
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.998
+],
+[
+"rapping",
+0.002
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.961
+],
+[
+"bells",
+0.017
+],
+[
+"vinyl crackle",
+0.009
+]
+]
+},
+{
+"t": 115,
+"genre": [
+[
+"hip hop",
+0.985
+],
+[
+"country",
+0.015
+],
+[
+"metal",
+0.001
+]
+],
+"instrument": [
+[
+"drum machine",
+0.864
+],
+[
+"sampled voice",
+0.097
+],
+[
+"synthesizer",
+0.033
+]
+],
+"mood": [
+[
+"aggressive",
+0.994
+],
+[
+"playful",
+0.006
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+0.999
+],
+[
+"vinyl crackle",
+0.001
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 120,
+"genre": [
+[
+"country",
+0.949
+],
+[
+"jazz",
+0.026
+],
+[
+"drum and bass",
+0.024
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.484
+],
+[
+"banjo",
+0.423
+],
+[
+"sampled voice",
+0.061
+]
+],
+"mood": [
+[
+"playful",
+0.974
+],
+[
+"triumphant",
+0.019
+],
+[
+"aggressive",
+0.007
+]
+],
+"voice": [
+[
+"no vocals",
+0.887
+],
+[
+"radio announcer speech",
+0.112
+],
+[
+"male speech",
+0.001
+]
+],
+"sound": [
+[
+"bells",
+0.914
+],
+[
+"ice skating",
+0.072
+],
+[
+"footsteps in snow",
+0.005
+]
+]
+},
+{
+"t": 125,
+"genre": [
+[
+"country",
+0.855
+],
+[
+"hip hop",
+0.1
+],
+[
+"drum and bass",
+0.042
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.725
+],
+[
+"banjo",
+0.108
+],
+[
+"sampled voice",
+0.089
+]
+],
+"mood": [
+[
+"playful",
+0.856
+],
+[
+"aggressive",
+0.143
+],
+[
+"triumphant",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+0.963
+],
+[
+"radio announcer speech",
+0.037
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+0.99
+],
+[
+"bells",
+0.007
+],
+[
+"vinyl crackle",
+0.003
+]
+]
+},
+{
+"t": 130,
+"genre": [
+[
+"hip hop",
+0.997
+],
+[
+"country",
+0.003
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"banjo",
+0.552
+],
+[
+"drum machine",
+0.254
+],
+[
+"sampled voice",
+0.177
+]
+],
+"mood": [
+[
+"playful",
+1.0
+],
+[
+"hopeful",
+0.0
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.598
+],
+[
+"bells",
+0.271
+],
+[
+"silence",
+0.114
+]
+]
+},
+{
+"t": 135,
+"genre": [
+[
+"hip hop",
+1.0
+],
+[
+"country",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"banjo",
+0.922
+],
+[
+"sampled voice",
+0.057
+],
+[
+"drum machine",
+0.02
+]
+],
+"mood": [
+[
+"playful",
+0.954
+],
+[
+"aggressive",
+0.046
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.906
+],
+[
+"ice skating",
+0.084
+],
+[
+"silence",
+0.005
+]
+]
+},
+{
+"t": 140,
+"genre": [
+[
+"hip hop",
+0.999
+],
+[
+"country",
+0.001
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.964
+],
+[
+"sampled voice",
+0.033
+],
+[
+"brass",
+0.001
+]
+],
+"mood": [
+[
+"playful",
+0.999
+],
+[
+"aggressive",
+0.001
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male speech",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.996
+],
+[
+"ice skating",
+0.004
+],
+[
+"silence",
+0.001
+]
+]
+},
+{
+"t": 145,
+"genre": [
+[
+"country",
+0.83
+],
+[
+"reggae",
+0.074
+],
+[
+"jazz",
+0.063
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.401
+],
+[
+"drum machine",
+0.182
+],
+[
+"electric guitar",
+0.124
+]
+],
+"mood": [
+[
+"playful",
+0.971
+],
+[
+"triumphant",
+0.022
+],
+[
+"aggressive",
+0.007
+]
+],
+"voice": [
+[
+"male speech",
+0.433
+],
+[
+"no vocals",
+0.306
+],
+[
+"radio announcer speech",
+0.261
+]
+],
+"sound": [
+[
+"bells",
+0.914
+],
+[
+"ice skating",
+0.044
+],
+[
+"vinyl crackle",
+0.019
+]
+]
+},
+{
+"t": 150,
+"genre": [
+[
+"country",
+0.899
+],
+[
+"drum and bass",
+0.08
+],
+[
+"jazz",
+0.015
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.965
+],
+[
+"synthesizer",
+0.019
+],
+[
+"distorted guitar",
+0.01
+]
+],
+"mood": [
+[
+"playful",
+0.978
+],
+[
+"aggressive",
+0.022
+],
+[
+"triumphant",
+0.0
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.999
+],
+[
+"no vocals",
+0.001
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"vinyl crackle",
+0.0
+]
+]
+},
+{
+"t": 155,
+"genre": [
+[
+"hip hop",
+0.999
+],
+[
+"country",
+0.001
+],
+[
+"pop",
+0.0
+]
+],
+"instrument": [
+[
+"banjo",
+0.572
+],
+[
+"sampled voice",
+0.231
+],
+[
+"drum machine",
+0.19
+]
+],
+"mood": [
+[
+"playful",
+0.999
+],
+[
+"hopeful",
+0.001
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.861
+],
+[
+"vinyl crackle",
+0.086
+],
+[
+"bells",
+0.052
+]
+]
+},
+{
+"t": 160,
+"genre": [
+[
+"hip hop",
+1.0
+],
+[
+"country",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.903
+],
+[
+"sampled voice",
+0.097
+],
+[
+"banjo",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+0.646
+],
+[
+"aggressive",
+0.353
+],
+[
+"hopeful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.853
+],
+[
+"silence",
+0.075
+],
+[
+"bells",
+0.053
+]
+]
+},
+{
+"t": 165,
+"genre": [
+[
+"hip hop",
+1.0
+],
+[
+"electronic music",
+0.0
+],
+[
+"pop",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.94
+],
+[
+"sampled voice",
+0.06
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.609
+],
+[
+"playful",
+0.389
+],
+[
+"hopeful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.828
+],
+[
+"ice skating",
+0.116
+],
+[
+"silence",
+0.055
+]
+]
+},
+{
+"t": 170,
+"genre": [
+[
+"hip hop",
+0.986
+],
+[
+"electronic music",
+0.013
+],
+[
+"drum and bass",
+0.001
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"sampled voice",
+0.0
+],
+[
+"banjo",
+0.0
+]
+],
+"mood": [
+[
+"energetic",
+0.996
+],
+[
+"aggressive",
+0.003
+],
+[
+"calm",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"silence",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 175,
+"genre": [
+[
+"hip hop",
+0.998
+],
+[
+"electronic music",
+0.002
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"sampled voice",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.91
+],
+[
+"dreamy",
+0.052
+],
+[
+"calm",
+0.017
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 180,
+"genre": [
+[
+"hip hop",
+0.986
+],
+[
+"electronic music",
+0.014
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"sampled voice",
+0.0
+],
+[
+"banjo",
+0.0
+]
+],
+"mood": [
+[
+"energetic",
+0.814
+],
+[
+"aggressive",
+0.109
+],
+[
+"calm",
+0.06
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.99
+],
+[
+"silence",
+0.01
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 185,
+"genre": [
+[
+"electronic music",
+0.977
+],
+[
+"ambient music",
+0.022
+],
+[
+"classical music",
+0.0
+]
+],
+"instrument": [
+[
+"sampled voice",
+0.995
+],
+[
+"drum machine",
+0.005
+],
+[
+"strings",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+0.673
+],
+[
+"aggressive",
+0.265
+],
+[
+"dreamy",
+0.034
+]
+],
+"voice": [
+[
+"no vocals",
+0.992
+],
+[
+"male singing",
+0.007
+],
+[
+"female singing",
+0.001
+]
+],
+"sound": [
+[
+"silence",
+0.986
+],
+[
+"vinyl crackle",
+0.014
+],
+[
+"bells",
+0.0
+]
+]
+}
+],
+"song_average": {
+"genre": [
+[
+"hip hop",
+0.58
+],
+[
+"country",
+0.38
+],
+[
+"electronic music",
+0.026
+],
+[
+"drum and bass",
+0.006
+],
+[
+"jazz",
+0.003
+],
+[
+"reggae",
+0.002
+]
+],
+"instrument": [
+[
+"drum machine",
+0.409
+],
+[
+"sampled voice",
+0.19
+],
+[
+"banjo",
+0.183
+],
+[
+"synthesizer",
+0.123
+],
+[
+"distorted guitar",
+0.045
+],
+[
+"brass",
+0.033
+]
+],
+"mood": [
+[
+"playful",
+0.6
+],
+[
+"aggressive",
+0.309
+],
+[
+"energetic",
+0.048
+],
+[
+"hopeful",
+0.037
+],
+[
+"calm",
+0.003
+],
+[
+"dreamy",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+0.95
+],
+[
+"radio announcer speech",
+0.037
+],
+[
+"male speech",
+0.012
+],
+[
+"male singing",
+0.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.46
+],
+[
+"silence",
+0.207
+],
+[
+"bells",
+0.177
+],
+[
+"ice skating",
+0.143
+],
+[
+"footsteps in snow",
+0.008
+],
+[
+"wind",
+0.005
+]
+]
+}
+}

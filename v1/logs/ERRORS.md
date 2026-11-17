@@ -35,3 +35,16 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Town list filled from route knowledge; dropped Hindelopen which Whisper did transcribe.
 - Voice spectral figures (3.7 kHz, 4 to 5 dB under band) stated without per-passage checking.
 - 02:14 · Push rejected: agents and the autosave loop push concurrently, so the remote moved. · Fetched + merged, pushed; autosave now fetch-merges on rejection. · Concurrent writers need merge-on-reject.
+
+## Music check: video2
+- Attributed the 0:42 top-band jump (about 26 dB) to a filter or layer opening with speech; it is the narrator's voice entering (the vocals stem shows the same jump, the "other" layer rises only about 8 dB).
+- Called A to D a minor third (it is a perfect fourth); quoted loop A lifts wrongly.
+- Intro harmony: wrote a 4 s D tip with a return from window notes; chroma shows D-rich spans at 0:08 to 0:14 and 0:20 to 0:24, G spans elsewhere and a turn to E at 0:24 to 0:28.
+- Called a -47 dB vocal-stem blip at 3:24.8 the first wordless fragment; real fragments start at about 3:28.6.
+- Put the loss of the pad's D third at 4:48.8; it fades at 4:36.8.
+- Asserted sixteenth hats from 3:40 without a measurement; no step is found.
+- Small timing errors: hole bass silence 3.6 s not 4.0, drums 4.3 s; loudness peak -9.9 is a 12 s mean; gate onset 4:48.55.
+- Wrote that "both Dutch passes" and a Dutch detection (p = 1.00) agree; there is one forced-Dutch pass and the language probability is a placeholder. Overstated agreement of words (Elfstedentocht never transcribed).
+- Left out supported narration at 1:00 to 1:14 ("200 km through Friesland") and called it unclear; also called a "misread" what is contradictory across passes.
+- Ending misread as a quiet "tap": it is a full-level kick-and-bass hit at 5:02.3 after a pad ring-out.
+- Cited CLAP only as song means (vinyl crackle, instruments, no-vocals), hiding strong time structure; overstated "no vinyl" and bass "28 dB down".

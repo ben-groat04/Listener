@@ -31,6 +31,7 @@ header.mast { background: var(--ink); color: var(--paper); }
 header.mast .wrap { padding-block: 2.2rem 1.6rem; display: grid; gap: .5rem; }
 .eyebrow { font: 600 .74rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: #9fc3d6; }
 h1.site { font: 700 clamp(2rem, 6vw, 3.1rem)/1.02 var(--display); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.note { color: #9fb2be; font: 400 .85rem/1.45 var(--display); letter-spacing: .01em; margin: .3rem 0 0; max-width: 36rem; }
 .sub { color: #c4d1d9; font-style: italic; margin: 0; max-width: 36rem; }
 nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); }
 nav.tabs .wrap { display: flex; gap: .25rem; overflow-x: auto; scrollbar-width: none; }
@@ -67,6 +68,7 @@ footer.foot .wrap { padding-block: 1.4rem 2.4rem; }
   <span class="eyebrow">Listener · v1 · music first</span>
   <h1 class="site">{{TITLE}}</h1>
   <p class="sub">{{SUB}}</p>
+  <p class="note">Listening accounts written by Claude from a close analysis of the sound and picture. No one at the keyboard heard the music. The first-person voice is how it would land on an attentive listener, and every fact in it has been checked.</p>
 </div></header>
 <nav class="tabs" aria-label="Reports"><div class="wrap">{{NAV}}</div></nav>
 <main><div class="wrap">{{ARTICLES}}</div></main>

@@ -43,7 +43,8 @@ Convention: `VID` is the bare video name (no extension, no folder); `VIDEO_DIR` 
    | b | `v1/workflows/interpret.js` (conversing panel) | `{"videos":["<name>"]}` | `analysis/<name>/interpretation.md` |
    | c | `v1/workflows/compare.js` (related videos; optional) | `{"videos":["a","b"],"name":"set","relation":"..."}` | `analysis/compare/<set>/comparison.md` |
    | d | `v1/workflows/coldread.js` (improve) | `{"scope":"all","videos":["<name>"],"tag":"cr1"}` | fixes and `logs/BACKLOG_*.md` |
-   | e | `v1/workflows/report.js` (readable final piece) | `{"videos":["<name>"],"compare":"<set>"}` | `analysis/<name>/REPORT.md` |
+   | f | `v1/workflows/listening.js` (THE human output: verified fact sheet + one listener's account, judged) | `{"videos":["<name>"]}` | `analysis/<name>/LISTENING.md` |
+   | e | `v1/workflows/report.js` (evidence report) | `{"videos":["<name>"],"compare":"<set>"}` | `analysis/<name>/REPORT.md` |
    | last | `v1/workflows/blindcmp.js` (default final step once a blind and an informed run both exist) | `{"videos":["<name>"]}` | `analysis/blind_vs_informed/<name>.md`, `LESSONS.md` |
    | alt | `v1/workflows/blind_chain.js` (whole blind route) | `{"videos":[{"vid":"<name>"}],"video_dir":"videos"}` | `analysis_blind/...` |
    | helper | `v1/workflows/backlog.js` (triage, fix, verify the backlog files) | `{"sources":["v1/logs/BACKLOG_x.md"]}` | fixes and updated `logs/BACKLOG_*.md` |

@@ -1,0 +1,87 @@
+<title>{{TITLE}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column on frozen-canal paper; a sticky tab rail like a newsreel title strip. */
+:root {
+  --bg: #eef2f4;        /* hoarfrost */
+  --paper: #f8fafb;
+  --ink: #15212b;       /* canal ink */
+  --muted: #56636e;
+  --rule: #c9d3da;
+  --accent: #a3281c;    /* Frisian flag red */
+  --ice: #2f6f8f;       /* blue-ice */
+  --tag-bg: #dfe7ec;
+  --display: "Archivo Narrow", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0d151c; --paper: #111b23; --ink: #e3eaef; --muted: #98a6b1; --rule: #26343f;
+  --accent: #e0715f; --ice: #7fb8d4; --tag-bg: #1c2a35; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0d151c; --paper: #111b23; --ink: #e3eaef; --muted: #98a6b1; --rule: #26343f;
+  --accent: #e0715f; --ice: #7fb8d4; --tag-bg: #1c2a35; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 400 1.09rem/1.62 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ink); }
+.wrap { max-width: 44rem; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.mast { background: var(--ink); color: var(--paper); }
+header.mast .wrap { padding-block: 2.2rem 1.6rem; display: grid; gap: .5rem; }
+.eyebrow { font: 600 .74rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: #9fc3d6; }
+h1.site { font: 700 clamp(2rem, 6vw, 3.1rem)/1.02 var(--display); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.sub { color: #c4d1d9; font-style: italic; margin: 0; max-width: 36rem; }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); }
+nav.tabs .wrap { display: flex; gap: .25rem; overflow-x: auto; scrollbar-width: none; }
+nav.tabs a { flex: none; font: 600 .86rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: .95rem .7rem .8rem; border-bottom: 3px solid transparent; }
+nav.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+nav.tabs a:focus-visible { outline: 2px solid var(--ice); outline-offset: -2px; }
+main .wrap { padding-block: 1.6rem 4rem; }
+.report { min-width: 0; }
+.report h1 { font: 700 clamp(1.6rem, 4.6vw, 2.2rem)/1.1 var(--display); margin: .4rem 0 1rem; text-wrap: balance; }
+.report h2 { font: 700 1.3rem/1.2 var(--display); letter-spacing: .01em; margin: 2.4rem 0 .6rem; padding-top: .9rem; border-top: 1px solid var(--rule); text-wrap: balance; }
+.report h3 { font: 600 1.06rem/1.25 var(--display); margin: 1.6rem 0 .4rem; color: var(--ice); }
+.report p, .report li { max-width: 65ch; }
+.report > p:first-of-type em, .report h1 + p em { color: var(--muted); }
+.report ul, .report ol { padding-left: 1.2rem; display: grid; gap: .45rem; }
+.report strong { font-weight: 600; }
+.report blockquote { margin: 1.2rem 0; padding: .2rem 0 .2rem 1rem; border-left: 3px solid var(--ice); color: var(--muted); font-style: italic; }
+.report table { border-collapse: collapse; font-size: .9rem; line-height: 1.4; width: 100%; min-width: 34rem; }
+.tablewrap { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); }
+.report th, .report td { text-align: left; vertical-align: top; padding: .55rem .65rem; border-bottom: 1px solid var(--rule); }
+.report th { font: 600 .78rem/1.2 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--tag-bg); }
+.report code { font: .82em/1 var(--mono); background: var(--tag-bg); padding: .1em .3em; border-radius: 3px; overflow-wrap: anywhere; }
+.report a { color: var(--ice); }
+a.path { font: .82em/1.3 var(--mono); overflow-wrap: anywhere; }
+.ts { font: 500 .84em/1 var(--mono); color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums; }
+abbr.tag { font: 500 .66em/1 var(--mono); text-decoration: none; letter-spacing: .04em; padding: .18em .35em; border-radius: 3px; vertical-align: .12em; background: var(--tag-bg); color: var(--muted); }
+abbr.tag-OBS { color: var(--ice); }
+abbr.tag-INT, abbr.tag-SPEC { color: var(--accent); }
+footer.foot { border-top: 1px solid var(--rule); color: var(--muted); font-size: .9rem; }
+footer.foot .wrap { padding-block: 1.4rem 2.4rem; }
+@media (prefers-reduced-motion: no-preference) { .report:not([hidden]) { animation: rise .35s ease-out both; } }
+@keyframes rise { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+<header class="mast"><div class="wrap">
+  <span class="eyebrow">Listener · v1 · music first</span>
+  <h1 class="site">{{TITLE}}</h1>
+  <p class="sub">{{SUB}}</p>
+</div></header>
+<nav class="tabs" aria-label="Reports"><div class="wrap">{{NAV}}</div></nav>
+<main><div class="wrap">{{ARTICLES}}</div></main>
+<footer class="foot"><div class="wrap">Written by Claude agents from measurements of the audio (separated stems, spectrograms, chords, loudness) and frames sampled about once a second. Feelings described here are reasoned readings of that evidence, checked by adversarial fact-checkers. Timestamps are m:ss on the analysed files.</div></footer>
+<script>
+(function () {
+  document.querySelectorAll('.report table').forEach(function (t) { var w = document.createElement('div'); w.className = 'tablewrap'; t.parentNode.insertBefore(w, t); w.appendChild(t); });
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs a'));
+  function show() {
+    var id = (location.hash || '#{{FIRST}}').slice(1);
+    if (!document.getElementById(id)) id = '{{FIRST}}';
+    document.querySelectorAll('.report').forEach(function (a) { a.hidden = a.id !== id; });
+    tabs.forEach(function (t) { if (t.dataset.tab === id) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
+  }
+  tabs.forEach(function (t) { t.addEventListener('click', function () { setTimeout(function () { window.scrollTo(0, 0); }, 0); }); });
+  window.addEventListener('hashchange', show); show();
+})();
+</script>

@@ -23,6 +23,8 @@ import numpy as np
 import librosa
 
 HOP_S = 0.01
+LOW_DB = -55.0
+HIT_DB = -45.0
 HERE = os.path.dirname(os.path.abspath(__file__))
 V1 = os.path.normpath(os.path.join(HERE, "..", ".."))
 
@@ -35,8 +37,8 @@ def env_db(path):
     return 20 * np.log10(rms + 1e-9)
 
 
-def runs_below(e, thr, lo_s, hi_s, min_len_s, merge_s=0.3):
-    """Runs of frames below thr in [lo_s, hi_s), gaps shorter than merge_s merged, length >= min_len_s."""
+def runs_below(e, thr, lo_s, hi_s, min_len_s, merge_s=0.02):
+    """Runs of frames below thr in [lo_s, hi_s), gaps (non-low stretches) up to merge_s merged, length >= min_len_s."""
     a, b = int(lo_s / HOP_S), int(hi_s / HOP_S)
     low = e[a:b] < thr
     runs, s = [], None
@@ -70,18 +72,27 @@ def main():
     d = os.path.join(V1, "data", a.video)
     E = {n: env_db(os.path.join(d, "stems", n + ".mp3")) for n in ("drums", "bass", "other", "vocals")}
     out = {"video": a.video, "method": "10 ms RMS envelope (dB re full scale) of stems/*.mp3; "
-           "'low' = more than 25 dB below the stem's pre-hole level (median of 1 s peak envelope, "
-           "70 s to hole start); run edges are the first/last 10 ms frame of the low run (gaps <= 0.3 s merged)"}
+           "'low' = below LOW_DB (-55 dBFS; stem noise floor is about -70 to -77 dB, normal groove level -20 to -30 dB); "
+           "run edges are the first/last 10 ms frame of the low run (gaps <= 20 ms merged)"}
 
     # 1. hole
     lo, hi = a.hole_lo, a.hole_hi
     hole = {}
     for n in ("drums", "bass", "other"):
         e = E[n]
-        sec = [e[int(t * 100):int(t * 100) + 100].max() for t in range(70, int(lo) + 3)]
+        sec = [e[int(t * 100):int(t * 100) + 100].max() for t in range(30, 60)]
         ref = float(np.median(sec))
-        r = runs_below(e, ref - 25, lo, hi, 1.5)
-        rec = {"pre_hole_level_db": round(ref, 1), "threshold_db": round(ref - 25, 1)}
+        r = runs_below(e, LOW_DB, lo, hi, 1.5)
+        mid = int((lo + hi) / 2 * 100)  # 86 s: inside the hole for every stem
+        above = np.where(e > HIT_DB)[0]
+        last_before = above[above < mid]
+        first_after = above[above >= mid]
+        rec_extra = {}
+        if len(last_before) and len(first_after):
+            rec_extra = {"last_frame_above_-45db_before_86s": round(last_before[-1] * HOP_S, 2),
+                         "first_frame_above_-45db_after_86s": round(first_after[0] * HOP_S, 2),
+                         "gap_s_between_those": round((first_after[0] - last_before[-1]) * HOP_S, 2)}
+        rec = {"groove_level_db_median_1s_peak_30_to_60s": round(ref, 1), "threshold_db": LOW_DB}
         if r:
             s, t = r[0]
             rec.update(drop_s=s, return_s=t, length_s=round(t - s, 2), floor_db=round(float(e[int(s * 100):int(t * 100)].max()), 1))
@@ -89,12 +100,20 @@ def main():
             seg = e[int(lo * 100):int(hi * 100)]
             rec.update(no_drop_below_threshold=True, min_level_db=round(float(seg.min()), 1),
                        min_at_s=round(lo + float(seg.argmin()) * HOP_S, 2))
-            r8 = runs_below(e, ref - 8, lo, hi, 0.5)
+            r8 = runs_below(e, ref - 8, lo, hi, 0.5)  # relative dip, informational
             rec["dip_run_more_than_8db_down"] = r8[0] if r8 else None
+        if n != "other":
+            rec.update(rec_extra)
         hole[n] = rec
     dr, bs = hole["drums"], hole["bass"]
-    both_lo, both_hi = max(dr["drop_s"], bs["drop_s"]), min(dr["return_s"], bs["return_s"])
-    hole["both_drums_and_bass_low_s"] = [both_lo, both_hi, round(both_hi - both_lo, 2)]
+    both_lo = max(dr["last_frame_above_-45db_before_86s"], bs["last_frame_above_-45db_before_86s"])
+    both_hi = min(dr["first_frame_above_-45db_after_86s"], bs["first_frame_above_-45db_after_86s"])
+    hole["rhythm_section_out_any_stem_to_return_s"] = [
+        min(dr["last_frame_above_-45db_before_86s"], bs["last_frame_above_-45db_before_86s"]),
+        max(dr["first_frame_above_-45db_after_86s"], bs["first_frame_above_-45db_after_86s"]),
+        round(max(dr["first_frame_above_-45db_after_86s"], bs["first_frame_above_-45db_after_86s"])
+              - min(dr["last_frame_above_-45db_before_86s"], bs["last_frame_above_-45db_before_86s"]), 2)]
+    hole["both_drums_and_bass_below_-45db_s"] = [both_lo, both_hi, round(both_hi - both_lo, 2)]
     hole["pad_remains_throughout"] = "no_drop_below_threshold" in hole["other"]
     hole["vocals_stem_in_hole"] = {
         "level_db_per_half_second_peak": {str(t / 2): round(float(E['vocals'][int(t * 50):int(t * 50) + 50].max()), 1)
@@ -139,18 +158,17 @@ def main():
 
     # 3. drum stops
     de = E["drums"]
-    ref_d = float(np.median([de[int(t * 100):int(t * 100) + 100].max() for t in range(30, 60)]))
-    stops = runs_below(de, ref_d - 25, 28.0, a.loop_a_end, 1.5)
-    sparse = {}
-    for (lo2, hi2) in ((70.0, 80.0),):
-        seg = de[int(lo2 * 100):int(hi2 * 100)]
-        sparse[f"{lo2}-{hi2}"] = {"max_db": round(float(seg.max()), 1), "median_db": round(float(np.median(seg)), 1),
-                                  "frames_above_threshold_pct": round(float((seg >= ref_d - 25).mean() * 100), 1)}
+    stops = runs_below(de, LOW_DB, 28.0, a.loop_a_end, 1.5)
+    # hit onsets (frames above -45 dB that follow >= 0.3 s below -45 dB) in the pre-hole stretch
+    hits = [round(i * HOP_S, 2) for i in range(5600, 8460)
+            if de[i] > HIT_DB and (de[max(0, i - 30):i] < HIT_DB).all()]
+    seg = de[7000:8000]
     out["item3_drum_stops"] = {
-        "reference_level_db_30_to_60s": round(ref_d, 1), "threshold_db": round(ref_d - 25, 1),
+        "threshold_db": LOW_DB,
         "stops_at_least_1p5_s": [{"from_s": s, "to_s": t, "length_s": round(t - s, 2)} for s, t in stops],
-        "window_70_to_80s_drums": sparse,
-        "note": "shorter off-beat gaps of 0.5 to 1.0 s occur throughout the groove and are not counted",
+        "hit_onsets_above_-45db_56_to_84s": hits,
+        "window_70_to_80s_drums": {"max_db": round(float(seg.max()), 1), "median_db": round(float(np.median(seg)), 1)},
+        "note": "gaps shorter than 1.5 s occur throughout the groove and are not counted; hit onset = frame above -45 dB after >= 0.3 s below it",
     }
 
     # 4. first voice fragment after the narration

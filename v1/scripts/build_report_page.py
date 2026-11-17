@@ -24,7 +24,7 @@ def linkify(h):
             return f'<a class="path" href="{opts["--repo-url"]}/{p}">{m.group(1)}</a>'
         return f"<code>{m.group(1)}</code>"
     h = re.sub(r"<code>([^<]+)</code>", rep, h)
-    h = re.sub(r"(?<![\w:./])(\d{1,2}:\d{2}(?:\.\d+)?)(?![\w:])", r'<span class="ts">\1</span>', h)
+    h = re.sub(r"(?<![\w:.])(\d{1,2}:\d{2}(?:\.\d+)?)(?![\w:])", r'<span class="ts">\1</span>', h)
     h = re.sub(r"\b(OBS|INT|SPEC)\b(?![^<]*</a>)", r'<abbr class="tag tag-\1" title="\1">\1</abbr>', h)
     return h
 sections = []

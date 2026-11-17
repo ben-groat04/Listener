@@ -82,7 +82,7 @@ Points where the informed run was better (for balance): the mixed-reel observati
 | 1:40.6 | Bass +10 dB, mix narrower, drier | Bass swell, mix +4 dB | Raw bass stem -25 to -15 dBFS; mix -15.4 to -11.8. Both. |
 | 2:36.6 to 2:48.8 | "Wall rises 8 to 10 dB at 2:47 to 2:50" | Partial mute of the "other" layer at 2:36.8, body back at 2:48.8 | Informed (raw: "other" falls about 6 dB at 2:37, recovers by 2:49). |
 | Plateau start | 3:36.6 (dense chops, pickup at 3:28.6) | 3:24.8 to 3:28.6 fragments begin; no step at 3:36 | Both partly. Voice stem: first burst 3:28.6; dense (50 of 60 s) from 3:36.6. Level: no step. |
-| Peak | Loudest 12 s at 4:12 to 4:24; plateau about -10 to -11 | Loudest about 4:24 to 4:36 (12 s mean -9.9); per-second max -9.3 at 4:12 | Raw per-second maximum -9.8 at 4:36 and 4:12 region; the plateau is broad, within 2 to 3 dB. Both agree there is no single peak. |
+| Peak | Loudest 12 s at 4:12 to 4:24; plateau about -10 to -11 | Loudest about 4:24 to 4:36 (12 s mean -9.9); per-second max -9.3 at 4:12 | Raw per-second maximum is -9.3 at 4:12, with -9.4 to -9.6 at 4:00 to 4:27; the plateau is broad, within 2 to 3 dB. Both agree there is no single peak; the blind "4:12 to 4:24" is closer to the per-second maximum, the informed 12 s mean peak is a smoothing choice. |
 | 4:36.6 to 4:48.6 | Mix down 2 to 3 dB, bass chopped | Sag at 4:36.8: top band down 13 dB, bass 4 dB lighter | Compatible. |
 | 4:48.6 to 5:00.8 | One bass stab and one voice-like call per bar | Same | Raw bass: -71.7 at 4:59, -22 at 5:00. |
 | End | Stop at 5:00.86, three hits, zero at 5:04.24 | Stop at 5:00.8, "one" hit at 5:02.3, silence by 5:04 | Blind (raw audio: two clear hits and a third). |

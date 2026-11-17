@@ -4,8 +4,13 @@ export const meta = {
   phases: [{ title: 'Cold read' }, { title: 'Triage' }, { title: 'Fix' }, { title: 'Verify' }],
 }
 // args: { root: optional repo root, scope: 'analysis' | 'toolkit' | 'all', videos: ['video1','video2'], rounds: 1, fixes_per_round: 6, tag: 'cr1' }
-// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+// Root: no fallback. R is args.root, else the literal /home/user/Listener (not derived from the script location). Pass args.root for another checkout.
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
+// Preflight: fail loudly before any agent is launched if the root is wrong (no fallback; default is the literal /home/user/Listener, pass args.root).
+const ROOT_PROBE = `${R}/v1/scripts/check_outputs.py`
+const ROOT_SCHEMA = { type: 'object', properties: { exists: { type: 'boolean' } }, required: ['exists'] }
+const rootProbe = await agent(`Report whether this file exists (use ls or stat; do not read or edit it): ${ROOT_PROBE}`, { label: 'preflight:root', phase: 'Cold read', model: 'sonnet', effort: 'low', schema: ROOT_SCHEMA })
+if (!(rootProbe && rootProbe.exists)) throw new Error(`coldread.js: ${ROOT_PROBE} not found, so root "${R}" is wrong (pass args.root = the repo path)`)
 const TAG = args.tag || 'cr'
 const SCOPE = args.scope || 'all'
 const F = { type: 'object', properties: { findings: { type: 'array', items: { type: 'object', properties: { title: { type: 'string' }, where: { type: 'string' }, problem: { type: 'string' }, fix: { type: 'string' }, severity: { type: 'string', enum: ['high', 'medium', 'low'] } }, required: ['title', 'where', 'problem', 'fix', 'severity'] } } }, required: ['findings'] }

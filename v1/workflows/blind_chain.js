@@ -5,7 +5,7 @@ export const meta = {
 }
 // args: { root: optional repo root, videos: ['video1'] or [{vid, dur}] (dur auto-read when omitted), video_dir: 'videos',
 //         blind_first: false, compare_after: false, informed_rounds: 3 }
-// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+// Root: no fallback. R is args.root, else the literal /home/user/Listener (not derived from the script location). Pass args.root for another checkout.
 //
 // Default (blind_first falsy): perceive -> listen -> identification -> freeze -> interpret -> leak check, all blind.
 //
@@ -28,6 +28,11 @@ export const meta = {
 // The leak check always runs: blind outputs (including blind_frozen.md) must not contain context-only facts unless the term is
 //   supported by a quoted ASR/on-screen source, which the check records.
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
+// Preflight: fail loudly before any agent is launched if the root is wrong (no fallback; default is the literal /home/user/Listener, pass args.root).
+const ROOT_PROBE = `${R}/v1/scripts/check_outputs.py`
+const ROOT_SCHEMA = { type: 'object', properties: { exists: { type: 'boolean' } }, required: ['exists'] }
+const rootProbe = await agent(`Report whether this file exists (use ls or stat; do not read or edit it): ${ROOT_PROBE}`, { label: 'preflight:root', phase: 'Blind perceive', model: 'sonnet', effort: 'low', schema: ROOT_SCHEMA })
+if (!(rootProbe && rootProbe.exists)) throw new Error(`blind_chain.js: ${ROOT_PROBE} not found, so root "${R}" is wrong (pass args.root = the repo path)`)
 const W = `${R}/v1/workflows`
 const common = { blind: true, out: 'analysis_blind', video_dir: args.video_dir || 'videos', root: R }
 const VID_NAMES = (args.videos || []).map(v => (typeof v === 'string' ? v : v.vid))

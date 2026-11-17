@@ -9,6 +9,11 @@ export const meta = {
 // When v1/data/<vid>/blind_frozen.md exists, its claims are diffed against the informed outputs (and informed_extension.md);
 // every disagreement on a time or count is decided from RAW DATA in v1/data/<vid>/, never from either analysis's say-so.
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
+// Preflight: fail loudly before any agent is launched if the root is wrong (no fallback; default is the literal /home/user/Listener, pass args.root).
+const ROOT_PROBE = `${R}/v1/scripts/check_outputs.py`
+const ROOT_SCHEMA = { type: 'object', properties: { exists: { type: 'boolean' } }, required: ['exists'] }
+const rootProbe = await agent(`Report whether this file exists (use ls or stat; do not read or edit it): ${ROOT_PROBE}`, { label: 'preflight:root', phase: 'Compare', model: 'sonnet', effort: 'low', schema: ROOT_SCHEMA })
+if (!(rootProbe && rootProbe.exists)) throw new Error(`blindcmp.js: ${ROOT_PROBE} not found, so root "${R}" is wrong (pass args.root = the repo path)`)
 const SUM = { type: 'object', properties: { summary: { type: 'string' }, lessons: { type: 'array', items: { type: 'string' } } }, required: ['summary', 'lessons'] }
 phase('Compare')
 const res = await parallel(args.videos.map(vid => () => agent(`Repo ${R}. Compare two independent analyses of ${vid}:

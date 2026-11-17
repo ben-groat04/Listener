@@ -5,6 +5,11 @@ export const meta = {
 }
 // args: { videos: ['video2','video1'], rounds: 3, root: optional }
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs
+// Preflight: fail loudly before any agent is launched if the root is wrong (no fallback; default is the literal /home/user/Listener, pass args.root).
+const ROOT_PROBE = `${R}/v1/scripts/check_outputs.py`
+const ROOT_SCHEMA = { type: 'object', properties: { exists: { type: 'boolean' } }, required: ['exists'] }
+const rootProbe = await agent(`Report whether this file exists (use ls or stat; do not read or edit it): ${ROOT_PROBE}`, { label: 'preflight:root', phase: 'Debate', model: 'sonnet', effort: 'low', schema: ROOT_SCHEMA })
+if (!(rootProbe && rootProbe.exists)) throw new Error(`human.js: ${ROOT_PROBE} not found, so root "${R}" is wrong (pass args.root = the repo path)`)
 const D = `${R}/v1/analysis/human_listening`
 const SUM = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 const J = { type: 'object', properties: { more_human: { type: 'string', enum: ['A', 'B', 'tie'] }, more_accurate: { type: 'string', enum: ['A', 'B', 'tie'] }, would_rather_read: { type: 'string', enum: ['A', 'B'] }, why: { type: 'string' }, still_not_human: { type: 'array', items: { type: 'string' } } }, required: ['more_human', 'more_accurate', 'would_rather_read', 'why', 'still_not_human'] }

@@ -4,8 +4,13 @@ export const meta = {
   phases: [{ title: 'Readings' }, { title: 'Debate' }, { title: 'Synthesis' }],
 }
 // args: { root: optional repo root, videos: ['video1','video2'], name: 'optional; default = videos joined with _', relation: 'optional, e.g. "video1 is Part 1, video2 is Part 2 (verify)"; default = derive from the context.md titles', blind: false, out: 'analysis', rounds: 2 }
-// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+// Root: no fallback. R is args.root, else the literal /home/user/Listener (not derived from the script location). Pass args.root for another checkout.
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
+// Preflight: fail loudly before any agent is launched if the root is wrong (no fallback; default is the literal /home/user/Listener, pass args.root).
+const ROOT_PROBE = `${R}/v1/scripts/check_outputs.py`
+const ROOT_SCHEMA = { type: 'object', properties: { exists: { type: 'boolean' } }, required: ['exists'] }
+const rootProbe = await agent(`Report whether this file exists (use ls or stat; do not read or edit it): ${ROOT_PROBE}`, { label: 'preflight:root', phase: 'Readings', model: 'sonnet', effort: 'low', schema: ROOT_SCHEMA })
+if (!(rootProbe && rootProbe.exists)) throw new Error(`compare.js: ${ROOT_PROBE} not found, so root "${R}" is wrong (pass args.root = the repo path)`)
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const NAME = args.name || (args.videos || []).map(v => (typeof v === 'string' ? v : v.vid)).join('_')
 const D = `${OUT}/compare/${NAME}`

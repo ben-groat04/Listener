@@ -1,83 +1,69 @@
-# Human music writing corpus (plain, small-blog / user-review register)
+# Human listening corpus: web excerpts (verbatim)
 
-Collected 2026-11-17 by fetching each page and copying text verbatim. Not about our videos. No review of Elfstedentocht itself was found (only a MetaFilter post, https://www.metafilter.com/138829/Een-monsterrit-van-ruim-tweehonderd-kilometer, which returned 403 so no text was read; a search snippet says PSB made two songs and videos on the 1963 race from Fries Film Archief footage).
-The excerpts below are PSB reviews (the nearest match found) plus two sample-based-music posts.
+Collected 2026-11-17 by fetching pages with curl; text copied verbatim (whitespace normalised, quotes/punctuation untouched). Not about our videos. Register: small blogs/zines/retailer blog; no broadsheet criticism. Limits: no genuine first-person fan posts found about PSB Elfstedentocht itself (Metafilter blocked, 403); the only link found is https://www.metafilter.com/138829/ (2014 link post stating PSB made two songs/videos on the 1963 Elfstedentocht for the Explore the North festival; not fetched). Excerpt text is trimmed at sentence boundaries; ellipses not used.
 
-## 1. Blog review of PSB debut Inform-Educate-Entertain, on its first two tracks
-- URL: https://thealbumwall.blogspot.com/2013/08/inform-educate-off-with-its-ead.html
-- Register: review
+## 1. Micro-Chop (Substack blog), "6 Essential Instrumental Albums", on Juicy The Emissary, Attention Kmart Choppers (sample album from archive tapes)
 
-> So what's the problem? If you ask me, it's the first two tracks. The opener seems like a cool idea at first: it's an overture-style composition that mixes elements from some of the songs that follow. But once you're familiar with those songs, you don't want to hear snippets of them all mashed together - you want to hurry up and get to the real McCoy.
->
-> Track 2 is Spitfire, an absolute blinder. But as good as it is, it's got no place on this album. Spitfire, you see, had already been featured on an EP called The War Room, and since it felt right at home there, it feels a little out of place when it pops up here.
+URL: https://microchop.substack.com/p/6-essential-instrumental-albums
 
-## 2. Small-blog review of PSB debut album (Silent Radio)
-- URL: https://silentradio.co.uk/?p=16829
-- Register: review
+> Enterprising Denton, Texas producer Juicy The Emissary downloaded the entire collection, listened to all of it, and made a beautiful, seamless instrumental album titled Attention Kmart Choppers out of the various tape snippets he sampled. Street Corner Music released the project a little over two years ago in the summer of 2017, with Davis himself praising the unique composition and Bandcamp Daily choosing it as an Album of the Day.
 
-> I wasn’t entirely sure what to expect when this début album from Public Service Broadcasting popped into my inbox recently. Frustratingly, it turns out that I missed them playing in Bolton by a week or so (review here), and I’m certain that the added live audio visual dimension would’ve enhanced my feelings towards it.
->
-> From the couple of lines of blurb that come with the review listing, I was thinking maybe something along the lines of the Ghost Box Collective or the dark and otherworldly Moon Wiring Club. With PSB we have something different, a more organic live offering, skittering between electro beats and indie guitar. This isn’t a radical concept, but I think the live shows are where it will fly (pity I missed the gig, but we can be thankful for YouTube)
+## 2. Micro-Chop (Substack blog), "6 Essential Instrumental Albums", on Raggedy Jeans, In Clover (sampler beat tape)
 
-## 3. Same Silent Radio review: comparison to Lemon Jelly and note on the Spitfire sample source
-- URL: https://silentradio.co.uk/?p=16829
-- Register: review
+URL: https://microchop.substack.com/p/6-essential-instrumental-albums
 
-> In some ways PSB reminds me of Lemon Jelly, especially ‘ROYGBIV’ – its bluegrass sounding guitar hints at ‘The Staunton Lick’ from Lemon Jelly’s The Yellow EP. Also in common with Lemon Jelly, it’s an uplifting, cheery track with the sample voices informing us of the wonders of full colour broadcasting .
->
-> On ‘Spitfire’, the accompanying video footage and audio samples are lifted from the 1942 propaganda film, First of The Few, also known as Spitfire in the US, starring the most British of actors David Niven, amongst others.
+> After giving it a proper listen, her 2017 release In Clover became a go-to instrumental album for me and tracks like “Another Day” and “Fresh Eyes” became instant personal favorites. “Another Day” features an oddly beautiful, unconventional sample flip paired with a potent vocal snippet while “Fresh Eyes” makes use of some off-kilter drums and expertly placed chimes that help take the composition to another level. Meanwhile, “Tea” is a short, evocative, and entirely original beat, with an unexpected but well-executed switch-up about one third of the way through the track. This is an excellent collection of instrumental production and I’d like to see it get the attention is so very much deserves.
 
-## 4. Blog review of PSB debut album (Everything's Gone Green)
-- URL: https://everythinggonegreen.blogspot.com/2013/12/album-review-public-service.html
-- Register: review
+## 3. Micro-Chop (Substack blog), on Damu The Fudgemunk, Vignettes (instrumental, sampled)
 
-> Last year’s ‘The War Room’ EP had already introduced me to the possibilities of what might happen when you combine a firm indie rock aesthetic with a keen sense of history and access to a massive archive of BBC radio samples, but there was an unfulfilling brevity about that World War-themed EP. However, the full-length album has enabled PSB to expand its horizons a little, and that ultimately makes for a far more rewarding (if more intense) listening experience.
+URL: https://microchop.substack.com/p/6-essential-instrumental-albums
 
-## 5. Fan-written review of PSB Bright Magic (Joyzine), on the band's formula
-- URL: https://joyzine.org/2021/10/13/album-review-public-service-broadcasting-bright-magic/
-- Register: review
+> A sprawling, magnum opus of lush instrumentals that runs two hours long, with several songs going beyond the 12-minute mark, I’ve never heard anything quite like it before. “Offering” showcases Damu’s ear for atypical samples and his deft ability to flip and recontextualize each snippet of sound while “Grace Value” merges beautiful strings and neck-snapping drums.
 
-> It’s fair to say that I am a fan of the London-based band, Public Service Broadcasting (consisting of J. Willgoose Esq., Wrigglesworth and J.F. Abraham) and, since their first single from May, 2012 – ‘The War Room’ and the debut album, Inform – Educate – Entertain broke in May 2013, I’ve been a willing, eager convert.
->
+## 4. Joyzine (small music zine), Public Service Broadcasting, Bright Magic: the formula
+
+URL: https://joyzine.org/2021/10/13/album-review-public-service-broadcasting-bright-magic/
+
 > Their musical ‘formula’ is one that I find enthralling and deliciously simple (as many of the best ideas always are); a heavy drum/percussive beat and bassline, mixed with multiple, electronic sounds and backed by a return to the past via newsreel commentaries on historical events – the kind shown in cinemas in the early to mid 20th century.
 
-## 6. Sputnikmusic user review of PSB Bright Magic (closing paragraph)
-- URL: https://www.sputnikmusic.com/review/83834/Public-Service-Broadcasting-Bright-Magic
-- Register: review
+## 5. Joyzine, Public Service Broadcasting, Bright Magic: samples used sparingly
 
-> On paper, the idea of Public Service Broadcasting doing a futuristic noir take on the Berlin night city sounds incredibly enthralling, and while the first half delivers brilliant compositions like the buildup of the intro track into "Im Licht" and the likes of dancefloor stomper "People, Let's Dance" or pop candy "Blue Heaven", the second half feels like it could have been designed differently. All in all, Bright Magic is one more solid entry into the duo's catalogue, and who knows, maybe the next one will take place literally on the Moon.
+URL: https://joyzine.org/2021/10/13/album-review-public-service-broadcasting-bright-magic/
 
-## 7. Sputnikmusic user review of PSB The Race For Space, on what works and what does not
-- URL: https://www.sputnikmusic.com/review/66067/Public-Service-Broadcasting-The-Race-For-Space
-- Register: review
+> Though PSB’s use of electronics and music remain familiar, Bright Magic uses samples, and the English language, sparingly. It differs from previous albums in other ways as it’s less linear and narrative, instead working hard to create an impressionistic portrait of a city from the ground up.
 
-> Other attempts to branch out are not so successful. PSB's sound works best when it is lighthearted, or at least not overly serious. Smoke Fairies collaboration 'Valentina' displays this perfectly by setting its sights on providing a depoliticised tribute to the first woman in space and coming off as confusingly stagnant and a little bit naff.
->
-> Stand out 'The Other Side' breaks this trend somewhat. Documenting the tense communication break between mission control and a spaceship as it passes behind the moon, PSB play out the footage with a pulsating, nervous build-up, let the silence fill 'the longest wait' and then return for an explosive, triumphant finale.
+## 6. Joyzine, PSB, Bright Magic: opening track and Lichtspiel III
 
-## 8. Short blog review of PSB Bright Magic (Arctic Reviews)
-- URL: https://arcticreviews.co.uk/2021/09/28/public-service-broadcasting-bright-magic-review
-- Register: review
+URL: https://joyzine.org/2021/10/13/album-review-public-service-broadcasting-bright-magic/
 
-> Also dispensed with is their sample heavy approach, marked by the inclusion instead of spoken word inserts from former Einstürzende Neubauten veteran Blixa Bargeld and actress Nina Hoss. The longest shadow cast however is that of David Bowie and the renowned seventies album trifecta which gave the city a permanent musical legacy, his and it’s brilliance saluted on The Visitor. Elsewhere Blue Heaven and People, Let’s Dance are highlights of an album which doubles down on a surprisingly enduring formula.
+> ‘Lichtspiel III: Symphonie Diagonale’ is my favourite track on the album and I use it daily for meditation. A gorgeous piano and a light, yet emotional, synthesiser join together and instantly remind me of something that Vangelis or Ennio Morricone could have composed for a specific movie, or TV show.
 
-## 9. Producer's own newsletter note on listening back to an old sample-built track (Marmonies)
-- URL: https://steveonsteve.substack.com/p/marmonies
-- Register: text
+## 7. Joyzine, PSB, Bright Magic: verdict
 
-> For example, during the period I wrote Marmonies, I thought about arrangements in terms of primary colours. I didn’t want to use many of the tricks producers use to add vibe or emotion to their tracks, such as dense reverb, layers, or pads. I wanted each element to pop—bright, primary colours, distinct and clear. Listening back to tunes like Marmonies, I think I pulled it off.
+URL: https://joyzine.org/2021/10/13/album-review-public-service-broadcasting-bright-magic/
 
-## 10. Same newsletter note: how a sampled bassline was built
-- URL: https://steveonsteve.substack.com/p/marmonies
-- Register: text
+> As stated before, this new album is unlike the previous three and certainly holds deeper, personal tones to it. The quality of any music produced by PSB can never be undermined and this is certainly no different. The composition, performance and production of each track is superb and it’s clear that a great deal of thought and personal energy have gone into the making of PSB’s fourth studio album. Each track comes across as unique and different in its own right and the listener is kept on their toes throughout. For fans of electronic music, especially early examples from the legendary Kraftwerk, this latest album from PSB is intriguing , engaging and vastly enjoyable.
 
-> The bassline in this song, for instance, is built from the same audio as the main bell-like tones: a snippet cropped from an understated piece of music by a famous 20th century composer. I spent agessss shaping it, sculpting tiny snippets of audio until they rolled and twisted just so. To this day, I could listen to it roll along almost indefinitely.
+## 8. Richer Sounds blog (retailer), PSB, Bright Magic: opening, archive voices
 
-## 11. Author blog "Current Listens" note on a free sample-based kalimba release and its source pack
-- URL: https://www.goodreads.com/author_blog_posts/20206493-current-listens-sampled-sources-roadside-tuba
-- Register: text
+URL: https://blog.richersounds.com/album-review-public-service-broadcasting-bright-magic/
 
-> ▰ Warp & Weft is a lovely, free, six-track release posted by Scanner (based in London) of delicately reworked samples from kalimba alongside soft synth lines, lightly glitched and filtered. The first two tracks (“Wefte,” “Wevan”) and sixth (“Weave into Time”) are especially sedate and gentle. The album was recorded live and released this past Friday, August 7.
->
-> ▰ The free Reel Feels (Sound Pack), by Frankfurt-based musician Jogging House, is the source audio from which Scanner derived his Warp & Weft album, but you don’t need to be a musician to take advantage of it. The first five tracks are beautifully torqued recordings of kalimba (or mbira), turned into pure atmosphere, each a minute or longer. Put them in a playlist and set them to loop on random. You’ll lose track of time happily.
+> Der Sumpf (Sinfonie der Grossstadt) is a suitable dramatic name for the brooding piece that opens the album – sounding somewhere between a Hans Zimmer period piece and something that wouldn’t be amiss in the Blade Runner series. There is sci-fi ‘warps’ over the pounding synth rhythms which eventually give way to gentle bells. Unlike previous work such as Every Valley (a piece that sampled from British Pathe archives surrounding news footage surrounding Welsh Miners, their families and the strikes) this album feels conceptual but doesn’t seem to stitch it all together with an overarching story. One similarity here however, is the use of archive footage to tear sound and voice samples from – usually from, yes, public service broadcasts… Here, this is most clear in Der Rhythmus der Machinen, where a clear English received pronunciation announces ‘machines will do the heavy work, men will supervise the machines
 
+## 9. Richer Sounds blog, PSB, Bright Magic: the odd closer and the Lichtspiel suite
+
+URL: https://blog.richersounds.com/album-review-public-service-broadcasting-bright-magic/
+
+> It’s not without odd bumps however. Ich und die Stadt, whilst technically impressive, is a strange track that feels somewhere between meditative spa soundtrack, to something used to hypnotise Alex DeLarge in A Clockwork Orange – so it’s more than a little odd. Perhaps the best listen on the track is the largest on the album – so much so it’s been split into three songs, Lichtspiel I: Opus (aptly named), Lichtspiel II: Schwarz Weiss Grau and finally, Lichtspiel III: Symphonie Diagonale. The three songs are vastly different to one another, however when played back to back, fit much like a classical composition or opera. They somehow manage to structurally complement each other. Sadly, the album is led out by the aforementioned odd song – so the ending falls a little flat.
+
+## 10. The Sound Projector (small UK zine), Colin Andrew Sheffield, Moments Lost (collage from old movie soundtrack LPs)
+
+URL: https://www.thesoundprojector.com/2026/03/07/melting-time-with-loops/
+
+> I’m impressed to learn this subtle, but texturally rich, collage of layers and textures was made from sampling and processing old movie soundtrack LPs, an area of music and record-collecting that’s been growing in interest for the last 20-30 years now. As with previous detailed sample-and-stitch endeavours from the Sheffster – the 2017 cassette Polarities, with James Eck Rippie, is but one example – the effort spent in trying to transcend his sources is really starting to pay off, and there’s no fetishisation of the original music score nor the vinyl on which it was pressed (although we are advised to listen out for juicy moments of surface noise being folded into the whirlpool of colours).
+
+## 11. Take Effect Reviews, Filax Stael, found-sound and sample collage
+
+URL: https://takeeffectreviews.com/november-2024-5/2024/12/1/filax-stal
+
+> Further along, “Urania” is full of blurry, ominous waves of dissonance, while “Return -A-” offers fuzzy static that segues into beeps amid a mesmerizing backdrop.Nearing the end, “BMMF” is populated by dense and bleak layering that seems like it should soundtrack a horror movie, and “84 Lost” exits with a sampled mix of voices and atypical manipulation of synthetic versus organic. An assembly of found sounds, samples and studio work, the tracks here range from 20 seconds to no more than 3 minutes, and each one is uniquely different, noisy and iconoclastically rhythmic.

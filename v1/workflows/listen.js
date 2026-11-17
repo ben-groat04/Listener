@@ -9,8 +9,13 @@ export const meta = {
   ],
 }
 // args: { root: optional repo root, videos: ['video1'] or [{vid, dur}] (dur auto-read from audio_features/summary.json), rounds: 2, blind: false, out: 'analysis', skip_windows: ['video1:0040', ...], windows_only: false }
-// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+// Root: no fallback. R is args.root, else the literal /home/user/Listener (not derived from the script location). Pass args.root for another checkout.
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
+// Preflight: fail loudly before any agent is launched if the root is wrong (no fallback; default is the literal /home/user/Listener, pass args.root).
+const ROOT_PROBE = `${R}/v1/scripts/check_outputs.py`
+const ROOT_SCHEMA = { type: 'object', properties: { exists: { type: 'boolean' } }, required: ['exists'] }
+const rootProbe = await agent(`Report whether this file exists (use ls or stat; do not read or edit it): ${ROOT_PROBE}`, { label: 'preflight:root', phase: 'Windows', model: 'sonnet', effort: 'low', schema: ROOT_SCHEMA })
+if (!(rootProbe && rootProbe.exists)) throw new Error(`listen.js: ${ROOT_PROBE} not found, so root "${R}" is wrong (pass args.root = the repo path)`)
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const BLIND = !!args.blind
 // Accept bare names or {vid, dur}; when dur is omitted an agent reads duration_s from v1/data/<vid>/audio_features/summary.json.

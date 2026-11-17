@@ -1,45 +1,63 @@
-import librosa, numpy as np, json, sys
-D='/home/user/Listener/v1/data/video1/stems_raw/htdemucs/song/'
+import numpy as np, librosa, json, soundfile as sf
+from scipy.signal import butter, sosfilt, find_peaks
+D='/home/user/Listener/v1/data/t_cshells_cshore/'
 sr=22050
-dr,_=librosa.load(D+'drums.wav',sr=sr,mono=True)
-hop=256
-# band-split drums: low (kick) <150, mid (snare) 150-2500, high >5k
-S=np.abs(librosa.stft(dr,n_fft=1024,hop_length=hop))
-f=librosa.fft_frequencies(sr=sr,n_fft=1024)
-def env(lo,hi):
-    e=S[(f>=lo)&(f<hi)].sum(0); return np.maximum(0,np.diff(np.log1p(e*10),prepend=0))
-bands={'low':env(30,150),'mid':env(150,2500),'high':env(5000,10000)}
-fr=sr/hop
-# overall onset env tempo
+def ld(p):
+    y,s=sf.read(p); 
+    if y.ndim>1:y=y.mean(1)
+    return librosa.resample(y,orig_sr=s,target_sr=sr)
+dr=ld(D+'stems_raw/htdemucs/song/drums.wav'); bs=ld(D+'stems_raw/htdemucs/song/bass.wav'); mx=ld(D+'audio/song.wav')
+beats=np.array(json.load(open(D+'audio_features/beat_times.json')))
+if beats.ndim>1: beats=beats[:,0]
+print('beats',beats[:3],len(beats),'median IOI',np.median(np.diff(beats)),'bpm',60/np.median(np.diff(beats)))
+ib=np.diff(beats); print('IOI pct',np.percentile(ib,[1,10,50,90,99]))
+# tempo curve from tracker, 30s
+for s in range(0,360,30):
+    m=(beats>=s)&(beats<s+30)
+    if m.sum()>3: print(s, round(60/np.median(np.diff(beats[m])),1), m.sum())
+# kick band onsets
+sos=butter(4,[40,120],'band',fs=sr,output='sos')
+k=sosfilt(sos,dr); env=np.abs(k); 
+hop=110 # 5ms
+e=librosa.feature.rms(y=k,frame_length=441,hop_length=hop)[0]
+t=np.arange(len(e))*hop/sr
+d=np.maximum(0,np.diff(np.log10(e+1e-6)))
+# onset env from full drums
 oe=librosa.onset.onset_strength(y=dr,sr=sr,hop_length=hop)
-ac=librosa.autocorrelate(oe-oe.mean(),max_size=int(4*fr))
-lags=np.arange(len(ac))/fr
-pk=[(round(lags[i],3),round(float(ac[i]/ac[0]),3)) for i in range(5,len(ac)-1) if ac[i]>ac[i-1] and ac[i]>=ac[i+1] and ac[i]/ac[0]>0.08]
-print('AC peaks (lag s, rel):',pk[:20])
-# IOI hist
 on=librosa.onset.onset_detect(onset_envelope=oe,sr=sr,hop_length=hop,units='time',delta=0.1)
-ioi=np.diff(on); print('n onsets',len(on),'median ioi',np.median(ioi))
-h,e=np.histogram(ioi,bins=np.arange(0,1.6,0.04));print([ (round(e[i],2),int(h[i])) for i in range(len(h)) if h[i]>10])
-# beat phase pattern of 16 steps per bar using beats file
-bt=np.array(json.load(open('/home/user/Listener/v1/data/video1/audio_features/beat_times.json')))
-bt=np.array(bt if bt.ndim==1 else bt)
-print('beats',len(bt),bt[:3],np.median(np.diff(bt)),'std',np.std(np.diff(bt)))
-d=np.diff(bt); print('beat gap min/max',d.min(),d.max(),'gaps >0.85:',[round(b,1) for b,g in zip(bt,d) if g>0.85][:20])
-# step-grid: refine period via fitting. grid 16th = beat/4
-P=np.median(d)/4
-# fit phase/period over whole track using onset env sum
-best=None
-for per in np.arange(P*0.98,P*1.02,P*0.0005):
-  for ph in np.arange(0,per,per/20):
-    t=np.arange(ph,len(oe)/fr,per); v=oe[(t*fr).astype(int).clip(0,len(oe)-1)].mean()
-    if best is None or v>best[0]: best=(v,per,ph)
-print('best 16th period',best[1],'=> BPM',60/(best[1]*4),'phase',best[2])
-per,ph=best[1],best[2]
-for name,e_ in bands.items():
-    steps=np.arange(ph,len(e_)/fr,per)
-    vals=np.array([e_[int(s*fr):int(s*fr)+3].max() for s in steps if int(s*fr)+3<len(e_)])
-    n=len(vals)//16*16
-    for pos in (4,8,16):
-        m=vals[:n].reshape(-1,pos).mean(0); print(name,pos,np.round(m/m.max(),2))
-np.save('/tmp/steps.npy',np.array([per,ph]))
-# per 20s: pattern
+print('drum onsets total',len(on))
+np.save('/tmp/on.npy',on)
+# per-section density and beat-phase test with 10ms bins
+secs=[(11,24),(24,40),(40,60),(60,80),(80,100),(100,120),(120,160),(160,200),(200,240),(240,300),(300,320)]
+bt=beats
+for a,b in secs:
+    o=on[(on>=a)&(on<b)]
+    if len(o)<8: print(a,b,'few',len(o));continue
+    # offset from nearest beat in fraction of beat
+    idx=np.searchsorted(bt,o).clip(1,len(bt)-1)
+    prev=bt[idx-1];nxt=bt[idx];per=nxt-prev
+    ph=(o-prev)/per
+    h,_=np.histogram(ph,bins=8,range=(0,1))
+    print(a,b,'n',len(o),'rate/s',round(len(o)/(b-a),2),'phase hist(8)',h.tolist())
+# bass onsets
+oeb=librosa.onset.onset_strength(y=bs,sr=sr,hop_length=hop)
+ob=librosa.onset.onset_detect(onset_envelope=oeb,sr=sr,hop_length=hop,units='time',delta=0.1)
+for a,b in [(80,100),(100,120),(140,160),(180,200),(220,240),(260,280)]:
+    o=ob[(ob>=a)&(ob<b)]
+    if len(o)>5: print('bass',a,b,len(o),'IOI med',np.median(np.diff(o)).round(3))
+# drum presence per 10 s (rms dB)
+for s in range(0,360,10):
+    seg=dr[s*sr:(s+10)*sr]; sb=bs[s*sr:(s+10)*sr]
+    print(s,'drum dB',round(20*np.log10(np.sqrt((seg**2).mean())+1e-9),1),'bass',round(20*np.log10(np.sqrt((sb**2).mean())+1e-9),1))
+# 4s block cycle: mix envelope autocorr 40-200
+env=librosa.feature.rms(y=mx,frame_length=2205,hop_length=1102)[0]; te=1102/sr
+for a,b in [(60,100),(100,140),(140,200),(200,300)]:
+    x=np.log(env[int(a/te):int(b/te)]+1e-6); x=x-x.mean()
+    ac=np.correlate(x,x,'full')[len(x)-1:]; ac/=ac[0]
+    lags=np.arange(len(ac))*te
+    m=(lags>1.5)&(lags<10); i=np.argmax(ac*m); print('env AC',a,b,'peak lag',lags[i].round(2),ac[i].round(2))
+# global tempo curve librosa
+tg=librosa.beat.tempo(onset_envelope=oe,sr=sr,hop_length=hop,aggregate=None)
+tt=librosa.times_like(tg,sr=sr,hop_length=hop)
+for s in range(40,320,20):
+    m=(tt>=s)&(tt<s+20); print('tempo est',s,np.median(tg[m]).round(1))

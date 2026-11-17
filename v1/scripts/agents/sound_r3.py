@@ -1,45 +1,48 @@
-import numpy as np, soundfile as sf, librosa
-D='/home/user/Listener/v1/data/t_birdwalk/stems_raw/htdemucs/song/'
-def ld(n):
-    y,sr=sf.read(D+n+'.wav'); return y.T,sr
-V,sr=ld('vocals'); O,_=ld('other'); B,_=ld('bass')
-def seg(y,a,b): return y[:,int(a*sr):int(b*sr)]
-# Q1 voice: side-channel coupling vocals vs other
-print("SIDE correlation vocals vs other (envelope of side RMS, 50ms frames) and sample-level")
-for a,b in [(0.50*60+0,58),(135,143),(152,158),(165,170),(14,40),(95,120)]:
-    v=seg(V,a,b); o=seg(O,a,b)
-    sv=(v[0]-v[1]); so=(o[0]-o[1]); mv=v[0]+v[1]; mo=o[0]+o[1]
-    h=int(.05*sr); n=len(sv)//h
-    env=lambda x:np.sqrt((x[:n*h].reshape(n,h)**2).mean(1))+1e-12
-    c_env=np.corrcoef(np.log(env(sv)),np.log(env(so)))[0,1]
-    c_samp=np.corrcoef(sv,so)[0,1]
-    c_mid=np.corrcoef(np.log(env(mv)),np.log(env(sv)))[0,1]
-    # band-limited spectral shape of vocal side vs other side
-    S=lambda x:np.abs(np.fft.rfft(x[:len(x)//4096*4096].reshape(-1,4096)*np.hanning(4096),axis=1)).mean(0)
-    f=np.fft.rfftfreq(4096,1/sr)
-    cs=np.corrcoef(np.log(S(sv)[(f>100)&(f<5000)]+1e-9),np.log(S(so)[(f>100)&(f<5000)]+1e-9))[0,1]
-    print(f"{a:.0f}-{b:.0f}s side env corr V/O {c_env:.2f}; sample corr {c_samp:.2f}; V side-vs-mid env {c_mid:.2f}; side-spectrum corr {cs:.2f}; V side/mid rms {np.sqrt((sv**2).mean()/((mv**2).mean()+1e-12)):.2f}")
-# Q harmony: stab patch before/after 0:47 -- harmonic ladder & attack/decay on other (mono)
-print("STAB ladder")
-m=O.mean(0)
-for a,b in [(40,47),(62,80),(120,130),(165,170)]:
-    x=m[int(a*sr):int(b*sr)]
-    S=np.abs(librosa.stft(x,n_fft=8192,hop_length=512))
-    f=librosa.fft_frequencies(sr=sr,n_fft=8192)
-    mean=S.mean(1)
-    lo,hi=(700,1100) if a==40 else (180,280)
-    band=(f>lo)&(f<hi); f0=f[band][np.argmax(mean[band])]
-    lad=[]
-    for k in range(1,9):
-        w=(f>k*f0*0.97)&(f<k*f0*1.03); lad.append(20*np.log10(mean[w].max()/mean[(f>f0*.97)&(f<f0*1.03)].max()+1e-12))
-    print(f"{a}-{b} f0={f0:.0f} ladder dB rel f0:",[round(l) for l in lad])
-    # onset envelope attack/decay around f0 band
-    bs=S[(f>f0*.9)&(f<f0*1.1)].sum(0); db=20*np.log10(bs/bs.max()+1e-9)
-    on=librosa.onset.onset_detect(onset_envelope=np.diff(db,prepend=db[0]).clip(0),sr=sr,hop_length=512,units='frames')
-    dec=[]
-    for o in on[:60]:
-        seg_=db[o:o+40]
-        pk=seg_.max(); i=seg_.argmax(); t=np.where(seg_[i:]<pk-15)[0]
-        if len(t): dec.append(t[0]*512/sr)
-    print("   onsets",len(on),"rate/s",round(len(on)/(b-a),2),"15dB decay median s",round(float(np.median(dec)),2) if dec else None, "spectral flatness",round(float(librosa.feature.spectral_flatness(y=x).mean()),4),"centroid",round(float(librosa.feature.spectral_centroid(y=x,sr=sr).mean())))
-    # odd/even harmonic: square-like if 3rd strong, even weak
+import numpy as np, soundfile as sf
+D='/home/user/Listener/v1/data/t_cshells_cshore/'
+def ld(p):
+    x,sr=sf.read(p); 
+    return (x.mean(1) if x.ndim>1 else x),sr
+mix,sr=ld(D+'audio/song.wav')
+S={k:ld(D+f'stems_raw/htdemucs/song/{k}.wav')[0] for k in['vocals','drums','bass','other']}
+def spec(x,a,b,n=1<<19):
+    s=x[int(a*sr):int(b*sr)]*np.hanning(int((b-a)*sr)); F=np.abs(np.fft.rfft(s,n)); f=np.fft.rfftfreq(n,1/sr); return f,F
+def peaks(x,a,b,lo,hi,k=5):
+    f,F=spec(x,a,b); m=(f>lo)&(f<hi); idx=np.where(m)[0]; Fm=20*np.log10(F[idx]+1e-12)
+    out=[]; 
+    for i in np.argsort(-Fm):
+        if all(abs(f[idx[i]]-o[0])>15 for o in out): out.append((round(f[idx[i]],1),round(Fm[i],1)))
+        if len(out)>=k: break
+    return out
+print('DRONE 0:25-0:32 other stem partials of A (110/55?)')
+f,F=spec(S['other'],25,32); ref=None
+for f0 in [55,110,220]:
+    r=[]
+    for n in range(1,9):
+        m=(abs(f-f0*n)<f0*n*0.02); r.append(round(20*np.log10(F[m].max()+1e-12),1))
+    print(f0,r)
+print('mix peaks 25-32 (40-1500):',peaks(mix,25,32,40,1500,8))
+print('TONE 1-1.7k mix:')
+for a,b in[(3:=210,215),(215,225),(240,250),(256,266),(276,286),(312,314),(332,342)]:
+    print(a,b,peaks(mix,a,b,900,1800,3))
+print('4:36-4:46 mix 300-1800',peaks(mix,276,286,300,1800,5))
+print('2:22-2:24 other 150-400',peaks(S['other'],142,144,150,400,4),'vocals',peaks(S['vocals'],142,144,150,1000,4),'mix',peaks(mix,142,144,150,400,4))
+# 5:32-5:37 vocals vs other spectrum correlation (log bands)
+ed=np.geomspace(100,8000,25)
+def band(x,a,b):
+    f,F=spec(x,a,b,1<<18); return np.array([10*np.log10((F[(f>=ed[i])&(f<ed[i+1])]**2).sum()+1e-20) for i in range(24)])
+v=band(S['vocals'],332,337);o=band(S['other'],332,337);m=band(mix,332,337)
+print('corr vocals-other',np.corrcoef(v,o)[0,1],'vocals-mix',np.corrcoef(v,m)[0,1])
+# residual: vocals minus scaled other
+print('vocals-minus-other dB per band',np.round(v-o,0))
+# low drum: 50-80Hz mix 20ms RMS during 2:00-2:30 vs drum stem
+from scipy.signal import butter,sosfilt
+def lo(x,a,b,l,h):
+    s=sosfilt(butter(4,[l,h],'band',fs=sr,output='sos'),x[int(a*sr):int(b*sr)]); return 20*np.log10(np.sqrt((s**2).mean())+1e-12)
+for nm in['drums','bass','other']:
+    print(nm,'50-80Hz 2:00-2:30',round(lo(S[nm],120,150,50,80),1),'80-150',round(lo(S[nm],120,150,80,150),1))
+print('mix 50-80',round(lo(mix,120,150,50,80),1))
+# drum stem 2:22 pulse?
+from scipy.signal import hilbert
+e=np.abs(hilbert(S['drums'][int(142*sr):int(144.5*sr)])); 
+print('drums stem 142-144.5 env 50ms dB',[round(20*np.log10(e[i:i+2205].mean()+1e-9),0) for i in range(0,len(e)-2205,int(0.2*sr))])

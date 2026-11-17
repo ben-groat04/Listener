@@ -1,58 +1,47 @@
-import numpy as np, librosa, json
-D='/home/user/Listener/v1/data/video1/'
-y,sr=librosa.load(D+'stems_raw/htdemucs/song/vocals.wav',sr=16000)
-o,_=librosa.load(D+'stems_raw/htdemucs/song/other.wav',sr=16000)
-dr,_=librosa.load(D+'stems_raw/htdemucs/song/drums.wav',sr=16000)
-bt=np.array(json.load(open(D+'audio_features/beat_times.json')))
-hop=160
-r=librosa.feature.rms(y=y,frame_length=640,hop_length=hop)[0]; db=20*np.log10(r+1e-9)
-on=db>-42
-seg=[];s=None
-for i,v in enumerate(on):
-    if v and s is None:s=i
-    if not v and s is not None:seg.append([s,i]);s=None
-mg=[]
-for a,b in seg:
-    if mg and a-mg[-1][1]<=30: mg[-1][1]=b
-    else: mg.append([a,b])
-mg=[(a/100,b/100) for a,b in mg if b-a>=40]
-bar=4*0.7665
-def pos(t):
-    i=np.searchsorted(bt,t)-1
-    if i<0: return (0,0.0)
-    if i+1>=len(bt): return (i,min(1.0,(t-bt[i])/0.766))
-    ph=(t-bt[i])/(bt[i+1]-bt[i]); return i,ph
-print('burst start/end beat-index (mod4) and phase')
-for a,b in mg:
-    pa,pb=pos(a),pos(b)
-    print('%d:%05.2f-%d:%05.2f  start beat%%4=%d ph=%.2f | end beat%%4=%d ph=%.2f | dur %.1f bars %.2f'%(a//60,a%60,b//60,b%60,pa[0]%4,pa[1],pb[0]%4,pb[1],b-a,(b-a)/bar))
-# repeat test: 0:24.4-0:32 vs 2:44.0-2:48.2 mel envelope xcorr
-def mel(t0,t1):
-    seg=y[int(t0*sr):int(t1*sr)]
-    return librosa.power_to_db(librosa.feature.melspectrogram(y=seg,sr=sr,n_fft=512,hop_length=160,n_mels=40,fmax=6000))
-A=mel(24.0,32.5);B=mel(43.5,49.0)
-B2=mel(163.5,169.0)
-def best(A,B):
-    A=A-A.mean(1,keepdims=True);B=B-B.mean(1,keepdims=True)
-    n=B.shape[1];res=[]
-    for k in range(0,A.shape[1]-n+1):
-        a=A[:,k:k+n];res.append((a*B).sum()/np.sqrt((a**2).sum()*(B**2).sum()))
-    return max(res),np.argmax(res)/100
-for nm,(t0,t1) in {'2:44-2:49':(164,169),'0:41-0:43 (De 12e)':(41,43)}.items():
-    Bm=mel(t0,t1)
-    A2=mel(24.0,32.5)
-    print(nm,'vs 0:24-0:32.5: best corr %.2f at +%.2f s'%best(A2,Bm))
-# sanity: control, random segment of speech vs same
-Bc=mel(51,53.5); print('control 0:51-0:53.5 vs 0:24-0:32.5: %.2f at %.2f'%best(mel(24.0,32.5),Bc))
-Bc=mel(2*60+24,2*60+27); print('control 2:24-2:27 vs 0:24-0:32.5: %.2f at %.2f'%best(mel(24.0,32.5),Bc))
-# leakage: corr of vocal-stem 2-8k envelope with other-stem and drum-stem 2-8k envelopes within bursts vs voiced fraction
-def band(x,lo,hi):
-    S=np.abs(librosa.stft(x,n_fft=512,hop_length=160))
-    f=librosa.fft_frequencies(sr=sr,n_fft=512);return S[(f>=lo)&(f<hi)].sum(0)
-vb=band(y,3000,8000);ob=band(o,3000,8000);dbn=band(dr,3000,8000);vm=band(y,300,3000)
-for a,b in mg:
-    i,j=int(a*100),int(b*100)
-    print('%d:%05.1f  corr(voc HF, drums HF)=%.2f  corr(voc HF,other HF)=%.2f  voc HF/mid=%.2f'%(a//60,a%60,np.corrcoef(vb[i:j],dbn[i:j])[0,1],np.corrcoef(vb[i:j],ob[i:j])[0,1],vb[i:j].sum()/vm[i:j].sum()))
-# end of last voice vs cut at 167.8
-print('vocal dB around 2:46-2:49 per 0.1s:')
-print(' '.join('%.0f'%db[int(t*100)] for t in np.arange(166.0,169.0,0.1)))
+import numpy as np, librosa, sys
+D='/home/user/Listener/v1/data/t_birdwalk/stems_raw/htdemucs/song/'
+v,sr=librosa.load(D+'vocals.wav',sr=22050,mono=False)
+m=v.mean(0); d=librosa.load(D+'drums.wav',sr=22050)[0]
+hop=256
+def ons(x,delta=0.07):
+    e=librosa.onset.onset_strength(y=x,sr=sr,hop_length=hop)
+    return librosa.onset.onset_detect(onset_envelope=e,sr=sr,hop_length=hop,units='time',delta=delta,backtrack=False)
+vo=ons(m); do=ons(d,0.15)
+rms=librosa.feature.rms(y=m,hop_length=hop)[0]; t=librosa.times_like(rms,sr=sr,hop_length=hop)
+db=20*np.log10(rms+1e-9)
+# vocal activity edges per 0.5s around verse bounds
+def act(a,b):
+    s=(t>=a)&(t<b); return db[s].mean()
+for a,b in [(22,26),(44,50),(68,73),(56,62),(1*60+55,2*60+2),(2*60+45,2*60+50)]:
+    print('win',a,b,[round(act(x,x+0.5),0) for x in np.arange(a,b,0.5)])
+# lag of vocal onsets vs nearest drum hit, per section
+def lag(a,b):
+    vv=vo[(vo>=a)&(vo<b)]; dd=do[(do>=a-1)&(do<b+1)]
+    if len(vv)==0 or len(dd)==0: return None
+    l=[(x-dd[np.argmin(abs(dd-x))]) for x in vv]; l=np.array(l)
+    return len(vv),np.round(np.median(l),3),np.round(np.mean(l<-0.03),2),np.round(np.mean(abs(l)<0.05),2)
+for a,b in [(0,12),(24,47),(47,59),(70,118),(120,131),(143,155)]:
+    print('lag',a,b,lag(a,b))
+# phase of vocal onsets on 0.19 grid anchored to loop start 47.2 (hat step 0.1875?)
+for step in [0.1875,0.19,0.1936]:
+  for a,b in [(24,47),(70,118),(131,143)]:
+    vv=vo[(vo>=a)&(vo<b)]
+    ph=((vv-47.2)/step)%1; ang=np.angle(np.mean(np.exp(2j*np.pi*ph))); R=abs(np.mean(np.exp(2j*np.pi*ph)))
+    print('phase',step,a,b,len(vv),'R',round(R,2),'mean phase in step',round(ang/(2*np.pi)%1,2))
+# side/mid in hook vs verse
+L,R_=v[0],v[1]
+for a,b in [(24,47),(48,58),(75,115),(125,140)]:
+    s=slice(int(a*sr),int(b*sr)); mid=(L[s]+R_[s])/2; side=(L[s]-R_[s])/2
+    print('S/M',a,b,round(np.sqrt((side**2).mean()/(mid**2).mean()),3))
+# pitch of hook: pYIN on 2:00-2:11 and 2:35-2:46, cents vs A440
+for a,b in [(48,58),(120,131),(155,166),(24,45),(72,115)]:
+    y=m[int(a*sr):int(b*sr)]
+    f0,vf,_=librosa.pyin(y,fmin=80,fmax=700,sr=sr,frame_length=2048,hop_length=512)
+    f=f0[vf&~np.isnan(f0)]; mid=12*np.log2(f/440)+69
+    pc=np.round(mid).astype(int)%12; cents=(mid-np.round(mid))*100
+    names='C C# D D# E F F# G G# A A# B'.split()
+    h=np.bincount(pc,minlength=12)/len(pc)
+    print('pitch',a,b,len(f),{names[i]:round(h[i],2) for i in np.argsort(-h)[:5]},'median offset cents',round(np.median(cents),0))
+    # C3 vs C#3 specifically, between 125-145 Hz
+    c3=np.sum((f>127)&(f<134)); cs=np.sum((f>135)&(f<142)); a2=np.sum((f>106)&(f<114))
+    print('   A2',a2,'C3',c3,'C#3',cs)

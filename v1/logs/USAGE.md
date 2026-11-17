@@ -11,3 +11,4 @@
 | 23:58 | 90% | 53% | status allowed_warning. Paused all agent work until 01:40 reset |
 | 23:59 | 90% | 53% | user: the other session has stopped, so further increases are this session only |
 | 00:16 | 92% | 53% | 10 Sonnet viewers cost ~2% (860k tokens). Per user, using remaining headroom: video2 seg 9-16 + words |
+| 00:26 | 95% | 54% | 9 viewers = 790k tokens, ~3%. Remaining agent work needs music_views (CPU still running), so next launch is at the reset |

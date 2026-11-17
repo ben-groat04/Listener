@@ -25,3 +25,4 @@
 - New CPU tools: `06_stem_one.sh` (demucs stems for any video), `07_audio_views.py` (per-20 s stem spectrogram windows, chords, lead melody, levels/stereo width), `08_clap_tags.py` (CLAP zero-shot genre/instrument/mood/voice/sound tags every 5 s), `check_outputs.py` (pipeline completeness gate). All wired into `extract_all.sh`.
 - Fixed silent failure of visual features (OpenCV 5). Re-running for both videos.
 - Next (after reset): music-first workflow (per-section listeners + specialist music panel), then interpret panel, cross-video comparison, blind runs, test videos, cold-read loops.
+- 00:26 video2: all 16 segment notes + words.md done. A viewer questions whether video2 is really "Part 2" (context says Part 2 is calmer/electronic, but 3:20-4:00 is a loud dense plateau). **Must be verified** in the music/research phase.

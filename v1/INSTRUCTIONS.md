@@ -4,7 +4,7 @@ Source: the user's message that kicked off v1. These are the rules for this atte
 
 1. **Think hard. Be creative.**
 2. **Use workflows so agents can converse** with each other (debate, respond, build on each other).
-3. **The subject is a music video** (`videos/video.mp4`). Do all you can, and mean *all*, to analyse
+3. **The subject is a music video** (music videos in `videos/`, currently `video1`, `video2`). Do all you can, and mean *all*, to analyse
    everything about the video and the music **as a human would interpret it**: meaning, emotion,
    story, symbolism, not just technical data.
 4. **Usage pacing:**
@@ -38,3 +38,6 @@ Source: the user's message that kicked off v1. These are the rules for this atte
 22. **Focus more on the music than the video.** Music analysis gets the larger share of agents and tools; video is read in relation to the music.
 23. (00:16) User: don't be overly scared of the limit before the reset, since a scheduled restart exists after it. Use the headroom; workflows can resume if cut off.
 24. (07:30) User verdict on the published reports: **"This is absolutely not how a human thinks and listens about music."** The reports are measurement-led and audit-like. Fix the approach: run a workflow that discusses how humans actually listen, think and feel, and redesign the outputs and toolkit around it.
+
+## Resolved usage policy (supersedes items 4, 11 and 23 for the current regime)
+Items 4 (hold back before the reset, then go flat out), 11 (keep a margin) and 23 (use the headroom before the reset) came from different moments and pull in different directions. For the current regime one rule applies. **Watch one number: the 5-hour window.** Log it in `logs/USAGE.md` before each workflow launch, and **do not start a new workflow at or above 85%** of that window; workflows already running may finish, and cut-off runs resume by running them again. **The weekly cap** is a second ceiling: do not start new work when the 7-day figure is at 85% either, and keep the weekly figure low enough that the user keeps headroom until its reset. Never run to 100% on purpose. After a window resets, carry on at full pace up to the 85% line; the 'go crazy until the limit is hit' wording of item 4 no longer applies. **Fallback:** when no `rate_limit_event` is available to read, run at most one workflow at a time and log the usage as 'unknown' in `logs/USAGE.md`.

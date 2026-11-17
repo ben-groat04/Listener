@@ -54,3 +54,14 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Ending misread as a quiet "tap": it is a full-level kick-and-bass hit at 5:02.3 after a pad ring-out.
 - Cited CLAP only as song means (vinyl crackle, instruments, no-vocals), hiding strong time structure; overstated "no vinyl" and bass "28 dB down".
 - 02:30 · Audio-language model (Qwen2.5-Omni-3B on CPU) failed: audio not received (config/token mismatch) and ~15 min per window. Wasted ~25 min of CPU, no usage. · Abandoned; script kept as experimental_10_audio_lm.py with a warning; deleted its misleading output and the 8 GB model cache. · Budget a quick feasibility check (speed + a sanity answer) before building around a heavy local model.
+
+
+## Fact-check: video1 interpretation
+
+- Overclaimed "the only direct look to the lens in the film"; several other people look at the lens (0:15, 0:27, 0:31, 2:43-2:44) and two of five at 1:58.
+- Counted "eight town signs"; frames show six town/route signs (seven showings).
+- Said "five dots at 1:32" (six or seven figures); "bibs the only light" (lamps, newsprint, faces too); newspaper dated 0:22 (it is 0:23-0:26); "bridge at 1:47" (a wooden ramp, no bridge); pack close-ups "from 1:06.6" (from about 1:05).
+- "Drums never change gear" contradicted the document's own brightness claims: pattern and grid are fixed, timbre changes.
+- Called 2:48-3:08 the loudest stretch (equal to 1:07-1:15 within 0.1 LU); said the 1:40 bass return adds 0.1 LU (ebur128 gives 0.2-0.5); called 1:40-1:55 "loudest" in raw dBFS only.
+- Narrator "steady 4 to 5 per second, no quickening" (varies about 25%); Whisper gap at "Leeuwarden" 3.6 s not 3 s; chord changes placed with the bass return (they precede it by about 1 s); bass gap 24 s (about 25 s); town-list start given inconsistently (2:15 vs 2:16).
+- Process: the fact-checker's frame filenames for 1:46-1:48 were off by 60 (f_NNNN is second NNNN-1); check the number against the timestamp.

@@ -1,0 +1,234 @@
+{
+ "n_cuts": 107,
+ "median_beat_interval_s": 0.627,
+ "cuts_within_80ms_of_beat": 0.29,
+ "chance_beat": 0.251,
+ "cuts_within_150ms_of_bar_start(4-beat guess)": 0.159,
+ "chance_bar": 0.125,
+ "section_boundaries_with_cut_within_0.5s": [
+  {
+   "t": 15.46,
+   "nearest_cut_s": 0.65
+  },
+  {
+   "t": 30.05,
+   "nearest_cut_s": 0.39
+  },
+  {
+   "t": 71.89,
+   "nearest_cut_s": 0.39
+  },
+  {
+   "t": 92.88,
+   "nearest_cut_s": 1.85
+  },
+  {
+   "t": 132.93,
+   "nearest_cut_s": 0.53
+  },
+  {
+   "t": 151.93,
+   "nearest_cut_s": 3.02
+  },
+  {
+   "t": 194.49,
+   "nearest_cut_s": 0.3
+  },
+  {
+   "t": 214.78,
+   "nearest_cut_s": 2.4
+  },
+  {
+   "t": 229.97,
+   "nearest_cut_s": 0.11
+  }
+ ],
+ "cut_rate_vs_loudness": {
+  "lag_s_picture_after_music": 0,
+  "r": 0.314,
+  "r_lag0": 0.349
+ },
+ "motion_vs_onset": {
+  "lag_s_picture_after_music": 0,
+  "r": 0.231,
+  "r_lag0": 0.27
+ },
+ "motion_vs_loudness": {
+  "lag_s_picture_after_music": 4,
+  "r": -0.199,
+  "r_lag0": 0.077
+ },
+ "picture_brightness_vs_sound_brightness": {
+  "lag_s_picture_after_music": 0,
+  "r": 0.303,
+  "r_lag0": 0.377
+ },
+ "picture_warmth_vs_loudness": {
+  "lag_s_picture_after_music": -4,
+  "r": -0.076,
+  "r_lag0": 0.012
+ },
+ "per_section": [
+  {
+   "start": 0.0,
+   "end": 15.46,
+   "label": "D",
+   "mean_loudness": 0.2314,
+   "cuts_per_10s": 1.29,
+   "mean_motion": 3.64,
+   "mean_brightness": 79.6,
+   "mean_warmth": 9.2,
+   "cuts_on_beat_frac": 0.5
+  },
+  {
+   "start": 15.46,
+   "end": 30.05,
+   "label": "C",
+   "mean_loudness": 0.2987,
+   "cuts_per_10s": 6.85,
+   "mean_motion": 5.55,
+   "mean_brightness": 61.7,
+   "mean_warmth": 19.1,
+   "cuts_on_beat_frac": 0.4
+  },
+  {
+   "start": 30.05,
+   "end": 71.89,
+   "label": "A",
+   "mean_loudness": 0.288,
+   "cuts_per_10s": 5.5,
+   "mean_motion": 4.28,
+   "mean_brightness": 54.2,
+   "mean_warmth": 2.4,
+   "cuts_on_beat_frac": 0.3
+  },
+  {
+   "start": 71.89,
+   "end": 92.88,
+   "label": "B",
+   "mean_loudness": 0.2869,
+   "cuts_per_10s": 2.86,
+   "mean_motion": 3.71,
+   "mean_brightness": 66.4,
+   "mean_warmth": 18.7,
+   "cuts_on_beat_frac": 0.33
+  },
+  {
+   "start": 92.88,
+   "end": 132.93,
+   "label": "A",
+   "mean_loudness": 0.2886,
+   "cuts_per_10s": 4.74,
+   "mean_motion": 5.53,
+   "mean_brightness": 62.9,
+   "mean_warmth": 14.6,
+   "cuts_on_beat_frac": 0.21
+  },
+  {
+   "start": 132.93,
+   "end": 151.93,
+   "label": "B",
+   "mean_loudness": 0.2793,
+   "cuts_per_10s": 2.11,
+   "mean_motion": 5.79,
+   "mean_brightness": 65.1,
+   "mean_warmth": 14.6,
+   "cuts_on_beat_frac": 0.25
+  },
+  {
+   "start": 151.93,
+   "end": 194.49,
+   "label": "A",
+   "mean_loudness": 0.2886,
+   "cuts_per_10s": 6.34,
+   "mean_motion": 4.58,
+   "mean_brightness": 65.2,
+   "mean_warmth": 24.3,
+   "cuts_on_beat_frac": 0.3
+  },
+  {
+   "start": 194.49,
+   "end": 214.78,
+   "label": "B",
+   "mean_loudness": 0.2884,
+   "cuts_per_10s": 4.44,
+   "mean_motion": 6.31,
+   "mean_brightness": 51.0,
+   "mean_warmth": 24.8,
+   "cuts_on_beat_frac": 0.33
+  },
+  {
+   "start": 214.78,
+   "end": 229.97,
+   "label": "D",
+   "mean_loudness": 0.2123,
+   "cuts_per_10s": 3.29,
+   "mean_motion": 12.86,
+   "mean_brightness": 86.2,
+   "mean_warmth": 16.0,
+   "cuts_on_beat_frac": 0.2
+  },
+  {
+   "start": 229.97,
+   "end": 239.44,
+   "label": "E",
+   "mean_loudness": 0.0345,
+   "cuts_per_10s": 1.06,
+   "mean_motion": 2.51,
+   "mean_brightness": 53.9,
+   "mean_warmth": 21.1,
+   "cuts_on_beat_frac": 0.0
+  }
+ ],
+ "cut_phase_in_beat": {
+  "n": 106,
+  "mean_phase_0to1": 0.906,
+  "resultant_R": 0.123,
+  "rayleigh_p": 0.2027
+ },
+ "cut_phase_in_half_beat": {
+  "n": 106,
+  "mean_phase_0to1": 0.883,
+  "resultant_R": 0.068,
+  "rayleigh_p": 0.6143
+ },
+ "cut_phase_in_bar": {
+  "n": 106,
+  "mean_phase_0to1": 0.174,
+  "resultant_R": 0.081,
+  "rayleigh_p": 0.4989
+ },
+ "cut_rate_vs_loudness_permutation": {
+  "statistic": "max |r| over lags -4..4 s after 5 s smoothing",
+  "observed_abs_r": 0.314,
+  "n_perm": 5000,
+  "circular_shift_p": 0.0724,
+  "block_shuffle_10s_p": 0.0914,
+  "note": "p = share of shuffled series with |r| at least as large; circular shift keeps the cut-rate autocorrelation, block shuffle keeps it within 10 s blocks only. Smoothed series are strongly autocorrelated, so naive r p-values are not valid."
+ },
+ "grid": {
+  "source": "audio_features/beat_times.json",
+  "n_beats": 372,
+  "first_beat_s": 0.279,
+  "last_beat_s": 235.706,
+  "beats_per_bar": 4,
+  "bar_s": 2.554
+ },
+ "first_42s": {
+  "n_cuts": 17,
+  "cut_phase_in_beat": {
+   "n": 17,
+   "mean_phase_0to1": 0.803,
+   "resultant_R": 0.159,
+   "rayleigh_p": 0.6521
+  },
+  "cut_phase_in_bar": {
+   "n": 17,
+   "mean_phase_0to1": 0.948,
+   "resultant_R": 0.188,
+   "rayleigh_p": 0.5472
+  },
+  "cuts_within_80ms_of_beat": 0.353
+ },
+ "notes": "Correlations use 5 s smoothing; lag>0 means the picture change follows the music by that many seconds. cut_phase: Rayleigh p<0.05 means cuts cluster at a consistent beat phase (cutting to the rhythm even if the tracker phase is offset). Bars assume 4/4 from beat 1 (unverified)."
+}

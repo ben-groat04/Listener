@@ -1,21 +1,17 @@
-# Music voices: video2
+# Music voices: video2 (Elfstedentocht Part 2)
 
 ## A text to a mate
 
-Put Elfstedentocht Part 2 on in the car yesterday, PSB, the Dutch skating one. It's five minutes of the same beat with a bloke reading in Dutch over it. Everything drops out for a few seconds and the drums come back way louder than before. Not sure it's good but I played it twice.
+PSB Elfstedentocht Part 2 on the way home. Ages of the same beat with a Dutch voice talking over it, then it all cuts out and the drums come back MUCH louder. Played it again just for that bit lol
 
 ## A forum post
 
-Anyone else got into the second Elfstedentocht track by PSB before the first one? I only put Part 2 on because it was the one that came up. It's a dark pad, then a bass and a thin drum beat, and then a Dutch voice starts reading out what I assume is the race. Never heard it as a tune, it's more of a thing that sits there. The middle is long and I mostly stopped listening to it.
-
-Then bass and drums vanish for a couple of seconds, the voice finishes its sentence on its own, and it all comes back with the drums much, much louder. That woke me up. After that the voice goes into short little bits that I think aren't even words, and the end is a few knocks and that's it.
-
-Is Part 1 any different?
+Had PSB Elfstedentocht Part 2 on in the car, it came up after something else and I'd never got round to Part 1. Can't tell you much about most of it, a beat that doesn't change much and a Dutch bloke reading out dates and numbers that went straight over my head. Then somewhere around a minute and a half the drums and bass just vanish and it's the hum and him for a few seconds, and when the drums come back they're way louder than before. Nearly dropped my coffee. Quite krautrock in places I think. Ends on a couple of knocks, can't remember if I was still listening properly by then.
 
 ## A short review
 
-I like Elfstedentocht Part 2 more than I expected to, given that for most of it nothing much changes. It's one steady four-on-the-floor beat with a bass line under it, a dark pad on top, and a dry Dutch voice reading about the 1963 race. PSB did it for the 50th anniversary, for a festival in Leeuwarden, and you can tell it was made to go with film, because the voice is the main thing happening for the first minute or so.
+Not sure I'd have bothered with Elfstedentocht Part 2 if I hadn't been told it was PSB, and it's five minutes of fairly little. Made for the 50th anniversary of the 1963 skating race, for some festival in Leeuwarden I think, so the Dutch voice gets most of the work and the band tuck in behind it. Steady beat, around 120 I'd guess, a bass line, a dark hum, and every so often the drums drop out for a bit.
 
-The bit I keep going back for is where the bass and drums fall out together and the voice finishes its sentence on its own for a couple of seconds. When the beat returns the drums are a lot louder than they were. That is basically the whole track for me, and I know that's a bit unfair on the rest. I got tired of the middle, which just gets slowly brighter and a bit louder, though near the end the voice goes into short clipped bits that I assumed were words and now am not so sure about.
+The bit I'd go back for is about 1:28. Drums and bass are already gone, the voice is saying what everyone's getting ready for, and then it all comes back in with the drums much louder than before. That's the whole track for me really.
 
-The ending is the bass going choppy, the beat stopping, then two drum hits and three bass notes and nothing. I wanted more than that. Worth it for the drop if you like Kraftwerk-ish stuff, skip if you want a tune.
+After that it just gets a bit louder and brighter without you noticing. There are little voice clippings later that I couldn't make out, and I got a bit bored. Finishes on a couple of knocks, which is a weak way to go out.

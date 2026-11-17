@@ -40,3 +40,15 @@ for h in ['h1','h2','h3','h4']:
 for name,(a0,a1) in {'verse1':(31,70),'verse2':(93,130),'verse3':(156,192),'hook2':(73,90),'hook4':(197,214)}.items():
     x=v[int(a0*sr):int(a1*sr)]; ee=e[int(a0*100):int(a1*100)]; act=ee[ee>-40]
     print(name,'peak dB %.1f rms dB %.1f crest %.1f  env p10-p90 spread %.1f dB'%(20*np.log10(abs(x).max()),10*np.log10((x**2).mean()),20*np.log10(abs(x).max())-10*np.log10((x**2).mean()),np.percentile(act,90)-np.percentile(act,10)))
+print('--- wide lag, 10 s passes')
+passes={}
+for h,s in starts.items():
+    passes[h+'a']=s; passes[h+'b']=s+10.2
+ks=list(passes)
+import itertools
+out=[]
+for p,q in itertools.combinations(ks,2):
+    if p[:2]==q[:2]: continue
+    c,L=xc(seg(passes[p],10),seg(passes[q],10),600); out.append((round(c,2),p,q,L/100))
+out.sort(reverse=True)
+for o in out[:14]: print(o)

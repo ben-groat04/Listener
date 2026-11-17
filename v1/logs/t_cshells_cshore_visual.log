@@ -1,0 +1,1 @@
+{"n_cuts": 84, "median_beat_interval_s": 0.488, "median_cut_to_beat_offset_s": 0.131, "frac_cuts_within_80ms_of_beat": 0.333, "chance_frac_within_80ms": 0.326, "cuts_per_10s": [0, 2, 2, 0, 4, 2, 2, 2, 3, 2, 3, 3, 8, 0, 2, 0, 3, 4, 4, 3, 7, 4, 4, 1, 2, 6, 4, 2, 2, 2, 0]}

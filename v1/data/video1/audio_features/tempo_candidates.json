@@ -140,40 +140,67 @@
    0.3831,
    0.7677
   ],
-  "nearest_drum_candidate_bpm": 103.36
+  "nearest_drum_candidate_bpm": 103.36,
+  "ioi_mode_s": 0.38,
+  "ioi_mode_bpm": 157.9
  },
- "bar_phase": {
-  "period_s": 0.5805,
-  "beat_offset_s": 0.264,
-  "n_kicks_on_grid": 20,
-  "n_kicks": 131,
-  "low_band_weight_by_beat_index": [
-   966.25,
-   407.04,
-   307.84,
-   422.58
-  ],
-  "strongest_beat_index_0based": 0,
-  "strongest_over_second": 2.287,
-  "share_of_strongest": 0.459,
-  "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
-  "grid_source": "median kick inter-onset interval",
-  "half_time_grid": {
-   "period_s": 1.161,
-   "beat_offset_s": 0.714,
-   "n_kicks_on_grid": 14,
+ "bar_phase_by_candidate": [
+  {
+   "period_s": 0.7693,
+   "beat_offset_s": 0.336,
+   "n_kicks_on_grid": 68,
    "n_kicks": 131,
    "low_band_weight_by_beat_index": [
-    320.23,
-    659.51,
-    112.78,
-    436.0
+    1411.51,
+    2145.62,
+    1274.93,
+    2410.25
    ],
-   "strongest_beat_index_0based": 1,
-   "strongest_over_second": 1.513,
+   "strongest_beat_index_0based": 3,
+   "strongest_over_second": 1.123,
+   "share_of_strongest": 0.333,
+   "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+   "candidate_bpm": 78.3,
+   "refined_bpm": 77.99,
+   "fraction_kicks_on_grid": 0.519
+  },
+  {
+   "period_s": 0.3846,
+   "beat_offset_s": 0.34,
+   "n_kicks_on_grid": 99,
+   "n_kicks": 131,
+   "low_band_weight_by_beat_index": [
+    2686.45,
+    1413.69,
+    4555.86,
+    1914.49
+   ],
+   "strongest_beat_index_0based": 2,
+   "strongest_over_second": 1.696,
    "share_of_strongest": 0.431,
    "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
-   "grid_source": "twice the median kick IOI (kick on every second beat of the main grid)"
+   "candidate_bpm": 156.61,
+   "refined_bpm": 155.99,
+   "fraction_kicks_on_grid": 0.756
+  },
+  {
+   "period_s": 0.577,
+   "beat_offset_s": 0.524,
+   "n_kicks_on_grid": 47,
+   "n_kicks": 131,
+   "low_band_weight_by_beat_index": [
+    1267.58,
+    2446.12,
+    0.0,
+    1274.3
+   ],
+   "strongest_beat_index_0based": 1,
+   "strongest_over_second": 1.92,
+   "share_of_strongest": 0.49,
+   "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+   "candidate_bpm": 103.36,
+   "refined_bpm": 103.98,
+   "fraction_kicks_on_grid": 0.359
   }
- }
+ ]
 }

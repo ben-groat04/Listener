@@ -1,0 +1,206 @@
+{
+ "video": "video2",
+ "script": "v1/scripts/agents/tempo_candidates.py",
+ "sr": 22050,
+ "hop": 256,
+ "method": "mean autocorrelation tempogram (win 384 frames, about 4.5 s) of onset strength, peaks 40-240 BPM merged within 6 per cent; rel_strength = autocorrelation relative to the strongest peak",
+ "drum_stem": {
+  "candidates": [
+   {
+    "bpm": 120.19,
+    "lag_s": 0.4992,
+    "strength": 0.4784,
+    "rel_strength": 1.0,
+    "rel_strength_at_half_tempo": 0.862,
+    "rel_strength_at_double_tempo": 0.562,
+    "half_or_double_of_other_candidate": [
+     60.09
+    ]
+   },
+   {
+    "bpm": 60.09,
+    "lag_s": 0.9985,
+    "strength": 0.4122,
+    "rel_strength": 0.862,
+    "rel_strength_at_half_tempo": null,
+    "rel_strength_at_double_tempo": 1.0,
+    "half_or_double_of_other_candidate": [
+     120.19
+    ]
+   },
+   {
+    "bpm": 161.5,
+    "lag_s": 0.3715,
+    "strength": 0.3369,
+    "rel_strength": 0.704,
+    "rel_strength_at_half_tempo": 0.499,
+    "rel_strength_at_double_tempo": null,
+    "half_or_double_of_other_candidate": [
+     80.75
+    ]
+   },
+   {
+    "bpm": 95.7,
+    "lag_s": 0.6269,
+    "strength": 0.2895,
+    "rel_strength": 0.605,
+    "rel_strength_at_half_tempo": 0.345,
+    "rel_strength_at_double_tempo": 0.21,
+    "half_or_double_of_other_candidate": []
+   },
+   {
+    "bpm": 80.75,
+    "lag_s": 0.743,
+    "strength": 0.2389,
+    "rel_strength": 0.499,
+    "rel_strength_at_half_tempo": 0.478,
+    "rel_strength_at_double_tempo": 0.704,
+    "half_or_double_of_other_candidate": [
+     161.5
+    ]
+   }
+  ],
+  "top_two": {
+   "top_bpm": 120.19,
+   "second_bpm": 60.09,
+   "second_rel_strength": 0.862,
+   "ambiguous_within_10pct": false,
+   "second_is_half_or_double_of_top": true
+  }
+ },
+ "full_mix": {
+  "candidates": [
+   {
+    "bpm": 161.5,
+    "lag_s": 0.3715,
+    "strength": 0.7276,
+    "rel_strength": 1.0,
+    "rel_strength_at_half_tempo": 0.853,
+    "rel_strength_at_double_tempo": null,
+    "half_or_double_of_other_candidate": [
+     79.51
+    ]
+   },
+   {
+    "bpm": 120.19,
+    "lag_s": 0.4992,
+    "strength": 0.6942,
+    "rel_strength": 0.954,
+    "rel_strength_at_half_tempo": 0.757,
+    "rel_strength_at_double_tempo": 0.977,
+    "half_or_double_of_other_candidate": [
+     60.09
+    ]
+   },
+   {
+    "bpm": 79.51,
+    "lag_s": 0.7546,
+    "strength": 0.6208,
+    "rel_strength": 0.853,
+    "rel_strength_at_half_tempo": 0.479,
+    "rel_strength_at_double_tempo": 1.0,
+    "half_or_double_of_other_candidate": [
+     161.5
+    ]
+   },
+   {
+    "bpm": 95.7,
+    "lag_s": 0.6269,
+    "strength": 0.6186,
+    "rel_strength": 0.85,
+    "rel_strength_at_half_tempo": 0.607,
+    "rel_strength_at_double_tempo": 0.447,
+    "half_or_double_of_other_candidate": []
+   },
+   {
+    "bpm": 60.09,
+    "lag_s": 0.9985,
+    "strength": 0.5508,
+    "rel_strength": 0.757,
+    "rel_strength_at_half_tempo": null,
+    "rel_strength_at_double_tempo": 0.954,
+    "half_or_double_of_other_candidate": [
+     120.19
+    ]
+   }
+  ],
+  "top_two": {
+   "top_bpm": 161.5,
+   "second_bpm": 120.19,
+   "second_rel_strength": 0.954,
+   "ambiguous_within_10pct": true,
+   "second_is_half_or_double_of_top": false
+  }
+ },
+ "kick": {
+  "n_onsets": 247,
+  "median_ioi_s": 0.505,
+  "implied_bpm": 118.8,
+  "ioi_p25_p75_s": [
+   0.4992,
+   0.9868
+  ],
+  "nearest_drum_candidate_bpm": 120.19,
+  "ioi_mode_s": 0.5,
+  "ioi_mode_bpm": 120.0
+ },
+ "bar_phase_by_candidate": [
+  {
+   "period_s": 0.5002,
+   "beat_offset_s": 0.034,
+   "n_kicks_on_grid": 194,
+   "n_kicks": 247,
+   "low_band_weight_by_beat_index": [
+    5333.02,
+    9311.25,
+    4305.71,
+    3832.68
+   ],
+   "strongest_beat_index_0based": 1,
+   "strongest_over_second": 1.746,
+   "share_of_strongest": 0.409,
+   "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+   "candidate_bpm": 120.19,
+   "refined_bpm": 119.95,
+   "fraction_kicks_on_grid": 0.785
+  },
+  {
+   "period_s": 0.9995,
+   "beat_offset_s": 0.696,
+   "n_kicks_on_grid": 107,
+   "n_kicks": 247,
+   "low_band_weight_by_beat_index": [
+    4244.69,
+    1649.96,
+    4831.82,
+    2055.98
+   ],
+   "strongest_beat_index_0based": 2,
+   "strongest_over_second": 1.138,
+   "share_of_strongest": 0.378,
+   "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+   "candidate_bpm": 60.09,
+   "refined_bpm": 60.03,
+   "fraction_kicks_on_grid": 0.433
+  },
+  {
+   "period_s": 0.3749,
+   "beat_offset_s": 0.296,
+   "n_kicks_on_grid": 80,
+   "n_kicks": 247,
+   "low_band_weight_by_beat_index": [
+    0.0,
+    9349.2,
+    0.0,
+    0.0
+   ],
+   "strongest_beat_index_0based": 1,
+   "strongest_over_second": null,
+   "share_of_strongest": 1.0,
+   "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+   "candidate_bpm": 161.5,
+   "refined_bpm": 160.06,
+   "fraction_kicks_on_grid": 0.324
+  }
+ ]
+}

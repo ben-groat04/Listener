@@ -4,8 +4,8 @@ Reads v1/data/<vid>/stems/drums.mp3 and v1/data/<vid>/audio/song.wav.
 Writes v1/data/<vid>/audio_features/tempo_candidates.json.
 Per source (drum stem, full mix): global autocorrelation of the onset envelope (mean autocorrelation tempogram),
 top tempo peaks (40-240 BPM) with strength relative to the strongest, and half/double-time relations.
-Drum stem also: kick (40-120 Hz flux) inter-onset median, and a bar-phase estimate: which of 4 beats (at the
-candidate grid nearest the kick IOI) carries most low-band onset energy. The bar phase is an assumption, not proof."""
+Drum stem also: kick (40-120 Hz flux) inter-onset median, and a bar-phase estimate: which of 4 beats (on each of the top 3
+candidate grids) carries most low-band onset energy. The bar phase is an assumption, not proof."""
 import json, os, sys
 import numpy as np, librosa
 
@@ -85,13 +85,16 @@ med = float(np.median(d)) if len(d) else None
 out["kick"] = {"n_onsets": int(len(kt)), "median_ioi_s": None if med is None else round(med, 4), "implied_bpm": None if med is None else round(60 / med, 2),
                "ioi_p25_p75_s": None if med is None else [round(float(np.percentile(d, 25)), 4), round(float(np.percentile(d, 75)), 4)]}
 if med:
-    cd = out["drum_stem"]["candidates"]
-    near = min(cd, key=lambda c: abs(np.log(c["bpm"] / out["kick"]["implied_bpm"]))) if cd else None
-    # grid period: refine around the kick IOI median (the candidate bin is coarse), so use the median IOI
-    out["kick"]["nearest_drum_candidate_bpm"] = near["bpm"] if near else None
-    out["bar_phase"] = bar_phase(kt, kw, med)
-    out["bar_phase"]["grid_source"] = "median kick inter-onset interval"
-    out["bar_phase"]["half_time_grid"] = bar_phase(kt, kw, med * 2)
-    out["bar_phase"]["half_time_grid"]["grid_source"] = "twice the median kick IOI (kick on every second beat of the main grid)"
+    out["kick"]["nearest_drum_candidate_bpm"] = min(out["drum_stem"]["candidates"], key=lambda c: abs(np.log(c["bpm"] / out["kick"]["implied_bpm"])))["bpm"]
+    # kick IOI histogram mode (0.02 s bins) as a second reading: the median can fall between grid levels
+    h, e = np.histogram(d, bins=np.arange(0.25, 1.5, 0.02)); m = int(np.argmax(h))
+    out["kick"]["ioi_mode_s"] = round(float((e[m] + e[m + 1]) / 2), 3); out["kick"]["ioi_mode_bpm"] = round(60 / out["kick"]["ioi_mode_s"], 1)
+# bar phase on each top drum-stem candidate grid (period refined within +-3 per cent by on-grid count)
+out["bar_phase_by_candidate"] = []
+for c in out["drum_stem"]["candidates"][:3]:
+    P0 = 60 / c["bpm"]; best = max(np.arange(P0 * 0.97, P0 * 1.03, P0 * 0.001), key=lambda p: bar_phase(kt, kw, p)["n_kicks_on_grid"])
+    bp_ = bar_phase(kt, kw, float(best)); bp_["candidate_bpm"] = c["bpm"]; bp_["refined_bpm"] = round(60 / float(best), 2)
+    bp_["fraction_kicks_on_grid"] = round(bp_["n_kicks_on_grid"] / max(1, bp_["n_kicks"]), 3)
+    out["bar_phase_by_candidate"].append(bp_)
 json.dump(out, open(f"{D}/audio_features/tempo_candidates.json", "w"), indent=1)
-print(json.dumps({k: out[k] for k in ("drum_stem", "full_mix", "kick", "bar_phase") if k in out}, indent=1)[:6000])
+print(json.dumps({k: out[k] for k in ("kick", "bar_phase_by_candidate") if k in out}, indent=1)[:6000])

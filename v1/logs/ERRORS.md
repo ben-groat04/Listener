@@ -26,3 +26,11 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - "Premiere" was assumed. Corrected: commissioned for, and booked to perform at, Explore the North, Leeuwarden, 23 Nov 2013; no premiere confirmed.
 - Reception was implied to include hauntology/grief readings. Corrected: documented reception is thin and speaks of drive, physical effort and image-sound fusion; the rest is our interpretation.
 - PSB tagline ("lessons of the past ... music of the future") unverified; do not cite as a Willgoose quote. "Mr B" visuals credit is for live shows only; no edit credit for these videos.
+
+## Music check: video1
+- Read Dutch "half zes" as 6:30; it means 5:30.
+- Claimed speech "only" at Whisper times; the vocal stem has other bursts (1:46.7, 1:57) and a doubtful 1:03.5 one. Whisper segment starts used as onsets though vocal-stem onsets differ by 0.5 to 0.8 s.
+- Misquoted figures: melody timings, chord order (F before C), width range, bass entry (0:03, not a creep), ending levels, tempo "no drift" beyond the end of beat_times (2:48), stop durations (bass 0.65 s).
+- Overstated CLAP "distorted guitar" (0.6 to 1.0 throughout; real: top label in about a third of windows, mean 0.44).
+- Town list filled from route knowledge; dropped Hindelopen which Whisper did transcribe.
+- Voice spectral figures (3.7 kHz, 4 to 5 dB under band) stated without per-passage checking.

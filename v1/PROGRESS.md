@@ -76,3 +76,4 @@ The diary below is **history**, kept as written (apart from marked corrections);
 7. v2 cold start: a fresh session/agent runs TOOLKIT.md end-to-end on a test video to prove the toolkit works cold.
 - 02:50 Blind video1 chain done (71 agents; interpretation checks 26 refuted/33 unverifiable). Blind run identified subject from narration + printed headlines alone.
 - 02:58 Blind video2 chain done (83 agents; 28 refuted/31 unverifiable). Launched blindcmp on video1+video2.
+- 03:02 Wrote analysis/blind_vs_informed/LESSONS.md: 17 prioritised toolkit lessons from blind-vs-informed (not yet applied).

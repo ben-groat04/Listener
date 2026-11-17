@@ -3,7 +3,7 @@ export const meta = {
   description: 'Make listening writing indistinguishable from real people: collect real human music writing, study its style and AI tells, write plain registers, run a Turing-style test against real excerpts, iterate',
   phases: [{ title: 'Corpus' }, { title: 'Style' }, { title: 'Write' }, { title: 'Turing test' }],
 }
-// args: { videos: ['video2','video1'], rounds: 3, root: optional }
+// args: { videos: ['video2','video1'], rounds: 3, seed: false (true = start from existing v1/analysis/<video>/VOICES.md), root: optional }
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs
 const H = `${R}/v1/analysis/human_listening`
 const C = `${H}/corpus`
@@ -33,7 +33,8 @@ await agent(`Repo ${R}. Study the real human excerpts in ${C}/*.md and our machi
 const facts = vid => `Facts you may use (and nothing beyond them): ${R}/v1/analysis/${vid}/FACTS.md (verified key moments), plus ${R}/v1/data/${vid}/context.md for who made it. The piece will be shown under a page note saying it was written by Claude from an analysis; do not mention analysis, frames, transcripts or AI in the text.`
 let drafts = {}
 phase('Write')
-await parallel(VIDS.map(vid => () => agent(`Read ${H}/STYLE.md and a few real excerpts in ${C}/*.md first, so you write like those people, not like a novelist. ${facts(vid)}
+if (args.seed) await parallel(VIDS.map(vid => () => agent(`Read ${R}/v1/analysis/${vid}/VOICES.md and return its three pieces verbatim (sections 'A text to a mate', 'A forum post', 'A short review').`, { label: `seed:${vid}`, phase: 'Write', model: 'sonnet', effort: 'low', schema: DRAFT }).then(d => { if (d) drafts[vid] = d })))
+else await parallel(VIDS.map(vid => () => agent(`Read ${H}/STYLE.md and a few real excerpts in ${C}/*.md first, so you write like those people, not like a novelist. ${facts(vid)}
 Write three pieces about watching and listening to ${vid} (Public Service Broadcasting's Elfstedentocht ${vid === 'video1' ? 'Part 1' : 'Part 2'}), each as a different real person might:
 - text_to_mate: 40-110 words, a message recommending (or not) the video to a friend.
 - forum_post: 150-320 words, a post in a music forum thread.
@@ -55,7 +56,7 @@ for (let round = 1; round <= ROUNDS; round++) {
     const others = REAL.slice((oi * 5 + round * 3) % Math.max(1, REAL.length - 5), (oi * 5 + round * 3) % Math.max(1, REAL.length - 5) + 5)
     const items = []; others.forEach((e, i) => { if (i === (oi % 5)) items.push({ src: 'ours', text: o.text }); items.push({ src: 'real', text: e.text }) })
     const blind = items.map((it, i) => ({ id: `Q${round}${oi}${i}`, text: it.text, src: it.src }))
-    return parallel([['reader', 'an avid reader of music forums and blogs'], ['editor', 'an editor who spots AI-written copy for a living']].map(([k, who]) => () => agent(`You are ${who}. Below are ${blind.length} short pieces of writing about music, on different songs. Some were written by real people on forums, blogs and social media; possibly some by an AI. For EACH id, label it human or ai, give confidence 1-5, and name the tells.\n\n${blind.map(b => `### ${b.id}\n${b.text}`).join('\n\n')}`, { label: `judge:${k}:${o.id}:r${round}`, phase: 'Turing test', model: 'sonnet', schema: TV }))).then(js => {
+    return parallel([['reader', 'an avid reader of music forums and blogs'], ['editor', 'an editor who spots AI-written copy for a living'], ['musician', 'a musician who reads what fans write about bands']].map(([k, who]) => () => agent(`You are ${who}. Below are ${blind.length} short pieces of writing about music, on different songs. Some were written by real people on forums, blogs and social media; possibly some by an AI. For EACH id, label it human or ai, give confidence 1-5, and name the tells.\n\n${blind.map(b => `### ${b.id}\n${b.text}`).join('\n\n')}`, { label: `judge:${k}:${o.id}:r${round}`, phase: 'Turing test', model: 'sonnet', schema: TV }))).then(js => {
       js = js.filter(Boolean); const ourId = blind.find(b => b.src === 'ours').id
       const vs = js.map(j => j.verdicts.find(v => v.id === ourId)).filter(Boolean)
       const rf = blind.filter(b => b.src === 'real').flatMap(b => js.map(j => j.verdicts.find(v => v.id === b.id))).filter(Boolean)
@@ -70,7 +71,7 @@ for (let round = 1; round <= ROUNDS; round++) {
   if (caughtRate <= falseRate + 0.1 || round === ROUNDS) break
   phase('Write')
   await parallel(VIDS.map(vid => () => agent(`Read ${H}/STYLE.md. ${facts(vid)}
-These are your three pieces about ${vid}; blind judges mixing them with real human writing caught some as AI. Rewrite all three so they read as real people wrote them, fixing exactly the tells named. Keep every fact true.
+These are your three pieces about ${vid}; blind judges mixing them with real human writing caught some as AI. Rewrite ONLY the pieces the judges caught (caught > 0), fixing exactly the tells named; return pieces that were not caught EXACTLY unchanged. Keep every fact true.
 CURRENT: ${JSON.stringify(drafts[vid])}
 JUDGES' TELLS: ${JSON.stringify(res.filter(r => r.id.startsWith(vid)))}`, { label: `write:${vid}:r${round + 1}`, phase: 'Write', model: 'sonnet', schema: DRAFT }).then(d => { if (d) drafts[vid] = d })))
 }

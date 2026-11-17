@@ -13,3 +13,4 @@
 | 00:16 | 92% | 53% | 10 Sonnet viewers cost ~2% (860k tokens). Per user, using remaining headroom: video2 seg 9-16 + words |
 | 00:26 | 95% | 54% | 9 viewers = 790k tokens, ~3%. Remaining agent work needs music_views (CPU still running), so next launch is at the reset |
 | 00:45 | 97% | 54% | 10 window listeners = 847k tokens, ~2%. Holding at 97% until the 01:40 reset (scheduled restart 01:42) |
+| 01:43 | 0% | 54% | **RESET confirmed** (next 06:40). Container had restarted again; jobs restored. Heavy phase starts |

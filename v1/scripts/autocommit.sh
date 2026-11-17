@@ -1,8 +1,8 @@
 #!/bin/bash
-# Every 10 minutes: commit and push whatever exists, so a container reset loses little.
+# Every 2 minutes: commit and push whatever exists, so a container reset loses little.
 cd "$(dirname "$0")/../.."
 while true; do
-  sleep 600
+  sleep 120
   git add -A >/dev/null 2>&1
   git diff --cached --quiet || git commit -q -m "v1: autosave $(date -u +%H:%M)
 

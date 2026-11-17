@@ -32,6 +32,8 @@ BANNED = [  # (label, regex)
     ("dB", r"\bdB\b|\bdecibels?\b"), ("Hz", r"\b\d*\s?k?Hz\b"), ("BPM", r"\bBPM\b"),
     ("stems", r"\bstems?\b"), ("chroma", r"\bchroma\b"),
     ("p= (statistic)", r"\bp\s*[=<]\s*0?\.\d+"),
+    ("LUFS", r"\bLUFS\b"),
+    ("process talk: hedge disclaimer", r"as far as i can tell|i can'?t swear to|i cannot swear to"),
     ("OBS tag", r"\bOBS\b"), ("INT tag", r"\bINT\b"),
     ("process talk: transcript", r"\btranscripts?\b"),
     ("process talk: measurements", r"\bmeasurements?\b"),
@@ -86,7 +88,7 @@ def lint(text):
         res["hard"].append(f"clock times: {len(clocks)} (max {MAX_CLOCK}): {', '.join(clocks[:12])}")
     hits = {}
     for label, rx in BANNED:
-        m = re.findall(rx, text, flags=0 if label in ("OBS tag", "INT tag", "dB", "Hz", "BPM") else re.I)
+        m = re.findall(rx, text, flags=0 if label in ("OBS tag", "INT tag", "dB", "Hz", "BPM", "LUFS") else re.I)
         if m:
             hits[label] = len(m)
     res["banned"] = hits

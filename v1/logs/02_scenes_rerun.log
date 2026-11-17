@@ -1,10 +1,10 @@
-/home/user/Listener/v1/scripts/02_scenes.py:23: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
+/home/user/Listener/v1/scripts/02_scenes.py:25: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
   cuts = [(s.get_seconds(), "content") for s, _ in scenes[1:]]
-/home/user/Listener/v1/scripts/02_scenes.py:56: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
+/home/user/Listener/v1/scripts/02_scenes.py:58: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
   dur_total = scenes[-1][1].get_seconds() if scenes else len(comb) / fps
-113 shots ( 86 content + 26 dense); median dur 2.0
-/home/user/Listener/v1/scripts/02_scenes.py:23: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
+111 shots ( 86 content + 24 dense); median dur 2.0
+/home/user/Listener/v1/scripts/02_scenes.py:25: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
   cuts = [(s.get_seconds(), "content") for s, _ in scenes[1:]]
-/home/user/Listener/v1/scripts/02_scenes.py:56: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
+/home/user/Listener/v1/scripts/02_scenes.py:58: DeprecationWarning: get_seconds() is deprecated, use the `seconds` property instead.
   dur_total = scenes[-1][1].get_seconds() if scenes else len(comb) / fps
-132 shots ( 51 content + 80 dense); median dur 1.12
+126 shots ( 51 content + 74 dense); median dur 1.2

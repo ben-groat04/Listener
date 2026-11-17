@@ -1,0 +1,2 @@
+# faster-whisper medium on vocals_auto_transcribe (lang=cy p=0.49)
+

@@ -1,0 +1,5475 @@
+{
+"window_s": 5,
+"labels": {
+"genre": [
+"rock",
+"post-rock",
+"electronic music",
+"ambient music",
+"techno",
+"hip hop",
+"pop",
+"folk",
+"classical music",
+"jazz",
+"metal",
+"soul",
+"country",
+"krautrock",
+"orchestral film score",
+"drum and bass",
+"indie rock",
+"synth-pop",
+"R&B",
+"reggae"
+],
+"instrument": [
+"electric guitar",
+"distorted guitar",
+"acoustic guitar",
+"bass guitar",
+"synthesizer",
+"piano",
+"drum kit",
+"drum machine",
+"strings",
+"brass",
+"banjo",
+"organ",
+"choir",
+"glockenspiel",
+"violin",
+"saxophone",
+"sampled voice"
+],
+"mood": [
+"happy",
+"sad",
+"tense",
+"calm",
+"triumphant",
+"melancholic",
+"eerie",
+"energetic",
+"hopeful",
+"nostalgic",
+"aggressive",
+"dreamy",
+"solemn",
+"playful"
+],
+"voice": [
+"male singing",
+"female singing",
+"male speech",
+"female speech",
+"radio announcer speech",
+"crowd chanting",
+"rapping",
+"no vocals",
+"choir singing"
+],
+"sound": [
+"wind",
+"crowd cheering",
+"applause",
+"ice skating",
+"footsteps in snow",
+"engine",
+"tape hiss",
+"vinyl crackle",
+"silence",
+"bells"
+]
+},
+"windows": [
+{
+"t": 0,
+"genre": [
+[
+"rock",
+0.787
+],
+[
+"classical music",
+0.1
+],
+[
+"soul",
+0.047
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.341
+],
+[
+"brass",
+0.335
+],
+[
+"piano",
+0.239
+]
+],
+"mood": [
+[
+"tense",
+0.76
+],
+[
+"calm",
+0.195
+],
+[
+"hopeful",
+0.043
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.474
+],
+[
+"no vocals",
+0.393
+],
+[
+"rapping",
+0.098
+]
+],
+"sound": [
+[
+"silence",
+0.997
+],
+[
+"vinyl crackle",
+0.003
+],
+[
+"tape hiss",
+0.0
+]
+]
+},
+{
+"t": 5,
+"genre": [
+[
+"rock",
+0.787
+],
+[
+"classical music",
+0.1
+],
+[
+"soul",
+0.047
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.341
+],
+[
+"brass",
+0.335
+],
+[
+"piano",
+0.239
+]
+],
+"mood": [
+[
+"tense",
+0.76
+],
+[
+"calm",
+0.195
+],
+[
+"hopeful",
+0.043
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.474
+],
+[
+"no vocals",
+0.393
+],
+[
+"rapping",
+0.098
+]
+],
+"sound": [
+[
+"silence",
+0.997
+],
+[
+"vinyl crackle",
+0.003
+],
+[
+"tape hiss",
+0.0
+]
+]
+},
+{
+"t": 10,
+"genre": [
+[
+"soul",
+0.977
+],
+[
+"hip hop",
+0.022
+],
+[
+"classical music",
+0.0
+]
+],
+"instrument": [
+[
+"glockenspiel",
+0.565
+],
+[
+"piano",
+0.2
+],
+[
+"synthesizer",
+0.133
+]
+],
+"mood": [
+[
+"eerie",
+0.829
+],
+[
+"sad",
+0.17
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"rapping",
+0.999
+],
+[
+"no vocals",
+0.001
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"tape hiss",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 15,
+"genre": [
+[
+"soul",
+0.991
+],
+[
+"drum and bass",
+0.004
+],
+[
+"hip hop",
+0.004
+]
+],
+"instrument": [
+[
+"glockenspiel",
+0.229
+],
+[
+"organ",
+0.219
+],
+[
+"piano",
+0.199
+]
+],
+"mood": [
+[
+"tense",
+0.583
+],
+[
+"eerie",
+0.377
+],
+[
+"sad",
+0.03
+]
+],
+"voice": [
+[
+"no vocals",
+0.943
+],
+[
+"rapping",
+0.05
+],
+[
+"crowd chanting",
+0.005
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"tape hiss",
+0.0
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 20,
+"genre": [
+[
+"pop",
+0.659
+],
+[
+"hip hop",
+0.178
+],
+[
+"electronic music",
+0.102
+]
+],
+"instrument": [
+[
+"organ",
+0.994
+],
+[
+"piano",
+0.004
+],
+[
+"glockenspiel",
+0.001
+]
+],
+"mood": [
+[
+"calm",
+0.938
+],
+[
+"sad",
+0.039
+],
+[
+"tense",
+0.013
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 25,
+"genre": [
+[
+"krautrock",
+0.46
+],
+[
+"ambient music",
+0.375
+],
+[
+"electronic music",
+0.127
+]
+],
+"instrument": [
+[
+"organ",
+0.995
+],
+[
+"bass guitar",
+0.005
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.985
+],
+[
+"tense",
+0.015
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"male singing",
+0.001
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.577
+],
+[
+"vinyl crackle",
+0.349
+],
+[
+"bells",
+0.068
+]
+]
+},
+{
+"t": 30,
+"genre": [
+[
+"post-rock",
+0.877
+],
+[
+"krautrock",
+0.069
+],
+[
+"indie rock",
+0.043
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.961
+],
+[
+"bass guitar",
+0.022
+],
+[
+"organ",
+0.009
+]
+],
+"mood": [
+[
+"sad",
+0.83
+],
+[
+"tense",
+0.17
+],
+[
+"eerie",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"choir singing",
+0.001
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.989
+],
+[
+"silence",
+0.011
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 35,
+"genre": [
+[
+"post-rock",
+0.969
+],
+[
+"krautrock",
+0.027
+],
+[
+"classical music",
+0.003
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.627
+],
+[
+"organ",
+0.225
+],
+[
+"distorted guitar",
+0.118
+]
+],
+"mood": [
+[
+"tense",
+0.994
+],
+[
+"sad",
+0.006
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"choir singing",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"bells",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 40,
+"genre": [
+[
+"soul",
+0.561
+],
+[
+"post-rock",
+0.388
+],
+[
+"classical music",
+0.05
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.954
+],
+[
+"bass guitar",
+0.045
+],
+[
+"distorted guitar",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.95
+],
+[
+"sad",
+0.05
+],
+[
+"nostalgic",
+0.0
+]
+],
+"voice": [
+[
+"choir singing",
+0.81
+],
+[
+"male singing",
+0.101
+],
+[
+"no vocals",
+0.083
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.995
+],
+[
+"bells",
+0.004
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 45,
+"genre": [
+[
+"post-rock",
+0.999
+],
+[
+"soul",
+0.001
+],
+[
+"jazz",
+0.0
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.483
+],
+[
+"bass guitar",
+0.4
+],
+[
+"distorted guitar",
+0.117
+]
+],
+"mood": [
+[
+"tense",
+0.945
+],
+[
+"sad",
+0.055
+],
+[
+"eerie",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.754
+],
+[
+"male singing",
+0.127
+],
+[
+"radio announcer speech",
+0.058
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"silence",
+0.0
+],
+[
+"footsteps in snow",
+0.0
+]
+]
+},
+{
+"t": 50,
+"genre": [
+[
+"post-rock",
+0.996
+],
+[
+"jazz",
+0.003
+],
+[
+"soul",
+0.001
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.872
+],
+[
+"electric guitar",
+0.097
+],
+[
+"distorted guitar",
+0.03
+]
+],
+"mood": [
+[
+"tense",
+1.0
+],
+[
+"sad",
+0.0
+],
+[
+"eerie",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.828
+],
+[
+"rapping",
+0.164
+],
+[
+"female singing",
+0.003
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"bells",
+0.0
+],
+[
+"footsteps in snow",
+0.0
+]
+]
+},
+{
+"t": 55,
+"genre": [
+[
+"jazz",
+0.954
+],
+[
+"post-rock",
+0.044
+],
+[
+"hip hop",
+0.001
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.842
+],
+[
+"bass guitar",
+0.156
+],
+[
+"distorted guitar",
+0.002
+]
+],
+"mood": [
+[
+"tense",
+1.0
+],
+[
+"sad",
+0.0
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.997
+],
+[
+"rapping",
+0.002
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 60,
+"genre": [
+[
+"post-rock",
+0.891
+],
+[
+"jazz",
+0.109
+],
+[
+"classical music",
+0.0
+]
+],
+"instrument": [
+[
+"brass",
+0.747
+],
+[
+"drum machine",
+0.186
+],
+[
+"drum kit",
+0.027
+]
+],
+"mood": [
+[
+"tense",
+1.0
+],
+[
+"sad",
+0.0
+],
+[
+"triumphant",
+0.0
+]
+],
+"voice": [
+[
+"rapping",
+0.991
+],
+[
+"no vocals",
+0.009
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 65,
+"genre": [
+[
+"jazz",
+0.917
+],
+[
+"post-rock",
+0.078
+],
+[
+"classical music",
+0.003
+]
+],
+"instrument": [
+[
+"brass",
+0.965
+],
+[
+"drum machine",
+0.026
+],
+[
+"bass guitar",
+0.007
+]
+],
+"mood": [
+[
+"tense",
+1.0
+],
+[
+"sad",
+0.0
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"rapping",
+1.0
+],
+[
+"no vocals",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 70,
+"genre": [
+[
+"post-rock",
+0.999
+],
+[
+"jazz",
+0.0
+],
+[
+"metal",
+0.0
+]
+],
+"instrument": [
+[
+"brass",
+0.576
+],
+[
+"bass guitar",
+0.421
+],
+[
+"drum machine",
+0.001
+]
+],
+"mood": [
+[
+"tense",
+1.0
+],
+[
+"aggressive",
+0.0
+],
+[
+"sad",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.997
+],
+[
+"radio announcer speech",
+0.002
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 75,
+"genre": [
+[
+"post-rock",
+0.899
+],
+[
+"soul",
+0.046
+],
+[
+"classical music",
+0.037
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.995
+],
+[
+"organ",
+0.005
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.937
+],
+[
+"tense",
+0.063
+],
+[
+"eerie",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.817
+],
+[
+"male singing",
+0.103
+],
+[
+"male speech",
+0.06
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.974
+],
+[
+"footsteps in snow",
+0.024
+],
+[
+"applause",
+0.001
+]
+]
+},
+{
+"t": 80,
+"genre": [
+[
+"jazz",
+0.894
+],
+[
+"post-rock",
+0.081
+],
+[
+"soul",
+0.013
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.612
+],
+[
+"drum machine",
+0.381
+],
+[
+"drum kit",
+0.006
+]
+],
+"mood": [
+[
+"tense",
+0.998
+],
+[
+"sad",
+0.002
+],
+[
+"eerie",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"bells",
+0.0
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 85,
+"genre": [
+[
+"post-rock",
+0.956
+],
+[
+"krautrock",
+0.026
+],
+[
+"metal",
+0.015
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.997
+],
+[
+"organ",
+0.003
+],
+[
+"distorted guitar",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.926
+],
+[
+"sad",
+0.071
+],
+[
+"aggressive",
+0.003
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 90,
+"genre": [
+[
+"jazz",
+0.707
+],
+[
+"post-rock",
+0.289
+],
+[
+"hip hop",
+0.002
+]
+],
+"instrument": [
+[
+"drum machine",
+0.35
+],
+[
+"saxophone",
+0.319
+],
+[
+"bass guitar",
+0.276
+]
+],
+"mood": [
+[
+"tense",
+0.986
+],
+[
+"eerie",
+0.007
+],
+[
+"aggressive",
+0.006
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"footsteps in snow",
+0.0
+]
+]
+},
+{
+"t": 95,
+"genre": [
+[
+"post-rock",
+0.828
+],
+[
+"jazz",
+0.073
+],
+[
+"drum and bass",
+0.035
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.999
+],
+[
+"saxophone",
+0.001
+],
+[
+"drum machine",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.886
+],
+[
+"aggressive",
+0.086
+],
+[
+"tense",
+0.025
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"crowd cheering",
+0.0
+]
+]
+},
+{
+"t": 100,
+"genre": [
+[
+"jazz",
+0.787
+],
+[
+"soul",
+0.16
+],
+[
+"ambient music",
+0.028
+]
+],
+"instrument": [
+[
+"bass guitar",
+1.0
+],
+[
+"drum machine",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.994
+],
+[
+"sad",
+0.006
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"male singing",
+0.671
+],
+[
+"no vocals",
+0.202
+],
+[
+"male speech",
+0.127
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"bells",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 105,
+"genre": [
+[
+"post-rock",
+0.896
+],
+[
+"soul",
+0.067
+],
+[
+"jazz",
+0.013
+]
+],
+"instrument": [
+[
+"bass guitar",
+1.0
+],
+[
+"drum machine",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.879
+],
+[
+"aggressive",
+0.116
+],
+[
+"sad",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"silence",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 110,
+"genre": [
+[
+"post-rock",
+0.73
+],
+[
+"jazz",
+0.251
+],
+[
+"R&B",
+0.017
+]
+],
+"instrument": [
+[
+"drum machine",
+0.93
+],
+[
+"saxophone",
+0.056
+],
+[
+"drum kit",
+0.014
+]
+],
+"mood": [
+[
+"tense",
+0.994
+],
+[
+"sad",
+0.005
+],
+[
+"aggressive",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 115,
+"genre": [
+[
+"post-rock",
+0.808
+],
+[
+"soul",
+0.185
+],
+[
+"R&B",
+0.004
+]
+],
+"instrument": [
+[
+"organ",
+0.52
+],
+[
+"bass guitar",
+0.227
+],
+[
+"drum machine",
+0.213
+]
+],
+"mood": [
+[
+"sad",
+0.968
+],
+[
+"tense",
+0.032
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"male singing",
+0.919
+],
+[
+"no vocals",
+0.08
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.733
+],
+[
+"silence",
+0.242
+],
+[
+"footsteps in snow",
+0.016
+]
+]
+},
+{
+"t": 120,
+"genre": [
+[
+"post-rock",
+0.873
+],
+[
+"jazz",
+0.07
+],
+[
+"soul",
+0.055
+]
+],
+"instrument": [
+[
+"drum machine",
+0.578
+],
+[
+"saxophone",
+0.225
+],
+[
+"drum kit",
+0.107
+]
+],
+"mood": [
+[
+"tense",
+0.802
+],
+[
+"sad",
+0.195
+],
+[
+"playful",
+0.002
+]
+],
+"voice": [
+[
+"male singing",
+0.608
+],
+[
+"no vocals",
+0.366
+],
+[
+"rapping",
+0.024
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 125,
+"genre": [
+[
+"post-rock",
+0.845
+],
+[
+"krautrock",
+0.103
+],
+[
+"rock",
+0.038
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.974
+],
+[
+"saxophone",
+0.023
+],
+[
+"drum machine",
+0.003
+]
+],
+"mood": [
+[
+"tense",
+0.784
+],
+[
+"sad",
+0.18
+],
+[
+"playful",
+0.035
+]
+],
+"voice": [
+[
+"male singing",
+0.639
+],
+[
+"no vocals",
+0.349
+],
+[
+"rapping",
+0.008
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.602
+],
+[
+"footsteps in snow",
+0.397
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 130,
+"genre": [
+[
+"post-rock",
+0.735
+],
+[
+"soul",
+0.172
+],
+[
+"rock",
+0.082
+]
+],
+"instrument": [
+[
+"drum machine",
+0.954
+],
+[
+"distorted guitar",
+0.045
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.817
+],
+[
+"sad",
+0.178
+],
+[
+"playful",
+0.004
+]
+],
+"voice": [
+[
+"male singing",
+0.909
+],
+[
+"male speech",
+0.064
+],
+[
+"rapping",
+0.014
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.921
+],
+[
+"footsteps in snow",
+0.078
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 135,
+"genre": [
+[
+"post-rock",
+0.662
+],
+[
+"rock",
+0.284
+],
+[
+"soul",
+0.045
+]
+],
+"instrument": [
+[
+"saxophone",
+0.656
+],
+[
+"drum machine",
+0.33
+],
+[
+"distorted guitar",
+0.006
+]
+],
+"mood": [
+[
+"tense",
+0.93
+],
+[
+"playful",
+0.047
+],
+[
+"sad",
+0.023
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.995
+],
+[
+"footsteps in snow",
+0.004
+],
+[
+"wind",
+0.001
+]
+]
+},
+{
+"t": 140,
+"genre": [
+[
+"jazz",
+0.411
+],
+[
+"soul",
+0.318
+],
+[
+"post-rock",
+0.269
+]
+],
+"instrument": [
+[
+"saxophone",
+0.704
+],
+[
+"drum machine",
+0.284
+],
+[
+"sampled voice",
+0.011
+]
+],
+"mood": [
+[
+"playful",
+0.689
+],
+[
+"tense",
+0.309
+],
+[
+"aggressive",
+0.001
+]
+],
+"voice": [
+[
+"male singing",
+0.507
+],
+[
+"radio announcer speech",
+0.29
+],
+[
+"male speech",
+0.166
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.733
+],
+[
+"vinyl crackle",
+0.262
+],
+[
+"wind",
+0.005
+]
+]
+},
+{
+"t": 145,
+"genre": [
+[
+"post-rock",
+0.603
+],
+[
+"rock",
+0.271
+],
+[
+"soul",
+0.083
+]
+],
+"instrument": [
+[
+"drum machine",
+0.894
+],
+[
+"distorted guitar",
+0.105
+],
+[
+"saxophone",
+0.001
+]
+],
+"mood": [
+[
+"sad",
+0.887
+],
+[
+"tense",
+0.111
+],
+[
+"playful",
+0.002
+]
+],
+"voice": [
+[
+"male singing",
+0.542
+],
+[
+"no vocals",
+0.45
+],
+[
+"male speech",
+0.004
+]
+],
+"sound": [
+[
+"wind",
+0.956
+],
+[
+"footsteps in snow",
+0.027
+],
+[
+"vinyl crackle",
+0.013
+]
+]
+},
+{
+"t": 150,
+"genre": [
+[
+"soul",
+0.446
+],
+[
+"post-rock",
+0.24
+],
+[
+"jazz",
+0.169
+]
+],
+"instrument": [
+[
+"drum machine",
+0.945
+],
+[
+"saxophone",
+0.045
+],
+[
+"drum kit",
+0.009
+]
+],
+"mood": [
+[
+"sad",
+0.543
+],
+[
+"playful",
+0.354
+],
+[
+"tense",
+0.103
+]
+],
+"voice": [
+[
+"no vocals",
+0.687
+],
+[
+"male singing",
+0.287
+],
+[
+"rapping",
+0.026
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.999
+],
+[
+"footsteps in snow",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 155,
+"genre": [
+[
+"soul",
+0.781
+],
+[
+"jazz",
+0.172
+],
+[
+"rock",
+0.033
+]
+],
+"instrument": [
+[
+"saxophone",
+0.846
+],
+[
+"drum machine",
+0.125
+],
+[
+"distorted guitar",
+0.025
+]
+],
+"mood": [
+[
+"sad",
+0.647
+],
+[
+"tense",
+0.203
+],
+[
+"playful",
+0.148
+]
+],
+"voice": [
+[
+"no vocals",
+0.921
+],
+[
+"male singing",
+0.079
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.648
+],
+[
+"tape hiss",
+0.234
+],
+[
+"wind",
+0.075
+]
+]
+},
+{
+"t": 160,
+"genre": [
+[
+"post-rock",
+0.977
+],
+[
+"rock",
+0.018
+],
+[
+"jazz",
+0.005
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.914
+],
+[
+"drum machine",
+0.083
+],
+[
+"saxophone",
+0.002
+]
+],
+"mood": [
+[
+"tense",
+0.973
+],
+[
+"playful",
+0.027
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"rapping",
+0.993
+],
+[
+"no vocals",
+0.006
+],
+[
+"radio announcer speech",
+0.001
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.762
+],
+[
+"footsteps in snow",
+0.238
+],
+[
+"applause",
+0.0
+]
+]
+},
+{
+"t": 165,
+"genre": [
+[
+"post-rock",
+0.594
+],
+[
+"rock",
+0.332
+],
+[
+"soul",
+0.053
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.635
+],
+[
+"drum machine",
+0.245
+],
+[
+"saxophone",
+0.103
+]
+],
+"mood": [
+[
+"tense",
+0.53
+],
+[
+"playful",
+0.271
+],
+[
+"sad",
+0.197
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.972
+],
+[
+"wind",
+0.016
+],
+[
+"footsteps in snow",
+0.01
+]
+]
+},
+{
+"t": 170,
+"genre": [
+[
+"rock",
+0.927
+],
+[
+"krautrock",
+0.034
+],
+[
+"post-rock",
+0.032
+]
+],
+"instrument": [
+[
+"drum machine",
+0.739
+],
+[
+"distorted guitar",
+0.184
+],
+[
+"saxophone",
+0.076
+]
+],
+"mood": [
+[
+"tense",
+0.87
+],
+[
+"playful",
+0.06
+],
+[
+"sad",
+0.047
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.994
+],
+[
+"footsteps in snow",
+0.006
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 175,
+"genre": [
+[
+"post-rock",
+0.912
+],
+[
+"rock",
+0.072
+],
+[
+"krautrock",
+0.014
+]
+],
+"instrument": [
+[
+"drum machine",
+0.894
+],
+[
+"distorted guitar",
+0.106
+],
+[
+"drum kit",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.85
+],
+[
+"sad",
+0.139
+],
+[
+"playful",
+0.008
+]
+],
+"voice": [
+[
+"male singing",
+0.941
+],
+[
+"no vocals",
+0.043
+],
+[
+"male speech",
+0.014
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.824
+],
+[
+"footsteps in snow",
+0.174
+],
+[
+"wind",
+0.001
+]
+]
+},
+{
+"t": 180,
+"genre": [
+[
+"post-rock",
+0.902
+],
+[
+"rock",
+0.061
+],
+[
+"soul",
+0.03
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.63
+],
+[
+"drum machine",
+0.357
+],
+[
+"saxophone",
+0.01
+]
+],
+"mood": [
+[
+"tense",
+0.687
+],
+[
+"sad",
+0.282
+],
+[
+"playful",
+0.03
+]
+],
+"voice": [
+[
+"male singing",
+0.706
+],
+[
+"no vocals",
+0.268
+],
+[
+"rapping",
+0.025
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.998
+],
+[
+"footsteps in snow",
+0.002
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 185,
+"genre": [
+[
+"post-rock",
+0.971
+],
+[
+"rock",
+0.021
+],
+[
+"krautrock",
+0.005
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.98
+],
+[
+"saxophone",
+0.01
+],
+[
+"drum machine",
+0.009
+]
+],
+"mood": [
+[
+"tense",
+0.985
+],
+[
+"playful",
+0.01
+],
+[
+"sad",
+0.003
+]
+],
+"voice": [
+[
+"no vocals",
+0.984
+],
+[
+"rapping",
+0.015
+],
+[
+"male speech",
+0.001
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.991
+],
+[
+"vinyl crackle",
+0.005
+],
+[
+"wind",
+0.003
+]
+]
+},
+{
+"t": 190,
+"genre": [
+[
+"rock",
+0.529
+],
+[
+"post-rock",
+0.363
+],
+[
+"krautrock",
+0.095
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.987
+],
+[
+"drum machine",
+0.012
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.497
+],
+[
+"tense",
+0.364
+],
+[
+"aggressive",
+0.133
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"crowd chanting",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.997
+],
+[
+"footsteps in snow",
+0.001
+],
+[
+"wind",
+0.001
+]
+]
+},
+{
+"t": 195,
+"genre": [
+[
+"krautrock",
+0.474
+],
+[
+"post-rock",
+0.341
+],
+[
+"rock",
+0.17
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.955
+],
+[
+"drum machine",
+0.045
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.628
+],
+[
+"sad",
+0.228
+],
+[
+"tense",
+0.143
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.985
+],
+[
+"footsteps in snow",
+0.01
+],
+[
+"silence",
+0.003
+]
+]
+},
+{
+"t": 200,
+"genre": [
+[
+"krautrock",
+0.656
+],
+[
+"rock",
+0.327
+],
+[
+"post-rock",
+0.016
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"drum machine",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+0.937
+],
+[
+"aggressive",
+0.031
+],
+[
+"sad",
+0.031
+]
+],
+"voice": [
+[
+"no vocals",
+0.998
+],
+[
+"rapping",
+0.001
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.587
+],
+[
+"vinyl crackle",
+0.394
+],
+[
+"wind",
+0.01
+]
+]
+},
+{
+"t": 205,
+"genre": [
+[
+"krautrock",
+0.733
+],
+[
+"rock",
+0.259
+],
+[
+"post-rock",
+0.007
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"drum machine",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.705
+],
+[
+"sad",
+0.223
+],
+[
+"playful",
+0.064
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"crowd chanting",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"crowd cheering",
+1.0
+],
+[
+"applause",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 210,
+"genre": [
+[
+"post-rock",
+0.794
+],
+[
+"krautrock",
+0.171
+],
+[
+"rock",
+0.03
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.986
+],
+[
+"drum machine",
+0.007
+],
+[
+"saxophone",
+0.004
+]
+],
+"mood": [
+[
+"sad",
+0.918
+],
+[
+"tense",
+0.076
+],
+[
+"aggressive",
+0.005
+]
+],
+"voice": [
+[
+"no vocals",
+0.928
+],
+[
+"crowd chanting",
+0.051
+],
+[
+"male singing",
+0.021
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.94
+],
+[
+"wind",
+0.033
+],
+[
+"footsteps in snow",
+0.024
+]
+]
+},
+{
+"t": 215,
+"genre": [
+[
+"post-rock",
+0.96
+],
+[
+"krautrock",
+0.028
+],
+[
+"rock",
+0.007
+]
+],
+"instrument": [
+[
+"drum machine",
+0.665
+],
+[
+"distorted guitar",
+0.329
+],
+[
+"saxophone",
+0.005
+]
+],
+"mood": [
+[
+"sad",
+0.858
+],
+[
+"tense",
+0.132
+],
+[
+"aggressive",
+0.005
+]
+],
+"voice": [
+[
+"male singing",
+0.545
+],
+[
+"no vocals",
+0.413
+],
+[
+"rapping",
+0.036
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.986
+],
+[
+"wind",
+0.014
+],
+[
+"vinyl crackle",
+0.0
+]
+]
+},
+{
+"t": 220,
+"genre": [
+[
+"krautrock",
+0.625
+],
+[
+"rock",
+0.192
+],
+[
+"post-rock",
+0.16
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.994
+],
+[
+"saxophone",
+0.005
+],
+[
+"sampled voice",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.57
+],
+[
+"tense",
+0.404
+],
+[
+"playful",
+0.019
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"crowd chanting",
+0.0
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.992
+],
+[
+"crowd cheering",
+0.008
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 225,
+"genre": [
+[
+"krautrock",
+0.988
+],
+[
+"rock",
+0.011
+],
+[
+"post-rock",
+0.0
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"electric guitar",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.895
+],
+[
+"tense",
+0.101
+],
+[
+"aggressive",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"male singing",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.684
+],
+[
+"crowd cheering",
+0.305
+],
+[
+"wind",
+0.01
+]
+]
+},
+{
+"t": 230,
+"genre": [
+[
+"krautrock",
+0.972
+],
+[
+"post-rock",
+0.026
+],
+[
+"rock",
+0.002
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"saxophone",
+0.0
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.715
+],
+[
+"aggressive",
+0.148
+],
+[
+"sad",
+0.137
+]
+],
+"voice": [
+[
+"no vocals",
+0.981
+],
+[
+"crowd chanting",
+0.009
+],
+[
+"male singing",
+0.006
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.897
+],
+[
+"crowd cheering",
+0.099
+],
+[
+"wind",
+0.002
+]
+]
+},
+{
+"t": 235,
+"genre": [
+[
+"krautrock",
+0.995
+],
+[
+"rock",
+0.005
+],
+[
+"post-rock",
+0.0
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"saxophone",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.984
+],
+[
+"aggressive",
+0.008
+],
+[
+"tense",
+0.007
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"male singing",
+0.001
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.952
+],
+[
+"crowd cheering",
+0.029
+],
+[
+"applause",
+0.016
+]
+]
+},
+{
+"t": 240,
+"genre": [
+[
+"krautrock",
+0.994
+],
+[
+"post-rock",
+0.003
+],
+[
+"soul",
+0.001
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.997
+],
+[
+"organ",
+0.003
+],
+[
+"choir",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+1.0
+],
+[
+"eerie",
+0.0
+],
+[
+"tense",
+0.0
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.631
+],
+[
+"no vocals",
+0.346
+],
+[
+"male singing",
+0.023
+]
+],
+"sound": [
+[
+"crowd cheering",
+1.0
+],
+[
+"applause",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 245,
+"genre": [
+[
+"post-rock",
+0.72
+],
+[
+"krautrock",
+0.279
+],
+[
+"rock",
+0.001
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.999
+],
+[
+"drum machine",
+0.001
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.609
+],
+[
+"tense",
+0.339
+],
+[
+"aggressive",
+0.046
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.935
+],
+[
+"rapping",
+0.046
+],
+[
+"no vocals",
+0.015
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.824
+],
+[
+"footsteps in snow",
+0.139
+],
+[
+"vinyl crackle",
+0.026
+]
+]
+},
+{
+"t": 250,
+"genre": [
+[
+"post-rock",
+0.385
+],
+[
+"rock",
+0.269
+],
+[
+"krautrock",
+0.253
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.999
+],
+[
+"drum machine",
+0.001
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.999
+],
+[
+"tense",
+0.001
+],
+[
+"eerie",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.921
+],
+[
+"rapping",
+0.078
+],
+[
+"male singing",
+0.001
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.87
+],
+[
+"footsteps in snow",
+0.127
+],
+[
+"applause",
+0.002
+]
+]
+},
+{
+"t": 255,
+"genre": [
+[
+"krautrock",
+0.763
+],
+[
+"post-rock",
+0.123
+],
+[
+"rock",
+0.065
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.968
+],
+[
+"organ",
+0.027
+],
+[
+"bass guitar",
+0.006
+]
+],
+"mood": [
+[
+"sad",
+1.0
+],
+[
+"tense",
+0.0
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.996
+],
+[
+"male singing",
+0.002
+],
+[
+"rapping",
+0.001
+]
+],
+"sound": [
+[
+"applause",
+0.774
+],
+[
+"crowd cheering",
+0.222
+],
+[
+"footsteps in snow",
+0.002
+]
+]
+},
+{
+"t": 260,
+"genre": [
+[
+"krautrock",
+0.75
+],
+[
+"post-rock",
+0.227
+],
+[
+"rock",
+0.023
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"drum machine",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.98
+],
+[
+"tense",
+0.017
+],
+[
+"aggressive",
+0.001
+]
+],
+"voice": [
+[
+"rapping",
+0.469
+],
+[
+"no vocals",
+0.453
+],
+[
+"crowd chanting",
+0.076
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.528
+],
+[
+"footsteps in snow",
+0.365
+],
+[
+"vinyl crackle",
+0.054
+]
+]
+},
+{
+"t": 265,
+"genre": [
+[
+"post-rock",
+0.553
+],
+[
+"krautrock",
+0.447
+],
+[
+"rock",
+0.001
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.999
+],
+[
+"drum machine",
+0.001
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.554
+],
+[
+"tense",
+0.412
+],
+[
+"sad",
+0.016
+]
+],
+"voice": [
+[
+"no vocals",
+0.96
+],
+[
+"crowd chanting",
+0.024
+],
+[
+"male singing",
+0.006
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.655
+],
+[
+"footsteps in snow",
+0.345
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 270,
+"genre": [
+[
+"krautrock",
+0.938
+],
+[
+"post-rock",
+0.061
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"electric guitar",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.989
+],
+[
+"aggressive",
+0.008
+],
+[
+"tense",
+0.003
+]
+],
+"voice": [
+[
+"no vocals",
+0.96
+],
+[
+"crowd chanting",
+0.032
+],
+[
+"male singing",
+0.007
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.611
+],
+[
+"footsteps in snow",
+0.252
+],
+[
+"vinyl crackle",
+0.094
+]
+]
+},
+{
+"t": 275,
+"genre": [
+[
+"krautrock",
+0.952
+],
+[
+"post-rock",
+0.041
+],
+[
+"rock",
+0.006
+]
+],
+"instrument": [
+[
+"distorted guitar",
+1.0
+],
+[
+"electric guitar",
+0.0
+],
+[
+"sampled voice",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.618
+],
+[
+"playful",
+0.224
+],
+[
+"aggressive",
+0.109
+]
+],
+"voice": [
+[
+"no vocals",
+0.484
+],
+[
+"crowd chanting",
+0.244
+],
+[
+"rapping",
+0.222
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.707
+],
+[
+"tape hiss",
+0.213
+],
+[
+"crowd cheering",
+0.045
+]
+]
+},
+{
+"t": 280,
+"genre": [
+[
+"krautrock",
+0.995
+],
+[
+"rock",
+0.003
+],
+[
+"post-rock",
+0.002
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.967
+],
+[
+"drum machine",
+0.023
+],
+[
+"saxophone",
+0.01
+]
+],
+"mood": [
+[
+"aggressive",
+0.897
+],
+[
+"tense",
+0.103
+],
+[
+"sad",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.997
+],
+[
+"crowd chanting",
+0.003
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.689
+],
+[
+"footsteps in snow",
+0.308
+],
+[
+"vinyl crackle",
+0.001
+]
+]
+},
+{
+"t": 285,
+"genre": [
+[
+"krautrock",
+0.895
+],
+[
+"post-rock",
+0.096
+],
+[
+"rock",
+0.009
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.999
+],
+[
+"drum machine",
+0.001
+],
+[
+"sampled voice",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.673
+],
+[
+"sad",
+0.259
+],
+[
+"tense",
+0.066
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.592
+],
+[
+"no vocals",
+0.206
+],
+[
+"male singing",
+0.201
+]
+],
+"sound": [
+[
+"crowd cheering",
+0.489
+],
+[
+"footsteps in snow",
+0.489
+],
+[
+"wind",
+0.02
+]
+]
+},
+{
+"t": 290,
+"genre": [
+[
+"post-rock",
+0.941
+],
+[
+"krautrock",
+0.051
+],
+[
+"rock",
+0.008
+]
+],
+"instrument": [
+[
+"drum machine",
+0.615
+],
+[
+"distorted guitar",
+0.385
+],
+[
+"sampled voice",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.876
+],
+[
+"tense",
+0.111
+],
+[
+"playful",
+0.01
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.904
+],
+[
+"no vocals",
+0.052
+],
+[
+"rapping",
+0.041
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.665
+],
+[
+"crowd cheering",
+0.232
+],
+[
+"vinyl crackle",
+0.098
+]
+]
+},
+{
+"t": 295,
+"genre": [
+[
+"post-rock",
+0.868
+],
+[
+"krautrock",
+0.12
+],
+[
+"rock",
+0.01
+]
+],
+"instrument": [
+[
+"drum machine",
+0.677
+],
+[
+"distorted guitar",
+0.3
+],
+[
+"saxophone",
+0.021
+]
+],
+"mood": [
+[
+"tense",
+0.53
+],
+[
+"aggressive",
+0.468
+],
+[
+"sad",
+0.001
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.671
+],
+[
+"rapping",
+0.314
+],
+[
+"no vocals",
+0.012
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.98
+],
+[
+"ice skating",
+0.01
+],
+[
+"crowd cheering",
+0.005
+]
+]
+},
+{
+"t": 300,
+"genre": [
+[
+"post-rock",
+0.993
+],
+[
+"krautrock",
+0.007
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.782
+],
+[
+"saxophone",
+0.134
+],
+[
+"drum machine",
+0.078
+]
+],
+"mood": [
+[
+"tense",
+0.984
+],
+[
+"sad",
+0.01
+],
+[
+"aggressive",
+0.005
+]
+],
+"voice": [
+[
+"rapping",
+0.729
+],
+[
+"no vocals",
+0.27
+],
+[
+"radio announcer speech",
+0.001
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.999
+],
+[
+"ice skating",
+0.001
+],
+[
+"vinyl crackle",
+0.0
+]
+]
+},
+{
+"t": 305,
+"genre": [
+[
+"post-rock",
+0.988
+],
+[
+"krautrock",
+0.012
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.779
+],
+[
+"distorted guitar",
+0.22
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"tense",
+0.572
+],
+[
+"aggressive",
+0.414
+],
+[
+"sad",
+0.012
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.997
+],
+[
+"male singing",
+0.002
+],
+[
+"no vocals",
+0.001
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.951
+],
+[
+"crowd cheering",
+0.04
+],
+[
+"ice skating",
+0.008
+]
+]
+},
+{
+"t": 310,
+"genre": [
+[
+"post-rock",
+0.905
+],
+[
+"krautrock",
+0.07
+],
+[
+"rock",
+0.024
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.961
+],
+[
+"organ",
+0.032
+],
+[
+"saxophone",
+0.006
+]
+],
+"mood": [
+[
+"sad",
+0.81
+],
+[
+"tense",
+0.131
+],
+[
+"aggressive",
+0.032
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"rapping",
+0.001
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.981
+],
+[
+"vinyl crackle",
+0.017
+],
+[
+"crowd cheering",
+0.002
+]
+]
+},
+{
+"t": 315,
+"genre": [
+[
+"krautrock",
+0.551
+],
+[
+"post-rock",
+0.447
+],
+[
+"rock",
+0.001
+]
+],
+"instrument": [
+[
+"organ",
+0.888
+],
+[
+"distorted guitar",
+0.112
+],
+[
+"choir",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.827
+],
+[
+"tense",
+0.165
+],
+[
+"solemn",
+0.007
+]
+],
+"voice": [
+[
+"male singing",
+0.476
+],
+[
+"crowd chanting",
+0.407
+],
+[
+"no vocals",
+0.077
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.994
+],
+[
+"crowd cheering",
+0.006
+],
+[
+"applause",
+0.0
+]
+]
+},
+{
+"t": 320,
+"genre": [
+[
+"krautrock",
+0.989
+],
+[
+"rock",
+0.006
+],
+[
+"soul",
+0.005
+]
+],
+"instrument": [
+[
+"organ",
+1.0
+],
+[
+"distorted guitar",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.923
+],
+[
+"eerie",
+0.051
+],
+[
+"tense",
+0.019
+]
+],
+"voice": [
+[
+"crowd chanting",
+0.494
+],
+[
+"no vocals",
+0.401
+],
+[
+"male speech",
+0.09
+]
+],
+"sound": [
+[
+"footsteps in snow",
+1.0
+],
+[
+"vinyl crackle",
+0.0
+],
+[
+"crowd cheering",
+0.0
+]
+]
+},
+{
+"t": 325,
+"genre": [
+[
+"krautrock",
+0.677
+],
+[
+"classical music",
+0.265
+],
+[
+"rock",
+0.028
+]
+],
+"instrument": [
+[
+"organ",
+0.991
+],
+[
+"distorted guitar",
+0.008
+],
+[
+"banjo",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.848
+],
+[
+"tense",
+0.141
+],
+[
+"eerie",
+0.009
+]
+],
+"voice": [
+[
+"no vocals",
+0.945
+],
+[
+"crowd chanting",
+0.051
+],
+[
+"male singing",
+0.003
+]
+],
+"sound": [
+[
+"footsteps in snow",
+0.999
+],
+[
+"vinyl crackle",
+0.001
+],
+[
+"crowd cheering",
+0.0
+]
+]
+},
+{
+"t": 330,
+"genre": [
+[
+"classical music",
+0.923
+],
+[
+"soul",
+0.072
+],
+[
+"orchestral film score",
+0.003
+]
+],
+"instrument": [
+[
+"organ",
+0.999
+],
+[
+"saxophone",
+0.0
+],
+[
+"strings",
+0.0
+]
+],
+"mood": [
+[
+"sad",
+0.719
+],
+[
+"tense",
+0.281
+],
+[
+"solemn",
+0.0
+]
+],
+"voice": [
+[
+"male speech",
+0.753
+],
+[
+"male singing",
+0.229
+],
+[
+"no vocals",
+0.008
+]
+],
+"sound": [
+[
+"ice skating",
+0.523
+],
+[
+"footsteps in snow",
+0.41
+],
+[
+"applause",
+0.064
+]
+]
+},
+{
+"t": 335,
+"genre": [
+[
+"soul",
+0.995
+],
+[
+"post-rock",
+0.003
+],
+[
+"classical music",
+0.001
+]
+],
+"instrument": [
+[
+"organ",
+0.968
+],
+[
+"choir",
+0.032
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.95
+],
+[
+"tense",
+0.049
+],
+[
+"sad",
+0.001
+]
+],
+"voice": [
+[
+"male singing",
+0.991
+],
+[
+"female singing",
+0.006
+],
+[
+"radio announcer speech",
+0.002
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"bells",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 340,
+"genre": [
+[
+"R&B",
+0.862
+],
+[
+"soul",
+0.119
+],
+[
+"hip hop",
+0.01
+]
+],
+"instrument": [
+[
+"drum machine",
+0.997
+],
+[
+"sampled voice",
+0.002
+],
+[
+"synthesizer",
+0.001
+]
+],
+"mood": [
+[
+"calm",
+0.996
+],
+[
+"tense",
+0.004
+],
+[
+"sad",
+0.0
+]
+],
+"voice": [
+[
+"male speech",
+0.77
+],
+[
+"radio announcer speech",
+0.23
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.632
+],
+[
+"vinyl crackle",
+0.366
+],
+[
+"tape hiss",
+0.002
+]
+]
+},
+{
+"t": 345,
+"genre": [
+[
+"rock",
+0.787
+],
+[
+"classical music",
+0.1
+],
+[
+"soul",
+0.047
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.341
+],
+[
+"brass",
+0.335
+],
+[
+"piano",
+0.239
+]
+],
+"mood": [
+[
+"tense",
+0.76
+],
+[
+"calm",
+0.195
+],
+[
+"hopeful",
+0.043
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.474
+],
+[
+"no vocals",
+0.393
+],
+[
+"rapping",
+0.098
+]
+],
+"sound": [
+[
+"silence",
+0.997
+],
+[
+"vinyl crackle",
+0.003
+],
+[
+"tape hiss",
+0.0
+]
+]
+},
+{
+"t": 350,
+"genre": [
+[
+"rock",
+0.787
+],
+[
+"classical music",
+0.1
+],
+[
+"soul",
+0.047
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.341
+],
+[
+"brass",
+0.335
+],
+[
+"piano",
+0.239
+]
+],
+"mood": [
+[
+"tense",
+0.76
+],
+[
+"calm",
+0.195
+],
+[
+"hopeful",
+0.043
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.474
+],
+[
+"no vocals",
+0.393
+],
+[
+"rapping",
+0.098
+]
+],
+"sound": [
+[
+"silence",
+0.997
+],
+[
+"vinyl crackle",
+0.003
+],
+[
+"tape hiss",
+0.0
+]
+]
+},
+{
+"t": 355,
+"genre": [
+[
+"rock",
+0.787
+],
+[
+"classical music",
+0.1
+],
+[
+"soul",
+0.047
+]
+],
+"instrument": [
+[
+"bass guitar",
+0.341
+],
+[
+"brass",
+0.335
+],
+[
+"piano",
+0.239
+]
+],
+"mood": [
+[
+"tense",
+0.76
+],
+[
+"calm",
+0.195
+],
+[
+"hopeful",
+0.043
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.474
+],
+[
+"no vocals",
+0.393
+],
+[
+"rapping",
+0.098
+]
+],
+"sound": [
+[
+"silence",
+0.997
+],
+[
+"vinyl crackle",
+0.003
+],
+[
+"tape hiss",
+0.0
+]
+]
+}
+],
+"song_average": {
+"genre": [
+[
+"post-rock",
+0.422
+],
+[
+"krautrock",
+0.227
+],
+[
+"rock",
+0.114
+],
+[
+"soul",
+0.092
+],
+[
+"jazz",
+0.078
+],
+[
+"classical music",
+0.025
+]
+],
+"instrument": [
+[
+"distorted guitar",
+0.373
+],
+[
+"drum machine",
+0.173
+],
+[
+"bass guitar",
+0.138
+],
+[
+"organ",
+0.111
+],
+[
+"brass",
+0.057
+],
+[
+"electric guitar",
+0.055
+]
+],
+"mood": [
+[
+"tense",
+0.462
+],
+[
+"sad",
+0.33
+],
+[
+"aggressive",
+0.091
+],
+[
+"calm",
+0.054
+],
+[
+"playful",
+0.041
+],
+[
+"eerie",
+0.019
+]
+],
+"voice": [
+[
+"no vocals",
+0.6
+],
+[
+"male singing",
+0.134
+],
+[
+"rapping",
+0.095
+],
+[
+"crowd chanting",
+0.085
+],
+[
+"radio announcer speech",
+0.041
+],
+[
+"male speech",
+0.032
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.471
+],
+[
+"footsteps in snow",
+0.25
+],
+[
+"crowd cheering",
+0.134
+],
+[
+"silence",
+0.09
+],
+[
+"wind",
+0.027
+],
+[
+"applause",
+0.013
+]
+]
+}
+}

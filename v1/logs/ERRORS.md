@@ -181,3 +181,8 @@ Sixteen errors fixed in analysis_blind/t_cshells_cshore/interpretation.md (see i
 - 09:00 · **Wrong 'correction' found:** the cold-read/backlog passes 'corrected' video2 to say the picture does NOT cut at the 1:28.6 drop (static shot 1:22.1-1:30.3 per shots.json). Frame check (88.3 s road vs 88.7 s blurred bridge crowd; drums/bass from -75 to -21 dB in the 88 s bin) shows it DOES cut on the drop; PySceneDetect missed a blurred whip transition. · Correcting all files. · **Sync claims must be checked at frame level (frame_at.py), never from shots.json alone; blurred/whip cuts are missed by the detector.**
 - 09:05 · Turing test v1 design confound: pooled all our same-topic pieces together, so topic alone revealed them. · Per-piece pools. · Control for confounds in any discrimination test.
 - 20:40 · t_dl_mirror blind run journal had an unreadable line (likely the restart mid-write), so it could not resume. · Started a fresh run. · (restart side-effect)
+
+## Sync audit: video1
+- Trusted shots.json (51 boundaries) for sync claims; it misses about 143 cuts (79 strong), including whip blurs. Claims built on it ("picture changes nearly every second from 1:34", "7.58 vs 0.46 cuts per 10 s", "thump 4 has no event", cut rate leading loudness) were wrong or loose.
+- A "correction" based on 1 fps stills was itself wrong: at 3:06 IJlst, Bolsward and Franeker do show (5 fps frames), and at 2:49 a bibbed skater is visible. Lesson: sync and "nothing shown" claims need frames at several per second, never mid-second stills.
+- FACTS "Do-not-say: cuts do not land on big sound events" contradicted its own measured text. Check that headings match their body.

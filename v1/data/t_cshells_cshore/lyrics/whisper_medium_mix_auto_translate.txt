@@ -1,0 +1,2 @@
+# faster-whisper medium on mix_auto_translate (lang=en p=0.39)
+[0:28.58 - 0:29.98] You

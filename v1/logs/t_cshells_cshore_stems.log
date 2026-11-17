@@ -1,0 +1,5 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Selected model is a bag of 1 models. You will see that many progress bars per track.
+Separated tracks will be stored in /home/user/Listener/v1/data/t_cshells_cshore/stems_raw/htdemucs
+Separating track v1/data/t_cshells_cshore/audio/song.wav
+  0%|                                                                                  | 0.0/362.7 [00:00<?, ?seconds/s]

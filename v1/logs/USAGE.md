@@ -28,3 +28,4 @@
 | 07:11 | 24% | 70% | weekly rising ~1% per 8% of window: whole window would end near ~80% weekly |
 | 07:58 | 52%+ | 74% | human.js done; listening.js iterating |
 | 07:42 | 62% | **75% (weekly warning)** | after the running listening.js v2 + two test-video blind chains finish, stop launching large work to keep weekly near ~80% |
+| 20:37 | 41% | 86% | user: go hard for ~30 min, no restart after reset (no scheduled tasks remain) |

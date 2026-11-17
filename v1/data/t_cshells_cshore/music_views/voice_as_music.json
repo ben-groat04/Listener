@@ -1,0 +1,96 @@
+{
+ "vid": "t_cshells_cshore",
+ "duration_s": 360.98,
+ "evidence": "OBS (measurements only; no interpretation is stated)",
+ "params": {
+  "bleed_db": 20.0,
+  "floor_db": -55.0,
+  "gap_s": 0.25,
+  "min_seg_s": 0.3,
+  "min_total_s": 3.0,
+  "hop_s": 0.01
+ },
+ "vad": {
+  "n_segments_before_filter": 5,
+  "voiced_time_before_filter_s": 3.6,
+  "voiced_time_without_bleed_rule_s": 10.2,
+  "n_segments_kept": 1,
+  "voiced_time_kept_s": 1.2,
+  "voiced_share_of_track": 0.003,
+  "max_vocal_minus_mix_db": 116.6,
+  "vocal_peak_db": -15.5,
+  "segments": [
+   {
+    "start_s": 336.12,
+    "end_s": 337.32,
+    "dur_s": 1.2,
+    "vocal_db_mean": -57.1,
+    "mix_db_mean": -44.9,
+    "vocal_minus_mix_db": -12.2,
+    "whisper_support": "doubtful_partial"
+   }
+  ]
+ },
+ "whisper_filter": {
+  "status": "applied",
+  "rule": "doubtful if in *_doubtful.txt, avg_logprob<-1.0 or no_speech_prob>0.6; VAD segment dropped if >=50% of its length overlaps doubtful whisper and none overlaps reliable whisper",
+  "primary_source": "whisper_medium_vocals_auto_transcribe.json",
+  "sources": [
+   {
+    "file": "whisper_medium_mix_auto_transcribe.json",
+    "lang": "en",
+    "lang_prob": 0.39284104108810425,
+    "n_segments": 4,
+    "n_doubtful": 4,
+    "whisper_time_s": 2.4,
+    "whisper_reliable_time_s": 0.0,
+    "vad_time_s": 3.6,
+    "vad_time_overlapping_any_whisper_s": 0.0,
+    "vad_time_overlapping_reliable_whisper_s": 0.0,
+    "reliable_whisper_time_with_vad_s": 0.0
+   },
+   {
+    "file": "whisper_medium_vocals_auto_transcribe.json",
+    "lang": "cy",
+    "lang_prob": 0.48817235231399536,
+    "n_segments": 13,
+    "n_doubtful": 13,
+    "whisper_time_s": 35.5,
+    "whisper_reliable_time_s": 0.0,
+    "vad_time_s": 3.6,
+    "vad_time_overlapping_any_whisper_s": 3.0,
+    "vad_time_overlapping_reliable_whisper_s": 0.0,
+    "reliable_whisper_time_with_vad_s": 0.0
+   }
+  ],
+  "dropped_vad_segments": [
+   {
+    "start_s": 142.07,
+    "end_s": 142.6
+   },
+   {
+    "start_s": 334.41,
+    "end_s": 335.33
+   },
+   {
+    "start_s": 337.73,
+    "end_s": 338.31
+   },
+   {
+    "start_s": 339.89,
+    "end_s": 340.31
+   }
+  ]
+ },
+ "status": "no voice found",
+ "note": "OBS: kept voiced time 1.2 s < 3.0 s under bleed rule (20.0 dB below mix, floor -55.0 dBFS). Without the bleed rule the vocal stem exceeds the floor for 10.2 s. Blocks pitch, beat_phase, ducking not computed.",
+ "pitch": {
+  "status": "not computed (no voice found)"
+ },
+ "beat_phase": {
+  "status": "not computed (no voice found)"
+ },
+ "ducking": {
+  "status": "not computed (no voice found)"
+ }
+}

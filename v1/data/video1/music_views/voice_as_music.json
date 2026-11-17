@@ -7,7 +7,7 @@
   "floor_db": -55.0,
   "gap_s": 0.25,
   "min_seg_s": 0.3,
-  "min_total_s": 1.0,
+  "min_total_s": 3.0,
   "hop_s": 0.01
  },
  "vad": {

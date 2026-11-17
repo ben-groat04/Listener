@@ -1,0 +1,10 @@
+voice_as_music: t_cshells_cshore (all numbers OBS: measurements, no interpretation)
+status: no voice found; track 361.0 s
+1 VAD (bleed rule 20.0 dB below mix, floor -55.0 dBFS): 5 segments, 3.7 s voiced (10.2 s without bleed rule); kept after whisper filter: 1 segments, 1.2 s
+OBS: kept voiced time 1.2 s < 3.0 s under bleed rule (20.0 dB below mix, floor -55.0 dBFS). Without the bleed rule the vocal stem exceeds the floor for 10.2 s. Blocks pitch, beat_phase, ducking not computed.
+2 PITCH: not computed (no voice found)
+3 BEAT PHASE: not computed (no voice found)
+4 DUCKING: not computed (no voice found)
+5 WHISPER FILTER: applied; primary whisper_medium_vocals_auto_transcribe.json; dropped VAD segments 4
+   whisper_medium_mix_auto_transcribe.json: 4 segs (4 doubtful), whisper 2.4 s (reliable 0.0 s), VAD 3.6 s, VAD overlapping any whisper 0.0 s, reliable whisper 0.0 s
+   whisper_medium_vocals_auto_transcribe.json: 13 segs (13 doubtful), whisper 35.5 s (reliable 0.0 s), VAD 3.6 s, VAD overlapping any whisper 3.0 s, reliable whisper 0.0 s

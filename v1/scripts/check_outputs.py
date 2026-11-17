@@ -2,6 +2,9 @@
 Usage: check_outputs.py [--blind] [video ...]   (default: every folder in v1/data)
        check_outputs.py --tags EARLIER_STAGE.md LATER_STAGE.md   (tag-lowering report; exit 1 if any lowered without a stated reason)
        check_outputs.py --report REPORT.md   (two-tier report rules; prints PASS/FAIL per rule, exit 1 on any FAIL)
+       check_outputs.py --chain A.md B.md [C.md ...]   (claim tags H/M/L, OBS/INT, near-certain/probable/possible: FAIL when raised or dropped between stages without '[changed: reason]')
+       check_outputs.py --dossier FILE.md   (lint against banned readings parsed from v1/DO_NOT_CLAIM.md; line numbers; exit 1 on any hit)
+       check_outputs.py --human FILE.md [--max-words N]   (human-voice body: no tags/units/'depends on'/'best-supported'/'I felt'; word budget default 900)
 Warnings (do not change the exit code): missing .done marker in the video folder; emotive nouns (heartbeat, bell, breath ...) in
 v1/analysis*/<video>/**/*.md with no digit or 'metaphor'/'figurative'/'literal' label within 100 characters.
 --blind: context.md is not required (blind runs must not have one). Otherwise a context.md that is still the unfilled template
@@ -88,6 +91,125 @@ if "--report" in sys.argv:
     fa = [a for a in sys.argv[1:] if a != "--report"]
     if len(fa) != 1: sys.exit("usage: check_outputs.py --report REPORT.md")
     sys.exit(report_mode(fa[0]))
+
+# ---- --chain / --dossier / --human ----
+CONF_RANK = {"H": 3, "M": 2, "L": 1, "NEAR-CERTAIN": 3, "PROBABLE": 2, "POSSIBLE": 1, "OBS": 2, "INT": 1}
+SCHEME = {"H": "conf", "M": "conf", "L": "conf", "NEAR-CERTAIN": "word", "PROBABLE": "word", "POSSIBLE": "word", "OBS": "kind", "INT": "kind"}
+CT_RE = re.compile(r"\[(H|M|L)\]|\((H|M|L)\)|\|\s*(H|M|L)\s*(?=\|)|\b(?:conf(?:idence)?|tag)\s*[:=]\s*(H|M|L)\b|\b(?:OBS|INT)[-/ ]([HML])\b"
+                   r"|\b(?:conf(?:idence)?\s*[:=]\s*)?(high|medium|med|low)\s+confidence\b|\b(near[- ]certain|probable|possible)\b|\b(OBS|INT)\b(?!\w)", re.I)
+CLAIM_ID_RE = re.compile(r"\b((?:C|CL|CLAIM|F|K|R|Q)[- ]?\d{1,3})\b")
+CHANGED_RE = re.compile(r"\[changed:\s*[^\]\s][^\]]*\]", re.I)
+def line_tags(line):
+    out = {}
+    for m in CT_RE.finditer(line):
+        g = [x for x in m.groups() if x]
+        for x in g:
+            u = x.upper().replace(" ", "-")
+            if u in ("HIGH",): u = "H"
+            elif u in ("MED", "MEDIUM"): u = "M"
+            elif u == "LOW": u = "L"
+            if u == "NEAR-CERTAIN" or u in CONF_RANK: out[SCHEME[u]] = CONF_RANK[u]
+    return out
+def chain_claims(path):
+    out = []
+    for i, line in enumerate(open(path, errors="replace").read().splitlines()):
+        ids = CLAIM_ID_RE.findall(line); tg = line_tags(line)
+        if not ids and not tg: continue
+        body = CT_RE.sub(" ", line).lower()
+        words = {w for w in re.findall(r"[a-z0-9][a-z0-9.:']+", body) if w not in STOP and len(w) > 2}
+        out.append((i + 1, {x.replace(" ", "").replace("-", "").upper() for x in ids}, tg, words, line.strip()))
+    return out
+def chain_mode(files):
+    n = 0; names = [os.path.basename(f) for f in files]; stages = [chain_claims(f) for f in files]
+    print("chain: " + " -> ".join(f"{nm} ({len(c)} tagged/ID lines)" for nm, c in zip(names, stages)))
+    for k in range(len(files) - 1):
+        a, b = stages[k], stages[k + 1]
+        for ln0, ids0, tg0, w0, t0 in a:
+            if not tg0: continue
+            best, bs = None, 0.0
+            for cand in b:
+                ln, ids, tg, w, t = cand
+                if ids0 and ids and (ids0 & ids): sim = 2.0
+                elif ids0 and ids: continue
+                elif w and w0: sim = len(w & w0) / min(len(w), len(w0))
+                else: continue
+                if sim > bs: best, bs = cand, sim
+            if not best or bs < 0.6: continue
+            ln, ids, tg, w, t = best
+            for sch, r0 in tg0.items():
+                r1 = tg.get(sch)
+                if r1 is not None and r1 <= r0: continue
+                if CHANGED_RE.search(t): continue
+                n += 1
+                kind = "DROPPED" if r1 is None else "RAISED"
+                print(f"  {kind} {sch} tag without [changed: reason]: {names[k]}:{ln0} (rank {r0}) -> {names[k+1]}:{ln} ({'none' if r1 is None else r1})\n    A: {t0[:140]}\n    B: {t[:140]}")
+    print(f"chain: {n} tag(s) raised or dropped without a [changed: reason] note"); return 1 if n else 0
+if "--chain" in sys.argv:
+    fa = [a for a in sys.argv[1:] if a != "--chain"]
+    if len(fa) < 2: sys.exit("usage: check_outputs.py --chain A.md B.md [C.md ...]")
+    sys.exit(chain_mode(fa))
+
+BUILTIN_DNC = [r"\bfur\b", r"\bmiddle-aged woman\b", r"\bpoliceman\b", r"\bhand-painted\b"]
+def parse_dnc():
+    """Banned readings from v1/DO_NOT_CLAIM.md: bold item titles (short literal ones) and quoted phrases inside bold. None if unparsable."""
+    try: t = open(f"{root}/v1/DO_NOT_CLAIM.md", errors="replace").read()
+    except OSError: return None
+    pats = []
+    for m in re.finditer(r"^\s*\d+\.\s+\*\*(.+?)\*\*", t, re.M):
+        title = m.group(1).strip(); quoted = re.findall(r'"([^"]+)"', title)
+        for q in quoted: pats.append((q, r"\b" + re.escape(q.lower()) + r"\b"))
+        if quoted: continue
+        base = re.sub(r"\([^)]*\)", "", title).strip(" :.")
+        for part in re.split(r"\s+or\s+|,", base):
+            part = part.strip()
+            if 0 < len(part.split()) <= 2 and not re.match(r"(?i)(sex|role|gesture|anything|print|sub|a )", part):
+                pats.append((part, r"\b" + re.escape(part.lower()).replace(r"\-", "-") + r"\b" if "-" not in part else r"\bhand-(?:painted|lettered|lettering|drawn|written)\b"))
+    if len(pats) < 3: return None
+    pats += [("policeman", r"\bpoliceman\b"), ("middle-aged woman", r"\bmiddle-aged (?:woman|man)\b"), ("hand-painted", r"\bhand-painted\b")]
+    return pats
+def dossier_mode(path):
+    pats = parse_dnc(); src = "v1/DO_NOT_CLAIM.md"
+    if pats is None: pats = [(p, p) for p in BUILTIN_DNC]; src = "built-in fallback list"
+    print(f"dossier lint: {path} ({len(pats)} banned readings from {src})"); n = 0
+    for i, line in enumerate(open(path, errors="replace").read().splitlines(), 1):
+        for name, rx in pats:
+            for m in re.finditer(rx, line, re.I):
+                n += 1; print(f"  FAIL line {i}: banned reading '{m.group(0)}' (DO_NOT_CLAIM: {name}) -> {line.strip()[:120]}")
+    print(f"dossier: {n} banned reading(s)"); return 1 if n else 0
+if "--dossier" in sys.argv:
+    fa = [a for a in sys.argv[1:] if a != "--dossier"]
+    if len(fa) != 1: sys.exit("usage: check_outputs.py --dossier FILE.md")
+    sys.exit(dossier_mode(fa[0]))
+
+HUMAN_PATS = [("claim tag (OBS/INT/H/M/L)", re.compile(r"\b(?:OBS|INT)\b|\[(?:H|M|L)\]|\((?:H|M|L)\)|\b(?:conf(?:idence)?|tag)\s*[:=]\s*[HML]\b|\b(?:OBSERVED|INFERRED|SPECULATED)\b")),
+              ("statistic/unit", STAT_RE), ("unit (Hz/dB/%/BPM)", re.compile(r"\b(?:k?Hz|dB(?:FS)?|BPM)\b|\d\s?%", re.I)),
+              ("'depends on'", re.compile(r"\bdepends? on\b", re.I)), ("'best-supported'", re.compile(r"\bbest[- ]supported\b", re.I)),
+              ("'I felt'", re.compile(r"\bI felt\b", re.I)), ("emotive noun without '(metaphor)'", None)]
+def human_mode(path, max_words=900):
+    t = open(path, errors="replace").read(); n = 0
+    print(f"human check: {path}")
+    for i, line in enumerate(t.splitlines(), 1):
+        seen = set()
+        for name, rx in HUMAN_PATS[:-1]:
+            for m in rx.finditer(line):
+                if any(m.start() < e and s < m.end() for s, e in seen): continue
+                seen.add((m.start(), m.end())); n += 1; print(f"  FAIL line {i}: {name} '{m.group(0)}' -> {line.strip()[:100]}")
+    for m in BANNED_NOUN.finditer(t):
+        if not re.search(r"\(metaphor\)", sentence_around(t, m.start(), m.end()), re.I):
+            n += 1; print(f"  FAIL line {t.count(chr(10), 0, m.start()) + 1}: emotive noun '{m.group(0)}' not labelled '(metaphor)'")
+    words = len(re.findall(r"\S+", re.sub(r"```.*?```", " ", t, flags=re.S)))
+    if words > max_words: n += 1; print(f"  FAIL over word budget: {words} words > {max_words}")
+    print(f"human: {words} words, {n} problem(s)"); return 1 if n else 0
+if "--human" in sys.argv:
+    fa = sys.argv[1:]; mw = 900
+    if "--max-words" in fa:
+        i = fa.index("--max-words")
+        try: mw = int(fa[i + 1])
+        except (IndexError, ValueError): sys.exit("--max-words needs an integer")
+        fa = fa[:i] + fa[i + 2:]
+    fa = [a for a in fa if a != "--human"]
+    if len(fa) != 1: sys.exit("usage: check_outputs.py --human FILE.md [--max-words N]")
+    sys.exit(human_mode(fa[0], mw))
 
 # ---- emotive-noun lint ----
 EMOTIVE = re.compile(r"\b(heartbeats?|bells?|breath(?:s|ing)?|breathe[sd]?|sighs?|shivers?|ache[sd]?)\b", re.I)

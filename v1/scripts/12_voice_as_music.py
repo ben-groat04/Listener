@@ -31,7 +31,7 @@ ap.add_argument("--bleed-db", type=float, default=20.0, help="vocal block counts
 ap.add_argument("--floor-db", type=float, default=-55.0, help="absolute vocal-stem floor in dBFS")
 ap.add_argument("--gap", type=float, default=0.25)
 ap.add_argument("--min-seg", type=float, default=0.30)
-ap.add_argument("--min-total", type=float, default=1.0)
+ap.add_argument("--min-total", type=float, default=3.0)
 a = ap.parse_args()
 if a.vid: os.environ["VID"] = a.vid
 VID = require_vid()
@@ -277,7 +277,6 @@ else:
             s, e = int(v["start_s"] / HOP_S), int(v["end_s"] / HOP_S)
             inside[s:min(e, n)] = True; near[max(0, s - M):min(e + M, n)] = True
         outside = ~near; margin = near & ~inside
-        def st(arr, m): return None if m.sum() == 0 else round(float(db(np.sqrt((10 ** (arr[m] / 10)).mean()))) if False else float(10 * np.log10((10 ** (arr[m] / 10)).mean() + EPS)), 1)
         # power-mean dB per region
         def pm(arr, m): return None if m.sum() == 0 else round(float(10 * np.log10(np.mean(10 ** (arr[m] / 10)) + EPS)), 1)
         regions = {"during_voiced": inside, "margin_1s_around": margin, "elsewhere": outside}
@@ -309,6 +308,7 @@ L = [f"voice_as_music: {VID} (all numbers OBS: measurements, no interpretation)"
      f"1 VAD (bleed rule {a.bleed_db} dB below mix, floor {a.floor_db} dBFS): {len(vad_all)} segments, {tot_vad:.1f} s voiced ({tot_nobleed:.1f} s without bleed rule); kept after whisper filter: {len(keep)} segments, {tot_keep:.1f} s"]
 if out["status"] == "no voice found":
     L.append(out["note"])
+    L += ["2 PITCH: not computed (no voice found)", "3 BEAT PHASE: not computed (no voice found)", "4 DUCKING: not computed (no voice found)"]
 else:
     p = out["pitch"]
     L.append(f"2 PITCH: tonic = {p['tonic_source']}; f0 in {p['n_segments_with_f0']}/{p['n_segments']} segments; interval histogram (semitones 0-11) {p['interval_histogram_semitones']}; in scale {p['segments_in_scale']}; median on chord tone {p['segments_median_on_chord_tone']}/{p['segments_with_chord_info']}; pooled frame chord-tone share {p['pooled_frame_chord_tone_share']} vs chance {p['pooled_frame_chord_tone_chance']} ({p['pooled_frames']} frames)")

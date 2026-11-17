@@ -3,7 +3,7 @@ export const meta = {
   description: 'Video-agnostic, music-first: per-window listeners -> specialist music panel that converses over rounds -> music reading -> adversarial audio fact-check',
   phases: [
     { title: 'Windows', detail: 'one Sonnet listener per 20 s window' },
-    { title: 'Specialists', detail: 'harmony, rhythm, sound, voice, form, lineage, feeling' },
+    { title: 'Specialists', detail: 'harmony, rhythm, groove and body, sound, voice, form, lineage, feeling' },
     { title: 'Debate', detail: 'specialists read and answer each other' },
     { title: 'Reading', detail: 'synthesis + refutation + fixes' },
   ],
@@ -42,11 +42,13 @@ const MUSIC_RULES = `EVIDENCE RULES FOR MUSIC CLAIMS (all roles):
 1. Production era. Judge whether the track reads as modern production laid over archive or older material, or as one period-consistent recording. Use measured cues only and name the figures you measured: peak level against 0 dBFS (true peaks or sample peaks near 0 dBFS suggest modern mastering or limiting), loop regularity (near-identical repeats of a bar or phrase suggest a loop machine or DAW), kick onset spread (how far kick onsets sit from a strict grid, measured from the drum stem), and band-limited sample against full-band mix (a narrow-band, noisy or low-fi layer sitting under or inside a full-range mix suggests older source material). Tag the judgement INFERRED with a confidence (high/medium/low). Never refuse to judge when the data clearly shows it: give the judgement, the figures and the confidence.
 2. Blind honesty. A blind run must not refuse facts that are clearly heard or seen in the measurements or transcripts (a repeated, legible transcript phrase, an on-screen name, an unmistakable instrument range or tempo). A near-certain identification is a duty: state it, tag it INFERRED, confidence high, and give the evidence. Over-caution that withholds a well-evidenced fact counts as an error, just as an invented fact does.
 3. Section boundaries. For every claimed section boundary or event, re-measure the four stems separately (drums, bass, vocals, other) around it and report a boundary evidence table: boundary time | drums change | bass change | vocals change | other change | which stem carries the boundary. A boundary may show in one stem only. A silence may be a rhythm-section dropout only (drums and bass out while voice or pad continue): check each stem and the full mix before using the word silence, and state the mix level drop in dB.
+   Taught before: for every moment you call a surprise, drop, return or ending, list what the listener had been taught in the preceding 30 s (which layers had been present and for how long, read from the stems), and say whether the moment was prepared, denied or paid off by that. Never write "no warning" without this list.
 4. End of track. Measure the ending from a 10 ms envelope over the last 3 s of the audio (full mix and each stem), and count final hits from the waveform (peaks in the 10 ms envelope), not from per-second RMS or stem-separation passes. Give the time of the last audible sound and the level at the end.
 5. Sync statistics. Any sync or alignment statistic (cuts or events against beats, kicks or bars) must name its grid (for example the kick grid, the tracker beat grid, or a fixed-tempo grid, with its BPM) and be checked against the kick inter-onset interval; a figure on a different grid from the kick spacing is not a sync result.
 6. Emotive sound nouns. Do not use unmeasured emotive sound nouns such as heartbeat, bell, breath or sigh as descriptions of what is playing, unless a measured figure sits beside them (a rate in BPM or Hz, a frequency, a decay time) or they are explicitly labelled as metaphor (write: metaphor). Describe the sound by its measured properties first.
 7. Confidence tags are carried, never lowered silently. If you take a claim from a colleague's file or an earlier round, keep its tag (measured, INFERRED, speculative, or high/medium/low); lower a tag only with a stated reason and the evidence for it. Do not raise one without new evidence either.
-8. Not recoverable by measurement. (Every output carries a "not recoverable by measurement" list.) End your output with a short list headed "Not recoverable by measurement": things a listener may feel or assume that these measurements cannot settle (for example exact instrument identity, performer, recording date, intent, the real source of a sample), each with one line on why.`
+8. Not recoverable by measurement. (Every output carries a "not recoverable by measurement" list.) End your output with a short list headed "Not recoverable by measurement": things a listener may feel or assume that these measurements cannot settle (for example exact instrument identity, performer, recording date, intent, the real source of a sample), each with one line on why.
+9. Listener-feeling claims. A claim that listeners feel, hear or experience something needs one of: reception evidence (a cited review, comment or listener account), a named musical mechanism (for example a layer held for 40 s then removed, a tempo the body can follow, a repeated loop), or the label "my reading". Without one of these, cut or soften it.`
 
 const base = vid => `You are a music listener on a team trying to understand the MUSIC of videos/${vid}.mp4 the way a perceptive human listener would: what is playing, how it is built, and how it makes you feel. The music matters more than the picture here.
 You cannot hear audio directly. Your "ears" are measurements in ${R}/v1/data/${vid}/ — use them all and cross-check them:
@@ -79,11 +81,12 @@ Write ${OUT}/music/${x.vid}/win_${pad4(x.w)}.md:
 const SPECS = [
   ['harmony', 'harmony and melody: key centres, chord progressions and loops, modal colour, riffs/motifs and how they develop, melodic contour of any lead line'],
   ['rhythm', 'rhythm, tempo and groove: true tempo (resolve octave errors), metre, drum patterns, syncopation, accelerations, stops, how the pulse drives the feeling; any sync statistic must name its grid and be checked against the kick inter-onset interval'],
+  ['groove', 'groove and the listener\'s body: does it push or drag against the pulse, the weight of what the drummer plays (kick and snare strength and spacing, ghost notes, fills, from the drum stem), and what a loop does to attention (when repetition locks in, when it tires, what changes it); the body-level feeling of the rhythm, each point tied to a measured cause'],
   ['sound', 'sound design and production: instrumentation (with evidence), timbre, distortion, space/reverb, stereo image, mix balance, loudness curve, and the production-era judgement (modern production over archive or older material, from measured cues, tagged INFERRED with confidence)'],
   ['voice', 'voice, words and samples: how speech/singing/sampled audio is placed, chopped, repeated, treated, and how words and music answer each other'],
   ['form', 'form and dynamics: the song map (intro/build/peak/breakdown/outro etc.) with timestamps, tension and release, the big moments and how they are engineered; include the per-stem section-boundary evidence table and the measured end of the track'],
   ['lineage', BLIND ? 'genre and lineage inferred purely from the sound: what it resembles, which traditions it draws on, with sonic evidence' : 'genre, lineage and the artist: where this sits in the artist\'s work and the wider genre, influences, what the artist was trying to do (cite sources)'],
-  ['feeling', 'the feeling listener: a moment-by-moment emotional journey through the track as an ordinary attentive listener would experience it, tied to concrete musical causes'],
+  ['feeling', 'the feeling listener: a moment-by-moment emotional journey through the track as an ordinary attentive listener would experience it, tied to concrete musical causes. You work from the first-listen notes (LISTENING.md, and any first-listen or repeat-listen notes in the analysis folders) when they are present, not from measurements alone; use the measurements to check and explain what the first-listen notes say, and disagree with them where the evidence does'],
 ]
 
 async function doVideo(vid) {
@@ -93,7 +96,7 @@ async function doVideo(vid) {
 
 You are the ${key.toUpperCase()} specialist: ${what}.
 ${r === 1
-  ? `Read ALL window notes in ${D}/win_*.md, then check them against the measurements yourself (open images, run Python). Write your full specialist analysis of the whole track. End with 3 questions for named fellow specialists (harmony, rhythm, sound, voice, form, lineage, feeling).`
+  ? `Read ALL window notes in ${D}/win_*.md, then check them against the measurements yourself (open images, run Python). Write your full specialist analysis of the whole track. End with 3 questions for named fellow specialists (harmony, rhythm, groove, sound, voice, form, lineage, feeling).`
   : `DEBATE ROUND ${r - 1}: read every specialist's previous file in ${D}/specialists/round_${r - 1}/. Answer questions put to you, correct mistakes (yours or theirs) with evidence, and connect your area to theirs (e.g. how the rhythm serves the form, how the sound creates the feeling). ${r === ROUNDS + 1 ? 'Final round: finish with your settled conclusions in 5 bullet points.' : 'End with 2 new questions for named specialists.'}`}
 Write ${D}/specialists/round_${r}/${key}.md, then return a short summary.`, { label: `${key}:r${r}:${vid}`, phase: r === 1 ? 'Specialists' : 'Debate', model: 'sonnet', schema: SUM })))
     log(`${vid}: music specialists round ${r} done`)
@@ -101,7 +104,7 @@ Write ${D}/specialists/round_${r}/${key}.md, then return a short summary.`, { la
 
   await agent(`${base(vid)}
 
-YOUR JOB: write the definitive human listening of ${vid}'s music: ${D}/music_reading.md. Read the window notes and every specialist file (all rounds). Sections:
+YOUR JOB: write the definitive human listening of ${vid}'s music: ${D}/music_reading.md. Read the window notes and every specialist file (all rounds). music_reading.md is a sidecar with tables (song map, boundary evidence, tags, uncertainties) that checkers and prose writers look things up in; it is not the source a prose piece is paraphrased from, so keep it complete and tabular rather than literary. Sections:
 1. The track in a paragraph (what it is, how it feels).
 2. Song map table: m:ss range | section name | what's playing | what it feels like.
 3. Harmony & melody. 4. Rhythm & groove. 5. Sound & production. 6. Voice, words & samples.
@@ -112,7 +115,8 @@ YOUR JOB: write the definitive human listening of ${vid}'s music: ${D}/music_rea
 11. Section-boundary evidence table (per stem: drums, bass, vocals, other; what changes; which stem carries the boundary), and the measured end of the track (10 ms envelope, last 3 s, hits counted from the waveform).
 12. Production-era judgement (modern production over archive/older material?) from measured cues, tagged INFERRED with confidence; blind runs state near-certain identifications as INFERRED high rather than refusing.
 13. Not recoverable by measurement: a list of what a listener may feel or assume that these measurements cannot settle.
-Carry every confidence tag from the notes unchanged unless you state a reason for lowering it. Do not use unmeasured emotive sound nouns (heartbeat, bell, breath) unless a figure sits beside them or they are labelled metaphor.
+Carry every confidence tag from the notes unchanged unless you state a reason for lowering it. Do not use unmeasured emotive sound nouns (heartbeat, bell, breath: the banned nouns, which the output checker flags) unless a figure sits beside them or the sentence carries the label (metaphor).
+Where you call a moment a surprise, drop, return or ending, include its 'taught before' list (rule 3). Any 'listeners feel' claim needs reception evidence, a named mechanism or the label 'my reading' (rule 9).
 Do not add claims that are not supported by the notes or measurements.`, { label: `reading:${vid}`, phase: 'Reading', model: 'sonnet', schema: SUM })
 
   const lenses = [

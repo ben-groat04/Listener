@@ -1,0 +1,9 @@
+voice_as_music: t_dl_mirror (all numbers OBS: measurements, no interpretation)
+status: voice found; track 239.4 s
+1 VAD (bleed rule 20.0 dB below mix, floor -55.0 dBFS): 28 segments, 183.9 s voiced (199.7 s without bleed rule); kept after whisper filter: 10 segments, 62.7 s
+2 PITCH: tonic = audio_features/summary.json key_whole_song_top3[0] = D minor; f0 in 10/10 segments; interval histogram (semitones 0-11) {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 3, '6': 3, '7': 4, '8': 0, '9': 0, '10': 0, '11': 0}; in scale 7; median on chord tone 5/9; pooled frame chord-tone share 0.296 vs chance 0.25 (2500 frames)
+3 BEAT PHASE: n=10, circular mean phase 0.946, R=0.753 (uniform chance about 0.316), within 100 ms of a beat 0.9
+4 DUCKING: accompaniment dB {'during_voiced': -14.6, 'margin_1s_around': -14.9, 'elsewhere': -15.0}; other-stem dB {'during_voiced': -26.6, 'margin_1s_around': -25.4, 'elsewhere': -27.0}; during-minus-elsewhere 0.4 dB (accompaniment), 0.4 dB (other); per-segment change vs previous 1 s median 1.8 dB, share negative 0.2
+5 WHISPER FILTER: applied; primary whisper_medium_vocals_auto_transcribe.json; dropped VAD segments 18
+   whisper_medium_mix_auto_transcribe.json: 52 segs (38 doubtful), whisper 203.7 s (reliable 42.1 s), VAD 183.9 s, VAD overlapping any whisper 181.7 s, reliable whisper 35.6 s
+   whisper_medium_vocals_auto_transcribe.json: 55 segs (44 doubtful), whisper 186.3 s (reliable 27.6 s), VAD 183.9 s, VAD overlapping any whisper 172.0 s, reliable whisper 25.1 s

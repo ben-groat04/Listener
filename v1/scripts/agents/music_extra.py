@@ -1,42 +1,60 @@
-import librosa, numpy as np, json, sys
-p='/home/user/Listener/v1/data/video1/audio/song.wav'
-out='/home/user/Listener/v1/data/video1/audio_features/extra/'
-y,sr=librosa.load(p,sr=22050,mono=False)
-L,R=y; m=(L+R)/2; s=(L-R)/2
-dur=m.shape[0]/sr
-H,P=librosa.effects.hpss(m)
-S=np.abs(librosa.stft(m,n_fft=2048,hop_length=512))**2
-f=librosa.fft_frequencies(sr=sr,n_fft=2048)
-bands={'sub<80':(20,80),'bass80-250':(80,250),'lowmid250-800':(250,800),'mid800-3k':(800,3000),'pres3-6k':(3000,6000),'air6k+':(6000,11000)}
+import sys, json, numpy as np, librosa
+d=sys.argv[1]; out=d+'/audio_features/extra'
+y2,sr=librosa.load(d+'/audio/song.wav',sr=22050,mono=False)
+m=y2.mean(0); L,R=y2[0],y2[1]
+S=np.abs(librosa.stft(m,n_fft=2048,hop_length=512)); f=librosa.fft_frequencies(sr=sr,n_fft=2048)
+H,P=librosa.decompose.hpss(S)
 hop=512; fps=sr/hop
-def per_sec(x): # frames->seconds
-    n=int(dur); return np.array([x[int(i*fps):int((i+1)*fps)].mean() for i in range(n)])
+bands={'sub(<80)':(20,80),'bass(80-250)':(80,250),'mid(250-2k)':(250,2000),'presence(2-5k)':(2000,5000),'air(5k+)':(5000,11000)}
 res={}
-for k,(a,b) in bands.items():
-    e=S[(f>=a)&(f<b)].sum(0); res[k]=per_sec(10*np.log10(e+1e-10)).round(1).tolist()
-rm=lambda x: librosa.feature.rms(y=x,hop_length=hop)[0]
-res['harm']=per_sec(rm(H)).round(4).tolist(); res['perc']=per_sec(rm(P)).round(4).tolist()
-res['mid']=per_sec(rm(m)).round(4).tolist(); res['side']=per_sec(rm(s)).round(4).tolist()
-res['width']=(np.array(res['side'])/(np.array(res['mid'])+1e-9)).round(3).tolist()
-# onset strength / tempo
-oenv=librosa.onset.onset_strength(y=P,sr=sr,hop_length=hop)
-for a,b in [(0,15),(15,66),(66,75),(75,88),(88,118),(118,134),(134,159),(159,189)]:
-    seg=oenv[int(a*fps):int(b*fps)]
-    t=librosa.feature.tempo(onset_envelope=seg,sr=sr,hop_length=hop,aggregate=None)
-    tg=librosa.feature.tempogram(onset_envelope=seg,sr=sr,hop_length=hop)
-    ac=tg.mean(1); lags=librosa.tempo_frequencies(tg.shape[0],sr=sr,hop_length=hop)
-    idx=np.argsort(ac[1:])[::-1][:3]+1
-    res.setdefault('tempo_by_section',{})[f'{a}-{b}']=[round(float(lags[i]),1) for i in idx]
-# global tempo candidates
-tg=librosa.feature.tempogram(onset_envelope=oenv,sr=sr,hop_length=hop); ac=tg.mean(1); lags=librosa.tempo_frequencies(tg.shape[0],sr=sr,hop_length=hop)
-idx=np.argsort(ac[1:])[::-1][:6]+1; res['global_tempo_peaks']=[(round(float(lags[i]),1),round(float(ac[i]),3)) for i in idx]
-# silence/gaps
-r=np.array(res['mid']); res['quiet_secs']=[i for i,v in enumerate(r) if v<0.08]
-json.dump(res,open(out+'music_extra.json','w'))
-print(dur, res['global_tempo_peaks']); print(res['tempo_by_section'])
-# section table
-secs=[(0,15),(15,66),(66,75),(75,88),(88,109),(109,119),(119,134),(134,159),(159,189)]
-for a,b in secs:
-    sl=slice(a,b); print(a,b,{k:round(float(np.mean(res[k][sl])),2) for k in list(bands)+['width']}, 'perc/harm',round(np.mean(res['perc'][sl])/np.mean(res['harm'][sl]),2),'rms',round(np.mean(res['mid'][sl]),3))
-print('per-5s rms',[round(float(np.mean(res['mid'][i:i+5])),2) for i in range(0,188,5)])
-print('quiet',res['quiet_secs'])
+n=int(S.shape[1]/fps)
+def sec(a): return np.array([a[int(i*fps):int((i+1)*fps)].mean() for i in range(n)])
+rows={}
+for k,(lo,hi) in bands.items():
+    idx=(f>=lo)&(f<hi); rows[k]=sec((S[idx]**2).sum(0))
+rows['perc_ratio']=sec((P**2).sum(0)/((P**2).sum(0)+(H**2).sum(0)+1e-9))
+# stereo
+M=(L+R)/2; Sd=(L-R)/2
+fr=sr
+def rms(x): return np.sqrt((x**2).mean()+1e-12)
+rows['side_to_mid_dB']=np.array([20*np.log10(rms(Sd[i*fr:(i+1)*fr])/rms(M[i*fr:(i+1)*fr])) for i in range(n)])
+rows['rms']=np.array([rms(m[i*fr:(i+1)*fr]) for i in range(n)])
+# tempo
+oenv=librosa.onset.onset_strength(y=m,sr=sr)
+tg=librosa.feature.tempogram(onset_envelope=oenv,sr=sr)
+ac=librosa.autocorrelate(oenv,max_size=400)
+tempos=librosa.tempo_frequencies(tg.shape[0],sr=sr)
+mean_tg=tg.mean(1)
+cand=[(round(float(tempos[i]),1),round(float(mean_tg[i]),3)) for i in np.argsort(-mean_tg)[:8] if tempos[i]>0]
+# beat-phase of drums stem: onset hist at 1/16 grid
+bt=json.load(open(d+'/audio_features/beat_times.json'))
+bt=np.array(bt if isinstance(bt,list) else bt.get('beat_times',bt))
+res['tempo_candidates_tempogram']=cand
+res['median_beat_interval_s']=float(np.median(np.diff(bt)))
+# sections of 8 bars-ish: use 15s blocks
+blocks=[]
+for s in range(0,n,10):
+    e=min(n,s+10); b={'t':f'{s//60}:{s%60:02d}'}
+    for k in rows: b[k]=round(float(np.mean(rows[k][s:e])),4)
+    blocks.append(b)
+res['blocks10s']=blocks
+res['overall_side_to_mid_dB']=round(float(np.mean(rows['side_to_mid_dB'])),2)
+res['LR_corr']=float(np.corrcoef(L,R)[0,1])
+# dynamics
+r=rows['rms']; res['rms_p10_p50_p90']=[round(float(x),3) for x in np.percentile(r[:230],[10,50,90])]
+res['crest_dB']=float(20*np.log10(np.abs(m).max()/rms(m)))
+# silences / dips: seconds where rms < 40% median within 10-225
+med=np.median(r); res['low_rms_seconds']=[int(i) for i in range(n) if r[i]<0.5*med]
+# per-second dump
+json.dump({k:[round(float(x),5) for x in v] for k,v in rows.items()},open(out+'/per_second_extra.json','w'))
+# beat-level energy: bass stem periodicity (808 pattern) via onset envelope of low band
+low=librosa.feature.rms(y=librosa.effects.preemphasis(m),frame_length=2048,hop_length=512)[0]
+json.dump(res,open(out+'/music_extra.json','w'),indent=1)
+print(json.dumps(res,indent=1)[:6000])
+# chromagram key per 30s with harmonic only
+yh=librosa.istft(H)
+ch=librosa.feature.chroma_cqt(y=yh,sr=sr)
+names=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+for s in range(0,n,30):
+    c=ch[:,int(s*sr/512):int((s+30)*sr/512)].mean(1)
+    print(s,[names[i] for i in np.argsort(-c)[:4]],np.round(np.sort(c)[::-1][:4],2))

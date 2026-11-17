@@ -39,6 +39,28 @@ summary = {"duration_s": round(dur,2), "tempo_bpm": float(np.atleast_1d(tempo)[0
            "loudness_rms_mean": float(rms.mean()), "loudest_moment_s": float(t[rms.argmax()]), "quietest_moment_s_after_5s": float(t[t>5][rms[t>5].argmin()]),
            "tempo_local_percentiles": {p: float(np.percentile(tg, p)) for p in (10, 50, 90)},
            "per_second": [{"t": s, "rms": round(float(rms[(t>=s)&(t<s+1)].mean()),4), "brightness_hz": round(float(cent[(t>=s)&(t<s+1)].mean())), "onset": round(float(onset[(t>=s)&(t<s+1)].mean()),3)} for s in range(int(dur))]}
+# tempo candidates from the drums stem (extra block; skipped when no drums stem). Warns when the whole-mix tempo is a 3:4 or 2:1 multiple of the drum tempo.
+drums_path = os.path.join(root, f"v1/data/{VID}/stems/drums.mp3")
+if os.path.exists(drums_path):
+    try:
+        yd, _ = librosa.load(drums_path, sr=sr, mono=True); od = librosa.onset.onset_strength(y=yd, sr=sr, hop_length=hop); od = od - od.mean()
+        ac = np.correlate(od, od, "full")[len(od) - 1:]; ac = ac / ac[0]; fps = sr / hop
+        lo, hi = int(fps * 60 / 240), int(fps * 60 / 60); seg = ac[lo:hi + 1]
+        pk = [i for i in range(1, len(seg) - 1) if seg[i] > seg[i - 1] and seg[i] >= seg[i + 1] and seg[i] > 0.05]
+        pk = sorted(pk, key=lambda i: -seg[i])[:6]
+        cands = []
+        for i in pk:
+            lag = i + lo; lag_r = float(lag + (0.5 * (ac[lag - 1] - ac[lag + 1]) / (ac[lag - 1] - 2 * ac[lag] + ac[lag + 1]) if 0 < lag < len(ac) - 1 and (ac[lag - 1] - 2 * ac[lag] + ac[lag + 1]) != 0 else 0))
+            cands.append({"bpm": round(60 * fps / lag_r, 2), "lag_s": round(lag_r / fps, 4), "autocorr": round(float(seg[i]), 3)})
+        mix_bpm = float(np.atleast_1d(tempo)[0]); top = cands[0]["bpm"] if cands else None; warns = []
+        if cands:
+            for c in cands: c["ratio_to_mix_tempo"] = round(c["bpm"] / mix_bpm, 3)
+            for c in cands:
+                r = mix_bpm / c["bpm"]
+                for name, tgt in (("3:4", 4 / 3), ("3:4", 3 / 4), ("2:1", 2.0), ("2:1", 0.5)):
+                    if abs(r - tgt) / tgt < 0.04: warns.append(f"whole-mix tempo {mix_bpm:.1f} BPM vs drums-stem candidate {c['bpm']} BPM (autocorr {c['autocorr']}): ratio {r:.3f} is about {name}; the beat grid may be on a different metrical level or feel than the drums.")
+        summary["tempo_candidates"] = {"source": "autocorrelation of drums-stem onset strength, 60-240 BPM, top peaks by height", "whole_mix_tempo_bpm": mix_bpm, "drum_candidates": cands, "warnings": warns}
+    except Exception as e: summary["tempo_candidates"] = {"error": repr(e)}
 json.dump(summary, open(f"{D}/summary.json", "w"), indent=1)
 json.dump([round(float(b),3) for b in bt], open(f"{D}/beat_times.json", "w"))
 fig, ax = plt.subplots(4, 1, figsize=(16, 11), sharex=True)

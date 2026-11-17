@@ -53,7 +53,7 @@ Bar counts use a 2.000 s bar (120 BPM). Two lattices: bar 0 at 0:28.14 for the f
 - **Hi-hat cross-rhythm (medium):** a 3+3+3 dotted-quaver accent spacing (0.375 s) is a programmed pattern, not a delay: the drum-stem hi-band autocorrelation has a bump at 0.375 s (0.25 against 0.06 to 0.14 for neighbours) but nothing at 0.75 s, so no decaying train of repeats [R3-sound]. I do not claim sixteenth hats from 3:40 (no step was measured; see ERRORS.md).
 - **Syncopation:** the bass pickup on the last beat is the only anticipation against the grid, and the end figure "and, beat, and" repeats the early off-beat kick feeling [R3-harmony, R3-rhythm].
 - **Fills and cell length (medium):** fills (elevated drums-stem onset counts in the bar ending) at about 1:56, 2:08, 2:24, 2:36, 2:48 and 3:00 (gaps 12, 16, 12, 12, 12 s); the 2:56 fill is not supported. My own onset counts depend on the detector (I reproduced elevated bars only roughly), so treat fill positions as medium-low; not a strict 8/16/32 plan. The working cell is 2 bars, with 6 bars (12 s) as the commonest unit and 14 bars for loop A [R3-form, R3-rhythm]. Hand-varied loop-machine logic, not a dance template.
-- **Feel:** from 0:28 to 1:28 the pattern leans and skips; after 1:28.6 it stands upright. The only larger rhythmic events are the stops (1:10-1:16.5, about 1:24.5-1:28.6, the 5:00.9 stop). Everything else changes by layer and brightness, not by drum activity.
+- **Feel:** from 0:28 to 1:28 the pattern leans and skips; after 1:28.6 it stands upright. The only larger rhythmic events are the stops (the drum stop from 1:10, the drum-and-bass stop about 1:24.6-1:28.6, the 5:00.9 stop). Everything else changes by layer and brightness, not by drum activity.
 
 ---
 
@@ -89,10 +89,10 @@ All feeling is inferred from measured cause [R3-feeling]; levels are from [LVL].
 
 | Time | What you would feel | Musical cause |
 |---|---|---|
-| 0:00-0:28 | Awe tinged with unease; looking at something large and old; a hopeful lift that sinks | Wide pad, no pulse, mix at -25 dBFS, slow chord blocks, flat-sixth colour; strikes at 0, 8, 12, 20 s mark time like tolls |
+| 0:00-0:28 | Awe tinged with unease; looking at something large and old; a hopeful lift that sinks | Wide pad, no pulse, mix at -25 dBFS, slow chord blocks, flat-sixth colour; strikes at 0, 8, 12, 20, 24 s mark time like tolls |
 | 0:28-0:42 | Weight arriving, a limping march | Bass enters about 65 dB above the intro stem level (the intro bass stem is demucs noise floor, effectively absent); off-beat kick |
 | 0:42-1:10 | Gravity, distance, a newsreel voice in front of a trudge | Low flat voice, dry; the kick leaning on the off-beat; loop A withholds the tonic |
-| 1:10-1:16.5 and 1:24.5-1:28.6 | Suspense, counting in the silence | First stop: drums drop out (bass carries on, the voice ends at 1:10.5); second stop (about 1:24.6-1:28.6): drums and bass both removed, about 4 s, roughly 8 beats of near-silence |
+| 1:10-1:20 and 1:24.6-1:28.6 | Suspense, counting in the silence | First stop: drums drop out (bass carries on, the voice ends at 1:10.5); second stop (about 1:24.6-1:28.6): drums and bass both removed, about 4 s, roughly 8 beats of near-silence |
 | 1:28.6 | Relief, arrival, the floor under your feet | Kick moves onto every beat, mix +5 dB, speech cut at the same instant (a tension-by-subtraction payoff) |
 | 1:40.6 | Grip, pressure | Bass +10 dB (largest single stem step of the first half), narrower, drier mix |
 | 1:40-2:36.6 | Hypnotic pressure, or numbness | Loudness flat within about 2 dB; drums flat near -19 dB; the voice comes and goes over a fixed floor |

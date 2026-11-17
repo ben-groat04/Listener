@@ -1,21 +1,19 @@
-import librosa,numpy as np,sys
-D='/home/user/Listener/v1/data/video1/stems_raw/htdemucs/song/'
-y,sr=librosa.load(D+'drums.wav',sr=22050,mono=True)
-oe=librosa.onset.onset_strength(y=y,sr=sr,hop_length=256)
-on=librosa.onset.onset_detect(onset_envelope=oe,sr=sr,hop_length=256,units='time')
-ioi=np.diff(on);print('onsets',len(on),'median ioi',np.median(ioi))
-h,_=np.histogram(ioi,bins=np.arange(0.05,1.0,0.05));print(dict(zip(np.round(np.arange(0.05,0.95,0.05),2),h)))
-ac=librosa.autocorrelate(oe-oe.mean());ac/=ac[0];fps=sr/256
-lags=np.arange(len(ac))/fps
-for lo,hi in[(0.15,0.25),(0.35,0.45),(0.7,0.85),(1.4,1.6),(3,3.2),(6,6.3)]:
-    m=(lags>=lo)&(lags<=hi);i=np.argmax(ac[m]);print(lo,hi,'peak lag',round(lags[m][i],3),'ac',round(ac[m][i],2))
-# band energy per 10s for low bass vs total, and ending
-x,sr2=librosa.load('/home/user/Listener/v1/data/video1/audio/song.wav',sr=22050,mono=True)
-r=librosa.feature.rms(y=x,frame_length=2048,hop_length=512)[0];t=librosa.times_like(r,sr=sr2,hop_length=512)
-for a in (186,187,188,188.3,188.5):
-    m=(t>=a)&(t<a+0.2);print(a,round(20*np.log10(r[m].mean()+1e-9),1))
-# kick/low-band drum rhythm: bass-drum onsets
-import scipy.signal as s
-sos=s.butter(4,150,'low',fs=sr,output='sos');k=s.sosfilt(sos,y)
-ke=librosa.onset.onset_strength(S=np.abs(librosa.stft(k,hop_length=256))[:8],sr=sr,hop_length=256)
-kon=librosa.onset.onset_detect(onset_envelope=ke,sr=sr,hop_length=256,units='time');print('kick-ish onsets',len(kon),'median ioi',np.median(np.diff(kon)))
+import json,numpy as np,soundfile as sf,librosa
+b='/home/user/Listener/v1/data/t_cshells_cshore/'
+d=json.load(open(b+'music_views/per_second_levels.json'))
+db=np.array([x['dbfs'] for x in d]);voc=np.array([x['vocals'] for x in d]);bas=np.array([x['bass'] for x in d]);dr=np.array([x['drums'] for x in d]);w=np.array([x['width'] for x in d])
+print('mix dB per 10s mean (nonzero):')
+for s in range(0,360,10):
+    seg=db[s:s+10]; print(s//60,s%60,round(seg.max(),1),round(seg.min(),1),'bass',round(bas[s:s+10].mean(),1),'drums',round(dr[s:s+10].mean(),1),'voc',round(voc[s:s+10].max(),1))
+y,sr=sf.read(b+'audio/song.wav');m=y.mean(1) if y.ndim>1 else y
+print('peak',abs(y).max())
+# 20s-window chord/energy changes: biggest 1s drops/rises
+dd=np.diff(db[11:343]);idx=np.argsort(dd)
+print('biggest drops',[(int(i)+11,round(dd[i],1)) for i in idx[:8]]);print('biggest rises',[(int(i)+11,round(dd[i],1)) for i in idx[-8:]])
+# kick IOI in drum stem 2:00-4:00
+k,_=sf.read(b+'stems_raw/htdemucs/song/drums.wav');k=k.mean(1)
+from scipy.signal import butter,sosfilt
+lo=sosfilt(butter(4,150,'low',fs=sr,output='sos'),k)
+for a,e in [(120,140),(200,220),(280,300)]:
+    seg=lo[a*sr:e*sr];o=librosa.onset.onset_detect(y=seg,sr=sr,units='time',backtrack=False)
+    ioi=np.diff(o);print(a,'kick onsets',len(o),'median IOI',round(float(np.median(ioi)),3),'frac within 0.49±0.04 or x2/0.5x', round(float(np.mean([min(abs(i-0.488*n) for n in (0.5,1,2))<0.04 for i in ioi])),2))

@@ -80,3 +80,36 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 
 - 02:46 · A cold-read fixer made report.js derive the repo root from __dirname/process, which do not exist in workflow scripts (it would fall back to '.'). · Replaced with args.root or the absolute default. · Tell fixer agents that workflow scripts are plain JS with no Node APIs.
 - 02:48 · **Rules check-in 1 (02:45).** Compliant: Sonnet everywhere; conversing panels (interpret, listen debate, compare); adversarial checks on every reading; cold-read loop running; music-first; blind chains on video1, video2, t_birdwalk; usage logged (75%, not edging); commits every 2 min. **Drift found:** (a) only 1 of 3 test videos has reached analysis because CPU extraction (demucs) is the bottleneck; (b) no blind-vs-informed comparison yet; (c) cold-read fixers edited all workflows using Node APIs (fixed); (d) autosave hard-coded the branch name (now uses the current branch). **Course:** queue the blind-vs-informed comparison as soon as blind chains finish; start the remaining test videos as their extraction completes; brief fixer agents that workflow scripts are plain JS.
+
+## Fact-check: video1 interpretation
+
+
+Visual refutations were re-checked by me against the frames and the mp4 (f_0001, f_0008, f_0029, f_0107, and ffmpeg extractions at 186.0-187.6 s, plus ffprobe); all held. Audio and statistical refutations rest on the checker's own stem measurements, which I did not re-run; they are specific and internally consistent, so I applied them.
+
+Changed (REFUTED):
+1. 3:06-3:08 recap: now a four-sign recap (ULST, DOKKUM, BOLSWARD, FRANEKER at about 0.4 s each from 3:06.2), banner at 3:07.4, black at 3:08.1; DOKKUM no longer "on the roll at 3:06.5"; "reverse order" claim removed (re-checked: strip of frames at 186.0, 186.3, 186.7, 187.1, 187.6 shows ULST, DOKKUM, BOLSWARD, FRANEKER, banner). Also fixed the FRANEKER time in section 5 and the "DOKKUM on the roll" wording in 3.2.
+2. 1fps labels: added a timing caution (up to about 0.5 s out).
+3. 0:07: now a lit POSTHUMA sign (re-checked f_0008), not "a black sign".
+4. 0:00-0:09: now a grey streaked blur with a dark band above (re-checked f_0001).
+5. First live skating: now figures running or walking at 0:27-0:31, first clear skating 0:38 (re-checked f_0029: no skates visible).
+6. 0:32 scene: mill-like tower, then a wooden platform on stilts, not a "building on stilts".
+7. Sceptic's test: corrected shot-length claims; listed the real cuts; said ties are more than one but statistically modest (p about 0.06). I kept the note that the 1:40 slam lands in a shot that began at 1:39.40.
+8. "Lacing skates at 1:46": now a bibbed skater stepping down a ramp (re-checked f_0107: no lacing).
+9. Ambulance moved to 2:04.
+10. Tea sequence extended to about 2:14.8; ceremony begins visually about 2:15.
+11. "Mostly backs..." softened with face-led passages named.
+12. Framing: 5:4 (600x480), checked with ffprobe.
+13. "Weight and brightness never both on until 2:48": replaced by the corrected statement in sections 2 and 3.6.
+14. Sub entries: six (2:01 to 2:32), 2:38.3 is a pitched D2 bass, in sections 2, 5 and 8.
+15. "tweehonderd kilometer" at 0:16-0:23: now "half zes" at 0:16.6, a garbled line at 0:19-0:24, 200 km at 0:54.
+16. "Voice-free groove 0:32-1:15": now mostly voice-free with four bursts; "three voice exits" now "three big voice exits".
+17. "Only place the music clears for the words": softened as in section 2.
+18. 0:00-0:09 bass "creep of 22 dB": now enters about 0:04, about -28 dB by 0:07, growing to about 0:20.
+19. 1:27 wall "+26 dB": now about +20 dB against the trough, and not brighter than the 1:06 wall.
+20. Elfstedentocht "spoken twice": now printed repeatedly, heard clearly once; Whisper hears three mentions, two garbled (sections 1, 2, 5).
+21. Refrain time: about 2:44.0-2:48.3.
+22. Bass cut: about 1:15.0-1:15.4; held A from about 1:15.6.
+23. 1:40 bass step: about -64 to -22 dB within about 0.2 s.
+24. 18 januari 1963: no longer "matched" with the newspaper page (re-checked f_0010 and the sheet: only the headline "Elfstedentocht bovenmenselijk zwaar" and "Chaos aan de finish" are legible).
+
+Softened or marked (UNVERIFIABLE): crowd "cheering" at FINISH; "bellows camera"; "bread"; the skater row count and hands; ULST/IJLST; "Stavoren inn"; "minus 16" unit; the Frisian-audience claim; the voice "(measurements only)"; the "only repeating pitched figure" claim; the stereo-width ranking (metric-dependent); loudness figure caveat; the 575/9,500 figures; "sound and picture from different eras". Left unchanged because the checkers could not settle them either: "half zes" as 5:30 (already hedged in section 8), the 3:07 banner last line (already medium confidence), the cut-phase statistics (confirmed against sync.json), the roll length and the 3:08.2 cut (already listed as open in section 8).

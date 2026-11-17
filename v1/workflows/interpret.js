@@ -11,7 +11,7 @@ export const meta = {
 // args: { root: optional repo root, videos: ['video1','video2'] (bare names or {vid,dur} objects), rounds: 3, blind: false, out: 'analysis' }
 // blind=true: agents must NOT read context.md, v1/analysis/research/, or use the web; they rely on sight/sound data only.
 // Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
-const R = (args && args.root) || '/home/user/Listener'  // workflow scripts have no Node APIs; pass args.root to override
+const R = (args && args.root) || (typeof __dirname !== 'undefined' ? __dirname.replace(/\/v1\/workflows$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))  // runtime may lack Node APIs: falls back to '.' (agent cwd = repo root)
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const ROUNDS = args.rounds || 3
 const BLIND = !!args.blind

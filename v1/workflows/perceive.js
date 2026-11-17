@@ -8,7 +8,7 @@ export const meta = {
 }
 // args: { root: optional repo root, videos: ['video1', ...] or [{ vid: 'video1', dur: 188.7 }, ...] (dur read from audio_features/summary.json when omitted), skip_done: [ 'video1:seg_01', ... ], blind: false, out: 'analysis', video_dir: 'videos' }
 // Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
-const R = (args && args.root) || '/home/user/Listener'  // workflow scripts have no Node APIs; pass args.root to override
+const R = (args && args.root) || (typeof __dirname !== 'undefined' ? __dirname.replace(/\/v1\/workflows$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))  // runtime may lack Node APIs: falls back to '.' (agent cwd = repo root)
 const A = `${R}/v1/${args.out || 'analysis'}`
 const BLIND = !!args.blind
 // Accept bare names or {vid, dur}; when dur is omitted an agent reads duration_s from v1/data/<vid>/audio_features/summary.json.

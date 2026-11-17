@@ -4,7 +4,7 @@ export const meta = {
   phases: [{ title: 'Compare' }, { title: 'Lessons' }],
 }
 // args: { videos: ['video1','video2'], root: optional }
-const R = (args && args.root) || '/home/user/Listener'  // workflow scripts have no Node APIs
+const R = (args && args.root) || (typeof __dirname !== 'undefined' ? __dirname.replace(/\/v1\/workflows$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))  // runtime may lack Node APIs: falls back to '.' (agent cwd = repo root)
 const SUM = { type: 'object', properties: { summary: { type: 'string' }, lessons: { type: 'array', items: { type: 'string' } } }, required: ['summary', 'lessons'] }
 phase('Compare')
 const res = await parallel(args.videos.map(vid => () => agent(`Repo ${R}. Compare two independent analyses of ${vid}:

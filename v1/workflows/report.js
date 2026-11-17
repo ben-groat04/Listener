@@ -4,9 +4,8 @@ export const meta = {
   phases: [{ title: 'Write' }, { title: 'Cold read' }, { title: 'Revise' }],
 }
 // args: { root: optional repo root, videos: ['video1'], out: 'analysis', compare: '<name of a compare/ folder under out>' (optional; skipped if its comparison.md is missing) }
-// Root: args.root, else /home/user/Listener.
-// Workflow scripts have no Node APIs (__dirname/process are undefined), so the root comes from args or this default.
-const R = (args && args.root) || '/home/user/Listener'
+// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+const R = (args && args.root) || (typeof __dirname !== 'undefined' ? __dirname.replace(/\/v1\/workflows$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))  // runtime may lack Node APIs: falls back to '.' (agent cwd = repo root)
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const SUM = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 const CR = { type: 'object', properties: { verdict: { type: 'string' }, problems: { type: 'array', items: { type: 'string' } } }, required: ['verdict', 'problems'] }

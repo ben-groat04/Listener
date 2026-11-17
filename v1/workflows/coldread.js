@@ -5,7 +5,7 @@ export const meta = {
 }
 // args: { root: optional repo root, scope: 'analysis' | 'toolkit' | 'all', videos: ['video1','video2'], rounds: 1, fixes_per_round: 6, tag: 'cr1' }
 // Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
-const R = (args && args.root) || '/home/user/Listener'  // workflow scripts have no Node APIs; pass args.root to override
+const R = (args && args.root) || (typeof __dirname !== 'undefined' ? __dirname.replace(/\/v1\/workflows$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))  // runtime may lack Node APIs: falls back to '.' (agent cwd = repo root)
 const TAG = args.tag || 'cr'
 const SCOPE = args.scope || 'all'
 const F = { type: 'object', properties: { findings: { type: 'array', items: { type: 'object', properties: { title: { type: 'string' }, where: { type: 'string' }, problem: { type: 'string' }, fix: { type: 'string' }, severity: { type: 'string', enum: ['high', 'medium', 'low'] } }, required: ['title', 'where', 'problem', 'fix', 'severity'] } } }, required: ['findings'] }

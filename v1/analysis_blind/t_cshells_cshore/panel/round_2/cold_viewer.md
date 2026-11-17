@@ -1,0 +1,68 @@
+# Cold viewer, round 2 (t_cshells_cshore)
+
+Method. I re-read the checked music reading, then all seven round 1 statements (including my own). This time I opened these frames myself: f_0012 (0:11), f_0042 (0:41), f_0113 and f_0114 (1:52, 1:53), f_0129 (2:08), f_0142 and f_0143 (2:21, 2:22), f_0188 (3:07), f_0308 (5:07). Frame numbering: f_N is second N-1 (f_0042 is the lamp plate the others place at 0:41). I did not read the dossier or any context.md. Facts that reached me only through the panel are marked "influenced by panel" and I say what I now know that I could not have seen. Sound claims are from the music reading; I have not listened.
+
+## 1. Answers to questions put to me
+
+**Film critic, Q2: are the shouting faces (2:07-2:08, 3:30-3:35) uncanny or merely empty? Is the infant clinical or distressing?**
+I opened f_0129 (2:08). From the film: a crowd in a hall, heads turned to the left of frame; the woman at left-centre has her mouth open and eyes wide; the woman in the foreground, back to us, has her mouth open in profile. I see alarm or surprise, in colour, no caption. I do not see "shouting" as such: open mouths in a freeze-frame are ambiguous (the sceptic is right that crowds show open mouths). Inference: because the music has no voice (reading, section 6), my mind supplies one. So I land between the two: not empty, because the faces are turned toward something off-screen and that gives the frame a question; but "shouting over a voiceless track" is mostly my projection. Uncanny, mildly. On the infant, f_0188 (3:07): from the film, a naked baby on its front in a cot, dark glasses-like eye covers, a woman's hand holding a steel cylinder over its back, a black cable running off right. It looks calm, not crying (I see no distress sign in the face, which is mostly hidden). Clinical in how it is staged; distressing in what it makes me imagine. The distress is mine, not the film's. That agrees with the sceptic: the unease comes from the picture, not from the music.
+
+**Film critic, Q1: does the 2:22 pitched burst fall on a picture event? You say your frames show a static take.**
+It is not quite static. f_0142 (2:21) and f_0143 (2:22) show the two men in the brick-wall take raising their knees at the same moment, the left man in a light suit, the right man in dark trousers and a white shirt with a pad over his eyes. Both frames are mid-lift, one second apart, and the pose differs slightly (left man's foot higher in f_0143). My round 1 guess, "the burst could be the sound answering a movement", survives only as a guess: I have one-second frames, the burst is four pulses 0.38-0.47 s apart (reading), and I cannot place a movement on a pulse. What I can say from the film: there is bodily action during that second, so the take is not a still hold in the way the film critic's round 1 suggests. I would not claim sync.
+
+**Insider, Q1 (for the Musician/Form reader) and Sceptic Q2: what holds my attention from 1:53 to 5:17 apart from the picture?**
+Honestly, mostly the picture, plus the music's subtractions. From the reading: the bass leaving at 3:44 and 4:36.5, returning at 4:11.5 and 4:46.5. Without those the drive is, as the sceptic says, a polite word for "does not develop". I will not defend "hypnotic" for 2:40-3:07: I flagged boredom there for the music (drums thinner, reading) and I still do.
+
+**Sceptic Q3: where in the frames do I see a story or argument rather than recurring props?**
+I do not see a story. I see a repeated category (bodies tested, eyes covered, apparatus), and I can point to frames: eye pad f_0142; infant eye covers f_0188; the record cartridge f_0012. But the sceptic's point that "covered eyes" is counted after the fact is fair: I did the same counting in round 1. What would disprove "perception as theme" is a long run of footage that has nothing to do with eyes, senses or instruments. I do see such footage (fish, aircraft, submarine, clouds at 0:59-1:32 in my round 1 list). So the theme covers perhaps half the picture and is an interpretation, not a finding. I retreat from "the collage is about perception" to "a good share of it concerns testing and sensing, and I find that a pleasing unifying idea" (inference).
+
+**Symbolist: is the 3:44 stretch "calm, then slightly sick"?** I did not find it sick; my round 1 feeling was lighter and open. I think we differ because you read the 12.5 s bending take as a body being made to bend; I read the same take (men against a wall) as repetition I had already seen at 2:09. That repetition is a fact (f_0142 and the 3:47-3:58 frames I listed are the same brick wall); the sickness is a reading.
+
+## 2. Where I agree
+
+- The sceptic on sync. The round 1 statements quote 0.333 within 80 ms against 0.326 chance and no permutation test. I agree that near-hits at a dozen edges are what chance would give, and that 1:53.3 is the only one I would still treat as likely deliberate. I checked it by eye: f_0113 (1:52) is the glowing figure-of-eight curve on black; f_0114 (1:53) is a fan of white lines converging on a smiling woman's profile at the right edge. The change of picture is large and hard, not a dissolve in these two frames, and the music reading puts the lock-in at 1:53.4. Influenced by panel: the figure 0.13 s and the 1:53.3 cut time come from the panel (sync.json via the dossier); from the film I only know the picture changed between my 1:52 and 1:53 frames. I could not have measured the sub-second gap.
+- The music critic that 1:47-1:53.4 is the best arrangement craft in the track. The picture there (the curve in f_0113) is pure light and no body, which suits sound that has been taken away. I said this in round 1 and it still holds.
+- The symbolist and film critic on the beach bookend, 0:16 and 5:01. That one I saw in my own round 1 frames.
+
+## 3. Where I disagree or correct others
+
+- **First-timer's "I now think the record-player is just one more apparatus, not a framing device."** I disagree mildly. f_0012 (0:11) shows a blurred pale-teal block with a stylus arm over a grooved surface, lettering on the block that I read as something like "STEREO" but cannot be sure of. That the first picture is a record needle arriving as the first sound arrives is a stronger, more specific link than any of the later apparatus, and nothing else in the piece is placed on a silent-to-sound edge. My inference stands: it is a deliberate opening gesture. I accept the first-timer's caution that the record-player does not reappear as a visual device later in my frames.
+- **Symbolist on f_0308 (5:07): "a figure's exposed chest (it could also be a mannequin)".** I opened f_0308. From the film: a green night-vision image, a head in profile at top right, below it a torso with two moulded rounded forms and a wire hanging from the bottom, set against black. The torso has no neck or arms joining it to the head, and the head and torso do not line up as one body. My reading is that it is a dummy or display figure, not a person; that is inference, but it is better supported than "intimate image of someone being watched". I would take that image out of the "being watched" set. I add that it does not appear in the green-murk run (4:15-4:31) that I called illegible, which I can still not read.
+- **Insider and film critic on genre ("instructional, scientific, home-front and military").** I agree on "instructional" for the lamp, the brick-wall drill and the infant. I do not see military footage as clearly: aircraft and a submarine (my round 1 list) could be of that kind, but I would not call any single frame military without a caption. Inference only.
+- **Insider on "Chicago, Ill."** I opened f_0042 (0:41). The plate reads "Quartz Ultra-Violet Ray Generator, SUPER RAY MODEL", and a smaller line beneath. In the frame I can make out a maker name above the small line and, in the small print, what looks like "Chicago, Ill.". I could confirm "Chicago" only to about the level the insider did (blurred small print). So I agree the reading is plausible; I add a caution: this is one prop, not the whole film.
+
+## 4. Developing the most interesting thread: the silent opening
+
+The thread I find richest is not the theme but the gap between the 11.3 s of silence and the first picture. In round 1 I read the cards (0:00-0:09) as a sleeve and 0:11 as the needle. Several panellists asked whether the opening silence is intended. From the music reading the zero is exact digital zero, with the first non-zero sample at 0:11.299; the picture's first image appears in my frame at 0:11 (f_0012), with black at 0:10 in my round 1 list. So what I can say from the film and the reading together is that picture and sound start inside the same second. I cannot say to the frame. If the 18.1 s tail is likewise exact zero with black picture (reading; my sheets show black from about 5:41), then the file has a symmetrical frame of nothing, 11.3 s before and 18.1 s after. Inference: that symmetry makes me lean to "authored", because an export artefact would more likely make one end sloppy and the other clean, and here both ends are exact. Against that, the lengths differ by 6.8 s, and the sceptic's point that a long DAW end-trim could leave a long tail is not refuted. I hold "probably intended" at low-to-medium confidence.
+
+What this does for feeling: the silence at the start makes the jolt, and the silence at the end makes the fade-out feel as if it never lands (the sound is cut at about -70 dBFS, reading, so I would not hear the cut at all). I find the end more moving than the start for that reason.
+
+## 5. Two new questions
+
+1. **To the music critic:** you say the 2:40-3:03 lull may be separator behaviour (the reading says medium, may be the stem). If a human listener on a flat speaker would hear nothing at 2:40, then is my, the insider's and the symbolist's boredom there caused by the picture (rapid inserts, per the insider) rather than the sound? How much of that "lull" would you trust as a real listening event?
+2. **To the sceptic:** you accept 1:53.3 as likely deliberate and call the rest unproven. What would you need to see to accept the 4:46.2 cut and the 4:46.5 bass return as deliberate: a permutation test over all dozen edges, or a second kind of evidence (for example, picture content that changes in step, such as camera raised to eye arriving just as the bass returns)? I ask because I find the camera-to-eye shot at that point meaningful and want to know whether you would count content as evidence or only timing.
+
+## ATTENTION NOTES (first person)
+
+- 0:11: still the sharpest moment; unchanged from round 1.
+- 1:52-1:53: I opened the two frames in sequence this time. The glowing curve to the smiling face with converging lines gave me a small jolt even as stills; I can imagine the effect at speed.
+- 2:08: the startled crowd faces (f_0129) caught me because the faces point somewhere I cannot see.
+- 2:21-2:22: the brick-wall take pulled me in because the two men move in near-unison, which I had not noticed on the contact sheet.
+- 3:07: the infant, again, caught by discomfort.
+- 5:07: the green dummy frame (f_0308) snapped me out of the run of images; I looked a while and could not tell what it was at first.
+- 5:19-5:39: the pier fade, as before.
+
+## BOREDOM NOTES (first person)
+
+- 2:40-3:07: still the weakest stretch for me, now with the music reading's lull plus the panel's account of the fast inserts. I did not open sheet 09 in round 1; I have not opened it now, so I still cannot speak to the pictures there from my own viewing.
+- 3:47-3:58: the brick wall again (I now know from f_0142 and the later frames that it is the same set-up). Restless.
+- 4:15-4:31: green murk, still unreadable.
+- 5:41-6:01: black and silence; same as before.
+
+## CHANGES OF MIND
+
+1. **Theme.** Before: "the collage is about perception". Prompted by the sceptic's counting argument (influenced by panel) and by my own look at the fish, aircraft and clouds frames from round 1: now "a large part is about testing and sensing; the unifying idea is partly mine". What I could not have seen myself: that the sceptic counts about seven covered-eye shots among roughly 85 cuts (a panel figure from the dossier, which I have not checked).
+2. **The 2:22 take.** Before: I treated the take as incidental and did not look at it. After opening f_0142 and f_0143 (from the film, not the panel): the men move in unison, so the take is more active than the film critic's "static" and more than my first impression of "two men kicking up legs against a wall". I now describe it as paired knee-raises, one man with an eye pad.
+3. **The dummy at 5:07.** Before: I did not open that frame in round 1 and listed "a head and torso, unclear" only through others' words in my mind. After opening f_0308 (from the film): it looks like a mannequin with a separate head, not a person. This is my correction of the symbolist's reading, and it is inference.
+4. **The shouting faces.** Before: I did not open a frame of 2:07-2:08 in round 1 and took "shouting" from the music reading's lack of voice plus the others' phrase. After opening f_0129 (from the film): open mouths and alarm, not a clear shout. I now say "startled".
+5. **The 1:53 match.** Before: "the picture may have followed the lock-in by luck" (round 1). Now: I still think it is not provable, but the two frames (f_0113, f_0114) show a hard, large change in picture at that second, which is the kind of change you would expect of a deliberate cut. Influenced by panel: the film critic's and the sceptic's report that the cut sits 0.13 s from the music edge; I could not have seen that.

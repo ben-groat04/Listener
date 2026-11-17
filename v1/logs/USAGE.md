@@ -20,3 +20,4 @@
 | 02:36 | 63% | 62% | launched coldread cr1 |
 | 02:47 | 75% | 64% | |
 | 02:48 | ~76% | 64% | rules check-in 1 |
+| 02:50 | 84% | 65% | blind video1 chain done (71 agents, 7.1M tokens) |

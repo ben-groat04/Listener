@@ -74,3 +74,4 @@ The diary below is **history**, kept as written (apart from marked corrections);
 5. Remaining test videos (t_cshells_cshore, t_dl_mirror) blind chains once extraction finishes.
 6. Docs: single entry point (A1-A4), current-state block, analysis INDEX.
 7. v2 cold start: a fresh session/agent runs TOOLKIT.md end-to-end on a test video to prove the toolkit works cold.
+- 02:50 Blind video1 chain done (71 agents; interpretation checks 26 refuted/33 unverifiable). Blind run identified subject from narration + printed headlines alone.

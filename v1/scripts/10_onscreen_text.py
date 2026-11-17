@@ -35,7 +35,8 @@ def ocr(img):
     if not TESS: return "", 0.0
     with tempfile.TemporaryDirectory() as td:
         p = os.path.join(td, "c.png"); cv2.imwrite(p, cv2.resize(img, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC))
-        r = subprocess.run([TESS, p, "-", "--psm", "6", "tsv"], capture_output=True, text=True)
+        try: r = subprocess.run([TESS, p, "-", "--psm", "6", "tsv"], capture_output=True, text=True, env=dict(os.environ, OMP_THREAD_LIMIT="1"), timeout=60)
+        except subprocess.TimeoutExpired: return "", 0.0
     words, confs = [], []
     for ln in r.stdout.splitlines()[1:]:
         c = ln.split("\t")

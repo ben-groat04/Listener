@@ -9,8 +9,6 @@ set -euo pipefail
 case "${1:-}" in -h|--help) sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//'; exit 0;; esac
 cd "$(dirname "$0")/../.."
 command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || { echo "ERROR: ffmpeg/ffprobe not found. Install it (e.g. apt-get install -y ffmpeg) and re-run." >&2; exit 1; }
-# Pinned to the versions this toolkit was developed with (see v1/requirements.txt); pip errors are NOT hidden and abort the script.
-if ! pip install -r v1/requirements.txt; then echo "ERROR: pip install -r v1/requirements.txt failed (see pip output above); setup NOT complete" >&2; exit 1; fi
 shopt -s nullglob
 FILES=()
 if [ $# -gt 0 ]; then
@@ -23,6 +21,8 @@ if [ $# -gt 0 ]; then
 else
   FILES=(videos/*.{mp4,mkv,mov,webm} testvideos/*.{mp4,mkv,mov,webm} ${VIDEO_DIR:+"$VIDEO_DIR"/*.{mp4,mkv,mov,webm}})
 fi
+# Pinned to the versions this toolkit was developed with (see v1/requirements.txt); pip errors are NOT hidden and abort the script.
+if ! pip install -r v1/requirements.txt; then echo "ERROR: pip install -r v1/requirements.txt failed (see pip output above); setup NOT complete" >&2; exit 1; fi
 for F in "${FILES[@]}"; do
   V=$(basename "${F%.*}")
   ffprobe -v error -select_streams a -show_entries stream=codec_type -of csv=p=0 "$F" | grep -q audio || { echo "WARNING: $F has no audio stream; skipped" >&2; continue; }

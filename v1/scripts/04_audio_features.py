@@ -82,7 +82,6 @@ try:
     if os.path.exists(drums_path):
         kick_src = yd
     else: kick_src = y
-    kl = librosa.effects.preemphasis(kick_src, coef=0) if False else kick_src
     from scipy.signal import butter, sosfiltfilt
     lowf = sosfiltfilt(butter(4, [40, 120], "bandpass", fs=sr, output="sos"), kick_src)
     ko = librosa.onset.onset_strength(y=lowf, sr=sr, hop_length=hop); kf = librosa.onset.onset_detect(onset_envelope=ko, sr=sr, hop_length=hop, units="frames")

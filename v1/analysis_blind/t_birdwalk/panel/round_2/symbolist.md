@@ -1,0 +1,52 @@
+# The Symbolist (poet and symbolist panellist), round 2: t_birdwalk
+
+Blind mode. I read all six round 1 statements. This time I opened contact sheets 03 (0:40-0:59), 08 (2:20-2:39), 09 (2:40-2:59), 10 (3:00-3:19) and 11 (3:20) myself, so the 0:54, 2:33-2:35, 2:44 and ending claims below are now [seen]. I cannot hear. Tags: [seen], [read], [data], [interp], [spec].
+
+## 1. Concessions first
+
+**The sceptic is right about the hooded man at the returns, and I was wrong in the details.** I wrote that "the face returns as the ground returns" at all three bass edges. Checking the frames and the dossier:
+- 0:59.25: the picture at the bass return is the children in beaked hoods (sheet 03, 0:54-0:59 [seen]); the hooded man arrives at 0:59.8, about 0.5 s later [dossier]. So this return is not on him.
+- 2:11.25: he is on screen, mid-shot, no cut [seen by the sceptic; dossier].
+- 2:35.5: he is in the last second of his shot (sheet 08: towel low at 2:33, lifted at 2:34, hood up and calm at 2:35 [seen]).
+
+So two of three, not three. My own arithmetic: from the dossier's shot times he fills roughly 47 s of 201 s, about 23 per cent. Two or more of three at that rate by chance is about 14 per cent [my arithmetic; picked after the fact]. That is no evidence. I withdraw "the face returns as the ground returns" as a claim about design. I keep it as something a viewer may feel at 2:35, which is a separate matter (section 3).
+
+**The silent tail may well be an export mismatch.** The sceptic's point that the container says 201.4 s while the audio decodes to 188.15 s [dossier, data] is exactly what an unmatched upload would produce. I called the silence "the best formal gesture" in round 1. I now say: it is the best *effect*, not shown to be a gesture.
+
+**"Borrowed body" overreached on the children.** The dossier's account fits but I had not opened sheet 03. Now that I have: the two children at 0:54-0:59 look to the side or at each other and do not smile; one flaps its elbows. They are not "performing" at all. See section 2.
+
+## 2. Answering the questions put to me
+
+**Sceptic, Q1 (intent: random edit test).** I cannot give a better test than the one above. I would add one: the dark crowd clip at 0:12, 0:47, 1:58 is the most repeatable pattern. It is 4 shots of about 50 in a film, and three of its four placements are within 0.9 s of a bass edge (0.4 s, 0.27 s, 0.86 s early [dossier]). Pure chance for one specific clip landing near each of three chosen edges is low, but the music reading's own edge precision is 0.1-0.25 s and the clip has four uses, so I class this as suggestive, not shown. Also note that all three are *early* cuts: the eye is handed the dark picture before the ear is handed the change. That is a consistent bias, which random placement would not give. [data, interp]
+
+**Sceptic, Q2 (the silence: decision or leftover).** The frames offer one small item the dossier did not stress. The credit card is on screen from 3:06 to 3:18 (sheet 10, over the hooded man and then over the trio [seen]). At 3:19 it is gone, and the final two seconds (the face filling the frame at 3:19, only the eye, nose and one corner lit at 3:20, then black [sheets 10, 11, seen]) carry no text at all. Apart from 0:12-0:13 and 3:04-3:05 (the dossier's own count), this is the only picture in the film that is not wearing the advert. Is that planned? Cannot say. A trimmed exports would not explain why the caption is lifted two seconds before black unless the credit card was itself timed. It could equally be a card timed to 12-13 s and then running out. I give it modest weight against "pure leftover": the picture was timed by someone to a length of its own [interp, spec as to who].
+
+**Sceptic, Q3 (earnest or parody: one frame).** I will not claim the makers are in on the joke from a single frame; I agree with the sceptic that the strip is earnest. But I would name two things that carry more joke than accident. First, 3:01-3:05: the box on the poncho figure has a drawn face and a hand held up as if to a microphone [seen, sheet 10]. A box with a drawn mouth is not a thing that happens by accident in a driveway; someone made it. It is a home-made joke that the strip then advertises. Second, 2:44: the child's eyes are cast down at 2:45 [seen]; he is not looking at the camera. That one is accident, and that is the point: the film is built from sources that are funny without knowing it, and a few that are funny on purpose. Evidence against my reading: the same people who made the box face also put "AVAILABLE NOW on iTunes" under every second, so any irony is under sales pressure. I would call it "sincere promotion with a sense of humour", not parody.
+
+**First timer, Q3 and film critic (does the picture help the learning).** I take the first-timer's point that the structure is mostly the music's. But the picture does one structural job the music cannot: it supplies the *faces for the quiet*. At each break the picture chooses something low and human: the children (0:54), the foam tower tumbling (2:22-2:26), the solemn child (2:44). I stay with that, as pattern within a small sample.
+
+**Music critic, Q1 (does the voice change meaning in a break).** The music critic did not put this to me; I raised it in round 1 and he answered in part by calling 2:23.5-2:35.5 "the best-composed twelve seconds" (voice and stabs walking through empty space [read]). I accept his framing and shift mine: a voice that carries on in a break is neither boast nor reassurance but *persistence*, the line sung because the floor is gone. See section 3.
+
+## 3. The thread I would develop: hide, reveal, and the floor
+
+Sheet 08 is the strongest page of the film for me, and I have now seen it rather than read it.
+- 2:22-2:26: the puppet bird is among a tower of coloured foam blocks. At 2:24-2:26 the tower breaks and he tilts, half-buried [seen]. The music reading puts the cut of bass and drums at 2:23.5 [read].
+- 2:26.7-2:32: the trio, washed out, one dancer in the middle with a dark head [seen].
+- 2:33: the hooded man has pulled the towel down so that the forehead and eyes are hidden; at 2:34 both hands lift the edge, mouth open, he is looking out; at 2:35 the hood is up and he looks calmly into the lens [seen]. The bass returns at 2:35.5 [read].
+
+The sequence is: a structure collapses, a crowd of three dances regardless, a face hides, a face is shown again, the floor comes back. I still read it as peek-a-boo. My round 1 phrase "the bass is object permanence" is an interpretation with no evidence of intent; the sceptic is right that the clips were not shot for this. Nonetheless the edit chose to put these three shots in this order inside the twelve silent seconds; and that is a choice even if an unthinking one. I will defend a weaker form: **the film's one repeated image is something withdrawn and then returned to a face** (floor, voice, caption, sound), and the viewer's pleasure comes from the return. The voice leaves at 2:47.5 and the mouth closes at 2:46-2:48 (sheet 09: mouth open at 2:46, a blur of hand and hood at 2:47, mouth shut at 2:48 [seen]); the credit card leaves at 3:19; the sound leaves at 3:08. Nothing returns after these. Everything in the second half is a departure, and the film does not hand the ground back. That, and not the drops, is where the feeling of loss comes from, and I think the first-timer's "oddly sad" (round 1) is the same observation.
+
+I now add one correction to my own motif list: the **gaze**. Reading sheets 09 and 10 together, the hooded man looks straight into the lens at 2:42-2:43 and 3:07-3:10 [seen]; the child at 2:44-2:45 looks down; the final face at 3:19-3:20 looks off to the side, an eye glancing away (sheet 11 [seen]). The film opens with a bird that looks at us (0:00) and ends on a person who no longer does. If I had to choose one structural gesture that is visible, it is that: address (0:00, 0:39, 3:07) turning to aversion (3:19). It is [interp], and the data cannot test it, but it is a thing in the frames, not in my head.
+
+## 4. Where I disagree with others
+
+- **Film critic: "The archive is placed, not handled", "dead time" at 3:08-3:21.** I agree about handling. I disagree that the tail is dead: sheet 10 shows 3:12-3:18 as the *liveliest* trio take (more people, a white-T dancer in red cap front and centre, arms flung [seen]). A dance with the music taken away is a different thing to watch: nobody on screen is dancing to what we hear. I find that more charged than dead, whatever its cause. [interp]
+- **Sceptic on "innocence against swagger" being mine.** Agreed it is an interpretation. But the juxtaposition is visible without outside knowledge: sheet 03 0:54-0:59 shows small children in beaked hoods in soft, warm footage, directly after the hooded man shouting; the sound is bass-free at that moment [read]. The sceptic is right that it is not data; it is still what the sheet shows.
+- **Music critic, "not tender".** The music itself I cannot hear; I accept it. The tenderness I report is the picture's: the children, the child at 2:44, and the 2:47 closed mouth.
+
+## 5. Two new questions
+
+1. **To the music critic:** the music reading has the first break (0:47.25) and the second (1:59.25) as copies (72.00 s lag [read]), and the third (2:23.5) as the one that changes, with voice and stabs over nothing. Is there anything in the measurements of the third break (width, level, voice level, the 6.2 s figure) that would let you say the *voice* is doing something different from breaks 1 and 2, enough to make 2:23.5-2:35.5 the piece's emotional centre rather than only its best-made twelve seconds? Or is that a picture-led impression I am projecting onto the sound?
+2. **To the sceptic:** you read the end as "audio shorter than video". Can the data tell us whether the 13 s tail was cut to its own length? For example: does the sync file or the shot list show the last shot (3:19.2-3:21.4) as a hard cut to black at a normal shot length, or a trimmed fragment (the 3:20 frame is lit in one corner only, which looks like a dip or a fade rather than a trim)? And is it plausible that a silent trio take (3:12-3:19) was *chosen*, given it is a reuse of the clip used eleven times, when any of the nine sources would have done?
+
+(Also, for whoever can test it: the hooded man's mouth against the vocal at 2:46-2:48. I now say "one open mouth, one shut mouth, a blur between" and nothing more.)

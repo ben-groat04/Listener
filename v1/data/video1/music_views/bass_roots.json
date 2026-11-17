@@ -54,7 +54,9 @@
      0.12,
      0.14
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 2,
@@ -103,7 +105,9 @@
      0.08,
      0.09
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 3,
@@ -153,7 +157,9 @@
      0.12,
      0.24
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 4,
@@ -203,7 +209,9 @@
      0.21,
      0.19
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 5,
@@ -253,7 +261,9 @@
      0.17,
      0.21
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 6,
@@ -303,7 +313,9 @@
      0.16,
      0.17
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 7,
@@ -353,7 +365,9 @@
      0.22,
      0.29
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 8,
@@ -403,7 +417,9 @@
      0.26,
      0.28
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 9,
@@ -453,7 +469,9 @@
      0.2,
      0.28
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 10,
@@ -503,7 +521,9 @@
      0.15,
      0.17
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 11,
@@ -553,7 +573,9 @@
      0.23,
      0.25
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 12,
@@ -603,7 +625,9 @@
      0.27,
      0.33
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 13,
@@ -653,7 +677,9 @@
      0.38,
      0.42
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 14,
@@ -703,7 +729,9 @@
      0.33,
      0.45
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 15,
@@ -753,7 +781,9 @@
      0.37,
      0.49
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 16,
@@ -803,7 +833,9 @@
      0.23,
      0.29
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 17,
@@ -853,7 +885,9 @@
      0.18,
      0.28
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 18,
@@ -903,7 +937,9 @@
      0.25,
      0.34
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 19,
@@ -953,7 +989,9 @@
      0.19,
      0.26
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 20,
@@ -1003,7 +1041,9 @@
      0.18,
      0.22
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 21,
@@ -1053,7 +1093,9 @@
      0.2,
      0.26
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 22,
@@ -1103,7 +1145,9 @@
      0.36,
      0.46
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 23,
@@ -1153,7 +1197,9 @@
      0.35,
      0.46
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 24,
@@ -1203,7 +1249,9 @@
      0.34,
      0.42
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 25,
@@ -1252,7 +1300,9 @@
      0.31,
      0.16
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 26,
@@ -1301,7 +1351,9 @@
      0.19,
      0.37
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 27,
@@ -1350,7 +1402,9 @@
      0.4,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 28,
@@ -1399,7 +1453,9 @@
      0.14,
      0.2
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 29,
@@ -1448,7 +1504,9 @@
      0.32,
      0.29
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 30,
@@ -1497,7 +1555,9 @@
      0.3,
      0.35
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 31,
@@ -1546,7 +1606,9 @@
      0.29,
      0.42
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 32,
@@ -1595,7 +1657,9 @@
      0.21,
      0.25
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 33,
@@ -1645,7 +1709,9 @@
      0.23,
      0.31
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 34,
@@ -1695,7 +1761,9 @@
      0.21,
      0.27
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 35,
@@ -1745,7 +1813,9 @@
      0.18,
      0.22
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 36,
@@ -1795,7 +1865,9 @@
      0.35,
      0.49
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 37,
@@ -1845,7 +1917,9 @@
      0.4,
      0.48
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 38,
@@ -1894,7 +1968,9 @@
      0.12,
      0.08
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 39,
@@ -1943,7 +2019,9 @@
      0.84,
      0.66
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 40,
@@ -1993,7 +2071,10 @@
      0.51,
      0.5
     ]
-   }
+   },
+   "root_claim": false,
+   "root_claim_note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root",
+   "note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root"
   },
   {
    "bar": 41,
@@ -2042,7 +2123,9 @@
      0.49,
      0.54
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 42,
@@ -2092,7 +2175,10 @@
      0.47,
      0.48
     ]
-   }
+   },
+   "root_claim": false,
+   "root_claim_note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root",
+   "note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root"
   },
   {
    "bar": 43,
@@ -2141,7 +2227,9 @@
      0.44,
      0.49
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 44,
@@ -2191,7 +2279,10 @@
      0.34,
      0.29
     ]
-   }
+   },
+   "root_claim": false,
+   "root_claim_note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root",
+   "note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root"
   },
   {
    "bar": 45,
@@ -2240,7 +2331,9 @@
      0.39,
      0.43
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 46,
@@ -2290,7 +2383,10 @@
      0.34,
      0.38
     ]
-   }
+   },
+   "root_claim": false,
+   "root_claim_note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root",
+   "note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root"
   },
   {
    "bar": 47,
@@ -2339,7 +2435,9 @@
      0.37,
      0.46
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 48,
@@ -2389,7 +2487,10 @@
      0.35,
      0.45
     ]
-   }
+   },
+   "root_claim": false,
+   "root_claim_note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root",
+   "note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root"
   },
   {
    "bar": 49,
@@ -2438,7 +2539,9 @@
      0.44,
      0.59
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 50,
@@ -2488,7 +2591,10 @@
      0.41,
      0.6
     ]
-   }
+   },
+   "root_claim": false,
+   "root_claim_note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root",
+   "note": "sub thump (about 42.6 Hz per music_reading), pitch not a usable root"
   },
   {
    "bar": 51,
@@ -2537,7 +2643,9 @@
      0.42,
      0.51
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 52,
@@ -2587,7 +2695,9 @@
      0.34,
      0.44
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 53,
@@ -2637,7 +2747,9 @@
      0.23,
      0.28
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 54,
@@ -2687,7 +2799,9 @@
      0.13,
      0.1
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 55,
@@ -2737,7 +2851,9 @@
      0.35,
      0.39
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 56,
@@ -2787,7 +2903,9 @@
      0.34,
      0.53
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 57,
@@ -2837,7 +2955,9 @@
      0.31,
      0.51
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 58,
@@ -2887,7 +3007,9 @@
      0.35,
      0.48
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 59,
@@ -2937,7 +3059,9 @@
      0.42,
      0.58
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 60,
@@ -2987,7 +3111,164 @@
      0.38,
      0.6
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   }
- ]
+ ],
+ "loops": {
+  "0:08-1:15 bass on": {
+   "start": 7.1,
+   "end": 74.8,
+   "n_bars": 22,
+   "bass_root_bar_counts": {
+    "C": 3,
+    "D": 19
+   },
+   "ks_on_bass_root_counts": [
+    [
+     "D minor",
+     0.67
+    ],
+    [
+     "D major",
+     0.641
+    ],
+    [
+     "G major",
+     0.431
+    ]
+   ],
+   "pad_mean_chroma": [
+    0.54,
+    0.37,
+    1.0,
+    0.32,
+    0.41,
+    0.35,
+    0.36,
+    0.38,
+    0.28,
+    0.61,
+    0.24,
+    0.31
+   ],
+   "ks_on_pad_chroma": [
+    [
+     "D major",
+     0.772
+    ],
+    [
+     "D minor",
+     0.722
+    ],
+    [
+     "G major",
+     0.504
+    ]
+   ]
+  },
+  "1:40-1:55 bass on": {
+   "start": 99.4,
+   "end": 114.8,
+   "n_bars": 5,
+   "bass_root_bar_counts": {
+    "D": 4,
+    "C": 1
+   },
+   "ks_on_bass_root_counts": [
+    [
+     "D minor",
+     0.655
+    ],
+    [
+     "D major",
+     0.608
+    ],
+    [
+     "G major",
+     0.44
+    ]
+   ],
+   "pad_mean_chroma": [
+    0.53,
+    0.38,
+    1.0,
+    0.32,
+    0.36,
+    0.37,
+    0.28,
+    0.28,
+    0.25,
+    0.68,
+    0.27,
+    0.35
+   ],
+   "ks_on_pad_chroma": [
+    [
+     "D minor",
+     0.76
+    ],
+    [
+     "D major",
+     0.718
+    ],
+    [
+     "A minor",
+     0.443
+    ]
+   ]
+  },
+  "2:38-3:08": {
+   "start": 157.9,
+   "end": 188.7,
+   "n_bars": 9,
+   "bass_root_bar_counts": {
+    "C": 1,
+    "D": 8
+   },
+   "ks_on_bass_root_counts": [
+    [
+     "D minor",
+     0.675
+    ],
+    [
+     "D major",
+     0.651
+    ],
+    [
+     "G major",
+     0.427
+    ]
+   ],
+   "pad_mean_chroma": [
+    0.62,
+    0.46,
+    1.0,
+    0.47,
+    0.34,
+    0.31,
+    0.33,
+    0.32,
+    0.28,
+    0.52,
+    0.32,
+    0.43
+   ],
+   "ks_on_pad_chroma": [
+    [
+     "D major",
+     0.596
+    ],
+    [
+     "D minor",
+     0.579
+    ],
+    [
+     "G major",
+     0.412
+    ]
+   ]
+  }
+ }
 }

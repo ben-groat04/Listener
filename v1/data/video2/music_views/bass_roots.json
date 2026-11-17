@@ -54,7 +54,9 @@
      0.26,
      0.65
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 2,
@@ -103,7 +105,9 @@
      0.36,
      0.68
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 3,
@@ -152,7 +156,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 4,
@@ -201,7 +207,9 @@
      0.38,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 5,
@@ -250,7 +258,9 @@
      0.27,
      0.75
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 6,
@@ -299,7 +309,9 @@
      0.31,
      0.77
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 7,
@@ -348,7 +360,9 @@
      0.25,
      0.71
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 8,
@@ -397,7 +411,9 @@
      0.34,
      0.94
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 9,
@@ -446,7 +462,9 @@
      0.26,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 10,
@@ -495,7 +513,9 @@
      0.26,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 11,
@@ -544,7 +564,9 @@
      0.29,
      0.69
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 12,
@@ -593,7 +615,9 @@
      0.25,
      0.85
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 13,
@@ -642,7 +666,9 @@
      0.18,
      0.67
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 14,
@@ -691,7 +717,9 @@
      0.29,
      0.88
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 15,
@@ -741,7 +769,9 @@
      0.28,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 16,
@@ -791,7 +821,9 @@
      0.31,
      0.98
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 17,
@@ -841,7 +873,9 @@
      0.27,
      0.95
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 18,
@@ -891,7 +925,9 @@
      0.37,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 19,
@@ -941,7 +977,9 @@
      0.26,
      0.72
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 20,
@@ -991,7 +1029,9 @@
      0.28,
      0.66
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 21,
@@ -1041,7 +1081,9 @@
      0.31,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 22,
@@ -1091,7 +1133,9 @@
      0.3,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 23,
@@ -1141,7 +1185,9 @@
      0.25,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 24,
@@ -1191,7 +1237,9 @@
      0.28,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 25,
@@ -1241,7 +1289,9 @@
      0.27,
      0.74
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 26,
@@ -1291,7 +1341,9 @@
      0.22,
      0.86
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 27,
@@ -1341,7 +1393,9 @@
      0.24,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 28,
@@ -1391,7 +1445,9 @@
      0.31,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 29,
@@ -1441,7 +1497,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 30,
@@ -1491,7 +1549,9 @@
      0.42,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 31,
@@ -1541,7 +1601,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 32,
@@ -1591,7 +1653,9 @@
      0.42,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 33,
@@ -1641,7 +1705,9 @@
      0.33,
      0.87
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 34,
@@ -1691,7 +1757,9 @@
      0.31,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 35,
@@ -1741,7 +1809,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 36,
@@ -1791,7 +1861,9 @@
      0.56,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 37,
@@ -1841,7 +1913,9 @@
      0.39,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 38,
@@ -1891,7 +1965,9 @@
      0.48,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 39,
@@ -1941,7 +2017,9 @@
      0.57,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 40,
@@ -1991,7 +2069,9 @@
      0.46,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 41,
@@ -2041,7 +2121,9 @@
      0.39,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 42,
@@ -2091,7 +2173,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 43,
@@ -2140,7 +2224,9 @@
      0.06,
      0.58
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 44,
@@ -2189,7 +2275,9 @@
      0.07,
      0.48
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 45,
@@ -2239,7 +2327,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 46,
@@ -2289,7 +2379,9 @@
      0.44,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 47,
@@ -2339,7 +2431,9 @@
      0.39,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 48,
@@ -2389,7 +2483,9 @@
      0.43,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": "weak: top pitch class has under 60 per cent of the weight"
   },
   {
    "bar": 49,
@@ -2439,7 +2535,9 @@
      0.42,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 50,
@@ -2489,7 +2587,9 @@
      0.45,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 51,
@@ -2539,7 +2639,9 @@
      0.4,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 52,
@@ -2589,7 +2691,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 53,
@@ -2639,7 +2743,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 54,
@@ -2689,7 +2795,9 @@
      0.49,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 55,
@@ -2739,7 +2847,9 @@
      0.46,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 56,
@@ -2789,7 +2899,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 57,
@@ -2839,7 +2951,9 @@
      0.37,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 58,
@@ -2889,7 +3003,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 59,
@@ -2939,7 +3055,9 @@
      0.45,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 60,
@@ -2989,7 +3107,9 @@
      0.49,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 61,
@@ -3039,7 +3159,9 @@
      0.42,
      0.92
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 62,
@@ -3089,7 +3211,9 @@
      0.47,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 63,
@@ -3139,7 +3263,9 @@
      0.44,
      0.89
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 64,
@@ -3189,7 +3315,9 @@
      0.49,
      0.97
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 65,
@@ -3239,7 +3367,9 @@
      0.52,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 66,
@@ -3289,7 +3419,9 @@
      0.52,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 67,
@@ -3339,7 +3471,9 @@
      0.37,
      0.95
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 68,
@@ -3389,7 +3523,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 69,
@@ -3439,7 +3575,9 @@
      0.46,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 70,
@@ -3489,7 +3627,9 @@
      0.51,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 71,
@@ -3539,7 +3679,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 72,
@@ -3589,7 +3731,9 @@
      0.37,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 73,
@@ -3639,7 +3783,9 @@
      0.44,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 74,
@@ -3689,7 +3835,9 @@
      0.44,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 75,
@@ -3739,7 +3887,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 76,
@@ -3789,7 +3939,9 @@
      0.45,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 77,
@@ -3839,7 +3991,9 @@
      0.42,
      0.87
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 78,
@@ -3889,7 +4043,9 @@
      0.36,
      0.75
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 79,
@@ -3939,7 +4095,9 @@
      0.49,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 80,
@@ -3989,7 +4147,9 @@
      0.57,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 81,
@@ -4039,7 +4199,9 @@
      0.66,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 82,
@@ -4089,7 +4251,9 @@
      0.68,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 83,
@@ -4139,7 +4303,9 @@
      0.66,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 84,
@@ -4189,7 +4355,9 @@
      0.63,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 85,
@@ -4239,7 +4407,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 86,
@@ -4289,7 +4459,9 @@
      0.4,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 87,
@@ -4339,7 +4511,9 @@
      0.37,
      0.58
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 88,
@@ -4389,7 +4563,9 @@
      0.44,
      0.7
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 89,
@@ -4439,7 +4615,9 @@
      0.39,
      0.91
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 90,
@@ -4489,7 +4667,9 @@
      0.37,
      0.99
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 91,
@@ -4539,7 +4719,9 @@
      0.32,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 92,
@@ -4589,7 +4771,9 @@
      0.29,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 93,
@@ -4639,7 +4823,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 94,
@@ -4689,7 +4875,9 @@
      0.42,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 95,
@@ -4739,7 +4927,9 @@
      0.37,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 96,
@@ -4789,7 +4979,9 @@
      0.32,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 97,
@@ -4839,7 +5031,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 98,
@@ -4889,7 +5083,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 99,
@@ -4939,7 +5135,9 @@
      0.4,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 100,
@@ -4989,7 +5187,9 @@
      0.52,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 101,
@@ -5039,7 +5239,9 @@
      0.36,
      0.96
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 102,
@@ -5089,7 +5291,9 @@
      0.32,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 103,
@@ -5139,7 +5343,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 104,
@@ -5189,7 +5395,9 @@
      0.34,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 105,
@@ -5239,7 +5447,9 @@
      0.43,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 106,
@@ -5289,7 +5499,9 @@
      0.48,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 107,
@@ -5339,7 +5551,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 108,
@@ -5389,7 +5603,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 109,
@@ -5439,7 +5655,9 @@
      0.5,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 110,
@@ -5489,7 +5707,9 @@
      0.37,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 111,
@@ -5539,7 +5759,9 @@
      0.53,
      0.9
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 112,
@@ -5589,7 +5811,9 @@
      0.52,
      0.84
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 113,
@@ -5639,7 +5863,9 @@
      0.39,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 114,
@@ -5689,7 +5915,9 @@
      0.41,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 115,
@@ -5739,7 +5967,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 116,
@@ -5789,7 +6019,9 @@
      0.47,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 117,
@@ -5839,7 +6071,9 @@
      0.52,
      0.91
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 118,
@@ -5889,7 +6123,9 @@
      0.6,
      0.98
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 119,
@@ -5939,7 +6175,9 @@
      0.46,
      0.96
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 120,
@@ -5989,7 +6227,9 @@
      0.5,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 121,
@@ -6039,7 +6279,9 @@
      0.43,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 122,
@@ -6089,7 +6331,9 @@
      0.42,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 123,
@@ -6139,7 +6383,9 @@
      0.54,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 124,
@@ -6189,7 +6435,9 @@
      0.56,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 125,
@@ -6239,7 +6487,9 @@
      0.45,
      0.94
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 126,
@@ -6289,7 +6539,9 @@
      0.48,
      0.94
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 127,
@@ -6339,7 +6591,9 @@
      0.39,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 128,
@@ -6389,7 +6643,9 @@
      0.44,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 129,
@@ -6439,7 +6695,9 @@
      0.5,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 130,
@@ -6489,7 +6747,9 @@
      0.54,
      0.88
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 131,
@@ -6539,7 +6799,9 @@
      0.47,
      0.97
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 132,
@@ -6589,7 +6851,9 @@
      0.43,
      0.97
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 133,
@@ -6639,7 +6903,9 @@
      0.43,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 134,
@@ -6689,7 +6955,9 @@
      0.45,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 135,
@@ -6739,7 +7007,9 @@
      0.52,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 136,
@@ -6789,7 +7059,9 @@
      0.53,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 137,
@@ -6839,7 +7111,9 @@
      0.43,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 138,
@@ -6889,7 +7163,9 @@
      0.4,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 139,
@@ -6939,7 +7215,9 @@
      0.31,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 140,
@@ -6989,7 +7267,9 @@
      0.31,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 141,
@@ -7039,7 +7319,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 142,
@@ -7089,7 +7371,9 @@
      0.35,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 143,
@@ -7139,7 +7423,9 @@
      0.36,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 144,
@@ -7189,7 +7475,9 @@
      0.32,
      1.0
     ]
-   }
+   },
+   "root_claim": true,
+   "note": ""
   },
   {
    "bar": 145,
@@ -7238,7 +7526,9 @@
      0.3,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 146,
@@ -7287,7 +7577,9 @@
      0.33,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 147,
@@ -7336,7 +7628,9 @@
      0.29,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 148,
@@ -7385,7 +7679,9 @@
      0.32,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 149,
@@ -7434,7 +7730,9 @@
      0.3,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 150,
@@ -7483,7 +7781,9 @@
      0.39,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 151,
@@ -7532,7 +7832,9 @@
      0.17,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   },
   {
    "bar": 152,
@@ -7581,7 +7883,169 @@
      0.43,
      1.0
     ]
-   }
+   },
+   "root_claim": false,
+   "note": "bass silent or below -40 dB re its maximum, or unvoiced: no root claim"
   }
- ]
+ ],
+ "loops": {
+  "loop_A_pre_hole": {
+   "start": 28.6,
+   "end": 84.6,
+   "n_bars": 28,
+   "bass_root_bar_counts": {
+    "E": 8,
+    "G": 8,
+    "D": 8,
+    "B": 4
+   },
+   "ks_on_bass_root_counts": [
+    [
+     "G major",
+     0.796
+    ],
+    [
+     "E minor",
+     0.744
+    ],
+    [
+     "D major",
+     0.545
+    ]
+   ],
+   "pad_mean_chroma": [
+    0.33,
+    0.33,
+    0.71,
+    0.27,
+    0.41,
+    0.25,
+    0.69,
+    0.55,
+    0.26,
+    0.37,
+    0.35,
+    0.96
+   ],
+   "ks_on_pad_chroma": [
+    [
+     "B minor",
+     0.982
+    ],
+    [
+     "D major",
+     0.6
+    ],
+    [
+     "G major",
+     0.577
+    ]
+   ]
+  },
+  "loop_A_post_hole": {
+   "start": 88.6,
+   "end": 156.6,
+   "n_bars": 34,
+   "bass_root_bar_counts": {
+    "E": 10,
+    "G": 10,
+    "D": 10,
+    "B": 4
+   },
+   "ks_on_bass_root_counts": [
+    [
+     "G major",
+     0.788
+    ],
+    [
+     "E minor",
+     0.732
+    ],
+    [
+     "D major",
+     0.546
+    ]
+   ],
+   "pad_mean_chroma": [
+    0.43,
+    0.39,
+    0.77,
+    0.37,
+    0.52,
+    0.34,
+    0.77,
+    0.51,
+    0.33,
+    0.55,
+    0.43,
+    0.98
+   ],
+   "ks_on_pad_chroma": [
+    [
+     "B minor",
+     0.962
+    ],
+    [
+     "D major",
+     0.647
+    ],
+    [
+     "B major",
+     0.549
+    ]
+   ]
+  },
+  "loop_B": {
+   "start": 156.6,
+   "end": 276.6,
+   "n_bars": 60,
+   "bass_root_bar_counts": {
+    "B": 20,
+    "A": 20,
+    "D": 20
+   },
+   "ks_on_bass_root_counts": [
+    [
+     "D major",
+     0.724
+    ],
+    [
+     "B minor",
+     0.654
+    ],
+    [
+     "A major",
+     0.529
+    ]
+   ],
+   "pad_mean_chroma": [
+    0.42,
+    0.45,
+    0.8,
+    0.35,
+    0.43,
+    0.3,
+    0.8,
+    0.39,
+    0.32,
+    0.63,
+    0.45,
+    0.97
+   ],
+   "ks_on_pad_chroma": [
+    [
+     "B minor",
+     0.919
+    ],
+    [
+     "D major",
+     0.668
+    ],
+    [
+     "F# minor",
+     0.524
+    ]
+   ]
+  }
+ }
 }

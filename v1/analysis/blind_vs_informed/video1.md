@@ -98,6 +98,39 @@ For workflow:
 13. **Context file as priors, not facts.** When context is supplied, split it into "identity" (safe) and "interpretation" (reception, intent) and tell the viewer agents to use only the first when reading pictures.
 14. **Report the "unknown" list as an output.** The blind run ended with a list of what it could not determine (source films, narrator, whether the voice is archival). That list is the research agenda for the informed lane and should be auto-generated.
 
+## Status and reconciliation
+
+Written after the comparison above. Source: `v1/data/video1/sync/reconcile.json`, produced by `v1/scripts/agents/reconcile_video1.py` (re-run gives identical JSON). Measured from the mp3 stems in 20 ms frames ("fine" grid, time = frame start) and from `per_second_levels.json` (1 s bins labelled by integer t). Bass counts as on above -50 dBFS, voice above -40 dBFS. The two grids agree: level-file bin 3 holds bass at -44.2 dB, which is what a burst starting at 3.84 s would give in a bin that starts at 3 s. Labels: MEASURED (this pass, from the data).
+
+### Status of the section 3 errors (grep-verified 2026-11-17)
+
+- **f_0168 "raised fist".** `v1/analysis/video1/REPORT.md`: no match for "fist" or "raised". `v1/analysis/video1/interpretation.md`: the only mentions of "fist" are withdrawals (line 11 and 33: "I do not call it a fist or a celebration"; line 221 and the T1 pass log: reading withdrawn). Both now describe the frame literally (hooded person, white knitted helmet, dark glasses, one hand raised, motion blur). Fixed. Not checked here: `dossier.md`, which I did not grep for "fist" and did not touch.
+- **"R. Paping op kop".** `REPORT.md`: no "op kop"; "Reinier Paping" appears once (line 56) and is labelled research context, not read from the film. `interpretation.md`: Paping appears only as research context (lines 45 and 138) and in the withdrawal log (lines 221 and 224: small print at 0:23 declared unread). Fixed in those two files. **Not fixed**: `v1/analysis/video1/dossier.md` still reads the 0:22-0:26 newspaper as having names "R. Paping op kop ..." (line 38) and says the paper "names" him (line 178). That dossier is outside this task's file list, so it remains an open item for whoever owns it.
+
+### Measured disagreements and verdicts
+
+| Item | Blind | Informed | Measured | Verdict |
+|---|---|---|---|---|
+| Bass entry | about 0:04 | about 0:03 | First frame above -50 dB at 3.84 s (burst 3.84-4.22 s, then silent; the sustained run starts at 6.24 s). Level-file first bin above -50: t=3 | Blind nearer to the onset (-0.16 s against +0.84 s). Informed "0:03" is the level-file bin label, not the onset. Neither wrong beyond one second. Section 4 above ("informed more exact") is withdrawn: the fine grid favours the blind figure |
+| Bass out | 1:15.0-1:15.4 | 1:15.3 | 75.32 s (level-file bins 74, 75, 76: -19.4, -28.7, -65.2 dB) | Both agree; informed within 0.02 s |
+| Bass slam | 1:40.0, about 40 dB in 0.2 s | 1:40, about 35 dB in one-second bins | Onset 99.98 s; rise from -62.9 dB (mean of the 0.2 s before) to -20.2 dB (max of the 0.2 s after) = 42.7 dB. Level file bins 99 and 100: -53.8 to -19.1 = 34.7 dB | Both right on their own grid; the blind figure fits the fine grid, the informed fits the 1 s grid |
+| Voice return | notes it returns in the cleared space | 1:18.9 | 78.94 s (level file: -29.9 dB at bin 78, -20.8 at bin 79) | Informed confirmed |
+| Voice stop near 1:27 | not timed | 1:27 | 86.96 s | Confirmed |
+| First voice | not timed | not timed here | First voiced frame 9.0 s; Whisper segment starts 9.14 s | Whisper lags the sound by about 0.14 s (one segment only; not a rule) |
+| Last voice | not timed | "last syllable decays" at 2:47.8 | Last voiced run 164.34-168.12 s; Whisper last segment ends 168.28 s | Voice ends about 2:48.1, just after the drum hole opens (below) |
+| Drum hole | start about 2:47.8, drums about 40 dB down | start 2:47.8 | Drums below -35 dB from 167.80 to 168.22 s (0.42 s; one 20 ms frame again at 168.40) | Both agree. Start 167.8 confirmed; length 0.42 s fits the informed 0.38-0.45 s. The -40 dB depth is not tested here |
+| End | cut at about 3:08.2 | taper about 3:08.4 | Summed stems last above -40 dB at 188.28 s; drums last above -50 dB at 188.14 s; track length 188.66 s | Between the two claims; the ending is inside 3:08.1-3:08.3 on these thresholds, so the distinction is below what the thresholds resolve |
+| Loudest second | 1:52, about -9.5 dBFS | 1:52 (raw dBFS) | Level file: bin 112 = -9.5 dB; next 114 (-9.7) and 111 (-10.1). Summed stems, 1 s window at 0.1 s hop: loudest starts 111.7 s | Both confirmed, 1:52 on both grids |
+| Quietest passage | thin block, not timed | thin block 2:00-2:38 | Level file, excluding the first 2 and last 3 bins: bins 118 and 119 (-16.5, -16.7 dB), 123 (-16.5). Bin 0 is -19.9 dB (opening). Mean 2:01-2:32 is -13.83 dB against 1:40-1:55 at -10.73 and 2:48-3:08 at -11.47 | The thin block is quieter on average, but the quietest single seconds fall at 1:58-1:59 and 2:03, not inside it. The blind and informed "thin block" labels hold for the block, not for its minimum |
+
+### Section edges
+
+Bass-on runs (fine grid, merged across gaps under 0.5 s, runs under 0.3 s dropped): 3.84-4.22, 6.24-75.32, 88.82-89.30, 99.98-115.62, six short pulses between 121.12 and 153.56 (the sub thumps), 158.44-167.56 and 168.16-188.14. So the bass-on block after the slam ends at 115.62 s (about 1:55.6; `analysis/music/video1/harmony.md` line 31 has the same drop), and the 1:15-1:40 "bassless" block holds one burst of about 0.5 s at 88.82-89.30 s. The blind and informed edges at 1:15.3 and 1:40 are both confirmed (75.32 s and 99.98 s).
+
+### Reading these numbers
+
+All claims above are measurements on the two grids named; "the blind run is more exact" or "the informed run is" applies only to the specific row. The stems are separated by Demucs and have bleed (the level file's vocals bin 78 reads -29.9 dB where the mp3 vocals stem has silence until 78.94 s: the bin contains the final 0.06 s). Whisper times are text-model estimates and are shown for comparison only. Nothing here was heard.
+
 ## Items I did not verify
 
 Whether the 1:15-1:40 "melody" is played or an artefact; the bar alignment of the 1:15 gesture; the width figures in the 1:27-1:40 passage (the two runs quote 0.62-0.83 and 0.36-0.78); whether any warmth in the tea scene is the editor's or the source's; the identity of the discs at 0:12; and anything about the event history beyond `context.md`.

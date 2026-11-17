@@ -18,21 +18,21 @@ Boundaries are high confidence (from stem on/off events [lv], [img], and the bar
 
 | m:ss range | Section | What is playing | What it feels like |
 |---|---|---|---|
-| 0:00 to 0:01 | Swell and hit | A 0.7 s rising swell, then a drum hit at 0:00.7. Mix RMS goes from about -65 dB to -39 dB, then -14 dB [R1-form, H]. Drums start at 0:00.8. | A snap to attention, not a cold slam. |
-| 0:01 to 0:10 | Intro build | Drums from 0:00.8. The "other" wall enters at about 0:01.3 [lv, img 0000]. Bass creeps from -66 dB to about -36 dB by 0:06 and -19.5 dB by 0:20. D chord from 0:01 to 0:08 [ch]. | Curious, leaning in. A pulse starts and layers join (M). |
-| 0:10 to 0:31.7 | Narration over the band | Spoken Dutch: the date "18 januari 1963", the time (half past six in the morning), the crowd, and the sentence "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht" [lyr]. Drums, bass and wall continuous. | Informed, steady, slightly detached. A calm voice over a pulse that never relaxes (M-H). |
+| 0:00 to 0:01 | Swell and hit | A rising swell in the drum stem itself from 0:00.2 (-64 to -38 dB by 0:00.6), a hit at 0:00.7 (-14 dB). The other stem is silent until 0:01.3 [R1-form, lv, H]. | A snap to attention, not a cold slam. |
+| 0:01 to 0:10 | Intro build | Drums from 0:00.8. The "other" wall enters at about 0:01.3 [lv, img 0000]. Bass enters at about 0:03 (-66 to -44 dB in one second), then rises to -36 dB at 0:06 and -19.5 dB at 0:20 [lv]. D chord from 0:01 to 0:08 [ch]. | Curious, leaning in. A pulse starts and layers join (M). |
+| 0:10 to 0:31.7 | Narration over the band | Spoken Dutch: the date "18 januari 1963", the time (half past five in the morning; Whisper's Dutch pass has "half zes in de ochtend" at 0:16.6 to 0:18.0, and Dutch "half zes" means 5:30; M), the crowd, and the sentence "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht" [lyr]. Drums, bass and wall continuous. | Informed, steady, slightly detached. A calm voice over a pulse that never relaxes (M-H). |
 | 0:31.7 to 0:41 | Band alone | Voice stops at 0:31.7, on a bar line. Drums brighten (centroid about 1.5 kHz to 3 kHz). Stereo width jumps 0.35 to 0.55. Bass gets rougher from about 0:35. | Relief, "now the band takes over" (M). |
-| 0:41 to 1:15 | The build | Short narration bursts at 0:41, 0:51 to 0:56 ("16 degrees below zero", "a monster ride of more than 200 km") and about 1:03.5. The wall swells about 11 dB (-25 to -14 dB by 0:57). Hats open from about 1:05. Width climbs to 0.6 to 0.7. K-weighted loudness peaks at about -6.6 LUFS at 1:07 [R2-form]. | Determination, forward drive, accumulating weight (M-H). |
-| 1:15 to 1:27 | Bass-less float | The bass cuts dead at 1:15.0 (-28.7 dB to -65 dB). The mix drops 4 to 6 dB. The wall thins to bright upper lines. The tonic D is nearly absent from the wall for about 8 s [R2-harmony]. Narrator's list of riders and nations from 1:19.7 to 1:27 ("575 wedstrijdrijders, rond 9500 toerrijders"). | Floor falls away: light, suspended, slightly uneasy (H on cause, M on the word). |
+| 0:41 to 1:15 | The build | Short narration bursts at 0:41, 0:51 to 0:56 ("16 degrees below zero", "a monster ride of more than 200 km") and a possible short vocal-stem burst at about 1:03.5 (not shown to be speech, L). The wall swells about 11 dB (-25 to -14 dB by 0:57). Hats open from about 1:05. Width climbs to 0.6 to 0.7. K-weighted loudness peaks at about -6.6 LUFS at 1:07 [R2-form]. | Determination, forward drive, accumulating weight (M-H). |
+| 1:15 to 1:27 | Bass-less float | The bass leaves at about 1:15.3 (-28.7 dB at 1:15, -65 dB at 1:16) and returns at 1:40.0; a faint blip at 1:28 to 1:29 (-43 dB) is probably bleed. The mix drops 4 to 6 dB. The wall thins to bright upper lines. The tonic D is nearly absent from the wall for about 8 s [R2-harmony]. Narrator's list of riders and nations from about 1:18.9 (vocal-stem onset; Whisper says 1:19.7) to 1:27 ("575 wedstrijdrijders, rond 9500 toerrijders"). | Floor falls away: light, suspended, slightly uneasy (H on cause, M on the word). |
 | 1:27 to 1:40 | The lift | The voice stops at 1:27. The wall jumps (-22 to -15 dB), loudness returns, width goes 0.36 to 0.78. Still no bass. A slow stepwise line (A, C, B, G, then D) runs across 1:15 to 1:36 [R2-harmony]. | Lifting, opening out, yearning, rising without ground (M-H). |
 | 1:40 to 1:55 | Landing | The bass returns at 1:40 (-53.8 dB at 1:39 to -19.1 dB at 1:40). Width pulls into the centre (0.78 to 0.40). Dense, loud, voice-free. | Arrival: weight slams back after 24 s of absence. Emotional high point of the first half (M-H). |
 | 1:55 to 2:14 | Pull-down and thin block | The bass leaves at about 1:55 and the wall sweeps into a broad wash at about 1:58, then collapses. The mix drops to about -13.5 LUFS at 2:05. Width falls to 0.2 to 0.3. The sub thumps start at 2:01.1. | Sudden emptying: held breath, exposed, hollow (M). |
 | 2:00 to 2:38 | Sub thumps | Six identical 42.6 Hz sub hits at 2:01.1, 2:07.2, 2:13.4, 2:19.5, 2:25.7 and 2:31.9, with the bass otherwise silent. A seventh bass event follows at 2:38.4. | Slow, heavy, regular. Coiled, "waiting for something large" (M). |
 | 2:14 to 2:38 | Re-ignition and town list | The wall thickens (+6 dB) at 2:13. Width goes 0.3 to 0.55. The narrator reads a town list from 2:16 to 2:36. The chord walk (A, D, G) starts 2.2 s after each thump. | Lift-off: "setting off", an itinerary being read (M). |
-| 2:38 to 2:47.8 | Run-up | Bass returns (-64 dB to -19 dB by 2:39). Chords turn (F, C, D, C). The final line, "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht", runs 2:43.8 to 2:48.3. | Weight returns; a resumed journey (M-H). |
-| 2:47.83 to 2:48.21 | The hole | Drums and bass out for about 0.4 s. The guitar holds. The narrator's last syllable decays inside it [R2-form 2.3, H on timing]. | Held breath, then release (M). |
+| 2:38 to 2:47.8 | Run-up | Bass returns (-64 dB to -19 dB by 2:39). Chords turn (F, C, D, C). The final line, "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht", starts about 2:44.4 (vocal-stem onset; Whisper 2:43.8) and ends about 2:48.2. | Weight returns; a resumed journey (M-H). |
+| 2:47.83 to 2:48.21 | The hole | Drums out about 0.4 s (167.8 to 168.2 s), bass out about 0.65 s (167.55 to 168.2 s); timing against the beat grid is within 0.1 s, not exact. The guitar holds (instrument unproven). The narrator's last syllable decays inside it [R2-form 2.3, H on timing]. | Held breath, then release (M). |
 | 2:48.2 to 3:08.4 | Bright release plateau | One chord, D. The drum energy above 5 kHz rises from about 1% to 9 to 12%. Width 0.7 to 0.86. Mix steadily about -11 dBFS. K-weighted loudness -7.0 to -6.4 LUFS, the loudest and steadiest stretch. No voice. | Hard, driven, grinding. The band takes over (M-H). |
-| 3:06 to 3:08.4 | Close | Denser drum onsets from about 3:06. Chroma shifts toward G and E just before the end (L). Level -10 dB at 3:07.4, -15 dB at 3:08.0, -66 dB by 3:08.5. | A cut-off, as if the effort carries on offscreen (M). |
+| 3:06 to 3:08.4 | Close | Denser drum onsets from about 3:06. Chroma shifts toward G and E just before the end (L). Level -11 dB at 3:07, -15.5 dB at 3:08.0, below -60 dB by 3:08.4, -72 dB by 3:08.5. | A cut-off, as if the effort carries on offscreen (M). |
 
 Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass events at 1:15, 1:27 and 1:40, then odd blocks of 5, 2, 2, 2, 8 and 3 bars, and a final run of about 6.5 bars [R2-form, R3-form]. Bar one is tracker-derived. The drum kick band cannot confirm which beat is "one" [R3-form, M].
 
@@ -51,8 +51,8 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 - Across the track there is no 8-beat harmonic cycle and no V to I cadence. Resolution comes from the bass returning and the stop at 2:48, not from chords.
 
 **The two places where pitch does move.**
-1. **1:15 to 1:40, the one melody (M).** The `other` stem plays a slow stepwise line. The pyin contour (per 0.5 s, polyphonic and rough) reads A3 (1:17 to 1:19.5), C4 (1:19 to 1:22), B3 (1:22 to 1:24), G3 (1:24 to 1:25), then D3 and D4 (1:26 to 1:29). Against D that is fifth, flat seven, sixth, fourth, root. The tonic D is nearly absent from the wall from 1:15 to 1:23 (D 0.08 to 0.26) and the bass is also out. A slow attack (median 0.22 s to peak, L) suggests a sustained or swelled tone rather than a pluck [R3-sound]. This is the only candidate for the track's "yearning".
-2. **2:00 to 2:40, an A-centred walk (M).** A is strongest in `other` from 2:00 and 2:12 to 2:33. Chord labels step A, D, G, D, G and then, at 2:36 to 2:39, D, G, C and F. The walk starts 2.2 s after each sub drop, one label per beat (0.77 s), and runs about 3.8 s to the next drop [R2-harmony, R3-rhythm]. It leans on the dominant side of D and does not establish a new key. The F at 2:36 to 2:39 is the one place a third-like note appears clearly for about 3 s.
+1. **1:15 to 1:40, the one melody (M).** The `other` stem plays a slow stepwise line. The pyin contour (per 0.5 s, polyphonic and rough) reads A3 about 1:16 to 1:18.5, C4 to 1:21, B3 to 1:23, G3 to 1:24, D3/D4 from 1:24.5 to 1:27.5, then a D2 drone from 1:27.5 (source: pyin on the other stem, not lead_notes.json, which does not show this line). Against D that is fifth, flat seven, sixth, fourth, root. The tonic D is nearly absent from the wall from 1:15 to about 1:24 (D 0.08 to 0.26; other-stem chroma: C top at 1:18, B at 1:21, D back at 1:24) and the bass is also out. A slow attack (median 0.22 s to peak, L) suggests a sustained or swelled tone rather than a pluck [R3-sound]. This is the only candidate for the track's "yearning".
+2. **2:00 to 2:40, an A-centred walk (M).** A is strongest in `other` from 2:00 and 2:12 to 2:33. Chord labels step A, D, G, D, G and then, at 2:34.8 to 2:39.5, D, G, Dm, F, C, D [ch]. The walk starts 2.2 s after each sub drop, one label per beat (0.77 s), and runs about 3.8 s to the next drop [R2-harmony, R3-rhythm]. It leans on the dominant side of D and does not establish a new key. The F at about 2:37 is the one place a third-like note appears clearly for about 3 s.
 
 **The sub (M-H on measurement, L on perception).** The low thump is a fixed 42.6 Hz tone, 42 cents flat of F1 and 58 cents sharp of E1. It starts about 3 to 6 Hz sharp and falls within about 0.3 s, with a soft 20 to 110 ms rise and almost nothing above 300 Hz [R2-harmony, R3-sound]. It does not follow the chords. It adds weight without a clear note, and may be nearly inaudible on small speakers.
 
@@ -65,7 +65,7 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 ## 4. Rhythm and groove
 
 **Tempo (H on the number, L-M on the octave).**
-- 78.0 BPM at the 0.769 s level, with no drift from 0:01 to 3:06, no change at the 2:48 stop, and a 4-beat cycle of 3.077 s [R3-rhythm, [ab] beat_times]. The refit drum-slot period is 0.1923 s.
+- Beat tracker 78.0 to 78.3 BPM (0.769 s level; summary.json says 78.30), steady to 2:48 where beat_times ends (last beat 2:48.0). After 2:48 the beat file cannot show drift; a drum-onset autocorrelation still peaks at 0.766 s through 3:06 but weaker (0.62 against 0.72). Four-beat cycle about 3.077 s [R3-rhythm, [ab] beat_times]. The refit drum-slot period is 0.1923 s.
 - Whether the "real" quarter note is 78 or 156 BPM is not settled. Rhythm moved to about 55/45 in favour of 78, because the hat plays every 0.385 s and the kick takes the sixteenth positions. This is structural, not proof [R3-rhythm]. Either way the felt weight is 0.77 s, the walking step is 0.38 s and the flutter is 0.19 s.
 
 **Groove (M-H).**
@@ -102,9 +102,9 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
   2. A mid wall;
   3. Thin high open fifths (2:00 to 2:14, centroid about 1.5 kHz, width 0.29);
   4. A bright wide wall from 2:48.
-  CLAP rates "distorted guitar" at 0.6 to 1.0 almost throughout, and `context.md` says Part 1 is guitar-riff rock. The stems cannot separate guitar from synth. I call it "the wall" and treat "guitar" as an inference.
+  CLAP gives "distorted guitar" as top label in only about a third of 5 s windows (song average 0.44) and flips between brass, drum machine, synthesizer and electric guitar, so it is weak, unstable support. The guitar reading rests mainly on `context.md` (guitar-riff rock), which itself says to verify instruments. The stems cannot separate guitar from synth. I call it "the wall" and treat "guitar" as an inference.
 
-**Width.** The stereo width measure runs 0.24 to 0.86 [lv]. It is narrowest when the mix is thin and centred (0.2 to 0.3 at 1:58 to 2:13), widest in the bass-less lift (0.7 to 0.84 from 1:27 to 1:39) and the final run (0.7 to 0.86). When the bass returns at 1:40 the width pulls in from 0.78 to 0.40. That is consistent with centred bass energy re-entering (M), but a correlation of width with bass dB across the whole track is only 0.01 [R2-sound], so width is not simply a bass effect.
+**Width.** The stereo width measure runs 0.20 to 0.86 [lv]. It is narrowest when the mix is thin and centred (about 0.2 to 0.36 at 1:58 to 2:13, mostly 0.2 to 0.3), widest in the bass-less lift (0.7 to 0.84 from 1:27 to 1:39) and the final run (0.62 to 0.86 over 2:49 to 3:07). When the bass returns at 1:40 the width pulls in from 0.78 to 0.40. That is consistent with centred bass energy re-entering (M), but a correlation of width with bass dB across the whole track is only 0.01 [R2-sound], so width is not simply a bass effect.
 
 **Brightness.** Mix centroid is about 1.7 to 1.9 kHz at 1:00 to 1:05, about 2.6 to 2.8 kHz at 1:06 to 1:14, 1.6 to 1.9 kHz at 2:40 to 2:48, and 2.9 kHz from 2:48 [win 0060, win 0160]. The final run is brightest, driven by a cymbal-led kit (hat and crash share 3% to 12% [R2-sound]; drum centroid 2.1 to 2.9 kHz becomes 4.7 to 5.0 kHz [R2-form]).
 
@@ -113,9 +113,9 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 - Weight peaks at 1:40 to 1:55, where the bass adds only about 0.1 LU but about 40 dB in the bass stem.
 - The trough is 2:02 to 2:13 (about -13.5 LUFS) [R2-form].
 
-**Mix of the voice.** Narrow-band (about 95% of energy below 3.7 kHz), dry, centred, no noise bed, about 4 to 5 dB under the band stems. The band does not duck for it [R3-sound, R3-voice]. That fits mid-century film or radio audio set against a modern band. The era is an inference.
+**Mix of the voice.** Mostly below about 4 kHz (95% roll-off 3.4 to 4.6 kHz depending on passage), dry, centred, no noise bed. The vocal stem sits roughly 0 to 10 dB under the other stems depending on passage, and about level with the wall and bass at 2:44 (demucs stem dB are not strictly comparable). The band does not duck for it [R3-sound, R3-voice]. That fits mid-century film or radio audio set against a modern band. The era is an inference.
 
-**Ending.** The mix goes from -10 dB at 3:07.4 to -15 dB at 3:08.0 to -66 dB by 3:08.5. That is a taper or gate of about 0.4 to 0.5 s, not a hard cut and not a fade [R1-form, win 0180 timings].
+**Ending.** The mix goes from -11 dB at 3:07 to -15.5 dB at 3:08.0, below -60 dB by 3:08.4 and -72 dB by 3:08.5 (track length 188.66 s). That is a taper or gate of about 0.4 s, not a hard cut and not a fade [R1-form, win 0180 timings].
 
 **Playback dependence.** The 42.6 Hz sub largely vanishes on small speakers [R3-sound, R3-feeling]. On those, the felt event at each thump is the drop in the wall and the narrowing.
 
@@ -123,14 +123,14 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 
 ## 6. Voice, words and samples
 
-**The voice map (H).** Speech is present only at these times [R3-voice]:
+**The voice map (M).** Whisper finds speech at these times [R3-voice]. The vocal stem also shows two short bursts, about 1:46.7 to 1:48.8 and 1:57 to 1:58.3, which could be leakage or non-lexical sound; not confirmed as speech. Whisper's "MUZIEK" segment at 1:42 to 1:43 is probably a hallucination. Whisper segment times are loose by about 0.5 to 0.8 s; vocal-stem onsets are given where measured.
 - 0:09.9 to 0:31.7 (date, time, crowd, the sentence);
-- 0:40.6 to 0:43 (the twelfth Elfstedentocht, per Whisper);
+- about 0:41.1 to 0:42.4 (the twelfth Elfstedentocht; vocal-stem onset, Whisper says 0:40.6);
 - 0:51 to 0:56 ("16 degrees below zero"; "a monster ride of more than 200 km");
-- about 1:03.5 (words not recognised);
-- 1:19.7 to 1:27 (575 racers, about 9,500 tour skaters, nationalities garbled);
+- possible short vocal-stem burst at about 1:03.5: not shown to be speech, possibly cymbal or hat bleed like 1:46.6 (L); not counted as speech;
+- about 1:18.9 to 1:27.0 (Whisper starts 1:19.7; 575 racers, about 9,500 tour skaters, nationalities garbled);
 - 2:16 to 2:36 (town list);
-- 2:43.8 to 2:48.3 (the closing line).
+- about 2:44.4 to 2:48.2 (the closing line; Whisper starts 2:43.8).
 
 **Not speech (H after the round-3 checks).**
 - 1:46.6 to 1:49 is a noise smear in the vocal stem with a D held in the guitar and bass underneath.
@@ -139,7 +139,7 @@ Block lengths on the 4-beat bar grid: 24, 28 and 32 bars to the three bass event
 - The window notes for 1:40 to 2:00 and 3:00 to 3:09 treated some of these as voice. That reading is overturned.
 
 **The words.**
-- Dutch, language probability 1.0 [lyr]. Whisper is unreliable over the loud band. Reliable: the date "18 januari 1963", the time (half past six in the morning), the key sentence "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht", the numbers (575, about 9,500), and the temperature and distance lines. Place names in the town list are Whisper's garbles of the 1963 route. "Sneek, IJlst, Sloten, Stavoren, Workum, Harlingen, Franeker, Dokkum, Leeuwarden" are plausible but are my inference from the route and `context.md`, not measured (L-M).
+- Dutch, language probability 1.0 [lyr]. Whisper is unreliable over the loud band. Reliable: the date "18 januari 1963", the key sentence "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht", the numbers (575, about 9,500), and the temperature and distance lines. Place names in the town list are Whisper's garbles of the 1963 route. Whisper recovers Staveren, Hindelopen (translate pass, 2:25.8), Workum (as "Markum"), Harlingen ("Hartingen"), Dokkum and Leeuwarden with reasonable confidence; Sneek ("Sleek") and Sloten ("slotten") are loose garbles; IJlst and Franeker are inferred from the route, not heard. Leeuwarden is timed 2:34.7 (Dutch pass) but 2:38 (translate pass), so the end of the list is uncertain by about 2 s (L-M).
 - The key sentence appears twice, at 0:27 to 0:31.7 and at 2:44 to 2:48 [R3-voice]. Same words (H). Same recording or a re-cut: unresolved (waveform correlation 0.09; MFCC DTW 0.278, above the speech controls) (L-M).
 
 **How it is delivered (M-H).**
@@ -247,3 +247,26 @@ Two honourable mentions: the key sentence of narration at 0:27 to 0:31.7 landing
 - The window images were read by eye (timing error about 0.3 s) in places.
 
 **Context kept at arm's length.** The artist, track, commission and archive credit are sourced in `context.md`. The identity of the narrator and source film, and any "newsreel" label, are not confirmed there. I have not used them to support any claim above.
+
+
+## Check log
+
+Cold-read check, music: video1. Refuted claims were re-verified against the measurements named in each refutation and fixed where the evidence held.
+
+Fixed:
+- Time of day: Whisper Dutch pass says "half zes" (0:16.6 to 0:18.0) = 5:30, not 6:30. Now medium confidence.
+- Voice map: confidence lowered from H to M. Two further vocal-stem bursts (about 1:46.7 to 1:48.8, 1:57 to 1:58.3) noted as unconfirmed. Earlier "not speech" rulings elsewhere (noise smear, D bleed) stand as the likelier reading but are not proven.
+- Speech onsets given from the vocal stem (0:41.1, 1:18.9, 2:44.4); Whisper segment times loose by about 0.5 to 0.8 s.
+- 1:15 to 1:40 line timings moved 0.5 to 1 s earlier; source stated as pyin on the other stem.
+- 2:36 to 2:39 chord walk corrected to D, G, Dm, F, C, D.
+- Stereo width ranges corrected (0.20 to 0.86; 0.62 to 0.86 final run; thin block 0.2 to 0.36).
+- Tempo wording: beat file ends at 2:48; no drift claim beyond it.
+- Bass entry at about 0:03 (not a creep from 0:01); bass leaves about 1:15.3 with a faint 1:28 blip; intro swell is in the drum stem.
+- Stop at 2:47.8: drums 0.4 s, bass about 0.65 s, grid alignment within 0.1 s.
+- Ending levels corrected.
+- CLAP "distorted guitar" claim replaced with the measured, weak picture.
+- 1:03.5 burst downgraded to unconfirmed.
+- Voice level and roll-off restated (about 4 kHz; 0 to 10 dB under the stems, level at 2:44).
+- Town list restated with what Whisper actually recovers.
+
+Left unverified (labelled as such, not changed): bar-one identity and block counts; 78 versus 156 BPM octave and hat/kick slot claims; drum onsets per second (detector-dependent, ratio holds); seven-slot hat pattern and slot period; instrument identity (guitar versus synth, played versus sequenced, bass type); sub-bass frequency, attack and glide figures; drum decay and CV figures; drum above-5 kHz share (direction agrees: checker got 1.4 to 3.3% rising to 13.5%); the four timbral states and the stepwise line (pyin on a polyphonic stem is rough); narrator identity and era; all feeling labels.

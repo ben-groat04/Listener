@@ -19,6 +19,7 @@ const VER = { type: 'object', properties: { checked: { type: 'integer' }, refute
 
 const base = vid => `You are analysing videos/${vid}.mp4 (a music video) in repo ${R} as part of a team trying to understand it the way thoughtful humans do: feeling, meaning, craft, context.
 Raw data: v1/data/${vid}/ (contact_sheets/sheet_NN.jpg = 1 frame/s grids with timestamps, sheet NN covers (NN-1)*20..NN*20-1 s; frames_1fps/f_NNNN.jpg = second NNNN-1; scenes/; lyrics/; audio_features/; visual_features/; stems/ if present).
+THE MUSIC COMES FIRST: read ${OUT}/music/${vid}/music_reading.md (the checked music analysis) before anything else, and read the picture in relation to the music.
 Per-segment viewer notes: ${OUT}/perceive/${vid}/ (seg_NN.md, music.md, words.md) — note: perceive notes always live in v1/analysis/perceive/${vid}/ unless ${OUT}/perceive exists.
 ${BLIND ? 'BLIND MODE: do NOT read any context.md, anything under v1/analysis/research/, or any non-blind analysis, and do NOT use the web. Judge only from what can be seen and heard in the data. If the perceive notes contain outside facts (artist names, historical facts), treat them as unverified hearsay.' : `Context: v1/data/${vid}/context.md and v1/analysis/research/*.md (web research, cited).`}
 Rules: British English. Accuracy over eloquence: never assert something you did not see in the frames or find in the data/sources; open frames yourself (Read tool) to check anything important; mark speculation. Use timestamps (m:ss).`

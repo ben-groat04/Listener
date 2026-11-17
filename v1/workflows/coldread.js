@@ -34,7 +34,7 @@ for (let round = 1; round <= (args.rounds || 1); round++) {
   if (!tri || !tri.tasks.length) break
   phase('Fix')
   const done = await pipeline(tri.tasks,
-    t => agent(`${intro}\n\nYOUR TASK (${t.id}): ${t.task}\nFiles: ${t.files}\nDone when: ${t.done_when}\nDo the work carefully; verify facts against the data. Append one line to v1/PROGRESS.md describing what you changed. Return a summary.`, { label: `fix:${t.id}`, phase: 'Fix', model: 'sonnet', schema: SUM }),
+    t => agent(`${intro}\n\nYOUR TASK (${t.id}): ${t.task}\nFiles: ${t.files}\nDone when: ${t.done_when}\nDo the work carefully; verify facts against the data. NOTE: v1/workflows/*.js are Workflow-tool scripts: plain JavaScript with NO Node APIs (no require, process, __dirname, fs, Date.now, Math.random); keep `export const meta` a pure literal. Append one line to v1/PROGRESS.md describing what you changed. Return a summary.`, { label: `fix:${t.id}`, phase: 'Fix', model: 'sonnet', schema: SUM }),
     (s, t) => agent(`${intro}\n\nVerify that this task was done properly and did not introduce errors: TASK ${t.task}\nDONE WHEN: ${t.done_when}\nWORKER SAID: ${s ? s.summary : 'nothing'}\nInspect the files. If not ok, fix small issues yourself; otherwise explain.`, { label: `verify:${t.id}`, phase: 'Verify', model: 'sonnet', schema: V }).then(v => ({ id: t.id, ok: v ? v.ok : false, notes: v ? v.notes : 'verifier failed' })))
   log(`round ${round}: ${done.filter(d => d && d.ok).length}/${done.length} fixes verified`)
 }

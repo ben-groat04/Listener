@@ -44,3 +44,4 @@ Items 4 (hold back before the reset, then go flat out), 11 (keep a margin) and 2
 25. (08:30) User on the listening pieces: **"such AI phrasing, trying too hard."** Aim for plain, real human registers, not literary performance.
 26. (08:30) User: **"stop freaking out about usage."** Keep working at full speed; only log usage, don't throttle for the weekly window.
 27. (20:37) User: **do not restart after the usage reset** (no scheduled wake-ups); **go hard for half an hour to maximise this window**, then stop.
+28. (20:48) User reminder: **more music than video.** Human outputs should be about the track first; video secondary.

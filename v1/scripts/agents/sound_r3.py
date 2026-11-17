@@ -1,42 +1,45 @@
-import numpy as np, librosa, scipy.signal as sg
-D='data/video1/stems_raw/htdemucs/song/'
-sr=22050
-L=lambda n: librosa.load(D+n+'.wav',sr=sr,mono=True)[0]
-dr,ba,ot=L('drums'),L('bass'),L('other')
-db=lambda x:20*np.log10(np.sqrt(np.mean(x**2))+1e-9)
-# 1 kick shape similarity 0:20-1:00
-k=sg.sosfilt(sg.butter(4,[40,120],'bp',fs=sr,output='sos'),dr)
-env=np.abs(sg.hilbert(k)); pk,_=sg.find_peaks(env[:int(60*sr)],height=0.3*env[:int(60*sr)].max(),distance=int(.2*sr))
-pk=pk[pk>20*sr]
-seg=[dr[p-int(.005*sr):p+int(.08*sr)] for p in pk]
-seg=[s/ (np.abs(s).max()+1e-9) for s in seg if len(s)==len(seg[0])]
-M=np.array(seg); c=np.corrcoef(M); print('kicks',len(M),'mean pairwise waveform corr',round((c.sum()-len(M))/(len(M)**2-len(M)),3))
-# kick pitch in first 60ms
-f=[]
-for p in pk[:60]:
-    x=k[p:p+int(.06*sr)]; X=np.abs(np.fft.rfft(x*np.hanning(len(x)),8192)); fr=np.fft.rfftfreq(8192,1/sr); m=(fr>35)&(fr<130); f.append(fr[m][X[m].argmax()])
-print('kick peak freq med/std',np.median(f),np.std(f))
-# kick tail decay: rms 20-60ms after / 0-20
-r=[db(k[p+int(.04*sr):p+int(.08*sr)])-db(k[p:p+int(.02*sr)]) for p in pk[:60]]
-print('kick decay dB med/std',np.median(r),np.std(r))
-# 2 sub vs kick onset at drops
-for t in [121,127,133,139,145,151]:
-    a=int((t-.3)*sr);b=int((t+.6)*sr)
-    kb=np.abs(sg.hilbert(k[a:b])); sb=np.abs(sg.hilbert(sg.sosfilt(sg.butter(4,[35,55],'bp',fs=sr,output='sos'),ba[a:b])))
-    tk=kb.argmax()/sr-.3+t; ts=(np.argmax(sb>0.5*sb.max()))/sr-.3+t
-    print('drop',t,'kick-band peak',round(tk,3),'sub 50%-point',round(ts,3))
-# 3 line 1:15-1:40 attack: other 200-600Hz envelope onsets
-o=sg.sosfilt(sg.butter(4,[200,600],'bp',fs=sr,output='sos'),ot[int(75*sr):int(100*sr)])
-e=np.abs(sg.hilbert(o)); e=sg.medfilt(e,101)
-oe=librosa.onset.onset_strength(y=o,sr=sr); on=librosa.onset.onset_detect(onset_envelope=oe,sr=sr,units='time')+0
-rise=[]
-for t in on:
-    i=int(t*sr); w=e[max(0,i-int(.05*sr)):i+int(.4*sr)]
-    if len(w)<int(.4*sr): continue
-    pkk=w.argmax(); rise.append(pkk/sr)
-print('1:15-1:40 other onsets',len(on),'time-to-peak med',np.median(rise) if rise else None)
-# 4 noise floor at edit points: min 50ms rms in each stem near edits
-for t in [75.3,100.0,114.9,167.8]:
-    for n,x in [('other',ot),('drums',dr),('bass',ba)]:
-        w=x[int((t-1)*sr):int((t+1)*sr)]; fr=[db(w[i:i+int(.05*sr)]) for i in range(0,len(w)-int(.05*sr),int(.05*sr))]
-        print(t,n,'min/med/max dB',round(min(fr),1),round(np.median(fr),1),round(max(fr),1))
+import numpy as np, soundfile as sf, librosa
+D='/home/user/Listener/v1/data/t_birdwalk/stems_raw/htdemucs/song/'
+def ld(n):
+    y,sr=sf.read(D+n+'.wav'); return y.T,sr
+V,sr=ld('vocals'); O,_=ld('other'); B,_=ld('bass')
+def seg(y,a,b): return y[:,int(a*sr):int(b*sr)]
+# Q1 voice: side-channel coupling vocals vs other
+print("SIDE correlation vocals vs other (envelope of side RMS, 50ms frames) and sample-level")
+for a,b in [(0.50*60+0,58),(135,143),(152,158),(165,170),(14,40),(95,120)]:
+    v=seg(V,a,b); o=seg(O,a,b)
+    sv=(v[0]-v[1]); so=(o[0]-o[1]); mv=v[0]+v[1]; mo=o[0]+o[1]
+    h=int(.05*sr); n=len(sv)//h
+    env=lambda x:np.sqrt((x[:n*h].reshape(n,h)**2).mean(1))+1e-12
+    c_env=np.corrcoef(np.log(env(sv)),np.log(env(so)))[0,1]
+    c_samp=np.corrcoef(sv,so)[0,1]
+    c_mid=np.corrcoef(np.log(env(mv)),np.log(env(sv)))[0,1]
+    # band-limited spectral shape of vocal side vs other side
+    S=lambda x:np.abs(np.fft.rfft(x[:len(x)//4096*4096].reshape(-1,4096)*np.hanning(4096),axis=1)).mean(0)
+    f=np.fft.rfftfreq(4096,1/sr)
+    cs=np.corrcoef(np.log(S(sv)[(f>100)&(f<5000)]+1e-9),np.log(S(so)[(f>100)&(f<5000)]+1e-9))[0,1]
+    print(f"{a:.0f}-{b:.0f}s side env corr V/O {c_env:.2f}; sample corr {c_samp:.2f}; V side-vs-mid env {c_mid:.2f}; side-spectrum corr {cs:.2f}; V side/mid rms {np.sqrt((sv**2).mean()/((mv**2).mean()+1e-12)):.2f}")
+# Q harmony: stab patch before/after 0:47 -- harmonic ladder & attack/decay on other (mono)
+print("STAB ladder")
+m=O.mean(0)
+for a,b in [(40,47),(62,80),(120,130),(165,170)]:
+    x=m[int(a*sr):int(b*sr)]
+    S=np.abs(librosa.stft(x,n_fft=8192,hop_length=512))
+    f=librosa.fft_frequencies(sr=sr,n_fft=8192)
+    mean=S.mean(1)
+    lo,hi=(700,1100) if a==40 else (180,280)
+    band=(f>lo)&(f<hi); f0=f[band][np.argmax(mean[band])]
+    lad=[]
+    for k in range(1,9):
+        w=(f>k*f0*0.97)&(f<k*f0*1.03); lad.append(20*np.log10(mean[w].max()/mean[(f>f0*.97)&(f<f0*1.03)].max()+1e-12))
+    print(f"{a}-{b} f0={f0:.0f} ladder dB rel f0:",[round(l) for l in lad])
+    # onset envelope attack/decay around f0 band
+    bs=S[(f>f0*.9)&(f<f0*1.1)].sum(0); db=20*np.log10(bs/bs.max()+1e-9)
+    on=librosa.onset.onset_detect(onset_envelope=np.diff(db,prepend=db[0]).clip(0),sr=sr,hop_length=512,units='frames')
+    dec=[]
+    for o in on[:60]:
+        seg_=db[o:o+40]
+        pk=seg_.max(); i=seg_.argmax(); t=np.where(seg_[i:]<pk-15)[0]
+        if len(t): dec.append(t[0]*512/sr)
+    print("   onsets",len(on),"rate/s",round(len(on)/(b-a),2),"15dB decay median s",round(float(np.median(dec)),2) if dec else None, "spectral flatness",round(float(librosa.feature.spectral_flatness(y=x).mean()),4),"centroid",round(float(librosa.feature.spectral_centroid(y=x,sr=sr).mean())))
+    # odd/even harmonic: square-like if 3rd strong, even weak

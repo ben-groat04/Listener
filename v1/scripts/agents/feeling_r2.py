@@ -1,11 +1,12 @@
-import json,numpy as np
+import json,numpy as np,librosa
 d=json.load(open('/home/user/Listener/v1/data/video1/music_views/per_second_levels.json'))
-g=lambda k:np.array([x[k] for x in d],float)
-mix,w,b,o,dr=g('dbfs'),g('width'),g('bass'),g('other'),g('drums')
-ev={'1:15 bass out':75,'1:27 widen':87,'1:40 bass slam':100,'1:55 collapse':115,'2:00 thin block':120,'2:38 lock':158,'2:48 gasp/bright':168,'3:08 cut':188}
-def m(a,t0,t1):return np.mean(a[max(t0,0):t1])
-print('event | d mix dB | d width | d bass dB | d other dB (4s after vs 4s before)')
-for k,t in ev.items():
-  t=min(t,len(d)-4)
-  print(k,'|',round(m(mix,t,t+4)-m(mix,t-4,t),1),'|',round(m(w,t,t+4)-m(w,t-4,t),2),'|',round(m(np.maximum(b,-70),t,t+4)-m(np.maximum(b,-70),t-4,t),1),'|',round(m(o,t,t+4)-m(o,t-4,t),1))
-print('mix P10,P90',np.percentile(mix,[10,90]),'width P10,P90',np.percentile(w,[10,90]))
+db=np.array([x['dbfs'] for x in d]);w=np.array([x['width'] for x in d])
+i=np.argsort(db)[::-1][:8];print('loudest s',[(int(d[k]['t']),db[k]) for k in i])
+for a,b in [(0,9),(9,32),(32,50),(50,75),(75,87),(87,100),(100,115),(115,121),(121,133),(133,158),(158,168),(168,188)]:
+    print(a,b,'mix %.1f width %.2f'%(db[a:b].mean(),w[a:b].mean()))
+# spectral: hiss >8k fraction & hf per window; mix mono
+y,sr=librosa.load('/home/user/Listener/v1/data/video1/audio/song.wav',sr=22050,mono=True)
+S=np.abs(librosa.stft(y,n_fft=2048))**2;f=librosa.fft_frequencies(sr=sr,n_fft=2048)
+for a,b in [(20,30),(60,70),(88,98),(125,135),(150,160),(170,180),(185,188)]:
+    s=S[:,int(a*sr/512):int(b*sr/512)].sum(1)
+    print(a,'frac>5k %.4f >8k %.5f centroid %.0f'%(s[f>5000].sum()/s.sum(),s[f>8000].sum()/s.sum(),(s*f).sum()/s.sum()))

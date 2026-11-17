@@ -15,3 +15,6 @@ remove the file manually to continue.
 2026-11-17T20:58:08Z push attempt 1 failed: To https://github.com/ben-groat04/Listener
  ! [remote rejected] HEAD -> ccr-1a19516b-5p6iyk (cannot lock ref 'refs/heads/ccr-1a19516b-5p6iyk': is at 8cfaf52bf33b6a4763d458dad9d270c078a2565b but expected 5bc8a96d055ca760f90892c00d580cfa3463a59e)
 error: failed to push some refs to 'https://github.com/ben-groat04/Listener'
+2026-11-17T21:00:16Z push attempt 1 failed: To https://github.com/ben-groat04/Listener
+ ! [remote rejected] HEAD -> ccr-1a19516b-5p6iyk (cannot lock ref 'refs/heads/ccr-1a19516b-5p6iyk': is at 9227fd6555cabb5644be045daccf9bcdbd18a84e but expected daabe540fff3d40743245a726b7a2f112489ca7f)
+error: failed to push some refs to 'https://github.com/ben-groat04/Listener'

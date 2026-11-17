@@ -1,0 +1,15 @@
+# faster-whisper medium on mix_auto_transcribe (lang=en p=0.85)
+[0:10.16 - 0:10.88] Music
+[0:10.88 - 0:13.98] You, you I see
+[0:13.98 - 0:15.10] Yeah
+[0:15.10 - 0:17.62] In my carry in the morning
+[0:17.62 - 0:19.36] There's a thing in me
+[0:19.36 - 0:20.50] You know what it is, yeah
+[0:20.50 - 0:23.96] You, you I see
+[0:23.96 - 0:27.78] In my carry in the morning
+[0:56.38 - 1:01.34] Fiance's on her way up the steps, wake the girl, grab her clothes and in the closet she goes
+[1:01.34 - 1:06.10] Getting closer, pop tic tacs and like toaster, pick up the latex, hide the mimosa
+[1:06.10 - 1:11.26] Run to the sink, splash water in my face, look in the mirror, but today I seem out of place like
+[3:23.28 - 3:26.28] You, you I see
+[3:27.50 - 3:30.64] In my hair and in the morning
+[3:31.28 - 3:34.72] You see in me, I see you

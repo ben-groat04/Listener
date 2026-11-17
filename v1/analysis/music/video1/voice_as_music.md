@@ -14,7 +14,7 @@ It is **moderately steady in speed**: 4.4 envelope peaks a second inside a phras
 
 Against the beat it is **free**. Phrase starts and ends are no closer to the 78 BPM beat, to the 156 BPM subdivision or to the four-beat bar than chance would put them (all permutation p-values above 0.09, most above 0.2). The voice talks over the groove; it is not cut to it.
 
-**The earlier claim "four or five syllables a second" is replaced** by the measured figures in section 2: 4.4 peaks a second within phrases (range 2.9 to 5.7, 16 phrases), 3.6 once gaps are counted, 2.9 to 4.1 in the town list. "Four to five" survives only as the upper part of the range (0:51 to 0:56 and 1:19 to 1:25).
+**The earlier claim "four or five syllables a second" is replaced** by the measured figures in section 2: 4.4 peaks a second within phrases (range 2.9 to 5.7, 16 phrases), 3.6 once gaps are counted, 2.9 to 4.1 in the town list. "Four to five" survives only as the upper part of the range (0:51 to 0:56, 1:19 to 1:27 and the 2:44 phrase).
 
 ## 1. Pitch
 
@@ -82,7 +82,7 @@ Grid: the beat tracker's own beat times (`audio_features/beat_times.json`, 78.3 
 | Starts, 4-beat bar, phase 0 / 1 / 2 / 3 | 21 to 22 | 0.242 / 0.234 / 0.257 / 0.263 | 0.27 / 0.19 / 0.73 / 0.94 | 0.41 / 0.31 / 0.59 / 0.65 | 0.06 to 0.10 (0.80 to 0.93) | 1 to 2 |
 | Ends, 4-beat bar, phase 0 / 1 / 2 / 3 | 21 | 0.244 / 0.249 / 0.258 / 0.253 | 0.12 / 0.45 / 0.92 / 0.58 | 0.43 / 0.49 / 0.60 / 0.53 | 0.04 (0.97) | 1 to 2 |
 
-Result: nothing reaches p of 0.05, and with 20 tests one would expect about one by chance. The smallest are 0.096 (ends against the 156 BPM subdivision, grid-shift null) and 0.089 (start clustering at the 78 BPM beat period, p_R); neither is claimed. **"Voice on the bar" is not supported for this video**; the voice is free-timed against both candidate tempi. At 156 BPM the 0.1 s window covers 52 % of the period, so the 15 of 23 starts within it is exactly what chance gives. Statistical power is modest (n of 21 to 23); a lock as strong as video2's fragment starts would have been detected, a weak lock would not.
+Result: nothing reaches p of 0.05 (12 grid tests, 24 p-values; about one in two runs of this many tests gives a p under 0.05 by chance). The smallest are 0.096 (ends against the 156 BPM subdivision, grid-shift null) and 0.089 (start clustering at the 78 BPM beat period, p_R); neither is claimed. **"Voice on the bar" is not supported for this video**; the voice is free-timed against both candidate tempi. At 156 BPM the 0.1 s window covers 52 % of the period, so 15 of 23 starts (65 %) within it against 52 % expected is not significant (p_R 0.20). Statistical power is modest (n of 21 to 23); a lock as strong as video2's fragment starts would have been detected, a weak lock would not.
 
 ## 4. Narrator pitch against the bass root
 
@@ -95,21 +95,21 @@ The bass stem is present (level above -40 dBFS, bass pitch found for at least 20
 | Narrator pitch class equal to the bass root (within about a semitone) | 3 of 11 (9.9 s D3 on D; 19.0 s and 54.0 s D#3 on D) |
 | Most common intervals above the bass root | 3 semitones (F on D) in 3 phrases (0:27.9, 0:41.1, 0:50.9), 1 semitone in 2, 5 semitones in 2 |
 
-**Nothing supports a tuned relationship** between the narrator's median pitch and the bass root or key. The narrator's median pitch sits in the D3 to F3 band, which is 0 to 3 semitones above the D3 tonic frequency; D3 itself is the bass's most common pitch class, so the band overlaps the tonic region by position, not by any measured tuning. Speech inflection moves through about 4 semitones per phrase, and the tracker cannot separate D from D# reliably (the two window sizes differ by up to a semitone on some phrases).
+**Nothing supports a tuned relationship** between the narrator's median pitch and the bass root or key. The narrator's median pitch sits in the D3 to F3 band, which is 0 to 3 semitones above the D3 tonic frequency; D is the bass's most common pitch class, so the band overlaps the tonic region by position, not by any measured tuning. Speech inflection moves through about 4 semitones per phrase, and the tracker cannot separate D from D# reliably (the two window sizes differ by up to a semitone on some phrases).
 
 ## Evidence table
 
 | Finding | Value | Tag | Note |
 |---|---|---|---|
 | Typical narration pitch | median of phrase medians 175 Hz (F3), main narration 130 to 180 Hz, n = 21 | OBSERVED | pyin on a noisy stem; octave jumps possible (window sizes differ up to 7 st on some phrases) |
-| Town-list pitch | 196 to 247 Hz (G3 to B3) in 5 of 6 reliable phrases | OBSERVED | higher than the narrative lines by about 3 semitones in the median (165 to 198 Hz) |
+| Town-list pitch | 196 to 247 Hz (G3 to B3) in 5 of the 7 reliable phrases from 2:15 to 2:36 | OBSERVED | the group from 2:15 has median 198 Hz against 165 Hz before it, about 3 semitones higher |
 | Pitch steadiness inside a phrase | median interquartile range 4.2 st | OBSERVED | speech inflection; a sung or held pitch would be under 1 st |
 | Falling phrase ends | 13 of 21, median -0.8 st | OBSERVED, not significant | "falling" not established |
 | Rate within phrases | 4.43 peaks/s mean (sd 0.79, range 2.90 to 5.67, n = 16) | OBSERVED | peaks are about syllables; calibrated on a 15-syllable sentence: 15, 14 and 14 peaks found |
 | Rate with gaps counted | 3.59 mean (2.08 to 4.76) | OBSERVED | |
-| Old claim "4 to 5 a second, steady" | replaced by the two rows above | OBSERVED | holds only for fast phrases (0:51 to 0:56, 1:19 to 1:25) |
+| Old claim "4 to 5 a second, steady" | replaced by the two rows above | OBSERVED | holds only for fast phrases (0:51 to 0:56, 1:19 to 1:27, 2:44) |
 | No quickening through the piece | rho -0.10, p 0.72, n = 16 | OBSERVED (low power) | agrees with the earlier "no quickening" but is a weak test |
-| Voice on the beat or bar | no test below p 0.089 (20 tests) | OBSERVED | not claimed; free timing |
+| Voice on the beat or bar | no test below p 0.089 (12 tests) | OBSERVED | not claimed; free timing |
 | Voice against bass root or key | 3 of 11 phrases on the root; permutation p 0.38 and 1.0 | OBSERVED | no tuned relationship shown |
 | 156 versus 78 BPM from the voice | no support for either | OBSERVED | the voice cannot settle the octave |
 | Voice as rhythm instrument | the voice carries phrase-scale pacing (0.2 to 0.5 s syllables, 1 to 5 s phrases) over a fixed pulse | INFERRED | from free timing against a steady grid |

@@ -40,3 +40,4 @@
 - 02:10 video1 music reading done (25 agents, 2.6M tokens; checks refuted 16 claims and flagged 16 unverifiable; fixes applied). Launched interpret on video1. Trying Qwen2.5-Omni-3B as a CPU audio-language 'second pair of ears' (scripts/10_audio_lm.py).
 - 02:25 video2 music reading done (41 agents, 4.0M tokens; 14 refuted/14 unverifiable, fixes applied). Launched interpret video2 and blind chain on test video t_birdwalk (first blind test on an unknown video).
 - 02:33 video1 interpretation done (24 agents; 16 refuted/36 unverifiable, fixed/softened). Added report.js (readable final piece + 2 cold reads + revision); running on video1.
+- 02:40 video1 REPORT.md written (earlier writer step had produced no file; both cold reads failed on the missing file, so their valid music-reading style points were applied directly: felt lead, 1:40 catharsis, riff by feel, caveats once). Not independently re-reviewed.

@@ -1,28 +1,26 @@
-# Turing test history
+# Turing test history (human-sounding pieces)
 
-Three blind judges labelled a shuffled pool of our pieces and real human excerpts as human or AI. "Flagged AI" is the share of pieces judged AI (each piece scored out of 3 judges).
+Judges labelled a shuffled pool of our pieces and real human excerpts as human or AI. Per-piece figures are judges flagging AI out of 2.
 
-| Round | Our pieces flagged AI | Real pieces flagged AI |
+| Round | Ours flagged AI | Real flagged AI |
 |---|---|---|
-| 1 | 100% | 0% |
-| 2 | 100% | 0% |
-| 3 | 100% | 0% |
+| 1 | 83% | 0% |
+| 2 | 92% | 0% |
+| 3 | 50% | 2% |
 
-## Per piece (judges flagging AI)
+## Per piece
 
-| Piece | Round 1 | Round 2 | Round 3 |
+| Piece | R1 | R2 | R3 |
 |---|---|---|---|
-| video2 text | 3/3 | 3/3 | 3/3 |
-| video2 forum post | 3/3 | 3/3 | 3/3 |
-| video2 review | 3/3 | 3/3 | 3/3 |
-| video1 text | 3/3 | 3/3 | 3/3 |
-| video1 forum post | 3/3 | 3/3 | 3/3 |
-| video1 review | 3/3 | 3/3 | 3/3 |
+| video2-text | 2/2 | 2/2 | 0/2 |
+| video2-forum | 2/2 | 2/2 | 0/2 |
+| video2-review | 2/2 | 2/2 | 2/2 |
+| video1-text | 0/2 | 1/2 | 0/2 |
+| video1-forum | 2/2 | 2/2 | 2/2 |
+| video1-review | 2/2 | 2/2 | 2/2 |
 
 ## What changed between rounds
 
-The per-round rewrite details were not supplied with these results, so this file does not describe them. After each round the flagged pieces were rewritten using the real-human corpus and `STYLE.md` (real habits and AI tells), then retested. The score did not move across three rounds: every one of our pieces was flagged by every judge each time, and no real piece was flagged.
-
-## Outcome
-
-The test was not passed. The final pieces (saved in `v1/analysis/video1/VOICES.md` and `v1/analysis/video2/VOICES.md`) were still identified as AI by all judges in round 3. Treat them as the best plain-register versions reached, not as passing the test. The user's reaction to the phrasing was that it was AI phrasing trying too hard.
+- Round 1 to 2: ours rose from 83% to 92%. Only video1-text moved (0/2 to 1/2); every other piece stayed at 2/2 flagged. Rewriting did not remove the tells.
+- Round 2 to 3: ours fell to 50% (real 2%). Video2-text and video2-forum went from 2/2 to 0/2 and video1-text stayed at 0/2, so the short texts and the video2 forum post now pass. The reviews (both videos) and video1-forum are still flagged 2/2.
+- Pattern: the shortest, most casual register passes; the longer, more structured pieces (reviews, video1 forum post) are still caught.

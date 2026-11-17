@@ -1,25 +1,13 @@
-# Voices: Part 1 (Elfstedentocht Part 1)
+# Human-register voices: video1
 
 ## A text to a mate
 
-Put on PSB Elfstedentocht part 1 earlier and now I'm annoyed I can't hear the Dutch voice properly, the band just goes straight over it. Still watched it twice though
+just watched the PSB Elfstedentocht one, black and white skating race from 1963 with a Dutch voice going over loads of drums. bass vanishes for a bit then comes back. dunno what I made of it tbh, send me the album instead lol
 
 ## A forum post
 
-Someone linked this in the PSB thread so I stuck it on while the kettle was boiling and ended up sitting through the whole thing. Elfstedentocht Part 1, the skating race one. It was done for the 50th anniversary of the 1963 race, I think, for some festival in Leeuwarden.
-
-Much louder than I was expecting from them. Drums from the very first second and as far as I can tell they never really stop. The old film is all black and white, crowds in the dark, a few newspapers, and a Dutch voice reading out facts that I mostly couldn't make out because the band doesn't get out of its way. I got the date and that it was freezing and that's about it.
-
-Somewhere past the middle it all goes quiet and a bit thin and there's a shot of people on a bench with cups of tea. Liked that, no idea why. The ending just stops dead.
-
-Does Part 2 pick it up from there or is it a different thing?
+Only really know Inform Educate Entertain from PSB so I was surprised how much louder this one is. Elfstedentocht Part 1, Dutch skating race, 1963, the band did it for the anniversary of it for some festival in Leeuwarden. I clicked it because the thumbnail was a bloke in a woolly hat staring at the camera and ended up watching it three times, which I wasn't planning on.\n\nDrums start straight away and just keep going. There's a voice reading out the date and the temperature (sixteen below, I think) and the band doesn't shift for it at all, which I thought they'd do. I don't speak a word of Dutch so that's about all I got out of it. There's a bit where the bass drops out and then slams back in and I liked that. Mostly though I kept looking at the pictures. Cups of tea on a bench, a plane, that sort of thing.\n\nIt just stops at the end. Does anyone know where the film's from? Couldn't see a title or anything on it
 
 ## A short review
 
-PSB made this for the festival in Leeuwarden, for the 50th anniversary of the big 1963 skating race, and it's the heaviest thing of theirs I've come across. Drums from the very first second, a thick guitar sound on top, no verse or chorus to speak of. Black and white archive film the whole way through, with a Dutch voice reading out the date, the time, the temperature (sixteen below) and so on.
-
-My main gripe is that the voice is buried. The film is the point of the whole thing and the band just carries on over the top of it, so I only really caught the date and the cold. The list of towns near the end went straight past me, and I'm not sure the road signs on screen were in the same order anyway.
-
-Best bit is around the minute and a quarter mark, when the bass drops out and it all gets light and fidgety for twenty-odd seconds, and then it slams back in. After that there's a quiet patch with some people drinking tea on a bench. Odd choice, I quite liked it.
-
-Nobody crosses a finish line at the end, it just cuts. I couldn't see any credit for the footage either.
+I only knew Public Service Broadcasting from Inform Educate Entertain, so I wasn't expecting something this loud. Elfstedentocht Part 1 was made for the 50th anniversary of the 1963 skating race in Friesland (there was a festival in Leeuwarden, I think that's who asked for it), and it's about three minutes of old black and white footage with a Dutch voice over the top.\n\nThe drums start on the first second and basically don't stop. I can't tell you whether the big sound is guitars or synths, it's just a lot of noise, and it is quite good noise. The voice reads out the date, the temperature, how many racers there were, then a long list of towns. I don't know any Dutch so most of that went past me. What surprised me is the band doesn't get out of the way for it. On the album they'd have left a gap.\n\nThere's a stretch in the middle where the bass goes away and the whole thing gets thin and a bit nervy, and then it comes back and you notice it. That's the best bit and I rewound it a couple of times. Later on it goes very quiet for a while, all slow thuds, over some people drinking tea on a bench. One of them looks right at the camera. I'd have been happy with a lot more of that and less of the racing.\n\nNo tune, don't go in expecting one. It finishes very abruptly. I couldn't see a title or credits on the film so I still don't know where it's from.

@@ -1,23 +1,23 @@
-# Voices: Part 2 (Elfstedentocht Part 2)
+# Human-register voices: video2
 
 ## A text to a mate
 
-put the PSB skating one on in the car park before work, Elfstedentocht part 2. old colour film and a Dutch voice reading out numbers. goes on a bit but the bit where everything cuts out and then comes crashing back is good
+have you heard PSB's Elfstedentocht Part 2? no singing, just a Dutch voice reading out numbers over old colour skating film. the bit where it all cuts out and then slams back in is great, the rest is a bit samey tbh
 
 ## A forum post
 
-Someone sent me this one so I watched it on my phone with one earbud in, which probably didn't help. PSB, Elfstedentocht Part 2, old colour footage of a big skating race in Friesland in 1963. I haven't heard Part 1.
+Only knew PSB from the singles so this wasn't what I expected. No singing, no tune really, just a beat at about walking pace and a Dutch voice reading out bits of information over colour film of the 1963 skating race. Apparently it was written for the 50th anniversary, for some festival in Leeuwarden.
 
-Quieter than I thought it'd be. No tune, no chorus, just a drum machine going at the same pace the whole time. It's ages before anything even happens, just frosty trees and a hum.
+Round 1:24 the drums and bass go and it's only the hum and the voice, and when it all comes back it's much louder than before and I grinned. Best bit by far.
 
-The bit I liked is fairly early on, the drums and bass vanish while the Dutch bloke says something about what everyone's been getting ready for, and then it all comes back together when it cuts to a crowd on a bridge I think. Ace. After that I drifted, loads of skaters from behind with numbers on, and I don't remember much of the middle. The ending is two knocks and then it goes black, no idea what that was about.
+After that it's the same groove for ages and I drifted, if I'm honest. Ends with two knocks and the screen goes black. Anyone know which films they used? The notes just say Fries Film Archief.
 
 ## A short review
 
-I only knew this was a PSB thing because a mate linked it, and it turns out it was made for a festival in Leeuwarden for the fiftieth anniversary of the 1963 Elfstedentocht, the big skating race in Friesland. They were playing there that November. Part 2 is supposed to be the calmer one and I can't say what Part 1 is like, haven't heard it.
+I'd only ever heard PSB's singles, so Elfstedentocht Part 2 wasn't what I was expecting. It's about five minutes, nobody sings and there isn't a tune as such, just a steady electronic beat and a Dutch voice reading out facts over colour footage of the 1963 skating race in Friesland. It was commissioned for the 50th anniversary of the race, for a festival in Leeuwarden. The footage is credited to the Fries Film Archief, though the notes don't say which films.
 
-It's old colour film with a Dutch voice over the top, and that's it. Starts on a title card, then trees covered in frost for ages with a low hum, then a bass and a drum pattern come in right on a cut. Good start. After that the voice gives the date, the temperature, the distance and how many started, in the flattest way possible, and the beat just plods along at one speed underneath.
+The start is a long wait: a low hum and the odd thud over frosty trees for the best part of half a minute. Then the bass and drums arrive and the narrator reads out the date, the temperature and how many people were racing. I don't speak Dutch so I only really caught the date and the numbers.
 
-The one real moment is when the drums and bass go and the voice says this is what everyone has been preparing for, and then everything slams back in on a crowd on a bridge. Great bit. The rest I found a bit samey, lots of skaters' backs with numbers on them, and I kept wondering where the finish was. There isn't one, you never find out who won. Ends on ducks and broken ice and then two knocks.
+The best bit is about a minute and a half in, where the drums and bass drop out and it's just the hum and the voice for a few seconds, then everything comes back at once on a cut to a crowded bridge. It's the one part I'd go back for. After that it's basically the same groove getting a bit louder, and the last three minutes or so dragged for me. The picture is mostly skaters in a pack with number bibs on their backs, and nobody in particular gets followed.
 
-Not sure I'd play it again start to finish, but the middle bit I would.
+The beat stops dead, there are two knocks and the picture fades to black. Some ducks on broken ice just before that, which I liked. I haven't heard Part 1 yet.

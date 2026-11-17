@@ -14,7 +14,7 @@ echo $$ > "$LOCK"; trap 'rm -f "$LOCK"' EXIT
 DIRS=${VIDEO_DIR:-"videos testvideos"}
 if [ $# -gt 0 ]; then NAMES=""; for a in "$@"; do b=$(basename "$a"); case "$b" in *.mp4|*.mkv|*.mov|*.webm) b="${b%.*}";; esac; NAMES="$NAMES $b"; done  # bare names, or file paths
 else
-  NAMES=$(for d in $DIRS; do for f in $d/*.mp4 $d/*.mkv $d/*.mov $d/*.webm; do [ -f "$f" ] && basename "${f%.*}"; done; done | sort -u)
+  NAMES=$(for d in $DIRS; do for f in $d/*.mp4 $d/*.mkv $d/*.mov $d/*.webm; do [ -f "$f" ] && basename "${f%.*}"; done; done | sort -u) || true  # (an unmatched last glob made the substitution fail and set -e exit silently)
 fi
 [ -n "$NAMES" ] || { echo "ERROR: no videos found in $DIRS (mp4/mkv/mov/webm)" >&2; exit 1; }
 FIND_VIDEO() { for d in $DIRS; do for e in mp4 mkv mov webm; do [ -f "$d/$1.$e" ] && { echo "$d/$1.$e"; return; }; done; done; return 1; }

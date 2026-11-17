@@ -54,7 +54,11 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Ending misread as a quiet "tap": it is a full-level kick-and-bass hit at 5:02.3 after a pad ring-out.
 - Cited CLAP only as song means (vinyl crackle, instruments, no-vocals), hiding strong time structure; overstated "no vinyl" and bass "28 dB down".
 - 02:30 · Audio-language model (Qwen2.5-Omni-3B on CPU) failed: audio not received (config/token mismatch) and ~15 min per window. Wasted ~25 min of CPU, no usage. · Abandoned; script kept as experimental_10_audio_lm.py with a warning; deleted its misleading output and the 8 GB model cache. · Budget a quick feasibility check (speed + a sanity answer) before building around a heavy local model.
-
+- Check round 2 (video2 music reading): called the last hit the loudest sample (the track is at 0 dBFS from about 1:20); digital zero at 5:04.4 (it is 5:04.24); omitted the 0:24 strike (five strikes, not four).
+- Described the 1:10-1:16.5 stop as drums and bass (only drums drop; both are absent only about 1:24.6-1:28.6, about 4 s); trusted Whisper's 1:14 narration end (vocal stem ends about 1:10.5).
+- Called a 4:37 "bass hole" (bass stem is -19 to -20 dB there); placed the end of the last B-A-D cycle at 4:44.7 (it is 4:48.6); fill list included 2:56 and missed about 1:56 and 3:00.
+- Quoted stem-only brightening (+22 dB at 4-10 kHz) as a property of the whole wall/mix (the mix gains about +3 to +8 dB); gave "L/R correlation about 0 in every band" (true only in the intro); intro chroma timings of G (G absent at 0:00-0:04, back at 0:16).
+- Called the second-half voice "murmur / very quiet / wordless" and "high" confidence human voice: the vocal-stem bursts peak about -16 dB; no words recovered is not the same as wordless; CLAP "no vocals" contradicts; "guitar vs synth 50:50" had no evidence; "calls uniform about -21 dB" (spread about 4 dB); "bass 50 dB louder" (about 65 dB, from noise floor).
 
 ## Fact-check: video1 interpretation
 

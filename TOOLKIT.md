@@ -23,6 +23,7 @@ Give a fresh Claude Code session this repo and a video. It should end with a che
    | b | `v1/workflows/interpret.js` (conversing panel) | `{"videos":["<name>"]}` | `analysis/<name>/interpretation.md` |
    | c | `v1/workflows/compare.js` (related videos) | `{"videos":["a","b"],"name":"set","relation":"..."}` | `analysis/compare/<set>/comparison.md` |
    | d | `v1/workflows/coldread.js` (improve) | `{"scope":"all","videos":["<name>"],"tag":"cr1"}` | fixes + `logs/BACKLOG_*.md` |
+   | e | `v1/workflows/report.js` (readable final piece) | `{"videos":["<name>"],"compare":"<set>"}` | `analysis/<name>/REPORT.md` |
    | any | `v1/workflows/blind_chain.js` | `{"videos":[{"vid":"<name>","dur":<s>}],"video_dir":"videos"}` | `analysis_blind/...` |
    Add `"blind": true, "out": "analysis_blind"` to any workflow for a no-context run.
 5. **Report:** write `v1/analysis/<name>/REPORT.md`, a readable final piece drawing on the music reading, interpretation and comparison, with links to the evidence.

@@ -1,29 +1,19 @@
-import librosa, numpy as np
-D='/home/user/Listener/v1/data/video1/stems_raw/htdemucs/song/'
-sr=22050;hop=256
-dr,_=librosa.load(D+'drums.wav',sr=sr);bs,_=librosa.load(D+'bass.wav',sr=sr);ot,_=librosa.load(D+'other.wav',sr=sr)
-fr=sr/hop
-oe=librosa.onset.onset_strength(y=dr,sr=sr,hop_length=hop)
-on=librosa.onset.onset_detect(onset_envelope=oe,sr=sr,hop_length=hop,units='time',delta=0.1)
-print('onsets per 10s:',[int(((on>=a)&(on<a+10)).sum()) for a in range(0,190,10)])
-def rms(x,w=0.05):
-    n=int(w*sr);m=len(x)//n;return np.sqrt((x[:m*n].reshape(m,n)**2).mean(1))
-for nm,x in [('drums',dr),('bass',bs),('other',ot)]:
-    r=20*np.log10(rms(x)+1e-6)
-    # dropouts: runs below (median-18dB) lasting >=0.15 s
-    med=np.median(r);low=r<med-18;runs=[];i=0
-    while i<len(r):
-        if low[i]:
-            j=i
-            while j<len(r) and low[j]:j+=1
-            if (j-i)*0.05>=0.15 and (nm!='bass'):runs.append((round(i*0.05,2),round((j-i)*0.05,2)))
-            i=j
-        else:i+=1
-    print(nm,'median dB',round(med,1),'dropouts(start,len):',runs[:30])
-# beat-period 5s windows density of 'gap' IOIs ~0.37 vs 0.19
-ioi=np.diff(on)
-for a in range(0,190,20):
-    m=(on[:-1]>=a)&(on[:-1]<a+20);i=ioi[m]
-    print(a,'frac ~0.19:',round(((i>0.15)&(i<0.23)).mean(),2),'frac ~0.38:',round(((i>0.33)&(i<0.43)).mean(),2),'frac<0.15:',round((i<0.15).mean(),2))
-# last 6 s detail and drum RMS
-r=rms(dr,0.1);print('drum dB 183-189:',np.round(20*np.log10(r[1830:1887]+1e-6),0)[::3])
+import numpy as np, librosa, soundfile as sf
+D='/home/user/Listener/v1/data/t_cshells_cshore/'
+sr=22050;hop=110
+def ld(p):
+    y,s=sf.read(p); y=y.mean(1) if y.ndim>1 else y
+    return librosa.resample(y,orig_sr=s,target_sr=sr)
+for nm,p in [('mix','audio/song.wav'),('drums','stems_raw/htdemucs/song/drums.wav')]:
+    y=ld(D+p); oe=librosa.onset.onset_strength(y=y,sr=sr,hop_length=hop)
+    print(nm)
+    for a in range(60,330,20):
+        x=oe[int(a*sr/hop):int((a+20)*sr/hop)]; x=x-x.mean()
+        if x.std()<1e-6: continue
+        ac=np.correlate(x,x,'full')[len(x)-1:]; ac/=ac[0]
+        lg=np.arange(len(ac))*hop/sr
+        # fit period near 0.4-0.6 via parabolic peak; also 8-beat lag 3.7-4.3 and bar 1.8-2.2
+        def pk(lo,hi):
+            m=(lg>lo)&(lg<hi); i=np.where(m)[0][np.argmax(ac[m])]; return lg[i],ac[i]
+        b=pk(0.44,0.56); bar=pk(1.8,2.2); b8=pk(3.7,4.3)
+        print(a,'beat lag %.3f (%.2f) -> %.1f BPM | 4-beat lag %.3f (%.2f) -> %.1f | 8-beat %.3f (%.2f) -> %.1f'%(b[0],b[1],60/b[0],bar[0],bar[1],240/bar[0],b8[0],b8[1],480/b8[0]))

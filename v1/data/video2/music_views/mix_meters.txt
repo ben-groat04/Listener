@@ -1,0 +1,44 @@
+Mix meters: video2 (OBS, from measurement)
+305.9 s, 44100 Hz, 2 ch; loudness method: ffmpeg ebur128
+Integrated -9.7 LUFS; max short-term (3 s) -6.02 LUFS
+Sample peak 0.0 dBFS at 92.13 s; true peak (4x) 0.56 dBFS at 270.12 s; RMS -11.98 dBFS; crest 11.98 dB
+Loudest 10 s: 263-273 s (-6.07 LUFS mean); peak in it 0.0 dBFS at 263.12 s
+Mix band share: sub 13.8%, bass 61.3%, mid 22.3%, high 2.3%, air 0.4%
+Stereo whole track: L/R correlation 0.624, side/mid -6.34 dB
+Sub peak 72.87 Hz
+Stem bass: RMS -18.19 dBFS; sub 6.2%, bass 93.5%, mid 0.3%, high 0.0%, air 0.0%
+Stem drums: RMS -20.07 dBFS; sub 32.2%, bass 60.0%, mid 4.2%, high 2.5%, air 1.1%
+Stem other: RMS -17.48 dBFS; sub 0.1%, bass 17.2%, mid 80.0%, high 2.8%, air 0.0%
+Stem vocals: RMS -27.73 dBFS; sub 0.0%, bass 2.7%, mid 76.8%, high 20.5%, air 0.0%
+10 s windows (start s, mean momentary LUFS, peak dBFS, L/R corr):
+     0  -20.68  -7.85  -0.13
+    10  -19.57  -7.35  -0.136
+    20  -17.15  -2.02  0.096
+    30  -15.06  -0.92  0.223
+    40  -14.22  -0.84  0.276
+    50  -13.82  -0.5  0.285
+    60  -12.46  -0.61  0.399
+    70  -14.55  -0.71  0.207
+    80  -14.02  -0.02  0.42
+    90  -13.07  0.0  0.666
+   100  -10.06  -0.0  0.817
+   110  -9.91  -0.1  0.764
+   120  -9.76  -0.0  0.806
+   130  -9.82  0.0  0.82
+   140  -9.53  0.0  0.794
+   150  -9.91  -0.09  0.787
+   160  -11.58  0.0  0.817
+   170  -10.82  -0.07  0.791
+   180  -9.88  0.0  0.708
+   190  -9.5  0.0  0.617
+   200  -8.67  0.0  0.563
+   210  -8.24  -0.0  0.562
+   220  -7.54  0.0  0.549
+   230  -7.02  0.0  0.593
+   240  -6.83  0.0  0.595
+   250  -6.44  0.0  0.586
+   260  -6.13  0.0  0.584
+   270  -6.92  0.0  0.617
+   280  -9.46  0.0  0.648
+   290  -9.99  0.0  0.549
+   300  -15.68  -0.0  0.776

@@ -3,10 +3,12 @@ Two passes, merged (video-agnostic, no per-video constants):
  1. PySceneDetect ContentDetector (threshold 27.0): hard cuts.
  2. Dense pass over every frame (160x120 via ffmpeg): mean abs grey difference + colour-histogram distance, scored against the
     +-1 s local median/MAD, accepted as a cut only if it is a local peak, the structure correlation of the two neighbouring frames
-    is low (<0.6: a new picture, not a tint swing or flicker) and the change is large (same rules as agents/dense_cuts.py 'likely_cut').
+    is low (<0.6: a new picture, not a tint swing or flicker) and the histogram distance is >= 0.05 (same rules as agents/dense_cuts.py
+    'likely_cut', plus the histogram floor). src 'dense' = histogram distance >= 0.12 (new picture content, reliable); 'dense_soft' = 0.05-0.12
+    (also real whips/blurs, but in-shot camera motion can pass: frame-check before leaning on one).
     This catches blurred whips, fades-through-blur and soft transitions the ContentDetector misses.
 Cuts within MERGE_S of each other are merged (ContentDetector time kept). Output schema unchanged: list of
-{shot,start,end,dur,keyframe}; each entry also gets 'src' ('content' or 'dense'). The previous shots.json is kept as shots_prev.json
+{shot,start,end,dur,keyframe}; each entry also gets 'src' (the origin of its start: content, dense or dense_soft). The previous shots.json is kept as shots_prev.json
 (only if shots_prev.json does not exist yet, so the original ContentDetector list is never overwritten by a re-run).
 Usage: VID=<video> python3 02_scenes.py   (VID mandatory)"""
 import json, os, shutil, subprocess, sys
@@ -16,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from _common imp
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 VID = require_vid(); V = find_video(root, VID); D = os.path.join(root, f"v1/data/{VID}/scenes")
 os.makedirs(os.path.join(D, "keyframes"), exist_ok=True)
-SD_THR, DENSE_THR, DENSE_FLOOR, SCORR_MAX, MERGE_S = 27.0, 3.0, 0.25, 0.6, 0.2
+SD_THR, DENSE_THR, DENSE_FLOOR, SCORR_MAX, MERGE_S, HIST_MIN, HIST_STRONG = 27.0, 3.0, 0.25, 0.6, 0.2, 0.05, 0.12
 
 # pass 1: ContentDetector
 scenes = detect(V, ContentDetector(threshold=SD_THR))
@@ -37,7 +39,7 @@ while True:
     diffs.append(float(np.abs(g - prev).mean()) if prev is not None else 0.0); hd.append(float(0.5 * np.abs(h - ph).sum()) if prev is not None else 0.0)
     grays.append(g.astype(np.float32)); prev, ph = g, h
 p.wait()
-comb = np.array(diffs) / 255.0 * 10 + np.array(hd) * 4; k = max(1, int(round(fps))); score = np.zeros(len(comb))
+hd = np.array(hd); comb = np.array(diffs) / 255.0 * 10 + hd * 4; k = max(1, int(round(fps))); score = np.zeros(len(comb))
 for j in range(len(comb)):
     nb = np.concatenate([comb[max(0, j - k):j], comb[j + 1:min(len(comb), j + k + 1)]])
     if len(nb): m = np.median(nb); score[j] = (comb[j] - m) / (np.median(np.abs(nb - m)) + 0.02)
@@ -46,7 +48,7 @@ def scorr(j):
 dense = []
 for j in range(1, len(comb)):
     lo, hi = max(1, j - 2), min(len(comb), j + 3)
-    if score[j] >= DENSE_THR and comb[j] >= DENSE_FLOOR and score[j] == score[lo:hi].max() and scorr(j) < SCORR_MAX: dense.append((j / fps, "dense"))
+    if score[j] >= DENSE_THR and comb[j] >= DENSE_FLOOR and score[j] == score[lo:hi].max() and scorr(j) < SCORR_MAX and hd[j] >= HIST_MIN: dense.append((j / fps, "dense" if hd[j] >= HIST_STRONG else "dense_soft"))
 
 # merge: keep ContentDetector cuts, add dense cuts not within MERGE_S of any kept cut
 allc = sorted(cuts, key=lambda c: c[0]); kept = list(allc)

@@ -90,8 +90,8 @@ Convention: `VID` is the bare video name (no extension, no folder); `VIDEO_DIR` 
    | `out` | string, folder under `v1/` | `analysis` (use `analysis_blind` with `blind`) | listen, perceive, interpret, compare, report, listening |
    | `video_dir` | string | `videos` | perceive, blind_chain |
    | `rounds` | integer | listen 2, interpret 3, compare 2, coldread 1, backlog 1; human 3; plainvoice 3 (as in its header example) | listen, interpret, compare, coldread, backlog, human, plainvoice |
-| `max_iters` | integer | 3 | listening |
-| `seed` | boolean | `false` (true starts from the existing `VOICES.md`) | plainvoice |
+   | `max_iters` | integer | 3 | listening |
+   | `seed` | boolean | `false` (true starts from the existing `VOICES.md`) | plainvoice |
    | `skip_windows` | array like `"video1:0040"` | `[]` | listen |
    | `windows_only` | boolean | `false` | listen |
    | `skip_done` | array | `[]` | perceive |

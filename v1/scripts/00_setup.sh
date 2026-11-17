@@ -15,10 +15,10 @@ if [ "${FREE_MB:-0}" -lt "$NEED_MB" ]; then
   echo "ERROR: only ${FREE_MB} MB free on the repo filesystem; need about ${NEED_MB} MB. Free space first, e.g.: python3 -m pip cache purge ; rm -rf ~/.cache/huggingface/hub/<unused model> ; (stems_raw/ and frames_1fps/ are regenerable). Then re-run." >&2
   exit 1
 fi
+command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || { echo "ERROR: ffmpeg/ffprobe not found. Install it (e.g. apt-get install -y ffmpeg) and re-run." >&2; exit 1; }
 # Preflight: drawtext (contact-sheet timestamps) needs ffmpeg built with freetype and at least one fontconfig font
 ffmpeg -hide_banner -filters 2>/dev/null | grep -q drawtext || { echo "ERROR: this ffmpeg has no drawtext filter (needs libfreetype). Install a full ffmpeg build." >&2; exit 1; }
 { command -v fc-list >/dev/null && [ -n "$(fc-list 2>/dev/null | head -1)" ]; } || { echo "ERROR: no fontconfig fonts found (fc-list empty or missing); drawtext will fail. Install one, e.g. apt-get install -y fontconfig fonts-dejavu-core" >&2; exit 1; }
-command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || { echo "ERROR: ffmpeg/ffprobe not found. Install it (e.g. apt-get install -y ffmpeg) and re-run." >&2; exit 1; }
 shopt -s nullglob
 FILES=()
 if [ $# -gt 0 ]; then

@@ -77,7 +77,7 @@ def build(max_beats):
 def fin(rows):
     rows = [r for r in rows if r["end"] - r["start"] >= 0.4 or r is rows[-1]]
     for a, b in zip(rows, rows[1:]): a["end"] = b["start"]                  # no gaps left by dropped slivers
-    rows[-1]["end"] = dur
+    rows[0]["start"] = 0.0; rows[-1]["end"] = dur
     return [{"start": round(r["start"], 2), "end": round(r["end"], 2), "chord": r["chord"], "root": r["root"], "quality": r["quality"], "root_conf": r["root_conf"],
              "quality_conf": r["quality_conf"], "match": r["match"], "pitch_class_set": r["pcs"], "pcs_names": [NAMES[p] for p in r["pcs"]]} for r in rows]
 chords = fin(build(4)); runs = fin(build(10 ** 9))

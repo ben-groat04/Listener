@@ -1,5 +1,7 @@
 # video2, segment 1: 0:00-0:20 (eyes)
 
+> Corrected after cold-read: signboard lettering method not claimed.
+
 Method: contact sheet 01, four shot keyframes (shots 1-4), 1 fps frames f_0001, f_0003, f_0008, f_0009, f_0013, f_0016, f_0020, spectrogram, audio summary, transcripts. visual_features/ and stems were empty/absent for this video, so no brightness/motion numbers are used. Audio is inferred from features only; I cannot hear it.
 
 ## Shot-by-shot (observation)
@@ -13,7 +15,7 @@ Shot boundaries from shots.json: 0:00-0:01.7, 0:01.7-0:07.9, 0:07.9-0:12.2, 0:12
 ## People, places, objects, text
 - People: none in 0:00-0:20.
 - Place: a Frisian village or town street in deep frost, indicated by the sign and a gabled brick-style house under snow. The house shape is consistent with Dutch domestic architecture, but I cannot confirm the exact town.
-- Objects: hand-lettered signboard; frosted trees; one snow-roofed house.
+- Objects: lettered/painted signboard (method unverified); frosted trees; one snow-roofed house.
 - On-screen text: "DE WINTER VAN 1963 IN FRIESLAND" = "The winter of 1963 in Friesland". Dutch; "Friesland" is the Dutch name for the province also called Fryslan. Letters look like press-on/stick-on white capitals with slight mixed shapes (the "A" in "VAN" and "FRIESLAND" has an unusual form), so this is a homemade or amateur title board.
 - This matches the context.md lead (Dutch archival footage of the 1963 winter/Elfstedentocht).
 

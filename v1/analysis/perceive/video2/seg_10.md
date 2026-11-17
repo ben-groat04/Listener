@@ -1,5 +1,7 @@
 # video2, segment 10 (3:00-3:20): perception notes
 
+> Corrected after cold-read: bib lettering method not claimed.
+
 Sources viewed: contact sheet 10; keyframes for shots 42-46 and 50; 1 fps frames f_0181, f_0182, f_0187, f_0190, f_0197, f_0198, f_0199 (plus the sheet's per-second thumbnails). Shots 47-49 (196.5-199.1 s) were judged from the sheet and from f_0197-f_0199, not from their own keyframes.
 
 ## Shot-by-shot description
@@ -25,7 +27,7 @@ Colour and light: the segment moves from hot overexposed yellow (3:00) to pale p
 OBSERVATION
 - Woman skater (3:00, shot 42): dark knee-length coat, white collar or scarf, hat; an ordinary-looking recreational or onlooking skater, not a racer. Age uncertain (adult).
 - Racing skaters (3:01 onwards): all men as far as can be told, in dark jerseys, some with pale horizontal stripes, woolly or flat caps, long trousers. Several wear race bibs. Faces are mostly turned away or blurred; where visible (f_0190) they look absorbed and strained, not smiling.
-- Bib numbers read: 201 (repeated many times, most prominent), 211, 504, 440 (or 44x), and a second "20x" bib. Bibs are hand-lettered black numerals on white cloth.
+- Bib numbers read: 201 (repeated many times, most prominent), 211, 504, 440 (or 44x), and a second "20x" bib. Bibs carry black numerals (lettered/painted, method unverified) on white cloth.
 - Places: a flat, open, frozen waterway or flooded field with farms, telegraph poles, bare trees and reeds at the edge; matches the Frisian landscape given in context.md.
 - Objects: skates (long blades, laced boots), woolly hats, a lorry or truck and a hut at 3:00.
 - On-screen text: none (no titles or captions). The only writing is the bib numbers, which need no translation.
@@ -46,7 +48,7 @@ INTERPRETATION
 - 3:00: a warm, dazzling flare reads like a memory or dream, a held breath after the long scene-setting; the woman skater is light and a little precarious.
 - 3:01-3:08: calm, then rising tension. A small black pack glides silently from the horizon towards the lens. Distance closing is a classic suspense device; steady loud music against slow imagery makes it feel inevitable and relentless rather than frantic.
 - 3:09-3:12: physical jolt. The cut from a wide landscape into blurred, swinging close-ups feels like being dropped into the pack, breathing and bodies. The 0.7 s flash of the bent skater adds strain.
-- 3:12-3:20: anonymity and endurance. We follow backs with numbers, not faces; the cold blue light and the hand-lettered bibs make the riders feel like individuals reduced to digits in a mass. Mood: determined, grim, a little solemn. Not triumph.
+- 3:12-3:20: anonymity and endurance. We follow backs with numbers, not faces; the cold blue light and the numbered bibs make the riders feel like individuals reduced to digits in a mass. Mood: determined, grim, a little solemn. Not triumph.
 
 ## Symbols, motifs, visual rhymes to track
 

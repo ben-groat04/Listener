@@ -1,5 +1,7 @@
 # video2 master dossier: "Elfstedentocht Part 2" (Public Service Broadcasting)
 
+> Corrected after cold-read: closing tag restated as two drum onsets (5:02.34, 5:02.59) and bass onsets per `v1/analysis/video2/REPORT.md`; absence claim scoped to sampled frames; lettering method not claimed.
+
 Built from: `v1/analysis/music/video2/music_reading.md` (checked music analysis, read first), perceive notes `seg_01` to `seg_16` and `words.md` in `v1/analysis/perceive/video2/` (there is no `music.md` there; the music reading replaces it), `v1/data/video2/context.md`, `sync/sync.json`, `scenes/shots.json`, and the research notes. I opened frames myself where the notes disagreed or where a claim mattered (listed in section 6).
 
 Conventions. Timestamps are m:ss on our file (305.9 s; official track 5:04, so absolute times may sit about 1.9 s from the release). Frame `f_NNNN` is second NNNN-1. Confidence: H/M/L. **Obs** = seen/measured; **Int** = interpretation. Nobody on the team has heard the audio; the segment viewers inferred sound from feature tables, and the music reading is the authority wherever the two differ (section 6).
@@ -8,7 +10,7 @@ Conventions. Timestamps are m:ss on our file (305.9 s; official track 5:04, so a
 
 ## 1. Overview
 
-A five-minute piece by Public Service Broadcasting, commissioned for the 50th anniversary of the 18 January 1963 Elfstedentocht, set to colour amateur or regional-archive cine film of the Frisian winter and the race (Fries Film Archief per `context.md`; the exact reels and the narrator are not confirmed). The film opens on a hand-made title board, "De winter van 1963 in Friesland", then spends 40 s on frost and empty snow over a hushed pad before any person appears. A Dutch period voice-over then states the date (18 January 1963, 0:41), the event, the distance (200 km), the cold (16 below) and the field (575 racers, about 9,500 tour skaters). It is the only intelligible speech in the piece and it stops at 2:36. After the narration the film becomes a long, wordless, loud, steady 120 BPM electronic groove laid over footage taken from inside the pack: backs, bibs, hands behind backs, never many faces. The groove changes almost nothing for three minutes; the feeling is carried by a slowly brightening layer, a voice that dissolves from sentences into fragments, and finally subtraction. The music stops at about 5:01, one last hit lands at 5:02, and the picture ends not on people but on broken ice and open water fading to black. It reads as an elegy and an endurance piece, not a celebration (Int). Cuts are not locked to the beat (section 4); picture and music meet instead at a handful of structural joints.
+A five-minute piece by Public Service Broadcasting, commissioned for the 50th anniversary of the 18 January 1963 Elfstedentocht, set to colour amateur or regional-archive cine film of the Frisian winter and the race (Fries Film Archief per `context.md`; the exact reels and the narrator are not confirmed). The film opens on a hand-made or painted title board (method unverified), "De winter van 1963 in Friesland", then spends 40 s on frost and empty snow over a hushed pad before any person appears. A Dutch period voice-over then states the date (18 January 1963, 0:41), the event, the distance (200 km), the cold (16 below) and the field (575 racers, about 9,500 tour skaters). It is the only intelligible speech in the piece and it stops at 2:36. After the narration the film becomes a long, wordless, loud, steady 120 BPM electronic groove laid over footage taken from inside the pack: backs, bibs, hands behind backs, never many faces. The groove changes almost nothing for three minutes; the feeling is carried by a slowly brightening layer, a voice that dissolves from sentences into fragments, and finally subtraction. The music stops at about 5:01, a closing tag of two drum onsets (5:02.34, 5:02.59) over a bass tone lands at 5:02, and the picture ends not on people but on broken ice and open water fading to black. It reads as an elegy and an endurance piece, not a celebration (Int). Cuts are not locked to the beat (section 4); picture and music meet instead at a handful of structural joints.
 
 ---
 
@@ -91,7 +93,7 @@ Columns: time | what we see | what we hear (words, then music) | craft and feeli
 | 4:44.8 to 4:49 (shot 81) | Low angle up a flagpole and telegraph pole against saturated cyan-blue sky: a red-and-white flag with a dark edge, probably the Dutch tricolour flying edge-on with its blue hidden by the pole (f_0286; M-L); frosted wires; a round lamp at top left. | Bass continuous; one voice stab per bar to come. | A civic, proud breath; the only clear primary-colour sky. |
 | 4:48.6 to 4:52 (shots 82, 83) | Hand-held down at a skater's legs and old clip-on skates over scored white ice, pink-brown cast. | **Bass gated from about 4:48.55 (stabs about 2 s apart)**; pad thirdless (B-F#-A); one unpitched voice stab per bar; width opens (H). The cut at 4:48.96 comes about 0.4 s after the gate. | "No longer a groove in the body"; brittle, hollow. Intimate, abstract pictures as the music thins. |
 | 4:52 to 4:58.6 (shots 84, 85) | High angle across unfrozen water: a crowd of ducks and gulls in an open patch (two bleached circles at 4:52: film damage); then straight down on broken ice floes with ducks, large chunks and reddish-brown water, pink-sepia. | Gated bass, stabs. | The film turns away from people: thaw, survival under cold, the winter closing (Int). |
-| 4:58.6 to 5:06 (shot 86) | One continuous high-angle shot down onto open magenta-rose water with floes sliding out of frame; open water grows; fade to black from about 5:02.5, black by 5:05 (f_0302 checked). No people, no text, no credits. | **Groove stops at about 5:00.8**; pad rings out about 2 s; **one last full-level mono kick-and-bass hit at about 5:02.3**; silence by 5:04; digital zero from 5:04.3 (H). Whisper's "MUZIEK" at 4:58.9 and "You" at 5:02.6 are artefacts. | Sound ends before picture; the final hit sits just before the fade begins. Ending as withdrawal and stop, not arrival; the world going quiet. |
+| 4:58.6 to 5:06 (shot 86) | One continuous high-angle shot down onto open magenta-rose water with floes sliding out of frame; open water grows; fade to black from about 5:02.5, black by 5:05 (f_0302 checked). No people, no text, no credits. | **Groove stops at about 5:00.8**; pad rings out about 2 s; **closing tag from 5:02.3: two drum onsets (5:02.34, 5:02.59) over bass onsets at 5:02.34, 5:02.60, 5:02.85 (the bass signal alone shows one tone with a dip at about 5:02.60; the three-note count is an interpretation, INT)**; silence by 5:04; digital zero from 5:04.3 (H). Whisper's "MUZIEK" at 4:58.9 and "You" at 5:02.6 are artefacts. | Sound ends before picture; the closing tag begins just before the fade begins. Ending as withdrawal and stop, not arrival; the world going quiet. |
 
 ---
 
@@ -111,7 +113,7 @@ Columns: time | what we see | what we hear (words, then music) | craft and feeli
 | Red as spot colour | Lamps 2:44; hats 3:36, 4:10, 4:21, 4:28 to 4:34; flag 4:45 | Warmth or alarm in a blue world; marks individuals more than the event. |
 | Ice from surface to subject | Smooth lanes through the piece; broken floes and open water 4:52 to 5:05 | Reversal: the surface that carried the crowd breaks up. |
 | Frost and empty snow bookend | 0:02 to 0:40 and the thaw 4:52 to 5:05 | Opening is cold stillness; ending is dissolving ice. |
-| Pad and low thud | Opening and final bars (pad ring-out, last hit) | Musical bookend. |
+| Pad and low thud | Opening and final bars (pad ring-out, closing tag) | Musical bookend. |
 | Windmill | 1:37.7 and the dissolve to red at 1:40 | National icon; the notes record it only once (1:37.7); I did not scan every frame for a return. |
 | Pairs and drafting | 2:19, 4:25 | Possible mutual help; thin evidence. |
 
@@ -133,7 +135,7 @@ Columns: time | what we see | what we hear (words, then music) | craft and feeli
 | Plateau 3:24.8 to 4:36.8 | Brightening ramp, voice fragments, mix to -9.9 dBFS | The pack from inside, bibs, the stare, the control point | Flare at 3:36.7 on the step up at about 3:36; otherwise picture and sound track intensity without lock. |
 | Sag 4:36.8 to 4:48.8 | Top band falls, bass lighter, noise hit | Calmer, composed ice track; the flag | Cut to the calm shot at 4:36.0 is 0.8 s before the sag. |
 | Stutter 4:48.8 to 5:00.6 | Gated bass, one stab per bar | Legs, ducks, floes | Cut at 4:48.96 about 0.4 s after the gate. |
-| Cut and ring-out 5:00.6 to 5:04 | Stop 5:00.8, hit 5:02.3, silence | Floes and water; fade from about 5:02.5 | Fade starts just after the last hit; picture outlasts sound. |
+| Cut and ring-out 5:00.6 to 5:04 | Stop 5:00.8, closing tag 5:02.3 to 5:02.9, silence | Floes and water; fade from about 5:02.5 | Fade starts just after the closing tag begins; picture outlasts sound. |
 
 **Statistics on cutting.** `sync.json`: 86 cuts; cuts within 80 ms of a beat 37.2 % against 42.9 % chance; cut phase in beat, half-beat and bar all non-significant (Rayleigh p 0.82, 0.89, 0.78); cut rate versus loudness r about 0.23 to 0.27; image motion versus loudness r about 0.31 to 0.33 at a one-second lag. Those figures use the tracker's 0.372 s grid, which the music reading shows follows the bass's dotted figure, not the true 120 BPM pulse. I re-tested the 65 cuts between 1:28.6 and 5:00.7 on the true grid (downbeat 1:28.62, beat 0.5 s): 34 % within 80 ms of a beat against 32 % chance; phase vector length 0.14 for beats (p about 0.29) and 0.19 for bars (p about 0.09). That is no beat lock, with a faint, non-significant leaning towards bar phase. The editing is by phrase and image, with a few structural joints (the table above). Image energy broadly follows the loudness arc while the pulse stays fixed.
 
@@ -149,7 +151,7 @@ Columns: time | what we see | what we hear (words, then music) | craft and feeli
 3. Are the voice fragments from 3:28.6 sliced archive speech, a vocal-like synth or stem leakage? Do they contain words at all? Does the faint blip at 3:24.8 mean anything?
 4. Which film is the narration from (newsreel, club film, regional or sponsor film), and who is the narrator? Is the narration synchronous with the reel it is laid over, or does PSB re-pair the pictures? Nothing on screen proves 1963 race-day footage; the opening graveyard, the pre-dawn people and the final ice may be other reels.
 5. What is the instrument identity of the pad, bass and bright layer (L), and how is the late build made (filter, drive or layers)?
-6. What is the noise hit at 4:38.3, and the final hit at 5:02.3 (a kick-and-bass event, not a tap)?
+6. What is the noise hit at 4:38.3, and the closing tag at 5:02.3 (two drum onsets, 5:02.34 and 5:02.59, with bass from 5:02.34; not a tap)?
 7. Is the "K" sign (2:06), the "...-SMEEK" lorry (1:32), the aircraft and lights (2:44) or the control point (4:28) identifiable, and could they fix the place?
 
 **Picture and edit**
@@ -191,4 +193,4 @@ Columns: time | what we see | what we hear (words, then music) | craft and feeli
 
 Frames I opened: f_0060, f_0061, f_0074, f_0092, f_0165, f_0172, f_0179, f_0249, f_0286, f_0302.
 
-*Caveat for everything above: nobody has listened to this track. Mood words about sound are interpretations of measurements; mood words about the picture are viewer readings and are marked as such.*
+*Caveat for everything above: in the sampled 1 fps frames and the measured audio only; no human listener has heard this track in this work. Mood words about sound are interpretations of measurements; mood words about the picture are viewer readings and are marked as such.*

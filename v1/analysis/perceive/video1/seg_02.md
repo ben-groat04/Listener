@@ -1,5 +1,7 @@
 # video1, segment 2: 0:20-0:40
 
+> Corrected after cold-read: small newspaper text marked unread; no name completed from research.
+
 Sources used: context.md; contact sheet 02; 1 fps frames at 20, 21, 22, 23, 26, 27, 29, 30, 31, 33, 35, 37, 38, 40 s (files f_0021, 0022, 0024, 0027, 0028, 0030, 0032, 0034, 0036, 0039, 0041 and others viewed as thumbnails on the sheet); shots.json; Whisper transcript; audio per_second. No visual_features or stems folders existed for this video, so there is no cut/beat alignment or stem data. Nothing here relies on audio I heard. All sound inference is from numbers and transcript.
 
 Note on numbering: f_NNNN is second NNNN-1, so f_0028 = 0:27.
@@ -30,7 +32,7 @@ On-screen text, 0:23-0:26 (newspaper, partly cropped at the left and top):
 - Masthead: "LEEUWARDER COURA[NT]" ("Leeuwarder Courant", the Leeuwarden daily; the "NT" is cropped off). A crest/coat of arms sits in the masthead.
 - Main headline: "Elfstedentocht: zwaar, zwaar, zwaar" = "Eleven Cities Tour: hard, hard, hard" (OBSERVATION, clear).
 - Sub-headline: "Tal van uitvallers en vele gewonden" = "Large number of dropouts and many injured" (clear).
-- Small text below it: partly legible, along the lines of "R. Paping op kop, ... [Joop?] van den Berg en Verhaeren..." (legibility poor; reading uncertain; it appears to be naming leaders, with Paping first, which would agree with the research file).
+- Small text below it: unread (too small and low-resolution at 1 fps; no names are claimed).
 - Right-hand box heading: "Cracks staken wedstrijd" = "Favourites abandon the race" (a "crack" is a Dutch term for top athlete), partially readable.
 - A halftone photograph in the middle: dark skaters/trees on a pale field (too blurred to identify more).
 - No date legible. The page looks like a front page of the day after the race (the headline is past tense: it reports dropouts and injured), so it is probably a news report that arrives AFTER the event, inserted into a pre-race narrative. (INTERPRETATION: this is the film telling us the outcome before the start, a prolepsis, or simply a "this is the event" title card.)
@@ -79,7 +81,7 @@ INTERPRETATION:
 
 ## 6. Open questions for the team
 
-1. What exactly is the date on the newspaper front? If it is the 19 January 1963 Leeuwarder Courant, the film is intercutting after-the-fact reporting with pre-race footage. The sub-headline "R. Paping op kop" should be cross-checked with elfstedentocht_1963.md. Can a higher resolution frame (or the source video at 0:23-0:26) be read more closely?
+1. What exactly is the date on the newspaper front? If it is the 19 January 1963 Leeuwarder Courant, the film is intercutting after-the-fact reporting with pre-race footage. The small text under the sub-headline is unread and must not be completed from research. Can a higher resolution frame (or the source video at 0:23-0:26) be read more closely?
 2. Is this 1963 footage, or is some of it from other years/other films? The skater in the pointed hat and the fair-haired skater at 0:27-0:31 may not be the same cameraman or event; the grey wooden platform may belong to different archive material. Archive source clip IDs would help.
 3. "Twaalfde Elfstedentocht" at 0:24 and 0:40: confirm it is the 12th race in the narration, and that the narration is original newsreel audio rather than recreated.
 4. Does the music have vocals? The stems folder is absent for this video, so we have no vocals/drums/bass levels. The loud steady RMS suggests drums and guitar; the group should check with the stems when they exist, and a listening report.

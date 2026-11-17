@@ -1,128 +1,119 @@
-# t_dl_mirror, seg 03 (0:40-1:00), blind mode
+# t_dl_mirror, segment 03: 0:40-1:00 (blind mode)
 
-Sources used: sheet_03.jpg; frames f_0041, f_0042, f_0044, f_0045, f_0048, f_0049, f_0051, f_0054, f_0057, f_0060 at full size (10 individual images); shots.json (shots 17-30); whisper mix transcripts; audio_features/summary.json; visual_features/per_second.json; stems/stem_rms_per_second.json; sync/sync.json. Not read: context.md, other analysis folders, web. Frame f_NNNN = second NNNN-1, good to about a second only (DO_NOT_CLAIM 6). Shot times below come from the detector's cut list.
+Method: sheet_03, shots.json, 14 full-size frames opened (f_0041, 0042, 0044, 0045, 0048, 0049, 0051, 0052, 0053, 0054, 0056, 0057, 0060 plus the sheet). Frame f_NNNN = second NNNN-1 (so f_0041 = 0:40), good to about a second only. No context.md, no web. Audio is inferred from features, stems and transcript; I cannot play it.
 
-Standing frame-wide literals (all frames, OBSERVED): picture sits in a letterbox, black bars above and below; a small white logo, bottom right, with tiny text beneath it; image is soft and low-resolution with compression blur. Logo and its text: unread.
+Standing caveats: the picture is letterboxed (black bars top and bottom) with a small logo (a small white emblem with tiny text beneath) bottom right in every frame; the video is low-resolution, soft and compressed, so fine detail is lost.
 
-## 1. Shot-by-shot (cut times from shots.json, OBSERVED; content OBSERVED from frames)
+## 1. Shot-by-shot (cut times from shots.json; all OBSERVED unless tagged)
 
-| Time | Shot | What we see | Framing / texture / colour |
+| Time | Shot | What we see | Framing / texture |
 |---|---|---|---|
-| ..0:40.87 | 17 | Close-up of a face with dark curly hair, eyes apparently closed, lying; a pink/purple frilled garment edge at lower right; another bare shoulder behind. (f_0041) | Very dark, warm-brown, desaturated, tight and tilted. Slight softness. Newly shot, colour. |
-| 0:40.87-0:43.61 | 18 | Dark bottle on zebra-print fabric, a glass/tumbler to the right; then a close shot of the bottle label, then a glass stem. (f_0042, f_0044 area; sheet 41-43) | Teal/cyan cold grade, high saturation (66-74 on the feature), black and white stripes, handheld/moving, motion 10-13 (high). Appears to include a fast move or swish between bottle, label and glass within one detected shot (INFERRED from three different framings on sheet at 41, 42, 43 s). |
-| 0:43.61-0:45.21 | 19 | Wide shot: a shirtless person with short dark hair sits upright at the foot or edge of a bed in chequered shorts/trousers; another person lies back across the bed with legs raised to the right. (f_0045) | Grey-white wall, soft light shaft from upper right, static, cool and desaturated (motion 0.08). The one steady, wide establishing view. |
-| 0:45.21-0:46.95 | 20 | Bottle and tumbler again on zebra fabric, bottle upright and tilted. (sheet 45-46) | Teal grade as shot 18. |
-| 0:46.95-0:48.11 | 21 | Close-up of the shirtless person, forearm raised and hand pressed to the eye/brow, head tilted down. (f_0048) | Grey, low saturation, static; a necklace chain visible at the neck. |
-| 0:48.11-0:49.35 | 22 | Close crop of a white shirt with a hand gripping/clutching the fabric, striped (blue and white) waistband beneath. A wrist band or bracelet on the hand's wrist. (f_0049) | Cold blue grade, tight on torso. |
-| 0:49.35-0:50.25 | 23 | Two people close together, one in white, the other with long curly hair, appearing to embrace. (sheet 49 s) | Blue-lilac cold grade, brightest frame (#dbecfa among dominant colours). |
-| 0:50.25-0:50.95 | 24 | Bottle label large in frame ("Laurent-Per..." legible), glass on the right. (f_0051) | Teal, very short shot (0.7 s). |
-| 0:50.95-0:51.69 | 25 | Person in white leaning over/into a person with long curly hair in a dark camisole top. (sheet 51 s) | Blue-grey, 0.73 s. |
-| 0:51.69-0:54.45 | 26 | Close-up of the curly-haired face, eyes closed, shoulder at right in pink; then a torso in a dark top lying on a bed with an arm across (bracelet on wrist, ring on a finger) and zebra-print cloth at right. (sheet 52, f_0054 region; f_0054 is 53 s, shot 26) | Warm-brown, dark, desaturated, close. Note: sheet frame 52 and frame 53 look like different framings; the detector shows one shot 51.69-54.45, so one is probably a camera move (INFERRED). |
-| 0:54.45-0:56.12 | 27 | Repeat of the wide bed shot: shirtless person upright at left, other person lying back at right. (sheet 54, 55) | Same as shot 19; grey, light shaft. A repeated angle. |
-| 0:56.12-0:58.73 | 28 | Warm orange-brown interior: bare legs and a foot in red slippers descending a staircase, banister rails crossing the frame; later a view of banisters from below. (f_0057 and sheet 56, 57, 58) | Strongly warm and saturated (warmth +35, saturation 118), the only warm sequence in the range. Low angle, handheld, partly obscured by rails. Newly shot. |
-| 0:58.73-..1:01.7 | 29 | Back to the grey bedroom: the shirtless person sits at left, a curly-haired person in a dark top sits on the bed with a leg raised, now upright and facing out. (f_0060) | Grey, cool, static wide. |
-
-Cut count in the range: 13 cuts between 40.87 and 58.73 (shots 18-29 are 12 shots in about 18 s). Shots 22-25 are each 0.7-1.2 s: the fastest run of the stretch (OBSERVED from shots.json).
+| 0:37.6-0:40.9 | 17 | Close-up of a face in profile lying down, dark curly hair, eyes shut, mouth slightly open; a pink/mauve frilled strap at lower right; a pale shoulder/chest behind. | Very tight, low-key, dim brown-grey, soft. Static-looking. |
+| 0:40.9-0:43.6 | 18 | Bottle lying on its side among black-and-white zebra-pattern fabric; a stemmed glass at right. Camera drifts/pushes in; at 0:42 only the glass and fabric are in view, blurred. | Macro, shallow focus, heavy teal/cyan cast, motion blur. Motion score peaks here (12.8 at 0:42). |
+| 0:43.6-0:45.2 | 19 | Wide shot of a bed against a pale wall: a man seated at the left, bare-chested, in checked (plaid) shorts; a second person lying back across the bed with head near his lap/chest area, legs raised to the right. A shaft of light from top right, a long shadow on the wall at left. | Static wide, grey-white, hazy, near-monochrome. Motion near zero (0.08 at 0:44). |
+| 0:45.2-0:46.9 | 20 | Bottle and zebra fabric again, a different angle (bottle upright-ish, tilted, neck at top). | Teal, blurred, handheld/drifting feel. |
+| 0:46.9-0:48.1 | 21 | Man, bare-chested, hand pressed to his eye/brow, head tilted back, tilted face looking down. A small chain-like line at his neck. | Close, low angle, grey-blue wall. Static. |
+| 0:48.1-0:49.4 | 22 | Torso close-up: a white shirt hem lifted, a hand with a bracelet or watch-like band on a wrist gripping the shirt; striped blue-and-white waistband below. Reads as a hand on a torso. | Very tight crop, blue cast, motion 11. |
+| 0:49.4-0:50.3 | 23 | Two people in an embrace, one in white clothing with head turned away, the other with long dark curly hair, face turned to camera-left. | Medium, blue-violet cast. |
+| 0:50.3-0:51.0 | 24 | Bottle with label legible at one point ("Laurent-Perr" cut off at the edge), glass at right with etched/wavy reflections. | Teal, shallow focus. Brightest second of the section (72.8). |
+| 0:51.0-0:51.7 | 25 | Person in white clothing with head against a person in dark strapped top, the latter looking down; long dark curly hair. | Medium close, blue-grey. |
+| 0:51.7-0:54.5 | 26 | Face from shot 17 again (same pose, eyes shut, mouth slightly open, mauve frill). At 0:52-0:53 a cut within the second to a tight shot of a torso in a dark top, a hand with a ring on the left, a forearm with a thin silver bangle, striped zebra fabric on the right. | Dim, brown. Note detector has only one cut at 0:51.7 so the 0:53 view may be a camera move or a missed cut (UNREAD from this data). |
+| 0:54.5-0:56.1 | 27 | The same wide bed shot as shot 19: man seated bare-chested in checked shorts, other person lying back, legs up, light shaft top right. | Static wide, grey. |
+| 0:56.1-0:58.7 | 28 | A very different shot: warm orange-amber interior, a staircase with banister and railing, bare legs and feet descending (a dark red/black garment, red slippers or red floor item at the bottom). | Low angle, shot through bannisters; strongly warm (warmth +35 vs about -15 in the cool shots), saturation more than doubles. |
+| 0:58.7-1:01.7 | 29 | The wide bed room again, but now both people are sitting up on the bed: the man on the left, a woman-appearing figure (long curly hair, strapped dark top) at right with one leg crossed or raised; his arm reaches towards her. | Grey haze, light shaft top right; shadow on wall at left. |
 
 ## 2. Pivotal frames
 
-**f_0041 (40 s)**
-literal: very dark close-up; a face with dark curly hair fills the left; closed eyes, mouth slightly open; at right a frilly pink-purple edge of a garment and a bare shoulder behind; black letterbox bars.
-reading: a person asleep or insensible. INFERRED (closed eyes, slack mouth, lying). That this is the "strange lady" of the lyric would be INFERRED from timing alone (the line "see a strange lady" is at 0:33-0:35); the picture does not confirm who the person is. Whether asleep or unconscious: SPECULATED.
+**f_0041 (0:40) literal:** extreme close-up of a face on its side, eyes closed, lips slightly parted, dark curly hair across the left, a pink-mauve frilled strap bottom right, dark brown-black background. Skin and a second body (bare shoulder) pale at the top. 
+reading: a sleeping or lying-still figure. INFERRED (closed eyes, horizontal pose); that the person is asleep rather than resting is SPECULATED. The lyric here ("strange lady", see section 4) invites reading this as the 'stranger' in the bed; INFERRED from the doubtful transcript only.
 
-**f_0042 (41 s)**
-literal: dark bottle lying or tilted at left with a pale label; its print is blurred; zebra-striped cloth (black and white with cyan highlights) fills the frame; a round tumbler or ice bucket at right; teal grade; motion blur.
-reading: drink as a still-life of the night before; the zebra pattern is the room's soft furnishings. INFERRED (a bottle plus a glass). Pattern as "predator/animal" symbol: SPECULATED.
+**f_0042 (0:41) literal:** a dark glass bottle lies on a patch of black-and-white zebra-stripe fabric, label in the lower half, a round glass or tumbler at right, everything tinted teal and motion-smeared. 
+reading: the debris of a night: a bottle and glass at the bedside. INFERRED (objects and setting). The mood is cold and nauseating compared with the warm skin of the preceding shot. SPECULATED.
 
-**f_0044 (43 s)**
-literal: extreme close-up of a bottle's lower label, pale grey with dark print; first word begins "Laurent-Perr..." in faded capitals/lowercase, blurred; glass at right edge; blurry zebra stripes in the background; strong teal.
-reading: product label close-up lingers on the brand-like print. Print: only "Laurent-Pe(r...)" partly legible; the rest unread. INFERRED: it is a bottle with a label, probably a sparkling-wine style bottle (a foil neck is visible at f_0051); type of drink not stated by print I can read.
+**f_0044 (0:43) literal:** very close, a pale label with partial dark print at an angle, glossy glass curves below; a striped blur passes right. Print: "Laurent-Perr" is partly legible at f_0051 (see below); here the print is too blurred. 
+reading: the label is deliberately pushed in the viewer's face, product-like. INFERRED from the lingering, repeated close shots (five bottle shots in 20 seconds).
 
-**f_0045 (44 s)**
-literal: wide static shot in a grey-white room; a shirtless person with short dark hair sits upright at left in chequered trousers, one arm bent, looking down; a second person is lying back across the bed with legs raised at right and an arm stretched across; a diffuse light shaft from upper right; a shadow on the left wall.
-reading: the "morning after" tableau: one awake and sitting, one lying still. INFERRED (posture and bed). Emotional state of the seated person (tired, worried): SPECULATED. Whether the lying person is asleep: SPECULATED.
+**f_0045 (0:44) literal:** wide, pale grey room. A bare-chested man sits upright on the left, head slightly bowed, in checked shorts. Right of him a second person lies back across the checked/patterned bedding, one arm outstretched with a thin bracelet at the wrist, legs raised at the right edge. Light slants from the upper right; a long shadow falls on the wall at the left. 
+reading: a bedroom tableau of two people; the hazy light looks like morning. INFERRED (light shaft, bed). The man's posture is attentive or resigned rather than active; the reading of relationship or intent is SPECULATED.
 
-**f_0048 (47 s)**
-literal: close-up of the shirtless person from slightly below; the forearm is raised and the hand pressed over the brow/eye; head tilted down; mouth closed; a chain at the neck; grey wall behind.
-reading: the gesture reads as rubbing the eyes or a hand to the head, which matches the lyric at 0:46-0:48 ("scratch my head, tryna recall"). INFERRED from literal posture plus the transcribed words (not from the picture alone). Headache, hangover, distress: SPECULATED.
+**f_0048 (0:47) literal:** close crop of a man's bare chest and arm, his hand on his brow/eye, head tipped back, grey wall behind. 
+reading: a gesture of tiredness, headache or distress. INFERRED (hand to the eye) and ambiguous: it could equally be rubbing sleep from the eyes. Matches the lyric "Wake up, stretch my arms... scratch my head, tryna recall" if the transcript is right (INFERRED, doubtful transcript).
 
-**f_0049 (48 s)**
-literal: tight crop of a white shirt on the left, a hand with a bracelet or watch band on the wrist gripping the shirt front; below, a blue-and-white striped waistband; another dark limb at the right edge; cold blue grade; no faces.
-reading: an intimate, close physical contact, shown without faces. INFERRED (hand clutching clothing). The nature of the contact (embrace, struggle, passion): SPECULATED. This could be a flashback to the night; no picture marker states this (SPECULATED).
+**f_0049 (0:48) literal:** a hand with a metallic band on the wrist is spread on a lifted white shirt; below it a blue-and-white striped waistband; hands at the right edge. 
+reading: touch of a torso: intimacy or physical contact seen in fragments. INFERRED. Whose hand and whose body cannot be told from this crop (DO_NOT_CLAIM 3, no sex stated).
 
-**f_0051 (50 s)**
-literal: bottle at left with a pale label; legible: "Laurent-Pe(rr)..." large lettering in a serif face; smaller lines above and below ("BRUT" is perhaps present at the top but small and blurred: unread); a foil-capped neck; at right a large glass vessel with a gold/olive rim and water-like reflections; zebra stripes behind.
-reading: the glass and bottle are cut in between the human shots as a recurring motif (shots 18, 20, 24). INFERRED. Echoes "mimosa" later (1:01-1:06 lyric); that is a lyric pairing only, not a picture claim.
+**f_0051 (0:50) literal:** a bottle at left, label cream/pale with printed text; legible: "Laurent-Perr" (the end of the word cut by the label's curve at the edge); smaller print above ("Brut" or similar) and below is too small: unread. At right a large clear glass with wavy glints of light. 
+reading: a named champagne-style bottle as a prop. INFERRED from bottle shape, foil neck and glass type; the product type is not stated on any legible print I can read. SPECULATED that the film wants this as a status or "party" marker.
 
-**f_0054 (53 s)**
-literal: a dark-clad torso lying on a bed seen from the side; at lower left a hand with a ring on the finger resting at the torso; along the lower edge a forearm with a thin silver bracelet; at right zebra-print cloth and a bright pink/magenta fabric; a pink frill at the upper right.
-reading: close-up on the lying person's body and the bed linen; the zebra cloth appears on the bed as well as in the bottle shots, linking drink and bed. INFERRED (same pattern in both). Jewellery on the hands: OBSERVED (ring, bracelet); whose hands: unclear.
+**f_0052 (0:51) literal:** two figures: at left a person in a white top bowed forward, face hidden, head against the chest of the other; at right a person with long dark wavy hair looking down and to the left, strapped dark top, a thin lamp or cable at right edge. 
+reading: an embrace or one leaning on the other. INFERRED. The standing figure's look is downward and not clearly at the other; her feelings are SPECULATED.
 
-**f_0057 (56 s)**
-literal: warm orange-brown frame; two bare legs and a foot in a red slipper on a stair; vertical banister posts in front; diagonal stair rail and a white stripe on the carpet edge; shorts, dark with a red element, at the top of the frame; no face.
-reading: someone descending or ascending a staircase, seen from low behind the banisters. INFERRED. The sudden warm colour and perspective put the viewer in the position of someone hiding or watching. SPECULATED. This arrives at 0:56 as the transcript says "fiance's on her way up the steps" (0:56.4); picture and word coincide. INFERRED link (words from whisper, may be wrong).
+**f_0053 (0:52) literal:** the same face as f_0041: eyes closed, head tipped slightly back, lips apart, same mauve frill; shoulder of another person behind. 
+reading: repetition of the opening image of the segment: the film returns to this face. INFERRED. It acts as a refrain image.
 
-**f_0060 (59 s)**
-literal: grey bedroom wide again; shirtless person at left, leaning forward, one arm extended toward the other; second person with long curly hair in a dark patterned camisole sits upright on the bed with a knee raised and a hand resting on the bed, facing the camera; light shaft from upper right.
-reading: the person who had been lying is now sitting upright and awake; the stillness of the earlier wide shot has broken. INFERRED (posture change between f_0045 and f_0060). The seated person's attitude (alarmed, curious, calm): SPECULATED.
+**f_0054 (0:53) literal:** a torso in a dark semi-sheer top lies horizontally across the upper part of the frame, a hand with a ring on the left edge, a bare forearm with a thin silver bangle across the lower frame, the other hand with a ring near the zebra fabric; pink-magenta bedding below. 
+reading: rings on the hands might be a marker of marriage or commitment. SPECULATED (a ring on a hand does not say which finger or what it means). Notable because the lyric (transcript, as heard 0:56) mentions a fiancee: see section 4. INFERRED link at most.
 
-## 3. People, places, objects, text
+**f_0056 (0:55) literal:** wide bed shot, as f_0045: man seated, slightly forward, bare-chested, hand toward the lying person's torso; second person's knee raised, head hidden in shadow at the right of his lap; checked shorts, patterned bedding with red-pink patch. 
+reading: the same tableau a second time; a held situation. INFERRED. Slight difference: his head is bowed toward her.
 
-People (clothing and posture only):
-- Person A: shirtless, short dark hair, chequered trousers or shorts, chain at neck; sits upright on a bed; hand to eye at 0:47. In a white shirt in close-ups at 0:48-0:51? Not confirmed that the shirt is the same person's; the white shirt shots are cropped to the torso and could be another person (unread/unknown).
-- Person B: long dark curly hair, dark camisole top with pink frill; lies back (0:40-0:45, 0:51-0:54), sits up by 0:59. Bracelet and ring appear on hands in close-ups, whose hands unclear.
-- Person in red slippers and shorts on a staircase, 0:56-0:58: face not shown; identity unknown (INFERRED only by timing with the lyric).
-- No sex, age or role stated (DO_NOT_CLAIM 3, 4).
+**f_0057 (0:56) literal:** amber-orange stairwell; a banister with vertical spindles cuts the frame; bare legs (one leg in focus, foot flat on the step), a dark red-black garment hem at the top, a red object near the bottom-left. Low viewpoint. 
+reading: someone ascending or descending stairs, seen from below: the only warm, domestic, 'outside the bedroom' view. INFERRED. It arrives exactly as the vocal says "fiance's on her way up the steps" (transcript time 0:56.38): picture echoes words. INFERRED because the transcript for this line is not in the doubtful list (a cleaner transcription), so higher confidence in the words. Whether the legs are the person named in the words cannot be told.
 
-Places: a grey-white bedroom with a bed and a light shaft from upper right; a staircase with a banister in warm light (other part of a house, INFERRED). Objects: bottle, tumbler/glass vessel, zebra-print cloth, pink bedding.
+**f_0060 (0:59) literal:** wide bed shot; both people now seated up: left, a bare-chested man in checked shorts leaning forward with an arm outward; right, a figure with long curly hair and a strapped dark top, one leg raised, bedding rumpled; shadow of a tall object at far left; light shaft upper right. 
+reading: the lying figure has risen or been woken; matches "wake the girl, grab her clothes" (transcript at 0:56-1:01). INFERRED (picture + words). Mood is hurried, but the figures' postures look more rehearsed-staged than frantic (SPECULATED).
 
-On-screen text, legible: "Laurent-Pe(rr...)" on the bottle label (f_0044, f_0051 partly). Translation: not needed (looks like a name, French-looking).
-Unread: (1) bottle label other lines, small blurred print above and below the name (f_0042, f_0044, f_0051); (2) the logo bottom right, white pictogram with two tiny lines of print beneath (every frame); (3) any text on the glass vessel (none seen).
+## 3. People, places, objects, on-screen text
+
+**People (OBSERVED, clothing and posture only):**
+- Figure A: bare-chested, short dark hair, checked/plaid shorts, seated on the bed, bowed head, a hand to his brow (0:47), a hand with a band or bracelet at the wrist (0:48, perhaps the other person's hand: unclear).
+- Figure B: long dark curly hair, strapped dark top with a mauve/pink frill, a thin silver bangle and a ring on the hands, lying back (0:44, 0:51-0:55), later sitting upright with one leg raised (0:59).
+- Someone in a white top, head bowed against figure B's chest (0:49-0:51). Whether this is figure A in a different top cannot be told from the frames.
+- Legs and feet on a staircase (0:56-0:58): clothing a dark red/black hem; barefoot or in red slippers; no face.
+- Faces: the visual features tag "faces" as -1 (no detections) throughout; the face detector is not informative here.
+
+**Places:** a bedroom with pale, hazy walls (0:43, 0:54, 0:58); a warm stairwell (0:56). Wall at left carries a long shadow that may be a hanging object or a person (UNREAD).
+**Objects:** dark bottle with pale label on zebra-print fabric, large clear glass, checked shorts, zebra-print cushion or throw, pink-magenta bedding, banister.
+**On-screen text:** legible: "Laurent-Perr" (0:50, label, ending cut off). **Unread:** (1) smaller print above and below that name on the label, white-ish type on pale ground, too small; (2) the emblem and tiny caption bottom right in every frame, white on black, too small to read; (3) the label at 0:42-0:43, blurred beyond reading.
 
 ## 4. Sound in this stretch
 
-Words (whisper medium on the mix, English p=0.85; names and street slang may be wrong, so treat as approximate; corrections by judgement are marked):
-- 0:38-0:40.6 "But it's nine on five, gotta move in a hurry" (probably a time of day, e.g. "nine oh five"; uncertain, possibly "nine to five": SPECULATED).
-- 0:40.6-0:44.3 "All I can recall is one shot, two shot, three, four, five"
-- 0:44.3-0:46 "Henny on the rocks, non-stop" ("Henny" looks like a spoken drink nickname; not confirmed by picture).
-- 0:46-0:48.2 "Scratch my head, tryna recall after"
-- 0:48.2-0:51 "The shots dancin' and bein' a drunk bastard" (the final words are doubtful)
-- 0:51-0:53.7 "But all I know is this freak is racked in nothin'" (doubtful: "racked in nothin'" may be a mishearing)
-- 0:53.8-0:56.4 "But my bed bath and beyond, she bell rings" (doubtful)
-- 0:56.4-1:01.3 "Fiance's on her way up the steps, wake the girl, grab her clothes and in the closet she goes"
-Language: English, spoken or rapped, a continuous verse; a narrator telling a morning-after story in the first person (INFERRED from the sentence forms "I"/"my" in the doubtful transcript; the narrator is probably the speaker, SPECULATED).
+**Words** (whisper transcript, mix; the engine marked 0:27-0:56 as "doubtful" (no_speech 0.74) although the vocal stem is clearly loud (about 0.11-0.18 per second); I treat the words as plausible but uncertain, with names and slang likely wrong):
+- 0:37.98-0:40.56 "But it's nine to five, gotta move in a hurry" (as transcribed: "nine on five")
+- 0:40.56-0:44.30 "All I can recall is one shot, two shot, three, four, five"
+- 0:44.30-0:46.00 "Henny on the rocks, non-stop" ("Henny" is probably a spirit brand shorthand: INFERRED, uncertain)
+- 0:46.00-0:48.16 "Scratch my head, trying to recall after"
+- 0:48.16-0:50.96 "The shots dancing and being a drunk bastard" (wording doubtful)
+- 0:50.96-0:53.70 "But all I know is this freak is racked in nothing" (doubtful, probably wrong)
+- 0:53.82-0:56.38 "But my bed bath and beyond, she bell rings" (doubtful; "bed bath and beyond" and "bell rings" likely mis-hearings; "she bell rings", possibly "the doorbell rings": SPECULATED)
+- 0:56.38-1:01.34 "Fiance's on her way up the steps, wake the girl, grab her clothes and in the closet she goes" (cleaner, not on the doubtful list)
 
-Music (INFERRED from features, cannot hear): tempo about 96 BPM (beat 0.63 s), key estimate D minor (0.69 confidence, F major second). Section label A runs 0:30-1:12, i.e. this whole stretch is one steady verse-type section of mean loudness 0.29 (no change at any of our cuts). RMS in the range 0.24-0.34, flat. Vocals stem steady, 0.11-0.19 throughout (a continuous voice). Drums stem has a repeating dip (0.047 at 44 s, 0.05 at 49 s, 0.07 at 54 s: dips about every 5 s, which looks like a fill or stop every other bar or so, INFERRED). Bass stem alternates between near-zero (0.001) and about 0.16-0.23, in a sparse pattern: on at 41, 43-46, 51, 53-56 s (and loudest at 56 s, 0.23), off at 47-50 s and 57-59 s. So the bass drops out for about 4 s in the middle, then returns (INFERRED from stems; confidence medium). "Other" instruments are quiet (0.03-0.06). Whole picture: a spare, bass-and-drums beat under a rap-like voice, a lean groove. Confidence: medium.
+Translation: already English. Vocals appear to be rap, in a fast, rhythmic delivery (INFERRED: syllable rate in the timestamps, one line per two to three seconds).
 
-Picture and sound:
-- Words and image: "one shot, two shot, three, four, five" (0:40.6) plays over the bottle and glass shots (0:41-0:43): the drink is shown as the words count it (INFERRED, simultaneous). "Scratch my head" (0:46-0:48) meets the hand-to-brow close-up (f_0048 at 0:47): a literal echo. "Fiance's on her way up the steps" (0:56.4) coincides with the staircase shot (cut at 0:56.12, ~0.3 s early): an echo, with the picture slightly leading the word. "Bed bath and beyond" and the bed shots at 0:53-0:56 line up too. The image therefore mostly illustrates the lyric literally, scene by scene (INFERRED).
-- Cuts and beats: this video's overall cut-on-beat rate is 29% within 80 ms against 25% by chance, so cuts are not tightly locked to the beat (OBSERVED from sync.json). In this stretch I did not measure individual cuts against beat times; no claim.
-- Cut rate: 13 cuts in 18 s, quickening to a 0.7-0.9 s run at 0:48-0:51 while the bass is off and the drums dip at 49 s (INFERRED coincidence, not proven).
-- Contrast: cold teal and blue for drink and flashback-like close contact; warm brown for the sleeper's face; neutral grey for the wide bed shots; saturated orange for the stairs. The loudness does not rise at the stairs (0.28 at 56 s, 0.27 at 57 s), so the change comes from the picture, not the music (OBSERVED from features).
+**Music energy:** tempo about 95.7 bpm (summary), local pulse beat about 0.63 s. Section "A" (0:30-1:12) is a steady verse; loudness (RMS) is flat, between about 0.24 and 0.34, peak 0.344 at 0:44 and 0.336 at 0:55, no build and no drop. Drums are present throughout (0.05-0.14); the bass stem alternates between near silence (0.0004-0.0008) and strong (0.16-0.23), switching roughly every 2-8 s (0:44-0:46 and 0:54-0:56 are bass-on). This could be a bass-drop pattern or a source-separation artefact; I am not confident which. "Other" (keys/guitar/samples) is quiet and steady (0.03-0.06).
+Onset strength is flat and high (1.4-1.9), consistent with constant rhythmic activity (a dense rap vocal over a groove).
 
-## 5. What a viewer feels here and why (INFERRED unless stated)
-- Disorientation and hangover blur: soft, dark, close shots; the repeating bottle and glass; a face with closed eyes.
-- Intimacy mixed with unease: tight crops of hands and clothing without faces; no clear emotional signal from faces.
-- Rising tension at the stairs: the sudden warm light, the low angle, the banister bars; the narration at the same moment names someone approaching. The viewer is made to feel an interruption of the bed scene (INFERRED from the cut plus words).
-- Dry comedy: the lyric lists the drinks with a count, and the picture literally counts them in bottle shots (SPECULATED on tone; the rapped delivery sounds casual from the voice-stem level only).
-- Music stays even, so the nervousness comes from picture and words, not from the beat.
+**Picture and sound:**
+- Cuts per second increase from about 3 s shots (0:40) to 0.7 s shots (0:50) and settle back to 2-3 s from 0:51.7. The fast flurry (shots 21-25, 0:47-0:51.7) coincides with the lyric about the shots, "scratch my head", "drunk" and a fumbling recall: the editing imitates memory fragments (INFERRED). The overall measured beat locking in the film is weak (29% of cuts within 80 ms of a beat vs 25% by chance, per sync.json), so I do not claim these cuts are on the beat (OBSERVED measure, whole film).
+- Words echo images in several places: "one shot, two shot..." at 0:40-0:44 against bottle and glass close-ups (OBSERVED sequence); "wake up... strange lady" against the lying face (just before the segment); "on her way up the steps" against the staircase at 0:56 (cleanest match, OBSERVED); "wake the girl" at about 0:58-1:00 against both people sitting up (INFERRED).
+- The motion graph is bursty: 9-17 in the close-ups with blur (0:41-0:42, 0:45-0:46, 0:48-0:50), about 0 in the wide bed shots (0:44, 0:47, 0:55).
+
+## 5. What a viewer feels here, and why (INTERPRETATION)
+- Woozy, hungover, slightly queasy: cold teal blur on the bottle, a speed-up of cuts at the worst point, a person rubbing their eye; the story the words tell is a morning after (INFERRED).
+- Intimate but uneasy, since the bed images are dim, silent in body language, and cut with product-like bottle close-ups; a voyeuristic feel from the very tight crops of hands and torsos (0:48, 0:53). The viewer is not told whether this is love, habit or a mistake.
+- Then a jolt of dread and comedy at 0:56: the warm staircase appears as the lyric announces someone coming up the steps, and the cool, hazy bed shot returns with the two sitting up, which reads as a panic (INFERRED, partly from words).
+- The steady beat and unchanged loudness make the scene feel like a routine narrative being rapped, rather than a crescendo; tension comes from the words and picture, not from the music's energy (INFERRED).
 
 ## 6. Symbols, motifs, visual rhymes to track
-- Bottle + glass on zebra-print cloth, recurring (shots 18, 20, 24): is it a "memory of the night" insert each time? Watch whether it returns and what it stands for.
-- Zebra print: on the cloth under the bottle and on the bed (f_0054); a pattern linking drink and bed. Meaning: SPECULATED.
-- The wide bed shot with a light shaft: repeated at 0:43, 0:54, 0:58 and later. A repeated "home base" image, the tableau changes slightly each time.
-- Hands, jewellery: ring, bracelet, watch-like band on hands in close-up (f_0049, f_0054).
-- Colour coding: teal/blue for night-memory and drink; grey for morning bedroom; warm orange for the staircase (and the earlier section 15-30 s was warm in the features: warmth 19; check if warm = "outside the bedroom").
-- Stairs: new space, a threat from outside. Watch for the staircase, closet and door in the following minute.
-- Hand to face (f_0048): a thinking/regret gesture; see if it recurs.
+1. **Bottle and glass** on zebra fabric: five shots here; label "Laurent-Perr..." legible once. Track whether it recurs and whether it is shown full, empty, or being poured.
+2. **Zebra pattern** appears on the fabric around the bottle (0:41-0:51) and again on the cushion by the torso (0:53): a visual link between the bottle shots and the bed. 
+3. **The lying face with the mauve frill** (0:37-0:40, 0:51-0:53): repeats as a refrain.
+4. **The wide bed shot with the light shaft and the shadow on the wall** (0:43, 0:54, 0:58): three returns, with the staging changing (lying, lying, sitting up). Track it as a recurring 'tableau' across the film.
+5. **Colour code (OBSERVED):** cool teal/blue-grey for bed and bottle, warm amber for the staircase only (0:56-0:58). Warmth values: about -15 vs +35. Watch whether warmth is saved for 'outside' or 'danger' moments later.
+6. **Rings, bangle, bracelet on hands** (0:48, 0:53): a possible marker; SPECULATED as to meaning.
+7. Hand to the eye/brow (0:47): a possible gesture of recall, watch for more.
 
 ## 7. Open questions for the team
-1. Unread: bottle label lines other than "Laurent-Pe(rr...)" (f_0042, f_0044, f_0051). A frame at 0:50.6 (shot 24 keyframe, shot_024_0050.60s.jpg) at full size would give the best chance.
-2. Unread: logo and tiny text at the bottom right (all frames). Probably a channel or label mark; check a frame at full resolution if the source file allows.
-3. Are the white-shirt close-ups (0:48-0:51) a memory/flashback or present-time action? Need frames 0:48.3, 0:49.5, 0:51.0 at full size; also is the white shirt on Person A (who is shirtless in the wide shot) or a third person?
-4. Is the person on the stairs (0:56-0:58) the same one in the bedroom wide shot, or a new person? Face never shown in the frames opened. Need frames 0:56.2 and 0:58.5 for a possible face, and the shot after it.
-5. Does the lying person wake at the stair shot? Compare f_0054/f_0055 with f_0060; need frames at 0:58.8-0:59.5 to see the transition.
-6. Lyric accuracy: "nine on five", "Henny", "racked in nothin'", "bed bath and beyond, she bell rings" are doubtful. A listen or the vocal-stem transcript for 0:38-0:56 would help (the vocal-stem transcript only starts at 3:00 in the file, so no second opinion is available here).
-7. Is shot 18 (0:40.87-0:43.61) one continuous camera move or cuts missed by the detector? The sheet shows three different framings in 3 s.
-8. Does the bass drop-out at 0:47-0:50 and the drum dips every ~5 s correspond to a structure the later verses repeat? Compare with the equivalent bars in sections A at 1:33 and 2:32.
-9. Is the cut at 0:56.12 early relative to the sung word "fiance's" (0:56.4)? Sub-second timing needs the cut list against the word-level timestamps, not 1 fps frames.
+**Unread items:** (a) bottle label print other than "Laurent-Perr" (above and below, at 0:50 and 0:42-0:43); (b) emblem and caption bottom right, every frame; (c) the dark vertical shape/long shadow at far left of the wide bed shot (0:43, 0:54, 0:58): object or person?; (d) whether the "white top" figure at 0:49-0:51 is the same man as the bare-chested man at 0:47 and 0:43.
+**Needs exact-time frames:** (1) 0:52-0:53, the cut from the face to the torso/bangle shot (detector shows one cut only at 0:51.7: is there a missed cut near 0:52.5?); (2) 0:58.7, the exact moment the two sit up (is it in this wide shot, or a cut from the lying state?); (3) 0:56.1 and 0:58.7, the start and end of the staircase shot.
+**Content questions:** Is the first bed figure the same person throughout (hair and mauve frill vs the later figure at 0:59)? Are the legs on the stairs a new character? Do the transcript lines 0:40-0:56 really say what was transcribed (they were flagged doubtful)? Check the vocal-only transcript for 0:40-0:56 (the vocal transcript has nothing before 3:00 and is therefore no use here). Is the bass on/off pattern in the stems real music or an artefact?

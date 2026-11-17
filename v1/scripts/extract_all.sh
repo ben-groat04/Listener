@@ -1,17 +1,19 @@
 #!/bin/bash
 # Video-agnostic entry point: runs the whole extraction pipeline for every video in videos/ (or the names given).
-# Usage: [VIDEO_DIR=testvideos] [BLIND=1] v1/scripts/extract_all.sh [video_name ...]   (names without extension; any of mp4/mkv/mov/webm)
+# Usage: [VIDEO_DIR=<folder>] [BLIND=1] v1/scripts/extract_all.sh [video_name ...]   (bare names or file paths; searched in videos/ then testvideos/ unless VIDEO_DIR is set)
 # Each step writes a .done marker (v1/data/<V>/.done/<step>) only on success, so re-runs skip finished steps and a failed step stops the run.
 # BLIND=1: do not create context.md (blind runs must not see it) and check_outputs runs with --blind.
 set -eo pipefail
 cd "$(dirname "$0")/../.."
 S=v1/scripts; L=v1/logs; mkdir -p $L
-export VIDEO_DIR=${VIDEO_DIR:-videos}
-if [ $# -gt 0 ]; then NAMES="$*"; else
-  NAMES=$(for f in $VIDEO_DIR/*.mp4 $VIDEO_DIR/*.mkv $VIDEO_DIR/*.mov $VIDEO_DIR/*.webm; do [ -f "$f" ] && basename "${f%.*}"; done | sort -u)
+# Where to look: $VIDEO_DIR if set, otherwise videos/ then testvideos/ (child scripts use the same rule). Do not export a default.
+DIRS=${VIDEO_DIR:-"videos testvideos"}
+if [ $# -gt 0 ]; then NAMES=""; for a in "$@"; do b=$(basename "$a"); case "$b" in *.mp4|*.mkv|*.mov|*.webm) b="${b%.*}";; esac; NAMES="$NAMES $b"; done  # bare names, or file paths
+else
+  NAMES=$(for d in $DIRS; do for f in $d/*.mp4 $d/*.mkv $d/*.mov $d/*.webm; do [ -f "$f" ] && basename "${f%.*}"; done; done | sort -u)
 fi
-[ -n "$NAMES" ] || { echo "ERROR: no videos found in $VIDEO_DIR (mp4/mkv/mov/webm)" >&2; exit 1; }
-FIND_VIDEO() { for e in mp4 mkv mov webm; do [ -f "$VIDEO_DIR/$1.$e" ] && { echo "$VIDEO_DIR/$1.$e"; return; }; done; return 1; }
+[ -n "$NAMES" ] || { echo "ERROR: no videos found in $DIRS (mp4/mkv/mov/webm)" >&2; exit 1; }
+FIND_VIDEO() { for d in $DIRS; do for e in mp4 mkv mov webm; do [ -f "$d/$1.$e" ] && { echo "$d/$1.$e"; return; }; done; done; return 1; }
 # step <name> <log> <command...>: run unless done; stdout+stderr to the log (warnings filtered for reading); abort on failure
 step() {
   local n=$1 log=$2; shift 2
@@ -22,7 +24,7 @@ step() {
 }
 for V in $NAMES; do
   export VID=$V
-  F=$(FIND_VIDEO $V) || { echo "ERROR: no $VIDEO_DIR/$V.{mp4,mkv,mov,webm}" >&2; exit 1; }
+  F=$(FIND_VIDEO $V) || { echo "ERROR: no $V.{mp4,mkv,mov,webm} in $DIRS (set VIDEO_DIR=<folder> if elsewhere)" >&2; exit 1; }
   ffprobe -v error -select_streams a -show_entries stream=codec_type -of csv=p=0 "$F" | grep -q audio || { echo "ERROR: $F has no audio stream; this toolkit analyses the music, so it cannot continue" >&2; exit 1; }
   mkdir -p v1/data/$V
   # outputs that predate .done markers: adopt them (marker only if the key output exists and is non-empty)
@@ -49,13 +51,17 @@ for V in $NAMES; do
 done
 CHK=""; [ -n "$BLIND" ] && CHK="--blind"
 python3 $S/check_outputs.py $CHK $NAMES
+# Whole-run marker, written only after every step and the output check succeeded
+for V in $NAMES; do mkdir -p v1/data/$V/.done; touch v1/data/$V/.done/extract_all; done
 echo "extract_all done: $NAMES"
-echo "Ready-to-paste workflow args (video_dir: $VIDEO_DIR; add blind/out as needed):"
-python3 - $NAMES <<'PY'
+echo "Ready-to-paste workflow args (add blind/out as needed; one line per video folder):"
+python3 - "$DIRS" $NAMES <<'PY'
 import json, sys, os
-vd = os.environ.get("VIDEO_DIR", "videos"); vs = []
-for v in sys.argv[1:]:
+dirs = sys.argv[1].split(); groups = {}
+for v in sys.argv[2:]:
     d = json.load(open(f"v1/data/{v}/audio_features/summary.json")).get("duration_s")
-    vs.append({"vid": v, "dur": d})
-print(json.dumps({"videos": vs, "video_dir": vd}))
+    vd = next((x for x in dirs if any(os.path.isfile(f"{x}/{v}.{e}") for e in ("mp4", "mkv", "mov", "webm"))), dirs[0])
+    groups.setdefault(vd, []).append({"vid": v, "dur": d})
+for vd, vs in groups.items():
+    print(json.dumps({"videos": vs, "video_dir": vd}))
 PY

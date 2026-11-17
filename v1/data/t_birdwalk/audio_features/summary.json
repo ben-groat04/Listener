@@ -16,6 +16,7 @@
    0.214
   ]
  ],
+ "key_ambiguous": true,
  "keys_per_30s": [
   {
    "start_s": 0.0,
@@ -1336,5 +1337,63 @@
    "brightness_hz": 1116,
    "onset": 0.736
   }
- ]
+ ],
+ "tempo_candidates": {
+  "source": "autocorrelation of drums-stem onset strength, 60-240 BPM, top peaks by height",
+  "whole_mix_tempo_bpm": 151.99908088235293,
+  "drum_candidates": [
+   {
+    "bpm": 152.81,
+    "lag_s": 0.3927,
+    "autocorr": 0.193,
+    "ratio_to_mix_tempo": 1.005
+   },
+   {
+    "bpm": 102.87,
+    "lag_s": 0.5833,
+    "autocorr": 0.155,
+    "ratio_to_mix_tempo": 0.677
+   },
+   {
+    "bpm": 62.73,
+    "lag_s": 0.9564,
+    "autocorr": 0.079,
+    "ratio_to_mix_tempo": 0.413
+   },
+   {
+    "bpm": 79.71,
+    "lag_s": 0.7527,
+    "autocorr": 0.075,
+    "ratio_to_mix_tempo": 0.524
+   }
+  ],
+  "warnings": []
+ },
+ "key_ambiguity_note": "top two key scores (A minor 0.502, A major 0.465) are within 0.05: treat the key as ambiguous, not as a fact.",
+ "downbeat_estimate": {
+  "assumes": "4 beats per bar",
+  "beat_index_mod4_of_downbeat": 3,
+  "first_downbeat_s": 1.184,
+  "phase_drum_onset_means": [
+   2.804,
+   2.688,
+   3.815,
+   5.642
+  ],
+  "confidence": "moderate",
+  "note": "strongest drum-onset beat position in a 4-beat cycle over the whole song; unreliable if the metre is not 4/4 or the beat grid is on the wrong level."
+ },
+ "production_era": {
+  "peak_dbfs": 0.0,
+  "rms_dbfs": -13.52,
+  "crest_factor_db": 13.52,
+  "kick_onset_spread_ms": 96.3,
+  "kick_onsets_n": 407,
+  "kick_source": "drums stem",
+  "energy_ratio_300_3400hz_to_full": 0.238,
+  "energy_below_300hz": 0.75,
+  "energy_above_3400hz": 0.012,
+  "loop_regularity_bar_chroma_corr": 0.88,
+  "hint": "Indicative only, not a dating of the recording: peak 0.0 dBFS is near full scale; crest factor 13.5 dB (moderate dynamics); kick-onset spread 96 ms around the beat grid (loose, human-played or live feel; the grid itself is estimated, so treat as indicative); 24% of energy in 300-3400 Hz vs 76% outside (full-range mix); bar-to-bar chroma similarity 0.88 (varied)."
+ }
 }

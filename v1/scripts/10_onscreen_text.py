@@ -10,6 +10,7 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 ap.add_argument("vid", nargs="?"); ap.add_argument("--step", type=float, default=1.0, help="seconds between sampled frames")
 ap.add_argument("--max-crops", type=int, default=200)
+ap.add_argument("--per-frame", type=int, default=4, help="max candidate regions OCRed per frame (largest, densest first)")
 a = ap.parse_args()
 VID = os.environ.get("VID") or a.vid
 if not VID: sys.exit("ERROR: VID is mandatory. Run as: VID=<video name without extension> python3 " + os.path.basename(sys.argv[0]))
@@ -28,7 +29,7 @@ def candidates(f):
         dens = float((cv2.Canny(g[y:y + bh, x:x + bw_], 80, 200) > 0).mean())
         if dens < 0.06: continue
         p = 4; x0, y0 = max(x - p, 0), max(y - p, 0); out.append((x0, y0, min(bw_ + 2 * p, w - x0), min(bh + 2 * p, h - y0), dens))
-    return out
+    return sorted(out, key=lambda r: -r[2] * r[3] * r[4])[:a.per_frame]
 
 def ocr(img):
     if not TESS: return "", 0.0

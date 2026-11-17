@@ -1,14 +1,29 @@
 #!/bin/bash
 # Rebuild the working environment after a container reset. Idempotent. Fails loudly on any problem.
-# Video discovery: every .mp4/.mkv/.mov/.webm in videos/, testvideos/ and $VIDEO_DIR (if set).
+# Usage: v1/scripts/00_setup.sh [--help] [video_name ...]
+#   video_name  bare name without extension (or a file path); default: every .mp4/.mkv/.mov/.webm in videos/ and testvideos/
+#               (plus $VIDEO_DIR if set). Only the audio regeneration depends on the names; the pip install is always the full set.
+# Steps: 1) check ffmpeg + ffprobe  2) pip install -r v1/requirements.txt (torch, transformers, scipy, numpy, ...; failure aborts)
+#        3) regenerate git-ignored WAVs (audio/song.wav 44.1 kHz stereo, audio/song_16k_mono.wav) per video  4) import smoke test.
 set -euo pipefail
+case "${1:-}" in -h|--help) sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//'; exit 0;; esac
 cd "$(dirname "$0")/../.."
 command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || { echo "ERROR: ffmpeg/ffprobe not found. Install it (e.g. apt-get install -y ffmpeg) and re-run." >&2; exit 1; }
-# Pinned to the versions this toolkit was developed with (see v1/requirements.txt); pip errors are NOT hidden.
-pip install -r v1/requirements.txt
-# Regenerate git-ignored WAVs for every video found
+# Pinned to the versions this toolkit was developed with (see v1/requirements.txt); pip errors are NOT hidden and abort the script.
+if ! pip install -r v1/requirements.txt; then echo "ERROR: pip install -r v1/requirements.txt failed (see pip output above); setup NOT complete" >&2; exit 1; fi
 shopt -s nullglob
-for F in videos/*.{mp4,mkv,mov,webm} testvideos/*.{mp4,mkv,mov,webm} ${VIDEO_DIR:+"$VIDEO_DIR"/*.{mp4,mkv,mov,webm}}; do
+FILES=()
+if [ $# -gt 0 ]; then
+  for a in "$@"; do
+    b=$(basename "$a"); b="${b%.*}"; found=""
+    for d in videos testvideos ${VIDEO_DIR:-}; do for e in mp4 mkv mov webm; do [ -z "$found" ] && [ -f "$d/$b.$e" ] && found="$d/$b.$e"; done; done
+    [ -n "$found" ] || { echo "ERROR: no video named '$a' (.mp4/.mkv/.mov/.webm) in videos/, testvideos/ or \$VIDEO_DIR" >&2; exit 1; }
+    FILES+=("$found")
+  done
+else
+  FILES=(videos/*.{mp4,mkv,mov,webm} testvideos/*.{mp4,mkv,mov,webm} ${VIDEO_DIR:+"$VIDEO_DIR"/*.{mp4,mkv,mov,webm}})
+fi
+for F in "${FILES[@]}"; do
   V=$(basename "${F%.*}")
   ffprobe -v error -select_streams a -show_entries stream=codec_type -of csv=p=0 "$F" | grep -q audio || { echo "WARNING: $F has no audio stream; skipped" >&2; continue; }
   mkdir -p v1/data/$V/audio
@@ -16,7 +31,7 @@ for F in videos/*.{mp4,mkv,mov,webm} testvideos/*.{mp4,mkv,mov,webm} ${VIDEO_DIR
   [ -s v1/data/$V/audio/song_16k_mono.wav ] || ffmpeg -loglevel error -y -i "$F" -vn -ac 1 -ar 16000 v1/data/$V/audio/song_16k_mono.wav
   echo "audio ready: $V"
 done
-# Smoke test: every library the pipeline imports must load (fails loudly)
+# Smoke test (last step): every library the pipeline imports must load (fails loudly)
 python3 - <<'PY'
 import importlib, sys
 bad = []

@@ -10,3 +10,4 @@
 | 23:56 | 89% | 53% | +4% in 6 min while 10 viewers ran (plus the other session). **Stop launching until reset**; let the running video1 workflow finish. |
 | 23:58 | 90% | 53% | status allowed_warning. Paused all agent work until 01:40 reset |
 | 23:59 | 90% | 53% | user: the other session has stopped, so further increases are this session only |
+| 00:16 | 92% | 53% | 10 Sonnet viewers cost ~2% (860k tokens). Per user, using remaining headroom: video2 seg 9-16 + words |

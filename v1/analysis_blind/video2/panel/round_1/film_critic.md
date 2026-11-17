@@ -1,0 +1,44 @@
+# Film critic: round 1 reading of video2
+
+Blind mode. Sources: dossier.md, music_reading.md, sync.json, and frames I opened myself (0:04, 1:29, 3:31, 5:02 region: f_0004, f_0089, f_0211, f_0302). Tags: [SEEN] I opened the frame; [DOSSIER] taken from the dossier; [MUSIC] from the checked music reading; [SPEC] speculation.
+
+## 1. What this piece is about
+
+It is a compilation of old small-gauge colour film of a winter and a mass skating event, titled by a hand-lettered board ("DE WINTER VAN 1963 IN FRIESLAND" [DOSSIER, 0:00]), laid over a steady 120 BPM loop-machine track with a low Dutch narrator (date, distance, temperature, entrant numbers) in the middle. I read it as a film about **endurance and the anonymity of the crowd against a huge, indifferent landscape**: it starts with the landscape and no people, discovers the people slowly, immerses us in the pack, then hands the world back to ice and water. The narrator supplies facts; the editing and the music supply the feeling. The race is never "won" on screen. That absence is the central editorial decision: this is not a sports film, it is an elegy for a collective effort, closing on thaw (I take the closing floes as a thaw image, which is interpretation, not something shown to be so).
+
+## 2. How it makes me feel, and which moments do it
+
+1. **0:00 to 0:28, frost.** Cold blue, rounded frame corners, dark gate bars at the edge; the frost-laden tree at 0:04 [SEEN] is a dense lace of branches with no person, no horizon. With the drumless pad and the long strikes (0:00, 0:08, 0:12, 0:20, 0:24 [MUSIC]), the cuts at 0:07.9, 0:12.2 and 0:24.2 [DOSSIER] sit on strikes, so the picture seems to be tolled like a bell. This is the one place where I would say cut and sound are intimately paired, and it is subtle: three cuts in 20 s. Feeling: awe, hush, something old.
+2. **0:28, the hinge.** A hard cut to dark, shaky handheld trunks as the bass and the limping groove arrive. The film changes from tableau to walking. Feeling: unease, weight.
+3. **0:42 to 0:48, the graveyard under "18 januari 1963".** A date spoken over stones in deep snow [DOSSIER; I did not open this frame, so the graveyard reading is from the notes]. It gives the archive a funerary gravity: the date is put in the tone of a record of the dead. Strong choice, if intentional [SPEC].
+4. **1:10 to 1:28.6, the empty approach.** The drums stop, then drums and bass go (about 1:24.6) over a whiteout-ish snow road with a few walkers and a sign [SEEN 1:29 is the hard cut just after; 1:28 frame described in dossier]. The picture holds back people exactly where the sound holds back rhythm. This is tension by subtraction in both channels. The narrator names the event across the near-silence.
+5. **1:28.6, the drop.** Hard cut from the empty road to a bridge crowd, as the kick lands on every beat [DOSSIER]. I checked the neighbouring frame at 1:29 [SEEN]: a sepia-washed, wind-ribbed snow road with a small group of figures, sign on a pole at right. The warm sepia-rose cast arrives with the band. The single best picture and sound hinge in the first half. The relief is real: people, warmth, floor underfoot.
+6. **2:36.6, the voice leaves.** Cut to a lone car and frosty trees [DOSSIER], rhyming with the opening frost. The film returns to its first image at the moment the human story is dropped and the music's own life takes over. Clever structural rhyme, and the point at which the piece changes from document to meditation.
+7. **3:28.6 to 4:36.6, inside the pack.** Tight following shots of backs and race bibs, whip-blurs, red hats [DOSSIER]. The frame at 3:31 [SEEN] shows exactly this: skaters bent double, a blurred hat, bibs half read, the camera too close to see anyone's face. This is the film's most effective idea: withholding faces so that the crowd becomes a mass of effort. Faces arrive only at about 4:10 and 4:35 [DOSSIER], as the music is loudest (4:12 to 4:24 [MUSIC]). The face withheld, then given at the crest, is the emotional payload of the piece.
+8. **5:00.9 to 5:04, the ending.** Music slams shut with three off-beat hits; the picture is drifting floes of ice on plum-pink water, and fades 1 to 2 s later [DOSSIER]. I opened a floe frame at about 5:02 [SEEN]: pale broken slabs on a pink-mauve water, no people, no scale. The sound closing first and the picture drifting after it is a good choice: the film's world carries on a moment after the machine has stopped. It leaves me suspended, not consoled.
+
+## 3. What is clever
+
+- **Cutting to the form, not the beat.** sync.json: 86 cuts, 37% within 80 ms of a beat against 43% by chance [measured]. The picture is not beat-cut. The dossier claims the hard cuts sit on section edges to about 0.1 s; I add a caution: sync.json's own list of auto-detected section boundaries shows nearest cuts at 0.7, 0.7, 0.3 and 0.4 s for 1:41, 2:37, 2:57 and 3:37 and a missing cut at 1:28.65 (nearest 1.6 s), which the dossier says is a shot-detector omission and verified by frame difference. So the claim stands for the five main edges, but "to 0.1 s" rests on the dossier's own corrections, not on sync.json. Either way, the editor has chosen the phrase as the unit, which suits a track with no tune: the picture takes its cue from the track's architecture.
+- **Colour as a second, slow instrument.** Cold blue and lilac for emptiness, sepia-rose and peach for human scenes, red accents (lamps 2:44, hats 3:36, 4:06 to 4:35, flag 4:45 [DOSSIER]) as a returning point. Because the stock itself shifts tint, it is hard to tell grading from decay; either way the editor has used the drift where it helps.
+- **Archive handled with respect.** No titles overlaid, no speed ramps or modern effects I can see; the only text is in the film's own world (board, lorry, signs, bibs). The grain, gate edges and flares are kept. That makes the footage the authority.
+- **The narrator's data against the images.** The facts (200 km, 16 below, 575, 9500) are laid over pictures that do not illustrate them literally, so the numbers become incantation rather than caption.
+- **A bookended ice motif**: frost at the start, floes at the end.
+
+## 4. What is weak
+
+- **Long middle with no cut-to-music logic.** From 1:40 to 3:28 (nearly 2 minutes) the music is flat in loudness [MUSIC] and the picture's rhythm is its own colour flicker and slow-to-medium cuts. I would call this the one stretch where the film risks monotony: the content (skaters, crowds, a walking man) is generic and the colour flicker (1:43 to 1:50) has no link to the music [DOSSIER].
+- **Beat-blindness during the plateau.** At the loudest, most machine-regular section the picture runs fast but off the grid. This could be deliberate (the pack is chaos, the track is order) but a fast pack cut that never once locks to a 120 BPM kick will feel slightly slippery. Cut-rate vs loudness is only r 0.23 to 0.27 [sync.json]; the editor is not riding the music's energy.
+- **The fade after the hard stop.** Strong idea, but the picture's fade (from about 5:02) is the weakest of the "closing door" images, because slow fades are the standard way to end a reel. The final shot is better than the fade that ends it.
+- **Possible over-reliance on the narrator's date and event name.** The race name itself rests on garbled transcripts [DOSSIER]; I do not use it.
+- **Unverified.** I have not seen frames from the graveyard (0:41 to 0:46) or the 2:36 car; my statements on them are from the dossier.
+
+## 5. Where the feeling comes from, in one line
+
+The music withholds a tune and a cadence and escalates by brightness; the picture withholds faces and a finish and escalates by proximity. They are not locked beat to beat, but they hold the same shape: absence, arrival (1:28.6), human absence (2:36.6), immersion (3:36.6), release and non-resolution (4:36.6 to 5:04).
+
+## 6. Three questions for the other panellists
+
+1. **To the music analyst:** the picture is not beat-cut (37% vs 43% chance). Is the track's grid so machine-exact that any hand-cut picture would look slightly "off" against it, so that not locking is the better choice? Or does a listener feel the flatness of 1:40 to 3:28 as stillness, and is the brightness ramp (2:50 to 3:48.6) strong enough to carry the sparsest picture stretch?
+2. **To the narrative or human-interest reader:** the faces are withheld until 4:10 and 4:35. Does the withholding read as dignity (the crowd as one body) or as a coldness that stops us caring about anyone? Does the voice at 3:28 to 4:36 (chops, probably not words) stand in for the people we never hear?
+3. **To everyone:** the music stops at 5:00.86 and the picture lingers on floes for 1 to 2 s. Is the film's ending an elegy (thaw, loss) or a shrug (nature goes on)? And what in the data supports one reading over the other, given that nothing in the first four minutes shows a result or a finishing line?

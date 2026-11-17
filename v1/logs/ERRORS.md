@@ -14,3 +14,15 @@ Format: time (UTC) · what went wrong · how it was handled · lesson.
 - 00:08 · **Visual features silently failed for both videos** (OpenCV 5 dropped `CascadeClassifier`; two OpenCV packages installed). The chain logged the traceback but carried on, and 20 viewer agents ran without colour/motion/cut-beat data. · Pinned `opencv-python-headless<5`, made face detection optional, re-running. · **Verify each pipeline output exists and is non-empty (add a check step) before launching agents on it.**
 - 00:38 · CLAP script written against the old transformers API (get_*_features returned tensors; v5 returns ModelOutput) and wasn't smoke-tested before queuing. · Patched with a tensor shim. · Same lesson as 23:55: smoke-test on a short clip before long runs.
 - 01:43 · Second container restart (between 00:49 and 01:42) killed autosave and the test-video extraction. · Restored via RESUME steps. · Expect restarts; keep everything idempotent and re-launch on every wake.
+
+## Research corrections (wave 2)
+Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_context}.md and data/video{1,2}/context.md. Lesson: do not state an inference (part order, source film, "amateur", "premiere") as fact before checking; tag M/L until sourced.
+- Part mapping was "medium, inferred" and official lengths "not found". Corrected: MusicBrainz gives Part 1 3:09 / Part 2 5:04, so video1 = Part 1, video2 = Part 2 at high confidence (video2 file 1.9 s longer, trailing fade).
+- Part 2 YouTube link was "not checked live". Corrected: youtu.be/vrPBTwwnpdc is titled "Elfstedentocht Part Two" (PSBHQ). Our video2.mp4 is not confirmed to be that exact upload.
+- "Deluxe edition, due 11 Nov" conflated with the 11 Nov 2013 digital release of "Parts 1 & 2" (also described as a Record Store Day single; 7" followed Record Store Day 2014). Corrected wording: autumn 2013; formats are compatible.
+- Polygoon/NTS newsreel hypothesis for the narration was too strong. Downgraded to low: PSB credit only the Fries Film Archief; the source films are unconfirmed.
+- video2 called an "amateur reel" and video1 "newsreel" without evidence. Now unconfirmed; a sponsor/regional film ("Dit is Friesland", Esso) is also a candidate.
+- Archive name: "Fries Film Archief" (2013) is now Fries Film en Audio Archief (FFAA).
+- "Premiere" was assumed. Corrected: commissioned for, and booked to perform at, Explore the North, Leeuwarden, 23 Nov 2013; no premiere confirmed.
+- Reception was implied to include hauntology/grief readings. Corrected: documented reception is thin and speaks of drive, physical effort and image-sound fusion; the rest is our interpretation.
+- PSB tagline ("lessons of the past ... music of the future") unverified; do not cite as a Willgoose quote. "Mr B" visuals credit is for live shows only; no edit credit for these videos.

@@ -48,7 +48,7 @@ I cannot hear the audio. Everything below is from measurements. Evidence keys: [
 | time | event | evidence | confidence |
 |---|---|---|---|
 | 0:00.0 to 0:00.7 | Single drum-led broadband hit, then near-silence (mix -180 dB at the first 0.36 s, drums -56 dB) | R3, [LV] | high |
-| 0:00.95 | Pulse begins; first beat; drums continuous from here; "other" at about 1:01.3 s (0:01.3) | [BT], [LV] | high |
+| 0:00.95 | Pulse begins; first beat; drums continuous from here; "other" layer at about 0:01.3 | [BT], [LV] | high |
 | 0:01 to 0:33 | Intro/narration section: dense, no hat rests, autocorrelation strongest at 1.53 s | R3 | medium |
 | 0:32 | Narration ends, drums brighten (centroid 1.5 to 3.0 kHz), stereo width 0.35 to 0.55 | [WIN 0020], [LV] | high |
 | 0:33 to 1:04 | Bar-cycle rests appear (3.07 s cycle) | R3 | med-high |

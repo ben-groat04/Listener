@@ -18,3 +18,4 @@
 | 02:22 | 45% | 60% | ~1.1%/min with 4-5 workflows; projected limit ~03:10 |
 | 02:33 | 59% | 62% | ~1.4%/min |
 | 02:36 | 63% | 62% | launched coldread cr1 |
+| 02:47 | 75% | 64% | |

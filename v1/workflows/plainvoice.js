@@ -38,7 +38,7 @@ Write three pieces about watching and listening to ${vid} (Public Service Broadc
 - text_to_mate: 40-110 words, a message recommending (or not) the video to a friend.
 - forum_post: 150-320 words, a post in a music forum thread.
 - short_review: 300-550 words, a plain blog review.
-Plain words. At most one comparison per piece. No manufactured body sensations unless ordinary ("gave me chills" is fine if earned by a real moment, at most once). No closing aphorism. Imperfect is fine. Every fact true to FACTS.md. Return all three.`, { label: `write:${vid}:r1`, phase: 'Write', model: 'sonnet', schema: DRAFT }).then(d => { drafts[vid] = d })))
+Plain words. People mention very few facts: at most TWO checkable facts per piece (no counts, dates or temperatures unless it is the one thing that struck you). No staged persona props (kettles, earbuds, car parks) and no sprinkled hedges ('I think', 'no idea') used as decoration. Do not walk through the video in order; people mention one or two bits and skip the rest. No tidy summing-up last line. Vary sentence length unevenly. At most one comparison per piece. No manufactured body sensations unless ordinary ("gave me chills" is fine if earned by a real moment, at most once). No closing aphorism. Imperfect is fine. Every fact true to FACTS.md. Return all three.`, { label: `write:${vid}:r1`, phase: 'Write', model: 'sonnet', schema: DRAFT }).then(d => { drafts[vid] = d })))
 
 const ROUNDS = args.rounds || 3
 const history = []
@@ -49,17 +49,22 @@ for (let round = 1; round <= ROUNDS; round++) {
   const reals = REAL.slice((round - 1) * 3, (round - 1) * 3 + 9).map((e, i) => ({ id: `r${round}-${i}`, src: 'real', reg: e.register, text: e.text }))
   const pool = []
   for (let i = 0; i < Math.max(ours.length, reals.length); i++) { if (reals[i]) pool.push(reals[i]); if (ours[i]) pool.push(ours[i]) }
-  const blind = pool.map((p, i) => ({ id: `P${round}${String(i).padStart(2, '0')}`, text: p.text }))
-  const key = pool.map((p, i) => ({ blindId: `P${round}${String(i).padStart(2, '0')}`, ...p }))
-  const judges = await parallel([['reader', 'an avid reader of music forums and blogs'], ['editor', 'an editor who spots AI-written copy for a living'], ['musician', 'a musician who reads what fans write about bands']].map(([k, who]) => () => agent(`You are ${who}. Below are ${blind.length} short pieces of writing about music. Some were written by real people on forums, blogs and social media; some were written by an AI. They are about different songs, so do not judge by topic. For EACH id, label it human or ai, give confidence 1-5, and name the tells that decided it.\n\n${blind.map(b => `### ${b.id}\n${b.text}`).join('\n\n')}`, { label: `judge:${k}:r${round}`, phase: 'Turing test', model: 'sonnet', schema: TV })))
-  const js = judges.filter(Boolean)
-  const res = key.filter(k => k.src === 'ours').map(k => {
-    const vs = js.map(j => j.verdicts.find(v => v.id === k.blindId)).filter(Boolean)
-    return { id: k.id, caught: vs.filter(v => v.label === 'ai').length, of: vs.length, tells: vs.filter(v => v.label === 'ai').map(v => v.tells) }
-  })
-  const realFlag = key.filter(k => k.src === 'real').map(k => js.map(j => j.verdicts.find(v => v.id === k.blindId)).filter(v => v && v.label === 'ai').length)
+  // fair design: each of our pieces is judged in its OWN pool with 5 real excerpts (no topic clustering)
+  const oursK = pool.filter(p => p.src === 'ours'), realsK = pool.filter(p => p.src === 'real')
+  const perPiece = await parallel(oursK.map((o, oi) => () => {
+    const others = REAL.slice((oi * 5 + round * 3) % Math.max(1, REAL.length - 5), (oi * 5 + round * 3) % Math.max(1, REAL.length - 5) + 5)
+    const items = []; others.forEach((e, i) => { if (i === (oi % 5)) items.push({ src: 'ours', text: o.text }); items.push({ src: 'real', text: e.text }) })
+    const blind = items.map((it, i) => ({ id: `Q${round}${oi}${i}`, text: it.text, src: it.src }))
+    return parallel([['reader', 'an avid reader of music forums and blogs'], ['editor', 'an editor who spots AI-written copy for a living']].map(([k, who]) => () => agent(`You are ${who}. Below are ${blind.length} short pieces of writing about music, on different songs. Some were written by real people on forums, blogs and social media; possibly some by an AI. For EACH id, label it human or ai, give confidence 1-5, and name the tells.\n\n${blind.map(b => `### ${b.id}\n${b.text}`).join('\n\n')}`, { label: `judge:${k}:${o.id}:r${round}`, phase: 'Turing test', model: 'sonnet', schema: TV }))).then(js => {
+      js = js.filter(Boolean); const ourId = blind.find(b => b.src === 'ours').id
+      const vs = js.map(j => j.verdicts.find(v => v.id === ourId)).filter(Boolean)
+      const rf = blind.filter(b => b.src === 'real').flatMap(b => js.map(j => j.verdicts.find(v => v.id === b.id))).filter(Boolean)
+      return { id: o.id, caught: vs.filter(v => v.label === 'ai').length, of: vs.length, tells: vs.filter(v => v.label === 'ai').map(v => v.tells), realFlagged: rf.filter(v => v.label === 'ai').length, realOf: rf.length }
+    })
+  }))
+  const res = perPiece.filter(Boolean)
   const caughtRate = res.reduce((a, r) => a + r.caught, 0) / Math.max(1, res.reduce((a, r) => a + r.of, 0))
-  const falseRate = realFlag.reduce((a, b) => a + b, 0) / Math.max(1, realFlag.length * js.length)
+  const falseRate = res.reduce((a, r) => a + r.realFlagged, 0) / Math.max(1, res.reduce((a, r) => a + r.realOf, 0))
   history.push({ round, our_pieces_flagged_ai: Math.round(caughtRate * 100) + '%', real_pieces_flagged_ai: Math.round(falseRate * 100) + '%', per_piece: res.map(r => `${r.id}:${r.caught}/${r.of}`) })
   log(`round ${round}: ours flagged AI ${Math.round(caughtRate * 100)}%, real flagged AI ${Math.round(falseRate * 100)}%`)
   if (caughtRate <= falseRate + 0.1 || round === ROUNDS) break

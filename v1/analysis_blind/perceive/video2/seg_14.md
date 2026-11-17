@@ -1,0 +1,49 @@
+# video2, seg 14: 4:20-4:40 (blind mode)
+
+Sources used: contact sheet 14; keyframes for shots 73-79; 1 fps frames f_0273, f_0276, f_0278, f_0281 (plus the keyframes, 12 images in all); shots.json, per_second audio/visual features, stems RMS, whisper transcripts. No context.md, no other analysis, no web.
+
+## 1. Shot-by-shot (all colour, grainy, soft, amateur-looking cine film; visible dark film-edge/sprocket-gate marks and a curved dark scratch/hair at top centre in most frames)
+
+| Time | Shot | What we see |
+|---|---|---|
+| 4:20-4:23 (shot 73, 260.0-263.1) | Handheld, near-eye-level, skaters approach the camera along a frozen channel | A group of about 6-8 skaters in dark winter clothes comes toward the lens. In the foreground a figure in a dark jacket and sunglasses lurches/flinches past close to camera, arms held up and out. Behind, a man in a green jacket and another in red trousers; two with red scarves or hats. Pale blue-teal sky, low white farm buildings, reeds along the bank. The camera appears to shake or pan as people pass. |
+| 4:23-4:24 (shot 74, 263.1-265.3) | Wide, static-ish, low | A broad stretch of rough ice with wind-blown snow streaking across it, two tiny skaters far off at the left, a reed bed and a farm on the horizon. Open, empty, cold. |
+| 4:25-4:27 (shot 75, 265.3-267.9) | Wide, long view along a track | Bright, almost overexposed white-yellow sky; low white-roofed farm and bare trees in the distance; a skater in black seen from behind, another walking or skating at the left edge; a small figure further off. A light-yellow object (possibly a vehicle or sled) at far right. |
+| 4:28-4:29 (shot 76, 267.9-270.5) | Medium-wide, static | The track edge lined with a dense crowd of dark-coated onlookers (perhaps 15-20), several in peaked caps or hats, standing in a row along the ice. At the left a skater in a red bobble hat is steadied/held by a man in a dark uniform-like coat and cap (another uniformed man behind). At the top left, telegraph pole, road sign, a row of parked bicycles or motorbikes, and in the background a snow-roofed building and an olive tent or canvas-covered vehicle at right. |
+| 4:30-4:33 (shot 77, 270.5-274.2) | Extreme close-up, very shaky, motion-blurred | Over the shoulder/back of a skater in a red knitted bobble hat and a dark jacket frosted with snow; the arm is held behind the back (classic long-track skating posture, arms or a hand clasped behind). Snow blurs past; the camera is evidently close behind, at speed, following. At 4:33 the frame fills with the back of a dark-coated person (probably a passer-by or marshal) blocking the view. |
+| 4:34-4:35 (shot 78, 274.2-276.0) | Medium, handheld, low | Two skaters bent forward, mid-stride, coming at the camera: a young man in an olive-green jacket with dark hair and a man in a red bobble hat and dark top, both in effort. Behind them, a man in a long coat, a man in dark clothes with red-ish skate boots/socks (red skate-tops at his ankles), bystanders including a child, a woman, a covered vehicle at right, telegraph poles. |
+| 4:36-4:39+ (shot 79, 276.0-283.4) | Static wide, camera at ice level, slightly high-angle along the track | A smooth, dark-blue, polished ice lane running away from us into the distance, flanked by banked snow at both sides, bare white-trunked trees and fence posts at right, snow-roofed farm and a military-looking truck at far end. Small skaters (2-4) come towards us from the far end and grow larger by 4:39. Saturation rises and warmth falls sharply (cooler, bluer than earlier shots). |
+
+All of it looks like real 1960s-style archival home or news film (very likely newsreel/amateur, not newly shot; I infer this from the grain, colour cast, frame-edge marks and clothing, not from any caption). Cuts: 7 in this range at 3.1, 2.2, 2.6, 2.6, 3.7, 1.8 s, then a long 7.4 s shot. No dissolves or graphic effects seen; the camera shake and blur are in the film itself.
+
+## 2. People, places, objects, text
+- People: adults and young men (roughly 18-50) in dark wool coats, jackets, scarves, caps and knitted bobble hats (red is the recurring accent colour). Skaters wear long-blade speed skates, lean forward with hands behind the back. A uniformed or officious-looking man in cap and long dark coat helps a skater at 4:28; the crowd lines the course like spectators or marshals. A child and a woman are visible at 4:34. Faces: some expression is readable at 4:35-4:36 (f_0276): the man in the red hat has his mouth open, head down, panting or concentrating; the man beside him looks sideways, focused, slightly grim. The skater in sunglasses at 4:21-4:22 grimaces or hunches against the cold. Nobody smiles broadly.
+- Places: a flat, frozen rural landscape of snow, reeds, bare trees, low farmhouses with snow-covered roofs; a long, deliberately maintained ice lane cut through it. Flat horizon, big pale sky.
+- Objects: skates, bobble hats, scarves, bicycles/motorcycles parked at 4:28, a canvas-covered olive vehicle (looks like a military or lorry-type truck) at 4:28-4:39, telegraph poles, a road sign.
+- On-screen text: none readable in this range. (The whisper line "MUZIEK" at 4:16-4:18 is outside this window and sits before it.)
+
+## 3. Sound
+- Words: no sung or spoken words are reliably detected between 4:20 and 4:40. The nl transcripts have nothing here; the auto transcript of the vocals stem has only Welsh-looking hallucinated fragments ("Ddod o'r hir, ymwneud...") starting at 4:52, i.e. nonsense from a non-lexical vocal or noise. Stem RMS shows a small vocal-stem bump around 4:27-4:30 (peak ~0.05 at 4:27) and again 4:41; interpretation: a wordless or heavily processed vocal or sample, not lyrics. Low confidence.
+- Music (inferred from features, confidence medium): loud and dense throughout (mix RMS about 0.30-0.34 until 4:36, then dropping to about 0.23 from 4:37 as the lane shot begins). Bass stem is steady and high (0.13-0.20); the "other" stem (guitars/synths) is strong and has a regular alternating pulse (0.17-0.22, one value every second flips high/low, suggesting a repeating riff or arpeggio at roughly 2 beats per second). Drums are sparse: two distinct hits at 4:23-4:24 (0.07, 0.10) and two at 4:35-4:36 (0.07, 0.09), with little else, i.e. the drum events mark phrase boundaries rather than a steady kit. Onset density is high (1.1-1.7). Brightness (spectral centroid) about 1900-2150 Hz, steady. After 4:37 the "other" stem and mix both thin out (to ~0.10-0.12), so the music seems to ease off into a breather just as the long still ice shot arrives. Global tempo estimate 161 bpm (local median 123), unreliable; beat interval about 0.37 s.
+- Picture/sound: the drum accents at 4:23-4:24 coincide with the cut into shot 74 (the empty windswept ice at 4:23.1) and those at 4:35-4:36 with the cut into the long shot 79 (4:36.0), so two of the big visual changes land on drum events. The film overall shows cut/beat alignment at chance level (37% within 80 ms vs 43% expected), so this is a local, not general, effect. The sudden energy drop at 4:37 matches the slow, calm, receding ice. The fast, shaky, blurred shots (4:30-4:33) sit under the busiest stretch of the riff but with few drum hits, so the energy is carried by the looping texture, not by percussion.
+
+## 4. What a viewer feels, and why
+Interpretation. Exertion and cold. The shaky close-ups, hunched backs and panting faces give a bodily sense of effort; the wide shots of wind-scoured ice, reeds and pale sky give bleakness and enormous space. The steady, driving, bass-heavy loop gives momentum, like skating rhythm. The crowd of dark coats lined up at the course edge adds ceremony, an event being watched and endured. The final calm lane shot (4:36+) feels like release or the long road ahead: serene, but empty and a little melancholy, because the skaters are tiny. Warm red hats against blue-white snow are the only warmth, so they read as human spirit against the cold. Nostalgia comes from the faded film grain and period clothes.
+
+## 5. Symbols and motifs to track
+- Red bobble hat (4:28, 4:30-4:32, 4:35): a human focal point; check whether it recurs through the film as the same person or as a general "red against ice" motif.
+- Skating posture with hands clasped behind the back: repeated in 4:30 and 4:35.
+- Long receding ice lane / track perspective (4:23, 4:25, 4:36): the "road" as a recurring horizon image. Note the earlier-film echo question for the team.
+- Wind-blown snow across ice (4:23, 4:30) as a visual of motion and hostility.
+- Row of dark-coated spectators (4:28): crowd/witness image.
+- Curved dark scratch at top centre and film-gate marks: a texture marker of the archival source; consistent across shots, so possibly all one film roll.
+- Olive covered truck at 4:28 and 4:35-4:39: possible military or support presence; watch for it elsewhere.
+- Colour arc: pale warm-yellowish skies at 4:25-4:27 go to deep blue at 4:36+.
+
+## 6. Open questions for the team
+1. Is this the same event as earlier skating footage (long-distance race with checkpoint crowds)? Does the crowd at 4:28 look like a checkpoint or finish station, and is the uniformed man officiating?
+2. Are the skaters at 4:23-4:27 racers or recreational skaters? Many different clothing styles (casual jackets, sunglasses) suggest a mass participation event rather than elite sport; the team should confirm from other segments.
+3. What is the transcription/vocal around 4:27-4:30 and 4:41: wordless singing, a sample, or processed speech? Needs the vocals stem listened to by someone who can.
+4. Does the drop in intensity at 4:37 mark a structural section change in audio_features sections_auto? Compare with segments 13 and 15.
+5. The "MUZIEK" caption just before this window: is this a title or sign card, and does it explain the music's character?
+6. Is the dark film-gate scratch at top centre present throughout the film or only in this roll?

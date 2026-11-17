@@ -1,42 +1,45 @@
-import numpy as np, soundfile as sf, librosa, json
-D='/home/user/Listener/v1/data/t_dl_mirror/'
-S=D+'stems_raw/htdemucs/song/'
-v,sr=sf.read(S+'vocals.wav'); 
-vm=v.mean(1) if v.ndim>1 else v
-m,_=sf.read(D+'audio/song.wav'); mm=m.mean(1) if m.ndim>1 else m
-hop=int(0.25*sr)
-def lv(x):
-    n=len(x)//hop; return np.array([20*np.log10(np.sqrt(np.mean(x[i*hop:(i+1)*hop]**2))+1e-9) for i in range(n)])
-lvv=lv(vm); lvm=lv(mm)
-# activity segments (vocal > -40 dB)
-act=lvv>-40
-segs=[];s=None
-for i,a in enumerate(act):
-    if a and s is None:s=i
-    if not a and s is not None:
-        segs.append((s*.25,i*.25));s=None
-if s is not None: segs.append((s*.25,len(act)*.25))
-# merge gaps<0.5
-mg=[]
-for a,b in segs:
-    if mg and a-mg[-1][1]<0.5: mg[-1]=(mg[-1][0],b)
-    else: mg.append((a,b))
-f=lambda t:f"{int(t//60)}:{t%60:04.1f}"
-print('vocal active spans:');
-for a,b in mg: print(f(a),f(b),round(b-a,1))
-# gaps >=0.5 s within 10-230
-print('gaps inside vocals:')
-for (a,b),(c,d) in zip(mg,mg[1:]): print(f(b),f(c),round(c-b,2))
-# stereo width of vocal
-print('vocal side/mid dB', 20*np.log10(np.std(v[:,0]-v[:,1])/np.std(v[:,0]+v[:,1]+1e-9)+1e-9) if v.ndim>1 else 'mono')
-# end of track 10ms env
-for name,x in [('mix',mm),('voc',vm)]+[(n,sf.read(S+n+'.wav')[0].mean(1)) for n in ['drums','bass','other']]:
-    h=int(.01*sr);e=np.array([np.sqrt(np.mean(x[i:i+h]**2)) for i in range(len(x)-3*sr,len(x)-h,h)])
-    db=20*np.log10(e+1e-9)
-    t0=len(x)/sr-3
-    last=np.where(db>-60)[0]
-    print(name,'last >-60dB at',round(t0+last[-1]*.01,2) if len(last) else None,'level last 100ms',round(db[-10:].mean(),1),'peak',round(np.abs(x[-3*sr:]).max(),3))
-print('dur',len(mm)/sr)
-# pitch median per section
-lead=json.load(open(D+'music_views/lead_notes.json'))
-print(type(lead), (lead[:2] if isinstance(lead,list) else list(lead)[:3]))
+import numpy as np, librosa, json
+D='/home/user/Listener/v1/data/t_birdwalk/stems_raw/htdemucs/song/'
+v,sr=librosa.load(D+'vocals.wav',sr=None,mono=False)
+print(sr,v.shape)
+m=v.mean(0)
+hop=int(sr*0.01)
+rms=librosa.feature.rms(y=m,frame_length=hop*2,hop_length=hop)[0]
+db=20*np.log10(rms+1e-9)
+# 1s vocal levels -> segments of vocal-active (>-45)
+t=np.arange(len(db))*0.01
+sec=[db[(t>=s)&(t<s+1)].mean() for s in range(188)]
+act=[s for s in range(188) if np.percentile(db[(t>=s)&(t<s+1)],90)>-40]
+# print runs
+runs=[];st=None
+for s in range(189):
+    a = s in act
+    if a and st is None: st=s
+    if not a and st is not None: runs.append((st,s));st=None
+print('active runs',runs)
+# gaps within >0.25s below -50 (p10 level of 10ms) 
+low=db<-50
+i=0;gaps=[]
+while i<len(low):
+    if low[i]:
+        j=i
+        while j<len(low) and low[j]: j+=1
+        if (j-i)*0.01>=0.15: gaps.append((round(t[i],2),round((j-i)*0.01,2)))
+        i=j
+    else:i+=1
+print('gaps>=0.15s',len(gaps)); print([g for g in gaps if 0<g[0]<190 and g[1]>=0.3][:80])
+# stereo of vocal: side/mid per segment
+L,R=v[0],v[1]
+for a,b in [(0,12),(12,47),(47,59),(60,110),(110,167),(140,167),(168,177)]:
+    s=slice(int(a*sr),int(b*sr)); M=(L[s]+R[s])/2;S=(L[s]-R[s])/2
+    print(a,b,'side/mid',round(np.sqrt((S**2).mean()/((M**2).mean()+1e-12)),3),'rms dB',round(20*np.log10(np.sqrt((m[s]**2).mean())+1e-9),1))
+# spectral centroid vocal per window
+for a,b in [(1,9),(9,12.5),(13,20),(25,40),(47,59),(60,70),(80,100),(120,140),(140,146),(157,163),(177,179)]:
+    s=m[int(a*sr):int(b*sr)];
+    c=librosa.feature.spectral_centroid(y=s,sr=sr).mean(); print('cent',a,b,round(c))
+# onset rate of vocal stem in segments
+oe=librosa.onset.onset_strength(y=m,sr=sr,hop_length=hop*5)
+on=librosa.onset.onset_detect(onset_envelope=oe,sr=sr,hop_length=hop*5,units='time',backtrack=False)
+np.save('/tmp/claude-0/v_on.npy',on)
+for a,b in [(1,12),(25,40),(47,59),(60,70),(80,100),(120,140),(140,147),(157,163)]:
+    n=((on>=a)&(on<b)).sum();print('vocal onset/s',a,b,round(n/(b-a),2))

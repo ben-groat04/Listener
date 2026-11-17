@@ -1,0 +1,53 @@
+# video1: HARMONY specialist, round 2 (blind, measurements only)
+
+Evidence key: as round 1 (CH chords.json, LN lead_notes.json, IMG music_views windows, KEY summary.json). New measurement: `v1/scripts/agents/harmony_r2.py` (CQT chroma of the "other" stem, hop 2048 at 22.05 kHz, normalised to D = 1, estimated tuning +0.06 semitone, so the grid is essentially 440 Hz). Times m:ss. I read all seven round-1 files (feeling, form, harmony, lineage, rhythm, sound, voice).
+
+## 1. Answers to questions put to me
+
+**Feeling: is the F/F# flip a real alternation, and does C (b7) or a third dominate the long D pedals (1:27-1:40, 2:48-3:07)?**
+Measured. In 1:27-1:40 the "other" chroma is D 1.00, C 0.61, A 0.63, C# 0.45, E 0.46, F 0.35, F# 0.34, B 0.30. In 2:48-3:06 it is D 1.00, C 0.68-0.69, A 0.59, B 0.50-0.52, F 0.37, F# 0.40, C# 0.47. So in both long pedals the **flat seventh (C) is the strongest non-tonic class after the fifth, and both thirds sit at 0.35-0.40, below C, E, B and C#**. Conclusions: (a) there is no sustained third; F and F# are equally weak, so the flip is estimator noise on a thirdless sonority rather than a riff using both thirds (medium-high). (b) The colour is D5 with a b7 shadow, i.e. Mixolydian-leaning or simply "open and bluesy-neutral", not "wistful minor" and not "bright major". The b7 is more audible than any third, which supports Feeling's "stoic" reading over "sad" or "joyful". Caveat: C# at 0.45-0.49 is nearly as strong as C in places (and appears in the bass at 2:43), so a chromatic C/C# smear around D (distortion and bass bleed) is also possible (low-medium).
+
+**Form: does 1:15-1:18 held A, the 1:27-1:40 Am/C/Dm alternation and 2:15-2:38 wandering amount to real tension against D?**
+- 1:15-1:18: yes, the strongest single pitch event. Chroma 75-78 s is A 3.30 relative to D (A#1.11, F#0.94): the A is more than three times the tonic. That is a held fifth with D momentarily buried, a real suspension (high on the numbers, medium on the felt effect). The bass is gone at 1:16, so nothing anchors it to D; it is "floating".
+- 1:27-1:40: weak harmonic tension. Chroma is flat (above), D still 1.00 and A and C modest. The tension is textural (no bass, width 0.8), not harmonic; my CH labels there (Am, D, C, Dm) are one-beat flips.
+- 2:15-2:38: real but mild. Chroma over 2:00-2:40 is D 1.00, A 1.06, C 0.68, G 0.65, E 0.60: A is as strong as D, so the passage leans on **D and A together** (an alternation of I and V-ish weight) with G and C as neighbours. Only a quarter-step of motion by the standards of ordinary harmony, but against a 2:01-2:13 where nothing moves it reads as lift. Medium.
+
+**Form: does the final D (2:48-3:08) contain a third, and what does the G to E/F chroma at 3:06.5-3:08.6 do to the ending?**
+No stable third (above: F 0.37-0.40, F# 0.40-0.46 for 2:48-3:08). The very last stretch (3:06-3:08.7) shows F 1.10, F# 0.90, G 0.83, E 0.79 against D 1.00, with A dropping to 0.60. So the *fifth leaves* and a mass of upper neighbours (E-F-F#-G) rises as the drums roll and the tail decays. I read this as the 32nd-note drum roll and cymbal/noise tail smearing the chroma (Rhythm's roll starts 3:06.25), not a modulating chord (medium). Musically the effect is the same either way: the closing is **not a cadence**; the band stops mid-pedal with the tonic still the strongest class. It will feel unresolved/abrupt rather than "concluded" (agrees with Feeling's slammed-door and Form's question). Low confidence that any pitch gesture is intended.
+
+**Sound: is the 42.6 Hz sub a sounded b3 (F, Dm colour) or a non-harmonic weight tone? Does the chroma "E/F" bar line up with each sub hit?**
+- Pitch: Sound measured a fixed 42.6 Hz pure sine. F1 is 43.65 Hz, D1 is 36.71 Hz, E1 is 41.2 Hz, F#1 is 46.25 Hz. 42.6 Hz is 40 cents flat of F1 and 55 cents sharp of E1... so it sits almost exactly **between E1 and F1** (about 40 cents below F, 60 above E). A pitch that is nearly a quarter-tone-ish crack between two semitones, and about 1.5 semitones above D1 plus a fraction, is not an obvious chord tone of D. I therefore correct my round 1 wording: I over-committed to "F". The better reading is **a tuned-by-ear or sample-pitched weight tone, harmonically ambiguous**, which is exactly what a sine under a pedal does: at 43 Hz the ear hears more thump than pitch (Sound says "felt in the body, not heard as a note", I agree). Confidence: pitch value high; "not a deliberate b3" medium.
+- Chroma at hits (my new run, other stem, 1.5 s from each onset): 2:01.3 D1.00 A0.90 C0.71 F#0.58 E0.49 F0.34; 2:07.3 A0.84 F#0.62 C0.60 E0.54 F0.34; 2:13.5 A1.57 E0.61 C0.62 G0.52 F0.33; 2:19.7 A1.27 E0.64 C0.56 F0.26. So **F is the weakest it is anywhere in the track at the sub hits (0.26-0.34)** and E rises (0.49 to 0.64) in the later hits, with A growing. The "E/F bar" Sound saw in IMG 0120 is therefore mostly E (and the sub's own low skirt), not a sounded F. A "b3 under a major third" clash is not supported: the upper layers are D/A/E-leaning around a sub that is probably not heard as pitched. Medium.
+- Hence the sub is best called a **non-harmonic weight tone with slight E/F colour**, and the Dm chord labels at 2:19.4 etc. (CH) are likely template matches triggered by it, not by a real minor third in the upper parts. This lowers my confidence that "Dm anchors the 8-beat loop"; the anchor timing is real (matches bass), the Dm quality is not (medium-low).
+
+**Rhythm: does the chord progression repeat on the 8-beat cycle elsewhere (D-Bm sway 1:07-1:15), and is the 43 Hz really root D or a sub layer?**
+- Sub layer, not D root (see above; the track's real root bass is D2 73 Hz at 0:20-1:13 and 2:37 on; D1 36.7 Hz is nowhere seen). The sub *replaces* the D2 bass for 2:01-2:38, so the low register changes role from "root with C neighbour" to "pitchless thump".
+- Chroma self-similarity of the "other" stem over 1:00-1:15 at lags of 1, 2 and 4 bars (3.08, 6.16, 12.3 s): mean frame correlation 0.61, 0.55, 0.53. It falls with lag but only slightly and stays well above random, i.e. the loop is near-stationary rather than a precise 2-bar chord cycle. Bm appears in CH at 1:07, 1:10 and 1:13: intervals 3 s, 3 s, so a **1-bar (about 3.1 s) recurrence of the Bm visit**, not an 8-beat one (medium). That is the only chord event I can place on the bar grid before 2:13; in 2:19-2:38 the Dm anchor is on the 8-beat grid.
+
+**Lineage: modal vamp or functional progression?**
+Modal vamp, not functional. No V-I (A to D) cadence is ever sustained: A appears as a held fifth (1:15) and as a strong class in 2:00-2:40 but never resolves in a way that stands apart from D already sounding. The combination of D pedal, b7 shuttle (D-C-D in the bass), strong open fifth and ambiguous third is a **Mixolydian-leaning drone vamp** with occasional Aeolian/Dorian colour (Bm, Am, Dm labels are probably passing colours). Medium.
+
+## 2. Corrections
+
+- **Mine (round 1):** (i) I called the 2:01-2:40 sub "F1 about 40 cents flat" and drew a "bitonal b3 clash". Revised above: it is between E1 and F1, and F is absent in the upper chroma, so no clash is established. (ii) I called 2:13-2:40 an "8-beat loop with Dm home"; the anchor timing stands, the Dm quality is weak. (iii) I wrote "no V-I cadence anywhere"; unchanged.
+- **Form:** you give the bass at 2:38 as returning "thick" and continuous; my bass-pitch read agrees (D2 with C2/C#2 from 2:37), so from 2:38 the low register is back to rooted and pitched, which is itself a harmonic event (sub thump replaced by a D root) that supports your "re-lock". Add it to your list.
+- **Rhythm/Form:** Rhythm's note that the 1:15-1:40 bass-less stretch keeps the bar grid fits my chroma: the held A of 1:15-1:18 ends at about 1:18.4 to 1:18.7, which is about 3.1 s after 1:15.5, one bar. So the harmonic gesture there is a one-bar-long A, then C (medium-low; the exact downbeat is unverified).
+- **Feeling:** "F/F# flip as a colour" should be dropped; it is not a measurable alternation.
+- **Lineage/Feeling reading of "wistful":** the pedal evidence points to neutral-open with a b7 edge, not to melancholy. The wistful feeling is more plausibly supplied by the speech and the absence of resolution than by a minor third.
+
+## 3. How harmony connects to the other areas
+
+- **Form:** the form is made by layers, and harmony cooperates by *not moving*. The only places harmony does something are the boundaries you already mark: the held A at 1:15 (collapse), the chord motion 2:13-2:38 (lift), the thickened rooted bass at 2:38 (re-lock). A static pedal is what lets bass/width/other changes read as the whole drama.
+- **Rhythm:** drum stream constant, so the 8-beat (2-bar) cycle of bass entries and the 1-bar Bm recurrence are the only pitched "metre". Harmony is aligned to the bar grid precisely where it moves, and free elsewhere.
+- **Sound:** the b7-heavy open fifth through a saturated wall is the harmonic reason it sounds "powerful but not tonally defined": distortion generates fifth and b7-region partials. The sub at 42.6 Hz is a texture more than a note.
+- **Voice:** speech pitch rises (130 to 196 Hz, Voice) while the pedal stays on D. 196 Hz is G3 and 130 Hz about C3: in the opening the speech sits at the b7 and by the list it sits at the fourth above D3, never settled to D3 (146.8 Hz) as a "tone"; speech intonation, not melody, so I note it only as a harmony-neutral relation (low).
+- **Feeling:** thirdless D5 plus b7 explains "determined, stoic, vast" without sentimentality (medium); the unresolved stop explains the abruptness.
+
+## 4. Confidence summary
+
+High: D is the tonic; no sung melody; no stable third in the long pedals; held A at 1:15-1:18 (A 3.3x D). Medium: Mixolydian-leaning vamp; sub is a pitched-ambiguous weight tone; 1-bar Bm recurrence at 1:07-1:13. Low: Dm quality at the 2:19 anchors; any intended pitch gesture at 3:06-3:08.
+
+## 5. Two new questions
+
+1. **Sound:** distortion on a D5 power chord creates strong C#/C-region and fifth partials through intermodulation. Can your spectral evidence (harmonic spacing, noise floor) say whether the C 0.6-0.7 and C# 0.45 in the "other" stem are real played notes (a b7 or leading-note riff) or intermodulation products of the D-A fifth? That decides whether "Mixolydian" is a musical fact or a distortion artefact.
+2. **Rhythm:** for the held A at 1:15.5-1:18.4 and the bass cut at 1:15.5-1:16, can you place the bass cut and the A onset on a bar downbeat (a bar count from your first downbeat at 0:00.74, 3.077 s bars)? If the A lasts exactly one bar and the new chord at 1:18.7 falls on the next downbeat, we have the one clearly bar-aligned harmonic gesture before 2:13.

@@ -113,3 +113,38 @@ Changed (REFUTED):
 24. 18 januari 1963: no longer "matched" with the newspaper page (re-checked f_0010 and the sheet: only the headline "Elfstedentocht bovenmenselijk zwaar" and "Chaos aan de finish" are legible).
 
 Softened or marked (UNVERIFIABLE): crowd "cheering" at FINISH; "bellows camera"; "bread"; the skater row count and hands; ULST/IJLST; "Stavoren inn"; "minus 16" unit; the Frisian-audience claim; the voice "(measurements only)"; the "only repeating pitched figure" claim; the stereo-width ranking (metric-dependent); loudness figure caveat; the 575/9,500 figures; "sound and picture from different eras". Left unchanged because the checkers could not settle them either: "half zes" as 5:30 (already hedged in section 8), the 3:07 banner last line (already medium confidence), the cut-phase statistics (confirmed against sync.json), the roll length and the 3:08.2 cut (already listed as open in section 8).
+
+
+## Fact-check: video2 interpretation
+
+Applied after the fact-check. Refutations re-checked by me where cheap: mean luma of f_0216 to f_0218 (3:35 to 3:37: 88, 127, 187, so no dark frame at 3:36), f_0290 to f_0306 (4:49 to 4:51: 135, 137, 126; 4:52: 167; 5:01 to 5:05: 124, 120, 79, 42, 12), and f_0291 opened (trouser legs, boots and a skate-like blade on scored ice). All three held. The audio, shot-list and transcript refutations rest on the checker's measurements and were applied as given (not independently re-run).
+
+Changes:
+1. 3:36 to 3:37: removed "dark frame"; now a hard cut at 3:36.7 from a red-hatted skater on a bright lane to an orange-yellow flare over bib 529 (sections 2, 7).
+2. Ending fade (section 2, 4.2): dimming starts at about 5:02.5, two-thirds at 5:03, a third at the audio zero, near-black from 5:05, not fully black until about 5:06; "undimmed at the slam" and "full strength at 5:03" removed.
+3. "No people" from 4:49: a person's legs and boots at 4:49 to 4:51; no people from 4:52 (sections 2, 3.5, 7).
+4. "55 s of non-human ice": now about 12 s of nobody on screen (4:52 to 5:04), preceded by 3 s of legs (3.9, 7).
+5. "No one until 0:53": now no people before 0:48, tiny distant walkers from 0:48, foreground from 0:53 (2, 3.5).
+6. 3:28.5 cut: now a very close hunched cluster of three or more bibbed backs, a pair in the foreground by 3:29.
+7. Shot lengths: 5.2 s holds for 1:28.6 to 2:36.6 (6.2 s for 1:40.6 to 2:36.6), detector-based; 3.0 s after 4:00 against 2.7 s before, so "about the same" only (2, 4.4, 4.8).
+8. 1:24.6 to 1:28.6 is not silence: drums and bass dropout while the narrator and pad continue, mix only 2 to 3 dB down; "two silences" now "two rhythm-section dropouts"; the 1:10 event softened to a thinning of an already sparse drum stem (1, 2, 3.3, 5, 7).
+9. 4:36.6 row: bass stabs per bar start at about 4:48.6; the voice-like calls from 4:46.6.
+10. Sync statistics: replaced 37% against 43% (p 0.8, wrong 161 BPM grid) with the 120 BPM kick-grid figures (36% against 32%, p about 0.09 beat, 0.2 bar), plus the uncorrected early-clustering caveat (3.2).
+11. 0:08 cut: meets its strike at 0.27 s early; the 0:12 and 0:24 cuts within 0.02 s; nothing meets 0:20.
+12. Top-band brightening: about +22 dB on the other stem, about +3 dB on the full mix (the +8 upper figure dropped).
+13. 4:29 to 4:36 phrase: now a quiet high (about G#5) phrase at about 4:31 to 4:35 after a louder mid-register phrase; "wordless" and prominence not shown.
+14. "Friesland" removed from the clean narration items; certain only from the board. "schaatsmarathon" downgraded to moderately clear (2, 6, 8).
+15. "Flat Dutch" and "male" narration: now a low (about 110 to 150 Hz), flat, dry voice, probably Dutch; sex not established.
+16. Calls "exactly one per bar": now one principal hit per roughly 2.0 s bar (seven) with a smaller echo about 0.3 s later.
+17. Drum accent before each 12 s cell: reduced to a weak claim (about 17% above other bars; not distinguishable at 4:12.6 and 4:48.6) (4.4, 5).
+18. "Bass enters (about 65 dB above ...)": now about -22 dB from silence at 0:28; the 65 dB figure dropped.
+19. "Small-gauge home-movie film" and "family or club cine enthusiast": now film of unknown gauge, maker and purpose [READING]/[SPEC] (1, 5, 6).
+20. "Modern track fitted to the reel; no sign of a 1963 edit": now a soundtrack of unknown date; the cuts follow its form, so assembly was deliberate; whether a 1963 edit survives is unknowable (6).
+21. Board lettering: "hand-lettered" replaced by white capitals on a dark board, manner undecided (1, 6).
+22. "No winner and no finish line" as a fact about the event: now what this edit shows (3.4).
+23. Banner at 4:45 to 4:48: now a flag with red and white bands and a dark lower band (possibly a tricolour; not confirmed), beside a telegraph post (2, 3.5, 5, 8).
+24. 4:28 "uniformed helpers" and "steadying": now coated onlookers with at least one man in a peaked cap (role unclear); at 4:35 a red-hatted skater beside a man in a green jacket; no steadying claimed (2, 6).
+25. Field arithmetic (575 and 9,500): stated as the narration's two labels, 94 per cent only if disjoint participants; "ordinary people" marked [SPEC] (3.4, 6).
+26. "Establishes a mass long-distance skating event on natural ice": now board plus partly garbled narration plus pictures of mass skating on frozen waterways with cleared lanes [READING] (6).
+
+UNVERIFIABLE items softened: helper steadying; "panting" (now "bent-forward faces"); "fur" collar (now uncertain); the 0:36 specks as people and the 4:36 lane colour in the rhymes list; the 3:24 vanishing-point timing (now 3:25 to 3:28); "legs and blades" at 4:50 (blade seen only at 4:51); the 2:57 skater's sex; the vocal-stem cut time at 1:28 (now stated on a 0.5 s grid); the 161 BPM hi-hat cause (plausible, unproved). Left unchanged because they were already tagged as unknown or speculative: edit causation, narration provenance, nationalities, period clues, flicker and burn source, 12 s lattice design, instrument identity, ending meaning.

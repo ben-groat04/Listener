@@ -20,7 +20,7 @@ Feeling is our inference; causes are measured or seen. "Cause" cites the sound a
 | 0:28 to 0:42 | Weight arriving; a march with a limp; unease | Bass enters at about 0:28 (about -22 dB on its stem, from silence); kick mostly on the off-beat quaver; loop A begins [MUSIC] | A cut at 0:28.08 (0.06 s from the groove) to dark, shaky handheld trunks, then an empty field, fence, barbed wire. The first clear picture and sound hinge [DOSSIER] |
 | 0:42 to 1:10 | Gravity and distance; a newsreel voice in front of a trudge | A low (about 110 to 150 Hz), flat, dry spoken voice, probably Dutch (sex not established), free of the bar, over loop A, which withholds the tonic [MUSIC] | The date over a snowy graveyard (0:41 to 0:46); first tiny distant figures and a first pink warmth at 0:48 (foreground silhouettes from 0:53); a murky figure, a bobble-hat close-up; a long straight road [DOSSIER] |
 | 1:10 to 1:28.6 | Suspense; counting in the thinned groove; the smallest the world gets | From 1:10 the drum stem thins to sparse single hits (it was already sparse; bass continues); drums gone from about 1:24.0 and bass from about 1:24.6 to about 1:28.5, a 4 s dropout while the narrator and the pad play on and the full mix is only about 2 to 3 dB down [MUSIC; fact-check re-measure] | A windswept snowfield with three or four tiny linked walkers; a whiteout-like road with a round sign; colour cycling cream, mauve, gold [DOSSIER] |
-| 1:28.6 | Relief and arrival; a door opening onto people | Kick moves onto every beat, snare on alternate beats, mix up about 5 dB, speech gated off (vocal stem -34 dB at 1:28 to -74 dB at 1:29) [MUSIC] | A hard cut (frame difference 46.8 at 88.6 s, 0.05 s from the music) from an empty road with four tiny walkers to a railing full of onlookers and people carrying sacks [SEEN f_0089, f_0090] |
+| 1:28.6 | Relief and arrival; a door opening onto people | Kick moves onto every beat, snare on alternate beats, mix up about 5 dB, speech gated off (vocal stem about -32 dB at 1:28.0, -59 at 1:28.5, -74 at 1:29; the cut is at about 1:28.3 to 1:28.5 on a 0.5 s grid) [MUSIC] | A hard cut (frame difference 46.8 at 88.6 s, 0.05 s from the music) from an empty road with four tiny walkers to a railing full of onlookers and people carrying sacks [SEEN f_0089, f_0090] |
 | 1:40.6 to 2:36.6 | Grip, pressure; hypnotic if you go with it, numb if you do not | Bass +10 dB, narrower and drier mix, loudness flat within about 2 dB, drums flat near -19 dB; narration over a fixed floor [MUSIC] | Ice plain, skaters, a long file toward the horizon, period cars, whiteouts, colour flicker; slow cutting (about 5.2 s a shot over 1:28.6 to 2:36.6, about 6.2 s over 1:40.6 to 2:36.6; detector-based, over-splits colour-cycling shots) [DOSSIER; PANEL film critic] |
 | 2:36.6 to 3:28.6 | Human absence; grounded, then something swelling without people | Narration gone (ends 2:35.8); loop B's tonic returns every 12 s; the wall rises 8 to 10 dB at about 2:47 to 2:50 and then brightens [MUSIC] | Cut to a small car driving away on a frosted road, then frost again (the opening motif returns); red lamps at dusk; a woman half-eaten by a flare (2:57); a long wide pack on glassy ice. Cutting now quickens to about 2.7 s a shot to 4:00 (about 3.0 s after) [PANEL] |
 | 3:09 to 3:36 | Crowding; breathing against crushing | Instrumental; voice-like gated bursts return at 3:28.6 | Handheld following shots of backs and bibs (440, 201, 211, 504, 48), alternating with wide calm lanes; hard cut at 3:28.5 from a wide lane to a very close shot of a hunched cluster of bibbed backs (three or more skaters; a pair in the foreground by 3:29) [DOSSIER; fact-check] |
@@ -43,7 +43,7 @@ Feeling is our inference; causes are measured or seen. "Cause" cites the sound a
 
 **3.5 People are given in order, then removed.** No people before 0:48; two tiny distant walkers from 0:48, foreground figures from 0:53; a crowd arriving on the cut at 1:28.6; anonymous packs with bibs from 3:09; a few faces and a red hat at 4:10 to 4:35; one person's legs at 4:49 to 4:51, then nobody on screen from 4:52 [PANEL film critic R3; fact-check]. Warm red accents recur (lamps 2:44, hats 3:36, 4:06 to 4:30, flag 4:45 to 4:48) [DOSSIER].
 
-**3.6 Sound and picture carry two layers of "number and particular".** The machine supplies framework (the 12 s cell, one call per bar, the narrated digits); the stock and the handheld camera keep leaking particulars through it (a bobble hat at 4:32, a fur collar, panting faces, burn-holed emulsion) [PANEL film critic R3]. This is a pattern a viewer registers without being able to name; it is a reading, not a finding.
+**3.6 Sound and picture carry two layers of "number and particular".** The machine supplies framework (the 12 s cell, about one call per bar, the narrated digits); the stock and the handheld camera keep leaking particulars through it (a bobble hat at 4:32, a dark collar, bent-forward faces, burn-holed emulsion) [PANEL film critic R3]. This is a pattern a viewer registers without being able to name; it is a reading, not a finding.
 
 **3.7 The voice changes role.** Measured: narration free of the bar (0:42 to 2:36); voice-like chops loosely bar-anchored (from 3:28.6); one principal voice-like hit per roughly 2.0 s bar (seven, 4:46.6 to 4:58.6), usually with a smaller echo or second hit about 0.3 s later [MUSIC; fact-check]. Consensus: whatever the source, a voice-shaped thing becomes regular, and the late voice is rhythmic first. Whether that is also a metaphor is rated medium-low [PANEL music critic R3] (see 4.3).
 
@@ -153,7 +153,7 @@ Feeling is our inference; causes are measured or seen. "Cause" cites the sound a
 3. **0:28: the limp begins.** Cut to shaky dark trunks with the bass; the sharpest early hinge.
 4. **2:36.6: the narrator stops and a car drives away between frosted trees.** The symbolist's favourite and the insider's "loneliest moment"; the sceptic notes that a crowd-to-landscape cut is ordinary and that "settled key, unsettled life" is a pretty sentence with no handle for testing.
 5. **3:36.7: the hard cut to an orange burn flare on the plateau's first bar** (no dark frame). The picture's formal climax.
-6. **4:10: a young man in a fur collar, lips parted, looking near the lens.** The second-choice moment of the first-timer ("the one face that looks back") and the panel's shared example of a person as a person; also 4:32 (a red bobble hat and a hairy jumper close to the lens).
+6. **4:10: a young man in a dark collar (fur uncertain), lips parted, looking near the lens.** The second-choice moment of the first-timer ("the one face that looks back") and the panel's shared example of a person as a person; also 4:32 (a red bobble hat and a hairy jumper close to the lens).
 7. **4:49 to 5:06: legs on scored ice, ducks with burn holes, floes, the hard stop, three off-beat hits, a fade to near-black.** The last unpeopled stretch (about 12 s from 4:52) and an ending that does not resolve.
 
 ---
@@ -162,7 +162,7 @@ Feeling is our inference; causes are measured or seen. "Cause" cites the sound a
 
 **Picture.**
 - Are the colour flicker (1:20, 1:43 to 1:50, 2:00 to 2:35), whiteouts and flares in the source film or added? Is it one roll, one event, one operator? [DOSSIER]
-- What do the "K" sign (2:05), red lamps (2:44), flag with red and white bands (4:45 to 4:48), "...-SNEEK" lorry (1:31) and the wooden object carried behind some skaters mean? Who are the long-coat man (1:43), the woman (2:57), skater 529, the red hat?
+- What do the "K" sign (2:05), red lamps (2:44), flag with red and white bands (4:45 to 4:48), "...-SNEEK" lorry (1:31) and the wooden object carried behind some skaters mean? Who are the long-coat man (1:43), the long-coated, headscarfed skater at 2:57 (sex inferred), skater 529, the red hat?
 - Where does the camera sit at 4:49 to 4:58, and is the final shot (4:58 to 5:05) from the same event?
 - The detector's cut list is imperfect (1:28.6 missing; 4:13 to 4:21 under-split); any cut-timing claim after 4:00 is soft.
 - Did the editor pick the damaged shots (burn holes) on purpose?
@@ -191,3 +191,39 @@ Feeling is our inference; causes are measured or seen. "Cause" cites the sound a
 ## 9. Moderator's bottom line
 
 A restrained, intelligently cut reel in which the sound makes the weather and the picture supplies the people. Its best writing is subtractive (the hollow before 1:28.6, the hard stop at 5:00.86); its best structural fact is that the picture obeys the music's form (to 0.1 s at the main joints, and to a 12 s lattice for 84 s) while ignoring its beat; and its emotional line, from hush through relief and pressure to an unpeopled thaw, is mostly made by the edit and the music rather than by the footage. The panel's firmest measurements are the edit's section locking, the 120 BPM groove, the drop at 1:28.6 and the dual ending; its softest claims are the meaning of the ending, the late voice, colour as design and anything about who made it or why.
+
+---
+
+## Fact-check log
+
+Applied after the fact-check. Refutations re-checked by me where cheap: mean luma of f_0216 to f_0218 (3:35 to 3:37: 88, 127, 187, so no dark frame at 3:36), f_0290 to f_0306 (4:49 to 4:51: 135, 137, 126; 4:52: 167; 5:01 to 5:05: 124, 120, 79, 42, 12), and f_0291 opened (trouser legs, boots and a skate-like blade on scored ice). All three held. The audio, shot-list and transcript refutations rest on the checker's measurements and were applied as given (not independently re-run).
+
+Changes:
+1. 3:36 to 3:37: removed "dark frame"; now a hard cut at 3:36.7 from a red-hatted skater on a bright lane to an orange-yellow flare over bib 529 (sections 2, 7).
+2. Ending fade (section 2, 4.2): dimming starts at about 5:02.5, two-thirds at 5:03, a third at the audio zero, near-black from 5:05, not fully black until about 5:06; "undimmed at the slam" and "full strength at 5:03" removed.
+3. "No people" from 4:49: a person's legs and boots at 4:49 to 4:51; no people from 4:52 (sections 2, 3.5, 7).
+4. "55 s of non-human ice": now about 12 s of nobody on screen (4:52 to 5:04), preceded by 3 s of legs (3.9, 7).
+5. "No one until 0:53": now no people before 0:48, tiny distant walkers from 0:48, foreground from 0:53 (2, 3.5).
+6. 3:28.5 cut: now a very close hunched cluster of three or more bibbed backs, a pair in the foreground by 3:29.
+7. Shot lengths: 5.2 s holds for 1:28.6 to 2:36.6 (6.2 s for 1:40.6 to 2:36.6), detector-based; 3.0 s after 4:00 against 2.7 s before, so "about the same" only (2, 4.4, 4.8).
+8. 1:24.6 to 1:28.6 is not silence: drums and bass dropout while the narrator and pad continue, mix only 2 to 3 dB down; "two silences" now "two rhythm-section dropouts"; the 1:10 event softened to a thinning of an already sparse drum stem (1, 2, 3.3, 5, 7).
+9. 4:36.6 row: bass stabs per bar start at about 4:48.6; the voice-like calls from 4:46.6.
+10. Sync statistics: replaced 37% against 43% (p 0.8, wrong 161 BPM grid) with the 120 BPM kick-grid figures (36% against 32%, p about 0.09 beat, 0.2 bar), plus the uncorrected early-clustering caveat (3.2).
+11. 0:08 cut: meets its strike at 0.27 s early; the 0:12 and 0:24 cuts within 0.02 s; nothing meets 0:20.
+12. Top-band brightening: about +22 dB on the other stem, about +3 dB on the full mix (the +8 upper figure dropped).
+13. 4:29 to 4:36 phrase: now a quiet high (about G#5) phrase at about 4:31 to 4:35 after a louder mid-register phrase; "wordless" and prominence not shown.
+14. "Friesland" removed from the clean narration items; certain only from the board. "schaatsmarathon" downgraded to moderately clear (2, 6, 8).
+15. "Flat Dutch" and "male" narration: now a low (about 110 to 150 Hz), flat, dry voice, probably Dutch; sex not established.
+16. Calls "exactly one per bar": now one principal hit per roughly 2.0 s bar (seven) with a smaller echo about 0.3 s later.
+17. Drum accent before each 12 s cell: reduced to a weak claim (about 17% above other bars; not distinguishable at 4:12.6 and 4:48.6) (4.4, 5).
+18. "Bass enters (about 65 dB above ...)": now about -22 dB from silence at 0:28; the 65 dB figure dropped.
+19. "Small-gauge home-movie film" and "family or club cine enthusiast": now film of unknown gauge, maker and purpose [READING]/[SPEC] (1, 5, 6).
+20. "Modern track fitted to the reel; no sign of a 1963 edit": now a soundtrack of unknown date; the cuts follow its form, so assembly was deliberate; whether a 1963 edit survives is unknowable (6).
+21. Board lettering: "hand-lettered" replaced by white capitals on a dark board, manner undecided (1, 6).
+22. "No winner and no finish line" as a fact about the event: now what this edit shows (3.4).
+23. Banner at 4:45 to 4:48: now a flag with red and white bands and a dark lower band (possibly a tricolour; not confirmed), beside a telegraph post (2, 3.5, 5, 8).
+24. 4:28 "uniformed helpers" and "steadying": now coated onlookers with at least one man in a peaked cap (role unclear); at 4:35 a red-hatted skater beside a man in a green jacket; no steadying claimed (2, 6).
+25. Field arithmetic (575 and 9,500): stated as the narration's two labels, 94 per cent only if disjoint participants; "ordinary people" marked [SPEC] (3.4, 6).
+26. "Establishes a mass long-distance skating event on natural ice": now board plus partly garbled narration plus pictures of mass skating on frozen waterways with cleared lanes [READING] (6).
+
+UNVERIFIABLE items softened: helper steadying; "panting" (now "bent-forward faces"); "fur" collar (now uncertain); the 0:36 specks as people and the 4:36 lane colour in the rhymes list; the 3:24 vanishing-point timing (now 3:25 to 3:28); "legs and blades" at 4:50 (blade seen only at 4:51); the 2:57 skater's sex; the vocal-stem cut time at 1:28 (now stated on a 0.5 s grid); the 161 BPM hi-hat cause (plausible, unproved). Left unchanged because they were already tagged as unknown or speculative: edit causation, narration provenance, nationalities, period clues, flicker and burn source, 12 s lattice design, instrument identity, ending meaning.

@@ -78,3 +78,4 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Facts: 2012 cancellation reduced to "2 cm of ice"; 575 and 9,500 called "pre-race entry-style" and "close to 568" (sources give 568 or 577); "-16 to -18" attributed to sources (-16 is the narrator's); "a generation" gloss (22 years to 1985); spelled-out date and "wedstrijdrijders" presented as heard (Whisper gave digits; "wedstrijd-" is a restoration).
 - Process: quote Whisper timestamps only after checking the vocal stem; check a shot-list cut against frames before building an argument on it.
 
+- 02:46 · A cold-read fixer made report.js derive the repo root from __dirname/process, which do not exist in workflow scripts (it would fall back to '.'). · Replaced with args.root or the absolute default. · Tell fixer agents that workflow scripts are plain JS with no Node APIs.

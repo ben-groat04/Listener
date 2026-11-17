@@ -1,8 +1,9 @@
 #!/bin/bash
 # Video-agnostic source separation for one video (VID=<name>): demucs htdemucs -> stems_raw/ (git-ignored),
 # per-second stem loudness + plot + small mp3 stems in stems/, then a whisper pass on the isolated vocals.
+set -eo pipefail
 cd "$(dirname "$0")/../.."
-V=${VID:?set VID}; D=v1/data/$V
+V=${VID:?ERROR: VID is mandatory (e.g. VID=video1 $0)}; D=v1/data/$V
 [ -f $D/stems_raw/htdemucs/song/vocals.wav ] || python3 -m demucs -n htdemucs -j 4 -o $D/stems_raw $D/audio/song.wav
 python3 - "$V" <<'PY'
 import json, os, sys, numpy as np, librosa, matplotlib

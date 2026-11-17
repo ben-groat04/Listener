@@ -10,7 +10,7 @@ export const meta = {
 }
 // args: { root: optional repo root, videos: ['video1'] or [{vid, dur}] (dur auto-read from audio_features/summary.json), rounds: 2, blind: false, out: 'analysis', skip_windows: ['video1:0040', ...], windows_only: false }
 // Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
-const R = (args && args.root) || (typeof __dirname !== 'undefined' && __dirname ? __dirname.replace(/\/v1\/workflows\/?$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))
+const R = (args && args.root) || '/home/user/Listener'  // workflow scripts have no Node APIs; pass args.root to override
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const BLIND = !!args.blind
 // Accept bare names or {vid, dur}; when dur is omitted an agent reads duration_s from v1/data/<vid>/audio_features/summary.json.

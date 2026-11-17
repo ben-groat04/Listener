@@ -5,7 +5,7 @@ export const meta = {
 }
 // args: { root: optional repo root, scope: 'analysis' | 'toolkit' | 'all', videos: ['video1','video2'], rounds: 1, fixes_per_round: 6, tag: 'cr1' }
 // Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
-const R = (args && args.root) || (typeof __dirname !== 'undefined' && __dirname ? __dirname.replace(/\/v1\/workflows\/?$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))
+const R = (args && args.root) || '/home/user/Listener'  // workflow scripts have no Node APIs; pass args.root to override
 const TAG = args.tag || 'cr'
 const SCOPE = args.scope || 'all'
 const F = { type: 'object', properties: { findings: { type: 'array', items: { type: 'object', properties: { title: { type: 'string' }, where: { type: 'string' }, problem: { type: 'string' }, fix: { type: 'string' }, severity: { type: 'string', enum: ['high', 'medium', 'low'] } }, required: ['title', 'where', 'problem', 'fix', 'severity'] } } }, required: ['findings'] }
@@ -14,7 +14,7 @@ const SUM = { type: 'object', properties: { summary: { type: 'string' } }, requi
 const V = { type: 'object', properties: { ok: { type: 'boolean' }, notes: { type: 'string' } }, required: ['ok', 'notes'] }
 
 const intro = `You are a COLD READER: you have never seen this project. Repo ${R}. Read CLAUDE.md, v1/INSTRUCTIONS.md (the user's rules and goal), v1/README.md, v1/PROGRESS.md, v1/logs/ERRORS.md first.
-Scope: ${SCOPE === 'toolkit' ? 'the toolkit (v1/scripts, v1/workflows, docs) as something a fresh Claude session must run on a new video' : SCOPE === 'analysis' ? `the analysis outputs for ${(args.videos || []).join(', ')} under v1/analysis/ and v1/analysis_blind/` : 'both the analysis outputs (v1/analysis/, v1/analysis_blind/) and the toolkit (v1/scripts, v1/workflows, docs)'}.
+Scope: ${SCOPE === 'toolkit' ? 'the toolkit (v1/scripts, v1/workflows, docs) as something a fresh Claude session must run on a new video' : SCOPE === 'analysis' ? `the analysis outputs for ${(args.videos || []).map(v => (typeof v === 'string' ? v : v.vid)).join(', ')} under v1/analysis/ and v1/analysis_blind/` : 'both the analysis outputs (v1/analysis/, v1/analysis_blind/) and the toolkit (v1/scripts, v1/workflows, docs)'}.
 Raw data for checking: v1/data/<video>/. Be specific: file, section, timestamp. British English.`
 const READERS = [
   ['human', 'the user: someone who wants to understand how a perceptive human would FEEL and interpret this music and video. What is missing, shallow, robotic, over-technical, or unconvincing? What would a real fan or critic say that is absent?'],

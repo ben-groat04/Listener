@@ -35,3 +35,4 @@
 4. Blind runs (listen + interpret with blind=true, out=analysis_blind) on the PSB videos and the test videos; compare blind vs informed.
 5. Cold-read improvement loops on the analysis and on the toolkit (can a fresh session run it from TOOLKIT docs?).
 6. Toolkit entry doc + single command; final human-readable report per video.
+- 01:52 Research wave 2: **Part mapping confirmed** (MusicBrainz: Part 1 = 3:09 = video1; Part 2 = 5:04 = video2). Archive = Fries Film (en Audio) Archief; specific films/narrator unidentified. Reception thin but positive (live highlights 2014). Applying corrections; launched blind chain for video1.

@@ -1,0 +1,667 @@
+{
+ "item1_hole": {
+  "bar_grid_note": "grid downbeat anchor 88.6165 s (sync/grid_120bpm.json), bar 2.000 s",
+  "bass": {
+   "drop_s": 84.6,
+   "floor_db": -37.3,
+   "length_s": 4.03,
+   "pre_hole_level_db": -20.2,
+   "return_s": 88.63,
+   "threshold_db": -45.2
+  },
+  "both_drums_and_bass_low_s": [
+   84.6,
+   82.84,
+   -1.76
+  ],
+  "drums": {
+   "drop_s": 81.31,
+   "floor_db": -33.5,
+   "length_s": 1.53,
+   "pre_hole_level_db": -42.0,
+   "return_s": 82.84,
+   "threshold_db": -67.0
+  },
+  "other": {
+   "dip_run_more_than_8db_down": [
+    80.02,
+    91.94
+   ],
+   "min_at_s": 87.03,
+   "min_level_db": -41.3,
+   "no_drop_below_threshold": true,
+   "pre_hole_level_db": -16.9,
+   "threshold_db": -41.9
+  },
+  "pad_remains_throughout": true,
+  "vocals_stem_in_hole": {
+   "level_db_per_half_second_peak": {
+    "80.0": -13.9,
+    "80.5": -13.9,
+    "81.0": -12.3,
+    "81.5": -14.6,
+    "82.0": -27.9,
+    "82.5": -40.8,
+    "83.0": -67.9,
+    "83.5": -64.4,
+    "84.0": -43.0,
+    "84.5": -17.6,
+    "85.0": -14.2,
+    "85.5": -15.8,
+    "86.0": -17.9,
+    "86.5": -13.1,
+    "87.0": -16.6,
+    "87.5": -13.7,
+    "88.0": -24.9,
+    "88.5": -41.3,
+    "89.0": -66.9,
+    "89.5": -73.7,
+    "90.0": -69.9,
+    "90.5": -72.1,
+    "91.0": -71.5,
+    "91.5": -67.0
+   }
+  }
+ },
+ "item2_loop_a": {
+  "A_on_beat_roots": {
+   "G_slots_total": 9,
+   "count": 11,
+   "note": "beat_roots are per-beat pitch classes (0.5 s); A appears only as a brief pickup in some G to D transitions",
+   "occurrences": [
+    {
+     "bar": 24,
+     "beat": 2,
+     "start_s": 47.12
+    },
+    {
+     "bar": 24,
+     "beat": 3,
+     "start_s": 47.62
+    },
+    {
+     "bar": 38,
+     "beat": 2,
+     "start_s": 75.12
+    },
+    {
+     "bar": 38,
+     "beat": 3,
+     "start_s": 75.62
+    },
+    {
+     "bar": 48,
+     "beat": 3,
+     "start_s": 95.62
+    },
+    {
+     "bar": 48,
+     "beat": 4,
+     "start_s": 96.12
+    },
+    {
+     "bar": 49,
+     "beat": 1,
+     "start_s": 96.62
+    },
+    {
+     "bar": 54,
+     "beat": 4,
+     "start_s": 108.11
+    },
+    {
+     "bar": 62,
+     "beat": 4,
+     "start_s": 124.11
+    },
+    {
+     "bar": 68,
+     "beat": 4,
+     "start_s": 136.11
+    },
+    {
+     "bar": 76,
+     "beat": 4,
+     "start_s": 152.11
+    }
+   ]
+  },
+  "bar_roots": [
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "B",
+   "B",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "B",
+   "B",
+   null,
+   null,
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "B",
+   "B",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D",
+   "B",
+   "B",
+   "E",
+   "E",
+   "G",
+   "G",
+   "D",
+   "D"
+  ],
+  "bars_per_cycle": 14,
+  "bars_without_root_claim": [
+   43,
+   44
+  ],
+  "bass_root_bar_counts": {
+   "B": 8,
+   "D": 18,
+   "E": 18,
+   "G": 18
+  },
+  "bass_roots_json_loop_summary": {
+   "B": 4,
+   "D": 8,
+   "E": 8,
+   "G": 8
+  },
+  "period_in_slots": 7,
+  "root_slot_sequence": [
+   "E",
+   "G",
+   "D",
+   "E",
+   "G",
+   "D",
+   "B",
+   "E",
+   "G",
+   "D",
+   "E",
+   "G",
+   "D",
+   "B",
+   "E",
+   "G",
+   "D",
+   "E",
+   "G",
+   "D",
+   "B",
+   "E",
+   "G",
+   "D",
+   "E",
+   "G",
+   "D",
+   "B",
+   "E",
+   "G",
+   "D"
+  ],
+  "slots": [
+   {
+    "bars": 2,
+    "first_bar": 15,
+    "root": "E",
+    "start_s": 28.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 17,
+    "root": "G",
+    "start_s": 32.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 19,
+    "root": "D",
+    "start_s": 36.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 21,
+    "root": "E",
+    "start_s": 40.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 23,
+    "root": "G",
+    "start_s": 44.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 25,
+    "root": "D",
+    "start_s": 48.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 27,
+    "root": "B",
+    "start_s": 52.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 29,
+    "root": "E",
+    "start_s": 56.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 31,
+    "root": "G",
+    "start_s": 60.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 33,
+    "root": "D",
+    "start_s": 64.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 35,
+    "root": "E",
+    "start_s": 68.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 37,
+    "root": "G",
+    "start_s": 72.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 39,
+    "root": "D",
+    "start_s": 76.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 41,
+    "root": "B",
+    "start_s": 80.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 43,
+    "root": null,
+    "start_s": 84.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 45,
+    "root": "E",
+    "start_s": 88.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 47,
+    "root": "G",
+    "start_s": 92.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 49,
+    "root": "D",
+    "start_s": 96.62
+   },
+   {
+    "bars": 2,
+    "first_bar": 51,
+    "root": "E",
+    "start_s": 100.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 53,
+    "root": "G",
+    "start_s": 104.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 55,
+    "root": "D",
+    "start_s": 108.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 57,
+    "root": "B",
+    "start_s": 112.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 59,
+    "root": "E",
+    "start_s": 116.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 61,
+    "root": "G",
+    "start_s": 120.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 63,
+    "root": "D",
+    "start_s": 124.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 65,
+    "root": "E",
+    "start_s": 128.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 67,
+    "root": "G",
+    "start_s": 132.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 69,
+    "root": "D",
+    "start_s": 136.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 71,
+    "root": "B",
+    "start_s": 140.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 73,
+    "root": "E",
+    "start_s": 144.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 75,
+    "root": "G",
+    "start_s": 148.61
+   },
+   {
+    "bars": 2,
+    "first_bar": 77,
+    "root": "D",
+    "start_s": 152.61
+   }
+  ],
+  "span_s": [
+   28.6,
+   156.6
+  ]
+ },
+ "item3_drum_stops": {
+  "note": "shorter off-beat gaps of 0.5 to 1.0 s occur throughout the groove and are not counted",
+  "reference_level_db_30_to_60s": -18.1,
+  "stops_at_least_1p5_s": [
+   {
+    "from_s": 28.72,
+    "length_s": 7.4,
+    "to_s": 36.12
+   },
+   {
+    "from_s": 36.67,
+    "length_s": 3.19,
+    "to_s": 39.86
+   },
+   {
+    "from_s": 40.92,
+    "length_s": 7.2,
+    "to_s": 48.12
+   },
+   {
+    "from_s": 48.65,
+    "length_s": 3.2,
+    "to_s": 51.85
+   },
+   {
+    "from_s": 52.59,
+    "length_s": 3.53,
+    "to_s": 56.12
+   },
+   {
+    "from_s": 56.74,
+    "length_s": 11.12,
+    "to_s": 67.86
+   },
+   {
+    "from_s": 68.96,
+    "length_s": 7.17,
+    "to_s": 76.13
+   },
+   {
+    "from_s": 76.51,
+    "length_s": 3.35,
+    "to_s": 79.86
+   },
+   {
+    "from_s": 80.5,
+    "length_s": 12.97,
+    "to_s": 93.47
+   },
+   {
+    "from_s": 93.83,
+    "length_s": 1.77,
+    "to_s": 95.6
+   },
+   {
+    "from_s": 96.47,
+    "length_s": 3.88,
+    "to_s": 100.35
+   },
+   {
+    "from_s": 101.35,
+    "length_s": 3.14,
+    "to_s": 104.49
+   },
+   {
+    "from_s": 104.85,
+    "length_s": 4.66,
+    "to_s": 109.51
+   },
+   {
+    "from_s": 109.82,
+    "length_s": 2.53,
+    "to_s": 112.35
+   },
+   {
+    "from_s": 113.79,
+    "length_s": 2.56,
+    "to_s": 116.35
+   },
+   {
+    "from_s": 117.8,
+    "length_s": 1.67,
+    "to_s": 119.47
+   },
+   {
+    "from_s": 119.81,
+    "length_s": 1.66,
+    "to_s": 121.47
+   },
+   {
+    "from_s": 121.82,
+    "length_s": 3.65,
+    "to_s": 125.47
+   },
+   {
+    "from_s": 125.78,
+    "length_s": 1.69,
+    "to_s": 127.47
+   },
+   {
+    "from_s": 128.84,
+    "length_s": 2.63,
+    "to_s": 131.47
+   },
+   {
+    "from_s": 131.82,
+    "length_s": 1.66,
+    "to_s": 133.48
+   },
+   {
+    "from_s": 133.81,
+    "length_s": 1.66,
+    "to_s": 135.47
+   },
+   {
+    "from_s": 135.81,
+    "length_s": 1.66,
+    "to_s": 137.47
+   },
+   {
+    "from_s": 137.82,
+    "length_s": 1.65,
+    "to_s": 139.47
+   },
+   {
+    "from_s": 139.81,
+    "length_s": 1.67,
+    "to_s": 141.48
+   },
+   {
+    "from_s": 141.79,
+    "length_s": 1.67,
+    "to_s": 143.46
+   },
+   {
+    "from_s": 144.84,
+    "length_s": 2.63,
+    "to_s": 147.47
+   },
+   {
+    "from_s": 147.8,
+    "length_s": 1.68,
+    "to_s": 149.48
+   },
+   {
+    "from_s": 149.83,
+    "length_s": 1.64,
+    "to_s": 151.47
+   },
+   {
+    "from_s": 151.79,
+    "length_s": 3.8,
+    "to_s": 155.59
+   }
+  ],
+  "threshold_db": -43.1,
+  "window_70_to_80s_drums": {
+   "70.0-80.0": {
+    "frames_above_threshold_pct": 6.4,
+    "max_db": -13.4,
+    "median_db": -68.2
+   }
+  }
+ },
+ "item4_first_voice_fragment": {
+  "faint_blip": {
+   "first_frame_above_-55_db_s": 202.17,
+   "peak_db_within_1s": -48.4
+  },
+  "first_frame_above_db": {
+   "-25": 208.59,
+   "-35": 207.27,
+   "-55": 202.17
+  },
+  "first_sustained_fragment_start_s": 208.59,
+  "last_narration_frame_above_-35_db_before_search_s": 155.82,
+  "per_0p25s_peak_db_201_to_210s": {
+   "201.0": -67.3,
+   "201.25": -77.6,
+   "201.5": -74.9,
+   "201.75": -76.5,
+   "202.0": -48.4,
+   "202.25": -72.7,
+   "202.5": -76.3,
+   "202.75": -74.3,
+   "203.0": -66.1,
+   "203.25": -74.6,
+   "203.5": -75.6,
+   "203.75": -60.5,
+   "204.0": -71.1,
+   "204.25": -65.3,
+   "204.5": -56.0,
+   "204.75": -46.0,
+   "205.0": -59.5,
+   "205.25": -72.2,
+   "205.5": -72.2,
+   "205.75": -74.9,
+   "206.0": -66.8,
+   "206.25": -64.9,
+   "206.5": -69.3,
+   "206.75": -74.9,
+   "207.0": -54.5,
+   "207.25": -30.7,
+   "207.5": -71.6,
+   "207.75": -72.5,
+   "208.0": -64.3,
+   "208.25": -68.4,
+   "208.5": -16.5,
+   "208.75": -20.8,
+   "209.0": -30.9,
+   "209.25": -37.0,
+   "209.5": -48.7,
+   "209.75": -58.4
+  },
+  "search_from_s": 157.0,
+  "vocals_stem_background_db": [
+   -80.0,
+   -76.8
+  ]
+ },
+ "method": "10 ms RMS envelope (dB re full scale) of stems/*.mp3; 'low' = more than 25 dB below the stem's pre-hole level (median of 1 s peak envelope, 70 s to hole start); run edges are the first/last 10 ms frame of the low run (gaps <= 0.3 s merged)",
+ "video": "video2"
+}

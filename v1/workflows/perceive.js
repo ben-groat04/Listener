@@ -40,6 +40,11 @@ Extracted material lives in v1/data/${vid}/:
 ${BLIND ? '' : '- v1/analysis/research/ may hold background research; use it.'}
 You cannot play audio; infer the music from spectrogram/features/stems/transcripts and say how confident you are.
 Write in clear English with British spelling. Be concrete and timestamped (m:ss). Separate OBSERVATION from INTERPRETATION and label speculation. Accuracy matters more than eloquence: never invent details you did not see.
+PICTURE-READING RULES (apply to every claim about frames; standing list in ${R}/v1/DO_NOT_CLAIM.md, read it first and do not make those claims):
+a) Open the frame at FULL SIZE (Read the individual f_NNNN.jpg, not only the contact sheet) before interpreting it. For each pivotal frame (a gesture, a look, a sign, a banner, a face, a turning point) write a two-field note: "literal: what is visible at full size" (colours, shapes, positions, legible print, no meaning) then "reading: your interpretation". Never merge the two fields.
+b) Quote only print that is legible at full size. Everything else goes in a list headed 'unread' (say where it is and what can be seen of it, e.g. 'unread: white capitals on a dark board, first word blurred'). Never complete or correct a name, number or word from research, context or transcripts.
+c) Tag every claim OBSERVED (seen or heard in the frames/data this session), INFERRED (follows from observations; say from which) or SPECULATED (a guess). Keep the tag on each claim, including in the summary.
+${BLIND ? 'd) Blind mode: you have no background; do not name an event, person or place unless print or speech you can read or hear says so, and tag any identification INFERRED with the clues.' : 'd) ANTI-PRIMING: context.md can bias your eyes. Check every visual claim against the frames BEFORE you consult context.md for it: first write what the pixels show, then, only if useful, compare with context.md. Tag any claim that comes from context rather than pixels as FROM-CONTEXT (with the context.md line), and never let it support an OBSERVED claim. If frames and context disagree, report the frames and flag the disagreement.'}
 Use the Read tool to view images. Write your output file with the Write tool, then return a short summary.`
 
 const pad = n => String(n).padStart(2, '0')
@@ -52,26 +57,29 @@ const watch = s => agent(`${common(s.vid)}
 
 YOUR JOB: be the eyes for ${s.vid}, seconds ${s.from}-${s.to} (${mmss(s.from)}-${mmss(s.to)}).
 1. Read v1/data/${s.vid}/contact_sheets/sheet_${pad(s.n)}.jpg.
-2. Read the keyframes for shots overlapping this range (see shots.json), and open 1 fps frames wherever something deserves a close look (faces, expressions, text, signs, crowds, objects, transitions). Look at at least 8 individual images.
+2. Read the keyframes for shots overlapping this range (see shots.json), and open 1 fps frames wherever something deserves a close look (faces, expressions, text, signs, crowds, objects, transitions). Look at at least 8 individual images, each at full size, following the PICTURE-READING RULES (literal then reading; legible print only, the rest 'unread'; OBSERVED/INFERRED/SPECULATED per claim; DO_NOT_CLAIM.md).
 3. Read the transcript lines and the per-second audio/visual features for this range.
 4. Write ${A}/perceive/${s.vid}/seg_${pad(s.n)}.md with sections:
    - Shot-by-shot description (time, what we see, framing/camera movement, archival vs newly shot, colour/b&w, texture, any editing effects)
-   - People (age, clothing, expression, action), places, objects, on-screen text (transcribe and translate it)
+   - Pivotal frames: for each, 'f_NNNN literal: ...' then 'reading: ...' (tagged OBSERVED/INFERRED/SPECULATED)
+   - People (clothing, posture, action; no age, sex or role unless clearly shown, see DO_NOT_CLAIM.md), places, objects, on-screen text (transcribe and translate only the legible print; list the rest under 'unread')
    - Sound in this stretch: words (original + translation), music energy, how picture and sound line up (cuts on beats? images echoing words? contrast?)
    - What a viewer feels here and why
    - Symbols, motifs, visual rhymes worth tracking across the film
-   - Open questions for the team`, { label: `watch:${s.vid}:${pad(s.n)}`, phase: 'Watch', model: 'sonnet', schema: SUM })
+   - Open questions for the team (include every 'unread' item and anything needing a frame at an exact time)`, { label: `watch:${s.vid}:${pad(s.n)}`, phase: 'Watch', model: 'sonnet', schema: SUM })
 
 const aux = VIDEOS.flatMap(({ vid }) => [
   ...(skip.has(`${vid}:music`) ? [] : [() => agent(`${common(vid)}
 
 YOUR JOB: be the ears (music) for ${vid}. Study audio_features/, stems/ if present, the beat/cut alignment and the transcripts.
 Run Python (librosa, numpy installed) on v1/data/${vid}/audio/song.wav to measure more: e.g. librosa.effects.hpss percussive vs harmonic energy per section, band energies (sub-bass, guitars/mids, cymbals), drops, silences, build-ups, resolve tempo octave ambiguity, key changes, stereo width (song.wav is stereo), dynamics. Save helper scripts under v1/scripts/agents/ and outputs under v1/data/${vid}/audio_features/extra/.
+Tag each claim OBSERVED/INFERRED/SPECULATED; do not make the claims in ${R}/v1/DO_NOT_CLAIM.md; if you open frames, record 'literal' before 'reading' and list illegible print as 'unread'.
 Write ${A}/perceive/${vid}/music.md: genre, instrumentation (with evidence), structure map with timestamps, emotional arc, how the music frames the words, moments a listener would remember. State confidence for each claim.`, { label: `listen:${vid}`, phase: 'Listen', model: 'sonnet', schema: SUM })]),
   ...(skip.has(`${vid}:words`) ? [] : [() => agent(`${common(vid)}
 
 YOUR JOB: the words for ${vid}. Build the best possible transcript of every spoken or sung word, with timestamps, original language and English.
 Compare all transcripts in v1/data/${vid}/lyrics/. Re-run faster-whisper yourself on specific short windows where needed (model "medium" or "large-v3", device cpu, compute_type int8; load audio with librosa.load(path, sr=16000, offset=..., duration=...) and pass the numpy array, because the PyAV path is broken). ${BLIND ? 'Detect the language yourself.' : 'Use language hints and initial_prompt with likely names from context.md.'} If v1/data/${vid}/stems_raw/htdemucs/song/vocals.wav exists, transcribe that too: it removes the music. The CPU is slow, so keep windows short.
+Any on-screen print you cite must be legible at full size in a frame you opened; otherwise list it as 'unread' and never complete names from context or research (see ${R}/v1/DO_NOT_CLAIM.md). Tag claims OBSERVED/INFERRED/SPECULATED.
 Write ${A}/perceive/${vid}/words.md: a clean timestamped table (time, original, English, confidence, notes), who seems to be speaking (narrator, reporter, interviewee, singer?), recording era and quality, and which phrases carry emotional or thematic weight.`, { label: `words:${vid}`, phase: 'Listen', model: 'sonnet', schema: SUM })]),
 ])
 

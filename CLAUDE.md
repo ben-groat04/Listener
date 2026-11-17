@@ -14,4 +14,4 @@ Key rules (short form):
 - English with British spelling. Never stop on "waiting on…"; leave a finished, useful state.
 - Shell: put `cd` on its own line before backgrounding jobs; filter noisy logs before reading.
 
-**Entry points:** to run the toolkit on a new video, follow `TOOLKIT.md` (repo root); `v1/README.md` ('Start here') is the map of results and layout.
+**Entry points:** `TOOLKIT.md` (repo root) is the single manual for running the toolkit on a new video (stages, workflows, usage policy); `v1/README.md` ('Start here') is the map of results and layout; `v1/RESUME.md` is for after a container reset; `v1/DO_NOT_CLAIM.md` lists readings the frames cannot support; `python3 v1/scripts/make_index.py --write` regenerates `v1/analysis/INDEX.md`.

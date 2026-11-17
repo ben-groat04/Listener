@@ -26,12 +26,21 @@ Per-segment viewer notes: ${OUT}/perceive/${vid}/ (seg_NN.md, music.md, words.md
 ${BLIND ? 'BLIND MODE: do NOT read any context.md, anything under v1/analysis/research/, or any non-blind analysis, and do NOT use the web. Judge only from what can be seen and heard in the data. If the perceive notes contain outside facts (artist names, historical facts), treat them as unverified hearsay.' : `Context: v1/data/${vid}/context.md and v1/analysis/research/*.md (web research, cited).`}
 Rules: British English. Accuracy over eloquence: never assert something you did not see in the frames or find in the data/sources; open frames yourself (Read tool) to check anything important; mark speculation. Use timestamps (m:ss).`
 
+// Cold-viewer base: only frames, data measurements and the music reading. No dossier, context.md, research or perceive notes.
+const coldBase = vid => `You are a cold viewer of videos/${vid}.mp4 (a music video) in repo ${R}. You have been told nothing about it.
+Allowed: ${OUT}/music/${vid}/music_reading.md (the checked music analysis, read it first), v1/data/${vid}/contact_sheets/, frames_1fps/, scenes/, sync/, audio_features/ and stems/ if present.
+FORBIDDEN: ${OUT}/${vid}/dossier.md, any context.md, anything under v1/analysis/research/, the perceive notes, any other analysis of this video, and the web. If you meet outside facts by accident, say so and set them aside.
+Rules: British English. Never assert what you did not see in a frame you opened (Read tool) or find in the music reading; separate what you see from what you infer; use timestamps (m:ss).`
+
+const NOTES = `Also write, in the first person and as a human viewer: (a) ATTENTION NOTES: moments where your attention was caught, drifted or snapped back (timestamps, and what the music or picture did); (b) BOREDOM NOTES: where you were bored, restless or checked out, and why (say plainly if there were none); (c) CHANGES OF MIND: each moment where something later made you revise an earlier impression (what you thought, what changed it, what you think now), or 'none' if you did not revise anything.`
+
 const PERSONAS = [
   ['first_timer', 'a first-time viewer with no special expertise: honest gut reactions, what grabs you, what bores or moves you, what you would tell a friend'],
   ['film_critic', 'a film and editing critic: shot choice, montage, rhythm of cuts against music, archive handling, colour, narrative construction, how the director builds feeling'],
   ['music_critic', 'a music critic and producer: arrangement, instrumentation, dynamics, structure, production choices, how music and voice/samples interact, genre lineage'],
   ['insider', BLIND ? 'a cultural reader who infers the world shown purely from visual and audio clues (era, place, language, customs), stating evidence for each inference' : 'a cultural insider and historian of the subject: what the events, places, words and images mean to people who lived or inherited them'],
   ['symbolist', 'a poet and symbolist: motifs, metaphors, visual rhymes, the emotional and philosophical subtext, what the piece is really about beneath the surface'],
+  ['cold_viewer', 'a cold viewer: you have been told nothing about this video. You see only the frames and the checked music reading, never the dossier, context.md, research notes or perceive notes, and you say what you perceive and feel as a first-time viewer would, labelling every inference as inference'],
   ['sceptic', 'a rigorous sceptic: check the others\' claims against the frames and data, flag over-reading, demand evidence, and offer the most down-to-earth reading'],
 ]
 
@@ -48,12 +57,15 @@ YOUR JOB: build the master dossier for ${vid}. Read every perceive note for this
 Write the file, return a summary.`, { label: `dossier:${vid}`, phase: 'Dossier', model: 'sonnet', schema: SUM })
 
   for (let r = 1; r <= ROUNDS; r++) {
-    await parallel(PERSONAS.map(([key, who]) => () => agent(`${base(vid)}
+    await parallel(PERSONAS.map(([key, who]) => () => agent(`${key === 'cold_viewer' ? coldBase(vid) : base(vid)}
 
-You are ${who}. You are on a panel discussing ${vid}. Read ${D}/dossier.md first and dip into the perceive notes and frames as needed.
+You are ${who}. You are on a panel discussing ${vid}. ${key === 'cold_viewer'
+  ? `Do NOT read the dossier. Work from the music reading and by opening frames and contact sheets yourself.${r > 1 ? ` From round 2 you may read the other panellists' statements in ${D}/panel/; when you do, mark every change of mind that comes from them as 'influenced by panel' rather than 'from the film', and say which fact you now know that you could not have seen.` : ''}`
+  : `Read ${D}/dossier.md first and dip into the perceive notes and frames as needed.${BLIND ? '' : ' INFORMED MODE: before reading context.md or the research notes, open frames and check the dossier\'s visual claims (colours, text, objects, gestures, people) yourself; then read context and say which of your impressions the context changed.'}`}
 ${r === 1
   ? `ROUND 1: give your own reading. Cover: what this piece is about, how it makes you feel and exactly which moments do it (timestamps), what is clever or weak, and 3 questions you want the other panellists to answer.`
-  : `ROUND ${r}: read ALL panellists' round ${r - 1} statements in ${D}/panel/round_${r - 1}/. Respond like a real discussion: answer the questions put to you, say where you agree, push back where you disagree (with evidence: open frames, quote data), concede points you got wrong, and develop the most interesting thread further. ${r === ROUNDS ? 'This is the final round: end with your settled reading in 5 sentences and the single moment that best captures the piece.' : 'End with 2 new questions for specific panellists.'}`}
+  : `ROUND ${r}: read ALL panellists' round ${r - 1} statements in ${D}/panel/round_${r - 1}/${key === 'cold_viewer' ? ' (see the rule above)' : ''}. Respond like a real discussion: answer the questions put to you, say where you agree, push back where you disagree (with evidence: open frames, quote data), concede points you got wrong, and develop the most interesting thread further. ${r === ROUNDS ? 'This is the final round: end with your settled reading in 5 sentences and the single moment that best captures the piece.' : 'End with 2 new questions for specific panellists.'}`}
+${NOTES}
 Write ${D}/panel/round_${r}/${key}.md (start with a heading naming yourself), then return a one-paragraph summary.`, { label: `r${r}:${key}:${vid}`, phase: 'Panel', model: 'sonnet', schema: SUM })))
     log(`${vid}: panel round ${r}/${ROUNDS} done`)
   }
@@ -68,6 +80,7 @@ YOUR JOB: moderator. Read ${D}/dossier.md and every file in ${D}/panel/ (all rou
 - Craft notes: editing, music, archive, structure.
 - Context that changes the reading${BLIND ? ' (as inferred from clues only)' : ''}.
 - The moments a human would remember.
+- What the cold viewer saw and felt without any context versus what the informed panel added (compare their attention, boredom and changes-of-mind notes).
 - What remains uncertain.
 Keep every claim traceable to the panel or data; do not add new facts. Return a summary.`, { label: `moderator:${vid}`, phase: 'Synthesis', model: 'sonnet', schema: SUM })
 

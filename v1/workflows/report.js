@@ -29,13 +29,26 @@ async function one(vid) {
   const writer = note => agent(`${src}${note}
 
 Write ${F} with the Write tool. This file is a PROJECT DELIVERABLE that lives in the repository (it is the task's output, not a report back to your caller), so writing it is exactly what is asked. ALSO return the full markdown in the report_markdown field so the workflow can save it if writing fails.
-The file is the final, human report on ${vid}, for an intelligent reader who wants to understand how this music and video FEEL and what they MEAN, the way a perceptive critic or a moved listener would put it.
+The file is the final, human report on ${vid}, for an intelligent reader who wants to understand how this music and video FEEL and what they MEAN, the way a perceptive critic or a moved listener would put it. It has TWO TIERS.
+
+TIER 1, the main text (felt prose, British English):
 - Lead with the music. Then how the picture works with it. Then meaning and context. Then the moments that stay with you.
-- Write flowing, vivid, precise prose (British English), not an evidence table. Keep timestamps (m:ss) so the reader can find moments.
-- Every factual statement must come from the sources; do not add facts. Drop the H/M/L/OBS/INT tags in the prose, but keep honesty: where something is uncertain, say so in plain words ("probably", "the measurements suggest").
-- Be clear that the music was "heard" through measurements (stems, spectrograms, chords, levels) and say once, briefly, what that means.
+- Flowing, vivid, precise prose, few numbers. No unit in the main text unless it changes the feel (say "very quiet", not "-40 dB"). Keep timestamps (m:ss) so the reader can find moments.
+- Include a clearly labelled first-person listener layer, "What it is like to listen", written as a listener would: where attention rises or drifts, physical sensation (chest, breath, posture), boredom or restlessness, and where the listener's mind changed. Tag the whole section as interpretation (e.g. "(interpretation)") and ground it in moments the sources actually support; do not invent events.
+- Include a short lineage / cultural-context passage if the sources contain one (influences, genre ancestry, historical or cultural setting); omit it if they do not. Never import context the sources lack.
+- Say the limitation ONCE, briefly: the music was "heard" through measurements (stems, spectrograms, chords, levels), not by ears. Do not repeat it elsewhere.
+- Where something is uncertain, say so in plain words ("almost certainly", "probably", "a fair guess", "no way to tell"). Do not put H/M/L/OBS/INT tags in the main prose.
+- No process narrative and no agent counts: nothing about how the analysis was run, which agents or passes were used, or how many.
+- Write the opening paragraph, "What this most probably is", LAST, after everything else is drafted, and place it first. It states in plain words what the piece is (kind of music, kind of film, what it is about) and includes any INFERRED identifications (genre, era, maker, place, instrument) each with plain-word confidence (for example "almost certainly", "probably", "possibly"), never stated as bare fact.
+- Length: main text 1,200-2,000 words (the appendix is extra and does not count).
+
+TIER 2, a final section headed exactly "Evidence appendix":
+- Start with a "Checked against" header line naming the source files and raw data the claims were checked against.
+- List the key claims behind Tier 1 (a compact table or list), each with its tag (H/M/L/OBS/INT, carried over from the sources), its source file, and the measurement or observation it rests on.
+- TAG RULE: a tag may not be lowered between the sources and this report (for example H to M, or OBS to INT) without a stated reason in the appendix row. Raising a tag needs a source that justifies it.
+- If shot or cut counts are used anywhere, add a "Detector caveats" line stating that they come from automatic detection, with its known misses and false cuts.
 - End with "Where to look next": links to the detailed files.
-- Length: 1,200-2,000 words.`, { label: `write:${vid}`, phase: 'Write', model: 'sonnet', schema: { type: 'object', properties: { summary: { type: 'string' }, report_markdown: { type: 'string' } }, required: ['summary', 'report_markdown'] } })
+- Every fact must come from the sources; do not add facts. Where sources disagree, say so in the appendix.`, { label: `write:${vid}`, phase: 'Write', model: 'sonnet', schema: { type: 'object', properties: { summary: { type: 'string' }, report_markdown: { type: 'string' } }, required: ['summary', 'report_markdown'] } })
   const w1 = await writer('')
   if (!(await exists([F], `exists:${vid}`))[0].ok && w1 && w1.report_markdown && w1.report_markdown.length > 500) {
     log(`${vid}: writer could not save REPORT.md; saving the returned markdown via a saver agent`)
@@ -47,10 +60,11 @@ The file is the final, human report on ${vid}, for an intelligent reader who wan
     if (!(await exists([F], `exists2:${vid}`))[0].ok) { log(`${vid}: REPORT.md still missing after retry; skipping cold read`); return { vid, error: 'REPORT.md not written' } }
   }
   const crit = await parallel([
-    ['feel', 'a music lover who has seen the video: does this capture how it actually feels? Where is it flat, robotic, over-hedged, or missing the obvious (the big riff, the emotional peak, the human story)?'],
-    ['truth', 'a strict fact-checker: check 12 concrete claims against the source files and raw data (v1/data/' + vid + '/). List anything unsupported or wrong.'],
+    ['feel', 'a music lover who has seen the video: does this capture how it actually feels? Where is it flat, robotic, over-hedged, or missing the obvious (the big riff, the emotional peak, the human story)? Is the first-person listener layer present, labelled as interpretation and credible?'],
+    ['truth', 'a strict fact-checker: check 12 concrete claims against the source files and raw data (v1/data/' + vid + '/). List anything unsupported or wrong. Also check that tagged claims survive: every H/M/L/OBS/INT tag in the appendix matches its source, none is lowered or raised without a stated reason, and INFERRED identifications in the opening paragraph carry plain-word confidence.'],
+    ['tiers', 'a structure critic: check tier separation. Tier 1 must be felt prose with few numbers, no stray units, no tags, no process narrative or agent counts, the limitation stated once, the opening paragraph consistent with the rest (written last), and a main text of 1,200-2,000 words. Tier 2 (Evidence appendix) must have a Checked against header, tagged claims with source file and measurement, and a detector caveats line if shot counts appear. Report any evidence leaking into Tier 1 or felt claims lacking an appendix row.'],
   ].map(([k, who]) => () => agent(`${src}\n\nYou are ${who}\nRead ${F}. Return a verdict and a list of concrete problems with suggested fixes.`, { label: `cold:${k}:${vid}`, phase: 'Cold read', model: 'sonnet', schema: CR })))
-  await agent(`${src}\n\nRevise ${F} using these cold-read notes (verify each against the sources before acting; ignore notes that are wrong): ${JSON.stringify(crit.filter(Boolean))}\nKeep it readable and true. Append nothing about the revision to the report itself; add one line to v1/PROGRESS.md.`, { label: `revise:${vid}`, phase: 'Revise', model: 'sonnet', schema: SUM })
+  await agent(`${src}\n\nRevise ${F} using these cold-read notes (verify each against the sources before acting; ignore notes that are wrong): ${JSON.stringify(crit.filter(Boolean))}\nKeep both tiers intact (felt Tier 1, tagged Evidence appendix) and the main text within 1,200-2,000 words. Keep it readable and true. Append nothing about the revision to the report itself; add one line to v1/PROGRESS.md.`, { label: `revise:${vid}`, phase: 'Revise', model: 'sonnet', schema: SUM })
   return vid
 }
 return await parallel(VIDS.map(v => () => one(v)))

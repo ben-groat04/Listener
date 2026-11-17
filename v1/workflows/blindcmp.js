@@ -1,23 +1,30 @@
 export const meta = {
   name: 'v1-blindcmp',
-  description: 'Compare blind (no context) and informed analyses of the same video: what the blind run got right, missed, or invented; lessons for the toolkit',
+  description: 'Final stage of a blind-first run: diff frozen blind claims against informed outputs (time and count claims especially), decide disagreements from raw data, report what blind got right, missed or invented; lessons for the toolkit',
   phases: [{ title: 'Compare' }, { title: 'Lessons' }],
 }
 // args: { videos: ['video1','video2'], root: optional }
+// Documented default FINAL stage of the blind pipeline: blind_chain.js calls it when args.compare_after is true (set it for every
+// blind-first run). It can also be run alone on any video that has blind and informed outputs.
+// When v1/data/<vid>/blind_frozen.md exists, its claims are diffed against the informed outputs (and informed_extension.md);
+// every disagreement on a time or count is decided from RAW DATA in v1/data/<vid>/, never from either analysis's say-so.
 const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
 const SUM = { type: 'object', properties: { summary: { type: 'string' }, lessons: { type: 'array', items: { type: 'string' } } }, required: ['summary', 'lessons'] }
 phase('Compare')
 const res = await parallel(args.videos.map(vid => () => agent(`Repo ${R}. Compare two independent analyses of ${vid}:
 - BLIND (no context, no research, no web): v1/analysis_blind/music/${vid}/music_reading.md, v1/analysis_blind/${vid}/interpretation.md (and dossier.md, perceive/).
-- INFORMED: v1/analysis/music/${vid}/music_reading.md, v1/analysis/${vid}/interpretation.md, v1/analysis/${vid}/REPORT.md if present.
-Check disputed points against raw data in v1/data/${vid}/ (frames, music_views, lyrics) rather than trusting either side.
+- FROZEN blind claims, if present: v1/data/${vid}/blind_frozen.md (read-only; never edit) and v1/data/${vid}/unknowns.md.
+- INFORMED: v1/analysis/music/${vid}/music_reading.md, v1/analysis/${vid}/interpretation.md, v1/analysis/${vid}/REPORT.md if present, and v1/data/${vid}/informed_extension.md if present.
+Step A, claim diff. If blind_frozen.md exists, list every frozen claim about a TIME (section starts/ends, moment positions) or a COUNT (number of shots, sections, people, repeats) and the matching informed claim. For each pair mark AGREE / DISAGREE / NOT COVERED. Decide every DISAGREE from raw data in v1/data/${vid}/ (scenes/shots.json, lyrics/ASR, audio_features, music_views, sync, frames), re-deriving the number from the file, and say which side the data supports, quoting the file and value. Raw data decides disagreements, not either analysis.
+Step B, check other disputed points against the raw data in v1/data/${vid}/ (frames, music_views, lyrics) rather than trusting either side.
 Write v1/analysis/blind_vs_informed/${vid}.md:
-1. What the blind run worked out on its own (subject, era, place, emotion, structure), with how it inferred each.
+1. What the blind run worked out on its own (subject, era, place, emotion, structure), with how it inferred each; and whether the frozen identification named the event the data makes near-certain.
 2. What it got wrong or invented, and why (which data misled it).
 3. What the informed run got wrong that the blind run got right (context can bias too).
-4. Music: do the two music readings agree on structure, instrumentation, peaks? Where they differ, which does the data support?
-5. Human feel: which reads more like a person responding to the work?
-6. Concrete lessons for the toolkit (prompts, tools, workflow steps) so blind runs on unknown videos get closer to the truth.
+4. Frozen-claim diff table (time and count claims) with the raw-data verdict for each disagreement.
+5. Music: do the two music readings agree on structure, instrumentation, peaks? Where they differ, which does the data support?
+6. Human feel: which reads more like a person responding to the work?
+7. Concrete lessons for the toolkit (prompts, tools, workflow steps) so blind runs on unknown videos get closer to the truth.
 British English. Return a summary and the lessons.`, { label: `blindcmp:${vid}`, phase: 'Compare', model: 'sonnet', schema: SUM })))
 phase('Lessons')
 await agent(`Repo ${R}. Read v1/analysis/blind_vs_informed/*.md and these lessons: ${JSON.stringify(res.filter(Boolean).flatMap(r => r.lessons))}

@@ -5,8 +5,8 @@
 ## Informed (`analysis/`)
 | Video | REPORT | interpretation | music_reading | perceive | compare |
 |---|---|---|---|---|---|
-| video1 | done: `analysis/video1/REPORT.md` | done: `analysis/video1/interpretation.md` | done: `analysis/music/video1/music_reading.md` | done: `analysis/perceive/video1/` (10 segments, `music.md`, `words.md`) | missing (no `analysis/compare/`) |
-| video2 | missing | done: `analysis/video2/interpretation.md` (s8 lists open uncertainties) | done: `analysis/music/video2/music_reading.md` | done: `analysis/perceive/video2/` (16 segments, `words.md`) | missing |
+| video1 | done: `analysis/video1/REPORT.md` | done: `analysis/video1/interpretation.md` | done: `analysis/music/video1/music_reading.md` | done: `analysis/perceive/video1/` (10 segments, `music.md`, `words.md`) | partial: `analysis/compare/elfstedentocht_diptych/round_1/` (music.md, picture.md; no comparison.md) |
+| video2 | missing | done: `analysis/video2/interpretation.md` (s8 lists open uncertainties) | done: `analysis/music/video2/music_reading.md` | done: `analysis/perceive/video2/` (16 segments, `words.md`) | partial: same diptych round_1 |
 | t_birdwalk | missing | missing | missing | missing (blind only) | n/a |
 | t_cshells_cshore | missing | missing | missing | missing | n/a |
 | t_dl_mirror | missing (no extracted data yet) | missing | missing | missing | n/a |
@@ -15,7 +15,7 @@
 | Video | blind interpretation | blind music_reading | blind perceive | Note |
 |---|---|---|---|---|
 | video1 | done: `analysis_blind/video1/interpretation.md` | done: `analysis_blind/music/video1/music_reading.md` | done: `analysis_blind/perceive/video1/` | blind-vs-informed comparison not written |
-| video2 | partial: only `dossier.md` and `panel/round_1` | done: `analysis_blind/music/video2/music_reading.md` | done: `analysis_blind/perceive/video2/` | blind interpretation unfinished |
+| video2 | partial: only `dossier.md` and `panel/round_1`-`round_2` | done: `analysis_blind/music/video2/music_reading.md` | done: `analysis_blind/perceive/video2/` | blind interpretation unfinished |
 | t_birdwalk | missing | missing | partial: `analysis_blind/perceive/t_birdwalk/` (10 segments, `music.md`; no `words.md`) | first blind test on an unknown video |
 | t_cshells_cshore | missing | missing | missing | data extracted only (`data/t_cshells_cshore/`; no music_views or CLAP yet) |
 | t_dl_mirror | missing | missing | missing | not extracted |

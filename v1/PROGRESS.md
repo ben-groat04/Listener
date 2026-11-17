@@ -5,8 +5,8 @@ Final pieces: REPORT > interpretation > music_reading (see [analysis/INDEX.md](a
 
 | Video | REPORT | interpretation | music_reading | blind equivalent | compare |
 |---|---|---|---|---|---|
-| video1 | done | done | done | done (interpretation, music_reading, perceive) | missing |
-| video2 | missing | done | done | partial (music_reading and perceive done; interpretation only dossier + panel round 1) | missing |
+| video1 | done | done | done | done (interpretation, music_reading, perceive) | partial (diptych round_1 only) |
+| video2 | missing | done | done | partial (music_reading and perceive done; interpretation only dossier + panel rounds 1-2) | partial (diptych round_1 only) |
 | t_birdwalk | missing | missing | missing | partial (blind perceive only) | n/a |
 | t_cshells_cshore | missing | missing | missing | missing (data extracted only) | n/a |
 | t_dl_mirror | missing | missing | missing | missing (not extracted) | n/a |
@@ -64,3 +64,13 @@ The diary below is **history**, kept as written (apart from marked corrections);
 - T5 (backlog E3/E5/E10): workflows no longer hard-code the repo path (root = args.root, else two dirs above __dirname, else cwd); bare video names accepted everywhere and dur auto-read from audio_features/summary.json; compare/report defaults generic; report.js preflights inputs and verifies/retries REPORT.md; blind_chain.js runs a context-term leak check (v1/analysis_blind/leak_check_<vid>.md). Syntax-checked only, not run.
 - T4 toolkit hardening: 00_setup.sh loops all videos in videos/, testvideos/, $VIDEO_DIR (any of mp4/mkv/mov/webm), installs v1/requirements.txt (torch, transformers, scipy, numpy added), checks ffmpeg, ends with an import smoke test; extract_all.sh uses pipefail, .done markers, audio-stream check, BLIND=1 (no context.md) and prints workflow args JSON; check_outputs.py gained --blind, stems_raw/window/frame-count/template-context checks; VID mandatory in 01,02,03,05,06_stem_one,07,08 (new scripts/_common.py); 06_stems.sh and run_chain.sh moved to scripts/legacy/, audio-LM script to scripts/experimental/10_audio_lm.py; 03_whisper.py documented and writes *_doubtful.txt. 04 and 09 untouched. NOTE: check_outputs now flags t_birdwalk (summary duration 188.2 s vs file 201.4 s, 201 frames) and t_cshells_cshore (incomplete).
 - T6 (backlog A1-A4, A7, C7, C8): entry docs rewritten (README 'Start here' + full layout, RESUME shortened with 2-minute autocommit, TOOLKIT quickstart), Current state table and INDEX.md added, CLAP figures corrected and moved under 'Weak model evidence' in both context.md files, CLAUDE.md links TOOLKIT.md, stray Start.txt (initial-commit placeholder 'start') deleted. No scripts or analysis prose changed.
+
+## 02:55 Cold read cr1 done (18 agents). Backlog: `logs/BACKLOG_cr1_r1.md` (~55 findings triaged; 6 fixed+verified this round).
+### Plan for the next window (after 06:40 reset)
+1. **Accuracy first:** fix backlog C1-C8 (refuted claims leaking into REPORT; CLAP misreport; absence claims need dense frames) and D1, D4 (re-run 09_sync.py for video2 with the correct bar grid before claiming "not rhythm-locked").
+2. **Music depth:** D2 functional harmony (bass-root loops, Roman numerals), D3 narrator as a musical voice (f0, syllable rate, phrase-vs-bar).
+3. **Human layer:** B4/B5 two-tier reports (plain felt prose + evidence appendix), B6 lineage/culture section.
+4. blindcmp.js on video1, video2, t_birdwalk; then LESSONS applied to prompts.
+5. Remaining test videos (t_cshells_cshore, t_dl_mirror) blind chains once extraction finishes.
+6. Docs: single entry point (A1-A4), current-state block, analysis INDEX.
+7. v2 cold start: a fresh session/agent runs TOOLKIT.md end-to-end on a test video to prove the toolkit works cold.

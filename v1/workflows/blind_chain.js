@@ -5,7 +5,7 @@ export const meta = {
 }
 // args: { root: optional repo root, videos: ['video1'] or [{vid, dur}] (dur auto-read when omitted), video_dir: 'videos' }
 // Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
-const R = (args && args.root) || (typeof __dirname !== 'undefined' ? __dirname.replace(/\/v1\/workflows$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))  // runtime may lack Node APIs: falls back to '.' (agent cwd = repo root)
+const R = (args && args.root) || '/home/user/Listener'  // Workflow scripts have no Node APIs (__dirname/process undefined); pass args.root for another checkout
 const W = `${R}/v1/workflows`
 const common = { blind: true, out: 'analysis_blind', video_dir: args.video_dir || 'videos', root: R }
 const VID_NAMES = (args.videos || []).map(v => (typeof v === 'string' ? v : v.vid))

@@ -1,0 +1,179 @@
+{
+ "video": "video1",
+ "script": "v1/scripts/agents/tempo_candidates.py",
+ "sr": 22050,
+ "hop": 256,
+ "method": "mean autocorrelation tempogram (win 384 frames, about 4.5 s) of onset strength, peaks 40-240 BPM merged within 6 per cent; rel_strength = autocorrelation relative to the strongest peak",
+ "drum_stem": {
+  "candidates": [
+   {
+    "bpm": 78.3,
+    "lag_s": 0.7663,
+    "strength": 0.6124,
+    "rel_strength": 1.0,
+    "rel_strength_at_half_tempo": 0.156,
+    "rel_strength_at_double_tempo": 0.958,
+    "half_or_double_of_other_candidate": [
+     156.61
+    ]
+   },
+   {
+    "bpm": 156.61,
+    "lag_s": 0.3831,
+    "strength": 0.5868,
+    "rel_strength": 0.958,
+    "rel_strength_at_half_tempo": 1.0,
+    "rel_strength_at_double_tempo": null,
+    "half_or_double_of_other_candidate": [
+     78.3
+    ]
+   },
+   {
+    "bpm": 103.36,
+    "lag_s": 0.5805,
+    "strength": 0.4404,
+    "rel_strength": 0.719,
+    "rel_strength_at_half_tempo": 0.577,
+    "rel_strength_at_double_tempo": 0.176,
+    "half_or_double_of_other_candidate": [
+     52.2
+    ]
+   },
+   {
+    "bpm": 62.26,
+    "lag_s": 0.9636,
+    "strength": 0.3677,
+    "rel_strength": 0.6,
+    "rel_strength_at_half_tempo": null,
+    "rel_strength_at_double_tempo": 0.155,
+    "half_or_double_of_other_candidate": []
+   },
+   {
+    "bpm": 52.2,
+    "lag_s": 1.1494,
+    "strength": 0.3535,
+    "rel_strength": 0.577,
+    "rel_strength_at_half_tempo": null,
+    "rel_strength_at_double_tempo": 0.719,
+    "half_or_double_of_other_candidate": [
+     103.36
+    ]
+   }
+  ],
+  "top_two": {
+   "top_bpm": 78.3,
+   "second_bpm": 156.61,
+   "second_rel_strength": 0.958,
+   "ambiguous_within_10pct": true,
+   "second_is_half_or_double_of_top": true
+  }
+ },
+ "full_mix": {
+  "candidates": [
+   {
+    "bpm": 156.61,
+    "lag_s": 0.3831,
+    "strength": 0.761,
+    "rel_strength": 1.0,
+    "rel_strength_at_half_tempo": 0.914,
+    "rel_strength_at_double_tempo": null,
+    "half_or_double_of_other_candidate": [
+     78.3
+    ]
+   },
+   {
+    "bpm": 78.3,
+    "lag_s": 0.7663,
+    "strength": 0.6959,
+    "rel_strength": 0.914,
+    "rel_strength_at_half_tempo": 0.296,
+    "rel_strength_at_double_tempo": 1.0,
+    "half_or_double_of_other_candidate": [
+     156.61
+    ]
+   },
+   {
+    "bpm": 103.36,
+    "lag_s": 0.5805,
+    "strength": 0.6553,
+    "rel_strength": 0.861,
+    "rel_strength_at_half_tempo": 0.633,
+    "rel_strength_at_double_tempo": 0.533,
+    "half_or_double_of_other_candidate": [
+     52.2
+    ]
+   },
+   {
+    "bpm": 62.26,
+    "lag_s": 0.9636,
+    "strength": 0.5384,
+    "rel_strength": 0.708,
+    "rel_strength_at_half_tempo": null,
+    "rel_strength_at_double_tempo": 0.505,
+    "half_or_double_of_other_candidate": []
+   },
+   {
+    "bpm": 52.2,
+    "lag_s": 1.1494,
+    "strength": 0.482,
+    "rel_strength": 0.633,
+    "rel_strength_at_half_tempo": null,
+    "rel_strength_at_double_tempo": 0.861,
+    "half_or_double_of_other_candidate": [
+     103.36
+    ]
+   }
+  ],
+  "top_two": {
+   "top_bpm": 156.61,
+   "second_bpm": 78.3,
+   "second_rel_strength": 0.914,
+   "ambiguous_within_10pct": true,
+   "second_is_half_or_double_of_top": true
+  }
+ },
+ "kick": {
+  "n_onsets": 131,
+  "median_ioi_s": 0.5805,
+  "implied_bpm": 103.36,
+  "ioi_p25_p75_s": [
+   0.3831,
+   0.7677
+  ],
+  "nearest_drum_candidate_bpm": 103.36
+ },
+ "bar_phase": {
+  "period_s": 0.5805,
+  "beat_offset_s": 0.264,
+  "n_kicks_on_grid": 20,
+  "n_kicks": 131,
+  "low_band_weight_by_beat_index": [
+   966.25,
+   407.04,
+   307.84,
+   422.58
+  ],
+  "strongest_beat_index_0based": 0,
+  "strongest_over_second": 2.287,
+  "share_of_strongest": 0.459,
+  "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+  "grid_source": "median kick inter-onset interval",
+  "half_time_grid": {
+   "period_s": 1.161,
+   "beat_offset_s": 0.714,
+   "n_kicks_on_grid": 14,
+   "n_kicks": 131,
+   "low_band_weight_by_beat_index": [
+    320.23,
+    659.51,
+    112.78,
+    436.0
+   ],
+   "strongest_beat_index_0based": 1,
+   "strongest_over_second": 1.513,
+   "share_of_strongest": 0.431,
+   "note": "Beat index counted from the grid offset; the strongest beat is taken as the downbeat (assumption; bar lines could sit a whole beat away).",
+   "grid_source": "twice the median kick IOI (kick on every second beat of the main grid)"
+  }
+ }
+}

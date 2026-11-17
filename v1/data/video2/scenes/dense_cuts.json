@@ -6,6 +6,8 @@
  "n_cuts": 222,
  "n_missed_strong_or_medium": 98,
  "n_missed_by_shots_json": 148,
+ "n_likely_cuts": 72,
+ "n_likely_cuts_missed_by_shots_json": 26,
  "cuts": [
   {
    "t": 0.08,
@@ -13,6 +15,8 @@
    "score": 34.7,
    "diff": 23.44,
    "hist": 0.571,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 1.72
@@ -23,6 +27,8 @@
    "score": 29.9,
    "diff": 24.18,
    "hist": 0.445,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 1.72
@@ -33,6 +39,8 @@
    "score": 11.0,
    "diff": 20.16,
    "hist": 0.163,
+   "struct_corr": 0.91,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 1.72
@@ -43,6 +51,8 @@
    "score": 24.4,
    "diff": 52.53,
    "hist": 0.395,
+   "struct_corr": 0.47,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 1.72
@@ -53,6 +63,8 @@
    "score": 9.2,
    "diff": 18.19,
    "hist": 0.254,
+   "struct_corr": 0.75,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 1.72
@@ -63,6 +75,8 @@
    "score": 3.9,
    "diff": 18.79,
    "hist": 0.016,
+   "struct_corr": 0.65,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 1.72
@@ -73,6 +87,8 @@
    "score": 3.1,
    "diff": 15.81,
    "hist": 0.016,
+   "struct_corr": 0.75,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 1.72
@@ -83,6 +99,8 @@
    "score": 3.3,
    "diff": 9.42,
    "hist": 0.046,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 7.88
@@ -93,6 +111,8 @@
    "score": 36.5,
    "diff": 52.13,
    "hist": 0.647,
+   "struct_corr": 0.2,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 7.88
@@ -103,6 +123,8 @@
    "score": 49.7,
    "diff": 116.65,
    "hist": 0.809,
+   "struct_corr": 0.04,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 12.16
@@ -113,6 +135,8 @@
    "score": 7.5,
    "diff": 31.53,
    "hist": 0.326,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -123,6 +147,8 @@
    "score": 15.0,
    "diff": 47.95,
    "hist": 0.503,
+   "struct_corr": 0.85,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -133,6 +159,8 @@
    "score": 3.1,
    "diff": 19.77,
    "hist": 0.016,
+   "struct_corr": 0.84,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -143,6 +171,8 @@
    "score": 3.4,
    "diff": 14.81,
    "hist": 0.008,
+   "struct_corr": 0.9,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -153,6 +183,8 @@
    "score": 3.6,
    "diff": 13.63,
    "hist": 0.009,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -163,6 +195,8 @@
    "score": 5.9,
    "diff": 14.48,
    "hist": 0.017,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -173,6 +207,8 @@
    "score": 3.4,
    "diff": 12.71,
    "hist": 0.013,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -183,6 +219,8 @@
    "score": 4.3,
    "diff": 12.83,
    "hist": 0.026,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -193,6 +231,8 @@
    "score": 3.2,
    "diff": 12.67,
    "hist": 0.027,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -203,6 +243,8 @@
    "score": 3.7,
    "diff": 16.62,
    "hist": 0.02,
+   "struct_corr": 0.88,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -213,6 +255,8 @@
    "score": 3.3,
    "diff": 14.66,
    "hist": 0.013,
+   "struct_corr": 0.91,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 24.16
@@ -223,6 +267,8 @@
    "score": 3.3,
    "diff": 14.08,
    "hist": 0.01,
+   "struct_corr": 0.91,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": true,
    "nearest_shots_json": 24.16
@@ -233,6 +279,8 @@
    "score": 32.8,
    "diff": 40.67,
    "hist": 0.513,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 24.16
@@ -243,6 +291,8 @@
    "score": 42.7,
    "diff": 63.2,
    "hist": 0.603,
+   "struct_corr": 0.35,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 28.08
@@ -253,6 +303,8 @@
    "score": 14.1,
    "diff": 94.86,
    "hist": 0.693,
+   "struct_corr": 0.27,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 28.08
@@ -263,6 +315,8 @@
    "score": 4.1,
    "diff": 60.23,
    "hist": 0.011,
+   "struct_corr": 0.36,
+   "likely_cut": true,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 28.08
@@ -273,6 +327,8 @@
    "score": 25.2,
    "diff": 116.6,
    "hist": 0.675,
+   "struct_corr": 0.02,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 33.72
@@ -283,6 +339,8 @@
    "score": 3.3,
    "diff": 4.8,
    "hist": 0.074,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 36.04
@@ -293,6 +351,8 @@
    "score": 48.2,
    "diff": 57.12,
    "hist": 0.734,
+   "struct_corr": 0.25,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 36.04
@@ -303,6 +363,8 @@
    "score": 5.4,
    "diff": 5.12,
    "hist": 0.143,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 36.04
@@ -313,6 +375,8 @@
    "score": 3.0,
    "diff": 2.52,
    "hist": 0.108,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 36.04
@@ -323,6 +387,8 @@
    "score": 4.8,
    "diff": 5.99,
    "hist": 0.144,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 37.6
@@ -333,6 +399,8 @@
    "score": 8.5,
    "diff": 8.3,
    "hist": 0.228,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 37.6
@@ -343,6 +411,8 @@
    "score": 34.3,
    "diff": 53.02,
    "hist": 0.59,
+   "struct_corr": 0.91,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 37.6
@@ -353,6 +423,8 @@
    "score": 10.4,
    "diff": 8.12,
    "hist": 0.248,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 37.6
@@ -363,6 +435,8 @@
    "score": 6.6,
    "diff": 7.34,
    "hist": 0.153,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 40.04
@@ -373,6 +447,8 @@
    "score": 4.6,
    "diff": 11.18,
    "hist": 0.121,
+   "struct_corr": 0.95,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 40.04
@@ -383,6 +459,8 @@
    "score": 26.1,
    "diff": 62.41,
    "hist": 0.56,
+   "struct_corr": 0.61,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 40.04
@@ -393,6 +471,8 @@
    "score": 19.6,
    "diff": 70.12,
    "hist": 0.652,
+   "struct_corr": 0.39,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 41.12
@@ -403,6 +483,8 @@
    "score": 31.8,
    "diff": 127.25,
    "hist": 0.886,
+   "struct_corr": 0.24,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 43.12
@@ -413,6 +495,8 @@
    "score": 19.0,
    "diff": 79.11,
    "hist": 0.44,
+   "struct_corr": 0.01,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 46.32
@@ -423,6 +507,8 @@
    "score": 23.7,
    "diff": 99.37,
    "hist": 0.748,
+   "struct_corr": 0.22,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 48.12
@@ -433,6 +519,8 @@
    "score": 3.7,
    "diff": 4.77,
    "hist": 0.046,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 53.24
@@ -443,6 +531,8 @@
    "score": 3.2,
    "diff": 4.51,
    "hist": 0.042,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 53.24
@@ -453,6 +543,8 @@
    "score": 22.8,
    "diff": 61.31,
    "hist": 0.614,
+   "struct_corr": 0.64,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 53.24
@@ -463,6 +555,8 @@
    "score": 3.6,
    "diff": 8.73,
    "hist": 0.125,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 56.84
@@ -473,6 +567,8 @@
    "score": 18.8,
    "diff": 52.6,
    "hist": 0.52,
+   "struct_corr": 0.91,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 56.84
@@ -483,6 +579,8 @@
    "score": 3.3,
    "diff": 10.14,
    "hist": 0.149,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 56.84
@@ -493,6 +591,8 @@
    "score": 5.3,
    "diff": 10.43,
    "hist": 0.236,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 56.84
@@ -503,6 +603,8 @@
    "score": 21.5,
    "diff": 72.56,
    "hist": 0.465,
+   "struct_corr": 0.24,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 59.56
@@ -513,6 +615,8 @@
    "score": 44.3,
    "diff": 187.84,
    "hist": 0.957,
+   "struct_corr": 0.22,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 61.68
@@ -523,6 +627,8 @@
    "score": 4.1,
    "diff": 8.69,
    "hist": 0.086,
+   "struct_corr": 0.87,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 61.68
@@ -533,6 +639,8 @@
    "score": 16.2,
    "diff": 19.01,
    "hist": 0.144,
+   "struct_corr": 0.7,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 69.2
@@ -543,6 +651,8 @@
    "score": 58.0,
    "diff": 41.5,
    "hist": 0.719,
+   "struct_corr": 0.89,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 69.2
@@ -553,6 +663,8 @@
    "score": 61.8,
    "diff": 47.29,
    "hist": 0.693,
+   "struct_corr": 0.7,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 69.2
@@ -563,6 +675,8 @@
    "score": 53.2,
    "diff": 33.13,
    "hist": 0.588,
+   "struct_corr": 0.9,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 69.2
@@ -573,6 +687,8 @@
    "score": 9.5,
    "diff": 4.48,
    "hist": 0.208,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 69.2
@@ -583,6 +699,8 @@
    "score": 39.6,
    "diff": 70.65,
    "hist": 0.917,
+   "struct_corr": 0.33,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 80.04
@@ -593,6 +711,8 @@
    "score": 21.0,
    "diff": 16.22,
    "hist": 0.758,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 80.04
@@ -603,6 +723,8 @@
    "score": 7.2,
    "diff": 22.24,
    "hist": 0.404,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 80.04
@@ -613,6 +735,8 @@
    "score": 20.7,
    "diff": 41.15,
    "hist": 0.644,
+   "struct_corr": 0.76,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -623,6 +747,8 @@
    "score": 4.5,
    "diff": 11.5,
    "hist": 0.283,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -633,6 +759,8 @@
    "score": 4.8,
    "diff": 14.38,
    "hist": 0.323,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 82.12
@@ -643,6 +771,8 @@
    "score": 11.6,
    "diff": 16.29,
    "hist": 0.789,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 82.12
@@ -653,6 +783,8 @@
    "score": 5.0,
    "diff": 6.16,
    "hist": 0.203,
+   "struct_corr": 0.97,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -663,6 +795,8 @@
    "score": 7.3,
    "diff": 7.27,
    "hist": 0.2,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -673,6 +807,8 @@
    "score": 5.6,
    "diff": 4.96,
    "hist": 0.107,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -683,6 +819,8 @@
    "score": 7.7,
    "diff": 5.6,
    "hist": 0.099,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -693,6 +831,8 @@
    "score": 10.2,
    "diff": 5.04,
    "hist": 0.115,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -703,6 +843,8 @@
    "score": 20.8,
    "diff": 8.94,
    "hist": 0.226,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -713,6 +855,8 @@
    "score": 4.3,
    "diff": 2.53,
    "hist": 0.052,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -723,6 +867,8 @@
    "score": 4.4,
    "diff": 2.81,
    "hist": 0.05,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -733,6 +879,8 @@
    "score": 5.3,
    "diff": 2.06,
    "hist": 0.07,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -743,6 +891,8 @@
    "score": 9.6,
    "diff": 5.89,
    "hist": 0.104,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 82.12
@@ -753,6 +903,8 @@
    "score": 3.5,
    "diff": 1.89,
    "hist": 0.046,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 90.28
@@ -763,6 +915,8 @@
    "score": 4.3,
    "diff": 2.64,
    "hist": 0.053,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 90.28
@@ -773,6 +927,8 @@
    "score": 13.7,
    "diff": 47.17,
    "hist": 0.663,
+   "struct_corr": 0.59,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 90.28
@@ -783,6 +939,8 @@
    "score": 3.2,
    "diff": 12.36,
    "hist": 0.261,
+   "struct_corr": 0.95,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 90.28
@@ -793,6 +951,8 @@
    "score": 3.7,
    "diff": 14.65,
    "hist": 0.264,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 90.28
@@ -803,6 +963,8 @@
    "score": 15.3,
    "diff": 56.6,
    "hist": 0.503,
+   "struct_corr": 0.58,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 90.28
@@ -813,6 +975,8 @@
    "score": 3.4,
    "diff": 34.28,
    "hist": 0.07,
+   "struct_corr": 0.59,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": true,
    "nearest_shots_json": 91.36
@@ -823,6 +987,8 @@
    "score": 13.1,
    "diff": 66.27,
    "hist": 0.269,
+   "struct_corr": 0.29,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 93.44
@@ -833,6 +999,8 @@
    "score": 3.3,
    "diff": 19.18,
    "hist": 0.055,
+   "struct_corr": 0.88,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 93.44
@@ -843,6 +1011,8 @@
    "score": 4.8,
    "diff": 7.88,
    "hist": 0.28,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 97.68
@@ -853,6 +1023,8 @@
    "score": 26.0,
    "diff": 85.56,
    "hist": 0.468,
+   "struct_corr": -0.35,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 97.68
@@ -863,6 +1035,8 @@
    "score": 3.2,
    "diff": 4.05,
    "hist": 0.098,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 97.68
@@ -873,6 +1047,8 @@
    "score": 3.3,
    "diff": 4.16,
    "hist": 0.103,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 100.56
@@ -883,6 +1059,8 @@
    "score": 22.6,
    "diff": 49.14,
    "hist": 0.373,
+   "struct_corr": 0.13,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 100.56
@@ -893,6 +1071,8 @@
    "score": 3.8,
    "diff": 8.07,
    "hist": 0.15,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 102.2
@@ -903,6 +1083,8 @@
    "score": 4.1,
    "diff": 7.9,
    "hist": 0.171,
+   "struct_corr": 0.96,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 102.2
@@ -913,6 +1095,8 @@
    "score": 11.4,
    "diff": 8.73,
    "hist": 0.654,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 102.2
@@ -923,6 +1107,8 @@
    "score": 4.0,
    "diff": 7.81,
    "hist": 0.237,
+   "struct_corr": 0.96,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 103.56
@@ -933,6 +1119,8 @@
    "score": 16.1,
    "diff": 40.66,
    "hist": 0.469,
+   "struct_corr": 0.63,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 103.56
@@ -943,6 +1131,8 @@
    "score": 6.8,
    "diff": 6.73,
    "hist": 0.351,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 103.56
@@ -953,6 +1143,8 @@
    "score": 4.7,
    "diff": 8.26,
    "hist": 0.203,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 103.56
@@ -963,6 +1155,8 @@
    "score": 3.6,
    "diff": 7.04,
    "hist": 0.211,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 103.56
@@ -973,6 +1167,8 @@
    "score": 5.2,
    "diff": 6.17,
    "hist": 0.24,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 103.56
@@ -983,6 +1179,8 @@
    "score": 3.4,
    "diff": 6.77,
    "hist": 0.142,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 103.56
@@ -993,6 +1191,8 @@
    "score": 7.9,
    "diff": 8.1,
    "hist": 0.278,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1003,6 +1203,8 @@
    "score": 13.6,
    "diff": 18.11,
    "hist": 0.489,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 110.72
@@ -1013,6 +1215,8 @@
    "score": 16.3,
    "diff": 38.63,
    "hist": 0.426,
+   "struct_corr": 0.88,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 110.72
@@ -1023,6 +1227,8 @@
    "score": 15.6,
    "diff": 50.86,
    "hist": 0.376,
+   "struct_corr": 0.42,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1033,6 +1239,8 @@
    "score": 6.3,
    "diff": 12.03,
    "hist": 0.337,
+   "struct_corr": 0.96,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1043,6 +1251,8 @@
    "score": 18.4,
    "diff": 34.22,
    "hist": 0.52,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1053,6 +1263,8 @@
    "score": 25.7,
    "diff": 33.64,
    "hist": 0.486,
+   "struct_corr": 0.85,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1063,6 +1275,8 @@
    "score": 4.1,
    "diff": 11.48,
    "hist": 0.067,
+   "struct_corr": 0.85,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1073,6 +1287,8 @@
    "score": 3.2,
    "diff": 10.82,
    "hist": 0.044,
+   "struct_corr": 0.85,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1083,6 +1299,8 @@
    "score": 3.9,
    "diff": 6.65,
    "hist": 0.09,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 110.72
@@ -1093,6 +1311,8 @@
    "score": 11.4,
    "diff": 8.24,
    "hist": 0.17,
+   "struct_corr": 0.97,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 124.36
@@ -1103,6 +1323,8 @@
    "score": 51.3,
    "diff": 35.2,
    "hist": 0.528,
+   "struct_corr": 0.52,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 124.36
@@ -1113,6 +1335,8 @@
    "score": 30.9,
    "diff": 15.27,
    "hist": 0.23,
+   "struct_corr": 0.81,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 124.36
@@ -1123,6 +1347,8 @@
    "score": 5.0,
    "diff": 17.0,
    "hist": 0.15,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 124.36
@@ -1133,6 +1359,8 @@
    "score": 12.5,
    "diff": 75.64,
    "hist": 0.575,
+   "struct_corr": 0.46,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 124.36
@@ -1143,6 +1371,8 @@
    "score": 3.0,
    "diff": 18.31,
    "hist": 0.185,
+   "struct_corr": 0.83,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1153,6 +1383,8 @@
    "score": 7.9,
    "diff": 40.07,
    "hist": 0.376,
+   "struct_corr": 0.37,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 127.72
@@ -1163,6 +1395,8 @@
    "score": 3.5,
    "diff": 13.71,
    "hist": 0.298,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1173,6 +1407,8 @@
    "score": 8.4,
    "diff": 31.63,
    "hist": 0.52,
+   "struct_corr": 0.64,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1183,6 +1419,8 @@
    "score": 3.6,
    "diff": 4.78,
    "hist": 0.159,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1193,6 +1431,8 @@
    "score": 3.5,
    "diff": 3.73,
    "hist": 0.09,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1203,6 +1443,8 @@
    "score": 4.2,
    "diff": 5.34,
    "hist": 0.092,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1213,6 +1455,8 @@
    "score": 6.0,
    "diff": 5.59,
    "hist": 0.249,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1223,6 +1467,8 @@
    "score": 4.4,
    "diff": 3.19,
    "hist": 0.245,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1233,6 +1479,8 @@
    "score": 23.5,
    "diff": 25.66,
    "hist": 0.725,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1243,6 +1491,8 @@
    "score": 3.8,
    "diff": 5.89,
    "hist": 0.18,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1253,6 +1503,8 @@
    "score": 4.3,
    "diff": 4.93,
    "hist": 0.184,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1263,6 +1515,8 @@
    "score": 3.5,
    "diff": 3.01,
    "hist": 0.171,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1273,6 +1527,8 @@
    "score": 30.2,
    "diff": 25.92,
    "hist": 0.828,
+   "struct_corr": 0.78,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1283,6 +1539,8 @@
    "score": 40.5,
    "diff": 42.51,
    "hist": 0.685,
+   "struct_corr": 0.97,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 127.72
@@ -1293,6 +1551,8 @@
    "score": 5.0,
    "diff": 3.89,
    "hist": 0.085,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1303,6 +1563,8 @@
    "score": 6.8,
    "diff": 4.01,
    "hist": 0.135,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1313,6 +1575,8 @@
    "score": 21.8,
    "diff": 20.16,
    "hist": 0.3,
+   "struct_corr": 0.87,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1323,6 +1587,8 @@
    "score": 3.5,
    "diff": 4.45,
    "hist": 0.063,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1333,6 +1599,8 @@
    "score": 4.8,
    "diff": 5.01,
    "hist": 0.084,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1343,6 +1611,8 @@
    "score": 12.2,
    "diff": 14.41,
    "hist": 0.198,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1353,6 +1623,8 @@
    "score": 3.8,
    "diff": 9.21,
    "hist": 0.053,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1363,6 +1635,8 @@
    "score": 3.3,
    "diff": 7.15,
    "hist": 0.072,
+   "struct_corr": 0.97,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1373,6 +1647,8 @@
    "score": 17.9,
    "diff": 56.11,
    "hist": 0.422,
+   "struct_corr": 0.53,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 143.28
@@ -1383,6 +1659,8 @@
    "score": 49.2,
    "diff": 35.32,
    "hist": 0.604,
+   "struct_corr": 0.46,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 143.28
@@ -1393,6 +1671,8 @@
    "score": 8.9,
    "diff": 10.17,
    "hist": 0.133,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 149.0
@@ -1403,6 +1683,8 @@
    "score": 5.9,
    "diff": 3.5,
    "hist": 0.138,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 149.0
@@ -1413,6 +1695,8 @@
    "score": 23.0,
    "diff": 18.38,
    "hist": 0.436,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 149.0
@@ -1423,6 +1707,8 @@
    "score": 32.9,
    "diff": 27.86,
    "hist": 0.631,
+   "struct_corr": 0.87,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 149.0
@@ -1433,6 +1719,8 @@
    "score": 36.9,
    "diff": 15.01,
    "hist": 0.845,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 149.0
@@ -1443,6 +1731,8 @@
    "score": 9.1,
    "diff": 4.67,
    "hist": 0.251,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 149.0
@@ -1453,6 +1743,8 @@
    "score": 4.9,
    "diff": 6.92,
    "hist": 0.131,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 149.0
@@ -1463,6 +1755,8 @@
    "score": 11.0,
    "diff": 5.79,
    "hist": 0.258,
+   "struct_corr": 0.99,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 153.68
@@ -1473,6 +1767,8 @@
    "score": 4.3,
    "diff": 5.67,
    "hist": 0.166,
+   "struct_corr": 0.98,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 153.68
@@ -1483,6 +1779,8 @@
    "score": 6.4,
    "diff": 9.09,
    "hist": 0.232,
+   "struct_corr": 0.95,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 153.68
@@ -1493,6 +1791,8 @@
    "score": 20.0,
    "diff": 17.04,
    "hist": 0.76,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 153.68
@@ -1503,6 +1803,8 @@
    "score": 19.8,
    "diff": 20.19,
    "hist": 0.768,
+   "struct_corr": 0.89,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 153.68
@@ -1513,6 +1815,8 @@
    "score": 5.7,
    "diff": 6.33,
    "hist": 0.294,
+   "struct_corr": 0.97,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 153.68
@@ -1523,6 +1827,8 @@
    "score": 3.1,
    "diff": 7.54,
    "hist": 0.173,
+   "struct_corr": 0.97,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 153.68
@@ -1533,6 +1839,8 @@
    "score": 3.4,
    "diff": 6.07,
    "hist": 0.142,
+   "struct_corr": 0.96,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 156.6
@@ -1543,6 +1851,8 @@
    "score": 9.1,
    "diff": 10.73,
    "hist": 0.261,
+   "struct_corr": 0.96,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 156.6
@@ -1553,6 +1863,8 @@
    "score": 32.7,
    "diff": 36.15,
    "hist": 0.799,
+   "struct_corr": 1.0,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 156.6
@@ -1563,6 +1875,8 @@
    "score": 22.4,
    "diff": 40.86,
    "hist": 0.788,
+   "struct_corr": 0.9,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 158.52
@@ -1573,6 +1887,8 @@
    "score": 21.9,
    "diff": 35.27,
    "hist": 0.541,
+   "struct_corr": 0.47,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 164.44
@@ -1583,6 +1899,8 @@
    "score": 8.8,
    "diff": 21.69,
    "hist": 0.058,
+   "struct_corr": 0.7,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": true,
    "nearest_shots_json": 166.44
@@ -1593,6 +1911,8 @@
    "score": 40.2,
    "diff": 45.05,
    "hist": 0.535,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 166.44
@@ -1603,6 +1923,8 @@
    "score": 29.5,
    "diff": 61.26,
    "hist": 0.555,
+   "struct_corr": 0.31,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 168.56
@@ -1613,6 +1935,8 @@
    "score": 3.3,
    "diff": 15.69,
    "hist": 0.016,
+   "struct_corr": 0.92,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 168.56
@@ -1623,6 +1947,8 @@
    "score": 3.5,
    "diff": 19.54,
    "hist": 0.031,
+   "struct_corr": 0.86,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 168.56
@@ -1633,6 +1959,8 @@
    "score": 26.1,
    "diff": 112.77,
    "hist": 0.569,
+   "struct_corr": -0.11,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 168.56
@@ -1643,6 +1971,8 @@
    "score": 12.0,
    "diff": 69.26,
    "hist": 0.328,
+   "struct_corr": 0.37,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 173.96
@@ -1653,6 +1983,8 @@
    "score": 3.3,
    "diff": 33.56,
    "hist": 0.183,
+   "struct_corr": 0.87,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 176.88
@@ -1663,6 +1995,8 @@
    "score": 12.1,
    "diff": 80.03,
    "hist": 0.584,
+   "struct_corr": 0.49,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 176.88
@@ -1673,6 +2007,8 @@
    "score": 5.8,
    "diff": 22.92,
    "hist": 0.4,
+   "struct_corr": 0.95,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 180.52
@@ -1683,6 +2019,8 @@
    "score": 11.4,
    "diff": 38.66,
    "hist": 0.497,
+   "struct_corr": 0.74,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 180.52
@@ -1693,6 +2031,8 @@
    "score": 11.2,
    "diff": 33.23,
    "hist": 0.314,
+   "struct_corr": 0.63,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 180.52
@@ -1703,6 +2043,8 @@
    "score": 3.7,
    "diff": 9.26,
    "hist": 0.047,
+   "struct_corr": 0.95,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 180.52
@@ -1713,6 +2055,8 @@
    "score": 8.1,
    "diff": 71.95,
    "hist": 0.216,
+   "struct_corr": 0.25,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 192.44
@@ -1723,6 +2067,8 @@
    "score": 3.7,
    "diff": 44.83,
    "hist": 0.042,
+   "struct_corr": 0.46,
+   "likely_cut": true,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 196.48
@@ -1733,6 +2079,8 @@
    "score": 3.3,
    "diff": 42.68,
    "hist": 0.052,
+   "struct_corr": 0.48,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 196.48
@@ -1743,6 +2091,8 @@
    "score": 4.6,
    "diff": 56.46,
    "hist": 0.212,
+   "struct_corr": 0.25,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 199.08
@@ -1753,6 +2103,8 @@
    "score": 15.8,
    "diff": 131.88,
    "hist": 0.651,
+   "struct_corr": 0.28,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 204.6
@@ -1763,6 +2115,8 @@
    "score": 25.0,
    "diff": 93.17,
    "hist": 0.753,
+   "struct_corr": 0.49,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 208.52
@@ -1773,6 +2127,8 @@
    "score": 3.5,
    "diff": 34.85,
    "hist": 0.059,
+   "struct_corr": 0.55,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": true,
    "nearest_shots_json": 210.48
@@ -1783,6 +2139,8 @@
    "score": 17.9,
    "diff": 55.07,
    "hist": 0.407,
+   "struct_corr": 0.39,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 213.96
@@ -1793,6 +2151,8 @@
    "score": 4.1,
    "diff": 23.57,
    "hist": 0.181,
+   "struct_corr": 0.77,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 213.96
@@ -1803,6 +2163,8 @@
    "score": 15.8,
    "diff": 111.62,
    "hist": 0.748,
+   "struct_corr": 0.3,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 215.96
@@ -1813,6 +2175,8 @@
    "score": 13.0,
    "diff": 79.43,
    "hist": 0.961,
+   "struct_corr": 0.44,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 216.72
@@ -1823,6 +2187,8 @@
    "score": 10.3,
    "diff": 80.3,
    "hist": 0.502,
+   "struct_corr": 0.53,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 226.48
@@ -1833,6 +2199,8 @@
    "score": 11.3,
    "diff": 68.56,
    "hist": 0.683,
+   "struct_corr": 0.36,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 226.48
@@ -1843,6 +2211,8 @@
    "score": 15.7,
    "diff": 45.44,
    "hist": 0.172,
+   "struct_corr": 0.39,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 228.52
@@ -1853,6 +2223,8 @@
    "score": 8.8,
    "diff": 85.11,
    "hist": 0.447,
+   "struct_corr": 0.15,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 230.56
@@ -1863,6 +2235,8 @@
    "score": 9.1,
    "diff": 60.58,
    "hist": 0.478,
+   "struct_corr": 0.52,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 232.8
@@ -1873,6 +2247,8 @@
    "score": 6.1,
    "diff": 65.47,
    "hist": 0.236,
+   "struct_corr": 0.27,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 233.6
@@ -1883,6 +2259,8 @@
    "score": 7.3,
    "diff": 129.93,
    "hist": 0.576,
+   "struct_corr": -0.39,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 238.76
@@ -1893,6 +2271,8 @@
    "score": 16.9,
    "diff": 81.75,
    "hist": 0.598,
+   "struct_corr": 0.3,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 240.6
@@ -1903,6 +2283,8 @@
    "score": 18.3,
    "diff": 123.51,
    "hist": 0.709,
+   "struct_corr": -0.03,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 246.28
@@ -1913,6 +2295,8 @@
    "score": 3.0,
    "diff": 65.36,
    "hist": 0.081,
+   "struct_corr": 0.09,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 246.28
@@ -1923,6 +2307,8 @@
    "score": 3.0,
    "diff": 54.2,
    "hist": 0.093,
+   "struct_corr": 0.27,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 246.28
@@ -1933,6 +2319,8 @@
    "score": 3.5,
    "diff": 39.84,
    "hist": 0.104,
+   "struct_corr": 0.53,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": true,
    "nearest_shots_json": 247.12
@@ -1943,6 +2331,8 @@
    "score": 7.6,
    "diff": 63.33,
    "hist": 0.146,
+   "struct_corr": -0.1,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 247.12
@@ -1953,6 +2343,8 @@
    "score": 3.5,
    "diff": 35.27,
    "hist": 0.114,
+   "struct_corr": 0.68,
+   "likely_cut": false,
    "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 248.88
@@ -1963,6 +2355,8 @@
    "score": 34.6,
    "diff": 191.28,
    "hist": 0.906,
+   "struct_corr": 0.11,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 250.52
@@ -1973,6 +2367,8 @@
    "score": 14.8,
    "diff": 83.8,
    "hist": 0.478,
+   "struct_corr": 0.33,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 251.84
@@ -1983,6 +2379,8 @@
    "score": 11.7,
    "diff": 64.61,
    "hist": 0.505,
+   "struct_corr": 0.52,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 251.84
@@ -1993,6 +2391,8 @@
    "score": 3.7,
    "diff": 59.99,
    "hist": 0.286,
+   "struct_corr": 0.25,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 260.0
@@ -2003,6 +2403,8 @@
    "score": 16.9,
    "diff": 135.44,
    "hist": 0.784,
+   "struct_corr": 0.27,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 260.0
@@ -2013,6 +2415,8 @@
    "score": 3.4,
    "diff": 29.83,
    "hist": 0.138,
+   "struct_corr": 0.68,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 263.12
@@ -2023,6 +2427,8 @@
    "score": 11.3,
    "diff": 66.17,
    "hist": 0.57,
+   "struct_corr": 0.6,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 263.12
@@ -2033,6 +2439,8 @@
    "score": 11.5,
    "diff": 56.13,
    "hist": 0.687,
+   "struct_corr": 0.36,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 265.28
@@ -2043,6 +2451,8 @@
    "score": 3.2,
    "diff": 38.31,
    "hist": 0.072,
+   "struct_corr": 0.35,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": true,
    "nearest_shots_json": 265.28
@@ -2053,6 +2463,8 @@
    "score": 3.1,
    "diff": 34.53,
    "hist": 0.106,
+   "struct_corr": 0.46,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": true,
    "nearest_shots_json": 265.28
@@ -2063,6 +2475,8 @@
    "score": 17.5,
    "diff": 56.84,
    "hist": 0.294,
+   "struct_corr": 0.56,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 267.92
@@ -2073,6 +2487,8 @@
    "score": 16.7,
    "diff": 81.02,
    "hist": 0.372,
+   "struct_corr": 0.48,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 270.48
@@ -2083,6 +2499,8 @@
    "score": 3.2,
    "diff": 27.35,
    "hist": 0.059,
+   "struct_corr": 0.83,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 270.48
@@ -2093,6 +2511,8 @@
    "score": 12.6,
    "diff": 99.45,
    "hist": 0.243,
+   "struct_corr": 0.02,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 274.16
@@ -2103,6 +2523,8 @@
    "score": 3.2,
    "diff": 49.93,
    "hist": 0.077,
+   "struct_corr": 0.53,
+   "likely_cut": true,
    "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 274.16
@@ -2113,6 +2535,8 @@
    "score": 24.8,
    "diff": 184.32,
    "hist": 0.857,
+   "struct_corr": 0.14,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 274.16
@@ -2123,6 +2547,8 @@
    "score": 8.2,
    "diff": 60.92,
    "hist": 0.538,
+   "struct_corr": 0.93,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 276.0
@@ -2133,6 +2559,8 @@
    "score": 28.7,
    "diff": 93.9,
    "hist": 0.85,
+   "struct_corr": 0.17,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 284.84
@@ -2143,6 +2571,8 @@
    "score": 4.8,
    "diff": 10.75,
    "hist": 0.12,
+   "struct_corr": 0.87,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 288.96
@@ -2153,6 +2583,8 @@
    "score": 13.0,
    "diff": 47.89,
    "hist": 0.859,
+   "struct_corr": 0.13,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 288.96
@@ -2163,6 +2595,8 @@
    "score": 4.6,
    "diff": 19.61,
    "hist": 0.23,
+   "struct_corr": 0.96,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 291.88
@@ -2173,6 +2607,8 @@
    "score": 15.4,
    "diff": 41.95,
    "hist": 0.463,
+   "struct_corr": 0.81,
+   "likely_cut": false,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 293.2
@@ -2183,6 +2619,8 @@
    "score": 3.3,
    "diff": 13.62,
    "hist": 0.025,
+   "struct_corr": 0.91,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 293.2
@@ -2193,6 +2631,8 @@
    "score": 4.7,
    "diff": 16.34,
    "hist": 0.033,
+   "struct_corr": 0.9,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 293.2
@@ -2203,6 +2643,8 @@
    "score": 6.8,
    "diff": 28.18,
    "hist": 0.306,
+   "struct_corr": 0.43,
+   "likely_cut": true,
    "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 298.64
@@ -2213,6 +2655,8 @@
    "score": 4.3,
    "diff": 7.91,
    "hist": 0.052,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 298.64
@@ -2223,6 +2667,8 @@
    "score": 3.0,
    "diff": 5.56,
    "hist": 0.087,
+   "struct_corr": 0.94,
+   "likely_cut": false,
    "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 305.72

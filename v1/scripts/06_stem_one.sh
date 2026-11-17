@@ -4,7 +4,26 @@
 set -eo pipefail
 cd "$(dirname "$0")/../.."
 V=${VID:?ERROR: VID is mandatory (e.g. VID=video1 $0)}; D=v1/data/$V
-[ -f $D/stems_raw/htdemucs/song/vocals.wav ] || python3 -m demucs -n htdemucs -j 4 -o $D/stems_raw $D/audio/song.wav
+# Existing stems count as complete only if all four exist and each lasts within 1 s of the source.
+STEMS_OK() {
+  python3 - "$D" <<'PY'
+import sys, soundfile as sf
+d = sys.argv[1]
+try:
+    src = sf.info(f"{d}/audio/song.wav").duration
+    ok = all(abs(sf.info(f"{d}/stems_raw/htdemucs/song/{s}.wav").duration - src) <= 1.0 for s in ("vocals", "drums", "bass", "other"))
+except Exception:
+    ok = False
+sys.exit(0 if ok else 1)
+PY
+}
+if ! STEMS_OK; then
+  # demucs writes to a temp directory; only a successful run is renamed into place (an interrupted run leaves no half stems)
+  TMP=$D/stems_raw.tmp.$$; rm -rf $TMP; trap 'rm -rf $TMP' EXIT
+  python3 -m demucs -n htdemucs -j 4 -o $TMP $D/audio/song.wav
+  rm -rf $D/stems_raw; mv $TMP $D/stems_raw
+  STEMS_OK || { echo "ERROR: demucs output incomplete or wrong length for $V" >&2; exit 1; }
+fi
 python3 - "$V" <<'PY'
 import json, os, sys, numpy as np, librosa, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt

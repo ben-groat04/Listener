@@ -37,3 +37,4 @@ Source: the user's message that kicked off v1. These are the rules for this atte
 21. **Blind tests are valuable too** (run agents with no web research or context, on these and the test videos, and compare with informed runs).
 22. **Focus more on the music than the video.** Music analysis gets the larger share of agents and tools; video is read in relation to the music.
 23. (00:16) User: don't be overly scared of the limit before the reset, since a scheduled restart exists after it. Use the headroom; workflows can resume if cut off.
+24. (07:30) User verdict on the published reports: **"This is absolutely not how a human thinks and listens about music."** The reports are measurement-led and audit-like. Fix the approach: run a workflow that discusses how humans actually listen, think and feel, and redesign the outputs and toolkit around it.

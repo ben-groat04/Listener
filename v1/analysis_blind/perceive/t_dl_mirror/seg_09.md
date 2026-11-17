@@ -5,7 +5,7 @@ Sources used: sheet_09.jpg; keyframe/1 fps frames opened at full size (f_0161 = 
 Frame format: 4:3 image with black bars top and bottom (picture area roughly 640x340 inside 640x480) and a small white-on-black emblem with tiny text at bottom right in every frame (OBSERVED). The emblem text is unread (too small).
 
 ## 1. Shot-by-shot description
-Cuts from shots.json (detector times, so sub-second reliable only for the cut list itself). This stretch sits in a run of very short shots: 11 detected cuts between 2:40 and 2:50, then one long shot.
+Cuts from shots.json (detector times, so sub-second reliable only for the cut list itself). This stretch sits in a run of very short shots: 10 detected cuts between 2:40 and 2:50.5, then one long shot.
 
 | Time | Shot | What we see (OBSERVED unless tagged) |
 |---|---|---|
@@ -103,5 +103,5 @@ INFERRED: a sense of fast, restless momentum at 2:40-2:50 (about one cut per sec
 - Is the same red-T-shirt person central earlier in the film (the 2:43 group)? Who is the person in a red cape and cap at 2:59 and do they recur after 3:00?
 - Frames needed at exact times: the hard cut vs dissolve boundaries inside shot 81 (about 2:55.5-2:56.5 for the double exposure; about 2:56.5-2:57 and 2:58.5-2:59 for the chip-to-street shifts); a frame at 2:48.7-2:49.4 (shot 79) at full size, which I viewed only on the contact sheet.
 - Does the lyric line about a 12-year-old (2:57-3:00) match what whisper heard on the vocals-only pass? The vocals-only pass starts only at 3:00, so a listening check of 2:32-3:00 is needed.
-- Colour/mood: confirm from the neighbouring segments whether the warm amber grade starts at 2:43 or earlier (visual_features: warmth jumps from 12 to 34 at 2:43, saturation 56 to 75, per_second.json).
+- Colour/mood: confirm from the neighbouring segments whether the warm amber grade starts at 2:43 or earlier (visual_features: warmth rises from 12 at 2:41 to 34 at 2:43, saturation 56 to 75 over 2:41-2:43; per-second index t=162-164 = 2:42-2:44, so good to about a second).
 - Is the cut-rate peak at 2:40-2:50 (about 1 cut/s) repeated in other verses (compare sync.json per_section)?

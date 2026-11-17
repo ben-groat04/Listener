@@ -4,3 +4,9 @@ stems_raw/
 testvideos/.tmp/
 v1/logs/stems.log
 v1/logs/extract_testvideos.log
+# Regenerable per-video outputs (only analysis, logs and context files are auto-committed).
+# NOTE: files already tracked under these paths (checked with git ls-files: 1387 at the time) stay tracked, because
+# .gitignore only affects untracked files; nothing is orphaned or deleted. Untrack later with: git rm -r --cached <path>.
+v1/data/*/frames_1fps/
+v1/data/*/contact_sheets/
+v1/data/*/stems/*.mp3

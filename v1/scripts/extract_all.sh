@@ -6,6 +6,10 @@
 set -eo pipefail
 cd "$(dirname "$0")/../.."
 S=v1/scripts; L=v1/logs; mkdir -p $L
+# Refuse to run twice at once (lock file holds the PID; stale locks from dead PIDs are replaced)
+LOCK=$L/extract_all.lock
+if [ -f "$LOCK" ] && kill -0 "$(cat "$LOCK" 2>/dev/null)" 2>/dev/null; then echo "ERROR: another extract_all.sh is running (PID $(cat "$LOCK"), lock $LOCK)" >&2; exit 1; fi
+echo $$ > "$LOCK"; trap 'rm -f "$LOCK"' EXIT
 # Where to look: $VIDEO_DIR if set, otherwise videos/ then testvideos/ (child scripts use the same rule). Do not export a default.
 DIRS=${VIDEO_DIR:-"videos testvideos"}
 if [ $# -gt 0 ]; then NAMES=""; for a in "$@"; do b=$(basename "$a"); case "$b" in *.mp4|*.mkv|*.mov|*.webm) b="${b%.*}";; esac; NAMES="$NAMES $b"; done  # bare names, or file paths
@@ -14,13 +18,26 @@ else
 fi
 [ -n "$NAMES" ] || { echo "ERROR: no videos found in $DIRS (mp4/mkv/mov/webm)" >&2; exit 1; }
 FIND_VIDEO() { for d in $DIRS; do for e in mp4 mkv mov webm; do [ -f "$d/$1.$e" ] && { echo "$d/$1.$e"; return; }; done; done; return 1; }
+# Preflight: free space on the repo filesystem (MIN_FREE_MB overrides the 2048 MB floor; the need is the larger of the floor and 10x the biggest video's size)
+FREE_MB=$(df -Pm . | awk 'NR==2{print $4}')
+NEED_MB=${MIN_FREE_MB:-2048}
+for V in $NAMES; do  # need the larger of the floor and 10x the biggest video (frames, WAVs, stems)
+  F0=$(FIND_VIDEO $V) || continue; SZ=$(( $(stat -c %s "$F0") / 1048576 * 10 )); [ "$SZ" -gt "$NEED_MB" ] && NEED_MB=$SZ
+done
+if [ "${FREE_MB:-0}" -lt "$NEED_MB" ]; then
+  echo "ERROR: only ${FREE_MB} MB free on the repo filesystem; need about ${NEED_MB} MB. Free space first, e.g.: python3 -m pip cache purge ; rm -rf ~/.cache/huggingface/hub/<unused model> ; (stems_raw/ and frames_1fps/ are regenerable). Then re-run." >&2
+  exit 1
+fi
+# Preflight: drawtext (contact-sheet timestamps) needs ffmpeg built with freetype and at least one fontconfig font
+ffmpeg -hide_banner -filters 2>/dev/null | grep -q drawtext || { echo "ERROR: this ffmpeg has no drawtext filter (needs libfreetype). Install a full ffmpeg build." >&2; exit 1; }
+{ command -v fc-list >/dev/null && [ -n "$(fc-list 2>/dev/null | head -1)" ]; } || { echo "ERROR: no fontconfig fonts found (fc-list empty or missing); drawtext will fail. Install one, e.g. apt-get install -y fontconfig fonts-dejavu-core" >&2; exit 1; }
 # step <name> <log> <command...>: run unless done; stdout+stderr to the log (warnings filtered for reading); abort on failure
 step() {
   local n=$1 log=$2; shift 2
   [ -f v1/data/$V/.done/$n ] && return 0
   echo "[$V] $n ..."
   if "$@" > $L/$log.raw 2>&1; then grep -vi warn $L/$log.raw > $L/$log || true; rm -f $L/$log.raw; mkdir -p v1/data/$V/.done; touch v1/data/$V/.done/$n
-  else echo "ERROR: step '$n' failed for $V; see $L/$log.raw" >&2; exit 1; fi
+  else echo "ERROR: step '$n' failed for $V; last 20 lines of $L/$log.raw (the filtered log is not written on failure):" >&2; tail -n 20 $L/$log.raw >&2; exit 1; fi
 }
 for V in $NAMES; do
   export VID=$V

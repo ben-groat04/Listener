@@ -8,6 +8,16 @@
 set -euo pipefail
 case "${1:-}" in -h|--help) sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//'; exit 0;; esac
 cd "$(dirname "$0")/../.."
+# Preflight: free space on the repo filesystem (MIN_FREE_MB overrides the 2048 MB floor; used for testing too)
+FREE_MB=$(df -Pm . | awk 'NR==2{print $4}')
+NEED_MB=${MIN_FREE_MB:-2048}
+if [ "${FREE_MB:-0}" -lt "$NEED_MB" ]; then
+  echo "ERROR: only ${FREE_MB} MB free on the repo filesystem; need about ${NEED_MB} MB. Free space first, e.g.: python3 -m pip cache purge ; rm -rf ~/.cache/huggingface/hub/<unused model> ; (stems_raw/ and frames_1fps/ are regenerable). Then re-run." >&2
+  exit 1
+fi
+# Preflight: drawtext (contact-sheet timestamps) needs ffmpeg built with freetype and at least one fontconfig font
+ffmpeg -hide_banner -filters 2>/dev/null | grep -q drawtext || { echo "ERROR: this ffmpeg has no drawtext filter (needs libfreetype). Install a full ffmpeg build." >&2; exit 1; }
+{ command -v fc-list >/dev/null && [ -n "$(fc-list 2>/dev/null | head -1)" ]; } || { echo "ERROR: no fontconfig fonts found (fc-list empty or missing); drawtext will fail. Install one, e.g. apt-get install -y fontconfig fonts-dejavu-core" >&2; exit 1; }
 command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || { echo "ERROR: ffmpeg/ffprobe not found. Install it (e.g. apt-get install -y ffmpeg) and re-run." >&2; exit 1; }
 shopt -s nullglob
 FILES=()
@@ -22,7 +32,7 @@ else
   FILES=(videos/*.{mp4,mkv,mov,webm} testvideos/*.{mp4,mkv,mov,webm} ${VIDEO_DIR:+"$VIDEO_DIR"/*.{mp4,mkv,mov,webm}})
 fi
 # Pinned to the versions this toolkit was developed with (see v1/requirements.txt); pip errors are NOT hidden and abort the script.
-if ! pip install -r v1/requirements.txt; then echo "ERROR: pip install -r v1/requirements.txt failed (see pip output above); setup NOT complete" >&2; exit 1; fi
+if ! python3 -m pip install -r v1/requirements.txt; then echo "ERROR: python3 -m pip install -r v1/requirements.txt failed (see pip output above); setup NOT complete" >&2; exit 1; fi
 for F in "${FILES[@]}"; do
   V=$(basename "${F%.*}")
   ffprobe -v error -select_streams a -show_entries stream=codec_type -of csv=p=0 "$F" | grep -q audio || { echo "WARNING: $F has no audio stream; skipped" >&2; continue; }

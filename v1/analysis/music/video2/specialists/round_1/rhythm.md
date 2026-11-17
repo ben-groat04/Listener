@@ -1,0 +1,64 @@
+# video2: rhythm specialist, round 1
+
+Scope: tempo, metre, drum and bass patterns, syncopation, stops, how the pulse drives the feeling. I cannot hear; everything below is from measurements. Helpers: `v1/scripts/agents/v2_rhythm.py`, `v2_rhythm2.py`, `v2_rhythm3.py`. Timestamps m:ss. Other windows' notes (win_0000 to win_0300) were read in full for rhythm; where they disagree I say which I trust and why.
+
+## 1. Headline
+
+**The true tempo is 120 BPM in 4/4 (bar = 2.000 s), not the 161.5 BPM in `audio_features/summary.json`.** The 161.5 figure (beat period 0.372 s) is the beat tracker locking onto a repeating three-sixteenth figure (a dotted quaver, 0.375 s = 3 x 0.125 s) played by the bass, not onto the metre. Confidence: high.
+
+Evidence:
+- Autocorrelation of the drum-stem onset strength (v2_rhythm.py) has its strongest or near-strongest peak at 0.499 s, with 0.998, 1.498, 1.997 s as multiples, in **every** section tested: 0:28-0:40, 0:40-1:00, 1:28-1:40, 1:44-2:08, 2:08-2:37, 2:40-3:20, 3:20-3:37, 3:37-4:37, 4:37-5:00. The 2.0 s peak is the largest in most (0.64 to 0.74 in 1:44-3:20), i.e. a clear 4-beat bar.
+- The 0.372 s peak is weak in the drums (0.16 to 0.29) but strong in the bass stem (0.42 at 1:44-2:08, with 0.743, 1.254, 1.625, 2.38 all multiples of ~0.372 plus the 1.997 s bar repeat). So 0.372 s belongs to the bass figure, and the bass figure resets every 2.0 s (3+3+4+3+3 sixteenths = 16, see section 3).
+- A kick-band (30-150 Hz) phase fit over 20 s windows (v2_rhythm3.py) gives a period of 0.4995-0.5005 s with a constant phase from 1:40 to 5:00 (offset ~0.10-0.13 s, the detector latency). No drift: the groove is machine-locked (a grid, not a human drummer) across at least 200 s. High.
+- Sixteenth subdivision, not triplets: the 0.12 to 0.14 s onset spacing that win_0240/0260/0280 read as "triplet-like, 161 bpm" is a sixteenth note at 120 BPM (0.125 s). The autocorrelation peaks at 0.255, 0.627, 0.755, 1.254, 1.37 s are all multiples of 0.125 s (2, 5, 6, 10, 11 steps); a triplet grid would put peaks at 0.167/0.333 s, and none appear. Medium-high (spacing alone cannot exclude a few swung hats).
+- audio_features `tempo_local_percentiles` (10/50/90 = 95.7/123.0/161.5) already says the median local tempo is 123. The 90th percentile is the dotted-quaver artefact.
+
+Notes that I therefore correct: win_0020 (kept 161), win_0040, win_0060 ("felt 81 BPM"), win_0080, win_0120, win_0160 (drum-envelope estimate 117 read as "ambiguity"), win_0180, win_0220 ("80 BPM half-time"), win_0240/0260/0280/0300 ("160 or 80 half-time with 16ths"). Correct notes: win_0100 (120 in four, 3-3-3-3-4 accent) and win_0200 (120, kick every 0.5 s, backbeat each 1.0 s). 80 BPM half-time and 161 BPM are both wrong as the primary count. A listener will tap 120 (or a bar-per-2-seconds slow nod), and feel a 161-ish "lurch" from the bass cross-rhythm. The tracker's beat times (`beat_times.json`, from 0:42.68) are therefore dotted-quaver positions, useless as a bar grid; do not use them for form.
+
+## 2. Pulse and metre through the track
+
+- **0:00-0:28, pre-pulse at the same tempo.** The drum stem is a sparse thud only at 0:00 (-26.3 dBFS), 0:08, 0:12, 0:20, 0:24, 0:28 (per_second_levels.json; drums fall below -50 dB between: 0:02-0:07, 0:09-0:11, 0:14-0:18, 0:22-0:23, 0:26-0:27). All fall on a 4 s lattice = 2 bars of 120 BPM = 8 beats, so the tempo is implied before any pulse arrives. Independent confirmation: the pad ("other" stem) onsets at 0.41, 0.91, 1.15, 1.40, 1.65, 2.40, 2.66 s (win_0000) are on a 0.25 s grid = quavers at 120. Hearing: a slow, held-breath intro with a bass-drum-like boom every 2 bars (with a rhythmic gap at 0:16, since there is no thud at 0:16 and the 0:12 to 0:20 span is 8 s). High on the lattice, medium on "tempo already implied".
+- **0:28 groove entry.** Bass stem jumps from about -85 to -22 dBFS and drums go from one thud per 4 s to continuous hits at exactly 0:28 (win_0020, levels). Drum autocorrelation 0:28-0:40 has 0.499/0.998/1.997 peaks (0.64 at 2 s), so the bar is 2 s from the start. The cell in this section is not a plain four-on-the-floor: histogram on a 0.125 s grid over 2 s bars gives hits only at steps 1, 3, 4, 7, 8, 12 and 15 (all bands share them, so it is a mostly single, unfiltered kit hit pattern in an early, sparse mix). The win_0020 onset list (28.38, 28.52, 28.89, 29.01, 29.52) agrees: pairs at +0.38/+0.52 and +0.89/+1.01 s, then +1.5 s. A syncopated, "stuttering" first groove with 3-1 and 3-1 paired hits. Medium.
+- **0:40-1:00.** Kick/bar autocorrelation still 0.499/1.997 (0.6 at 2 s). Drums step back at 0:41-0:42 (-37, -33 dBFS) as the narrator enters (win_0040); accent seconds at 0:40, 0:48, 0:52, 0:56 are bar-line lifts every 4 s (2 bars) = the chord-change grid. High.
+- **1:00-1:03 drum stop, 1:04 re-entry, 1:10-1:15 thin, 1:17-1:18 gap, 1:24-1:27 stop (4 s), 1:28.5 full re-entry** (levels: drums below -50 dB at 1:00-1:03, 1:10-1:15, 1:17-1:18, 1:24-1:27; bass below -50 dB 1:25-1:27). 1:28.5 re-entry from 0.125 s frames: drums -76 to -57 dB until 1:28.4, then -15 at 1:28.5 and -15 at 1:28.6 (hit on the downbeat of a bar; no fill, no ramp). The drum-only autocorrelation 1:28.5-1:40 shows 0.499, 0.998, 1.498, 1.997 (0.68-0.74): bar-length cell at once. High on timings.
+- **1:41-5:00 plateau at 120 BPM.** Same 2.0 s bar throughout (peaks above). Kick on all four beats (steps 1, 5, 9, 13 on the histogram, counts 20-30 each, i.e. every bar), with a doubled hit one sixteenth before the last beat (step 12, counts 18-27), hats/snare band on every sixteenth subdivision in the busy sections. Win_0200's reading "four on the floor at 120, backbeat 2 and 4" is consistent with my histograms, but my snare-band (1.5-5 kHz) histogram is not cleaner on beats 2 and 4 than on 1 and 3 (counts 23-26 on all four beats), so I rate the backbeat claim medium: a broadband hit on every beat is certain, which beat carries the clap is not separable from the stem alone.
+- **Slow oscillation of the whole mix every 4 s** (chord change, 2 bars) is the harmonic rhythm in sections from 1:44; four such = 8 bars is the phrase. (Harmony specialist should confirm.)
+- **4:48.5-5:00 bass gating.** After 4:48.5 the bass is on for short stabs only (bass stem per-second falls to -69 dB on every odd second from 4:49). On 62.5 ms frames the stab starts are at about 4:50.3, 4:52.6, 4:54.3, 4:56.6, 4:58.3, 5:00.6 and last 0.3-0.6 s. The intervals alternate about 2.3 s and 1.7 s (= 9 and 7 sixteenths at 120, sum 4 s = 2 bars): a syncopated 9+7 stab pattern over 2 bars, drums unchanged. Medium (stab starts are from rough thresholding).
+- **5:00-5:03 ending.** Drums keep running at sixteenth density to about 5:00.8, then fall roughly 60 dB (to -85) within about 1.0 s; two further hits at about 5:02.3 and 5:02.56 (0.25 s apart = a quaver) decay by 5:03 (levels: mix -30.9 at 5:01, -57 at 5:03, -94 at 5:04). So: running groove, one-bar-plus gap, a short two-hit button, ring-out. High on the shape; the exact grid alignment of 5:02.3 is only medium (win_0300 says it lands on a tracker beat, but those tracker beats are the 0.372 s artefact).
+
+## 3. The pattern: what the groove actually is (1:44-5:00)
+
+Histograms of drum-stem and bass-stem onsets folded onto a 2.0 s bar in 16 steps (v2_rhythm2.py; the bar start is arbitrary, a 1-step detector offset shifts all bins equally, so only the relative shape is reliable):
+
+- **Kick**: steps 1, 5, 9, 13 (+12) = four-on-the-floor on every 0.5 s, plus an extra just-before-beat-4 double hit. Absent weaker positions: step 3, 4 (counts 4-6) in section B. Very regular, nothing missing across 1:44-3:20; later (3:40-4:40) more ghost hits at other steps (6-12 counts) = busier.
+- **Hi-hat band (>6 kHz)**: every sixteenth in 3:40-4:40 (counts 8-30 on all 16 steps), 8ths plus off-sixteenths in 1:44-3:20 (steps 0, 1, 3, 5, 6, 8, 9, 11, 12, 13: busier on the "e/a" positions). So the drums get busier in subdivision between 3:40 and 4:40 (sixteenth hats everywhere), though the kick/pulse is unchanged.
+- **Bass**: steps 0, 3, 7, 10, 13 (counts 25-31 each, i.e. every bar), weaker at 2, 5, 6, 12. Gaps 3, 4, 3, 3, 3 sixteenths (3+4+3+3+3 = 16): a **dotted-quaver ostinato**, notes on 0.375 s grid, with the 4 going once per bar. That is the same rhythm as the classic "3-3-3-3-4" cross-rhythm that makes 4/4 feel like it has a second, slower-than-sixteenth "3" pulse running across it. At 120 BPM, 3 sixteenths = 0.375 s, which matches exactly the tracker's 0.372 s spacing. In 3:40-4:40 the same positions persist but with more variation (counts 15-23 at the main four positions, 5-7 at others). High that the ostinato is 3-based; medium on the exact step list (stem bleed, note onset detection on low bass).
+- Why this gives the feel: kick on every beat is a steady 120 straight "stomp"; the bass at 3-sixteenth spacing runs against it, so every second note falls off the beat and the line slips a sixteenth later each cycle until the bar re-aligns at step 16. The listener feels a constant forward pull (the "lurch" the tracker locked onto as 161.5) on top of a calm, square drum floor. That tension between a locked four-on-the-floor and a 3-3-3-3-4 bass is the main rhythmic engine of the song. Interpretation, medium.
+- "Other" stem: about 8 onsets/s (win_0120/0160 counts, 156 in 20 s) = quavers at 120 with extra sixteenth attacks; the guitar/synth layer plays the sixteenth grid (arpeggio or palm-muted chug). I cannot tell which instrument.
+
+## 4. Stops, drops, accelerations
+
+- There is **no tempo change anywhere**. Local tempo spread in `summary.json` (10th percentile 95.7) is tracker noise in the sparse intro, plus the drumless gaps.
+- **No ritardando or accelerando.** The perceived "build" at 4:10.4-4:12.6 (win_0240) is runs of sixteenth hits (0.125 s) = a fill, not a tempo change; likewise 1:55.4-1:55.9 and 1:44.4-1:44.8 (win_0100) before chord changes. Fills sit at chord boundaries (every 4 s), a conventional 2-bar phrasing. Medium.
+- The deliberate pulse-removals are: 0:00-0:28 (sparse thud), 1:00-1:03, 1:10-1:15 (thin), 1:24-1:27 (full rhythm-section stop with bass also off) then 1:28.5 re-entry, and the final stop at 5:01. The 1:24-1:28.5 hole is the song's one real "silence, then drop": the re-entry arrives on the downbeat with no fill and 4.5 s of drum silence, so the first hit of the groove ("kick 1") at 1:28.5 is the strongest rhythmic surprise in the track. High.
+- The mix loudness steps (win_0100 +3 dB at 1:41; 3:36 drums -16.4 dBFS lift) are bar-line accents, not rhythm changes.
+
+## 5. How the pulse drives the feeling
+
+- 120 BPM four-on-the-floor with sixteenth hats is a dance/driving rhythm; 2 s bars with chord changes every 2 bars = steady, long-breathed motion. Against it the 3-3-3-3-4 bass gives constant forward lean. A viewer cutting between this and picture of skating (context.md; not my domain) would feel a repeated, mechanical stride with an unstoppable push. Interpretation, medium.
+- Stopping and restarting a quantised machine groove (1:24-1:28.5, 5:01) is therefore dramatic: the machine pulse is the "normal", so its absence is felt as a held breath. Interpretation, medium.
+- Tension builds mostly through density, not tempo: sixteenth hats everywhere (3:40+), the bass gating at 4:48 (removing the low anchor while keeping the drums), then a hard stop.
+
+## 6. What measurements cannot tell me
+
+- Instrument identity (kick vs "tom", snare vs clap) from stems; the split by band is approximate.
+- Whether the human narrator's rhythm is placed to the grid (voice specialist).
+- Which beat carries the backbeat (all four beats look equally loud in the broadband band).
+- Exact bar numbering: the 2 s lattice phase was inferred from the 0:00/4 s thud grid and kick fits, not from a downbeat label; harmonic evidence is needed for "bar one".
+- Whether the sparse 0:00-0:28 drum thuds are real drums or processed samples.
+
+## 7. Questions for fellow specialists
+
+1. **Harmony**: with the bar at 2.0 s and chords changing every 4 s (2 bars), do the longer chord cycles (E-G-A-D, Bm-D-Bm-Bm-D) sum to 8-bar (16 s) or 4-bar phrases? Do the 0:47.5 "A" and 4:10.4-4:12.6 "Em flicker" fall on bar lines I can treat as phrase ends?
+2. **Form**: given a firm 2 s bar lattice, can you map section boundaries (0:28, 0:42.7, 1:04, 1:28.5, 1:41, 2:37, 3:20-3:24, 3:40, 4:12, 4:48.5, 5:01) to bar numbers and check if all fall on the lattice of 0:00 + n x 4 s or shift by one beat (1:28.5 is 0.5 s off the 4 s lattice from 0:00)?
+3. **Sound**: the 3+3+4+3+3 sixteenth ostinato I find in the bass stem: is that pitched bass guitar, a synth, or something doubled in the "other" stem (chugging)? Does the sixteenth "other" layer carry the same cross-rhythm, and is the bass "gated" after 4:48.5 by a sidechain or by played stabs?

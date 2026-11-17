@@ -16,6 +16,7 @@
    0.511
   ]
  ],
+ "key_ambiguous": true,
  "keys_per_30s": [
   {
    "start_s": 0.0,
@@ -1336,5 +1337,258 @@
    "brightness_hz": 2463,
    "onset": 1.176
   }
- ]
+ ],
+ "tempo_candidates": {
+  "source": "autocorrelation of drums-stem onset strength, 60-240 BPM, top peaks by height",
+  "whole_mix_tempo_bpm": 78.30255681818181,
+  "drum_candidates": [
+   {
+    "bpm": 78.09,
+    "lag_s": 0.7684,
+    "autocorr": 0.713,
+    "ratio_to_mix_tempo": 0.997
+   },
+   {
+    "bpm": 155.83,
+    "lag_s": 0.385,
+    "autocorr": 0.466,
+    "ratio_to_mix_tempo": 1.99
+   },
+   {
+    "bpm": 103.89,
+    "lag_s": 0.5775,
+    "autocorr": 0.353,
+    "ratio_to_mix_tempo": 1.327
+   },
+   {
+    "bpm": 62.4,
+    "lag_s": 0.9615,
+    "autocorr": 0.318,
+    "ratio_to_mix_tempo": 0.797
+   }
+  ],
+  "warnings": [
+   "whole-mix tempo 78.3 BPM vs drums-stem candidate 155.83 BPM (autocorr 0.466): ratio 0.502 is about 2:1; the beat grid may be on a different metrical level or feel than the drums.",
+   "whole-mix tempo 78.3 BPM vs drums-stem candidate 103.89 BPM (autocorr 0.353): ratio 0.754 is about 3:4; the beat grid may be on a different metrical level or feel than the drums."
+  ]
+ },
+ "key_ambiguity_note": "top two key scores (D major 0.76, D minor 0.756) are within 0.05: treat the key as ambiguous, not as a fact.",
+ "downbeat_estimate": {
+  "assumes": "4 beats per bar",
+  "beat_index_mod4_of_downbeat": 3,
+  "first_downbeat_s": 3.274,
+  "phase_drum_onset_means": [
+   9.83,
+   10.506,
+   11.18,
+   11.203
+  ],
+  "confidence": "low",
+  "note": "strongest drum-onset beat position in a 4-beat cycle over the whole song; unreliable if the metre is not 4/4 or the beat grid is on the wrong level."
+ },
+ "tempo_resolved": {
+  "tag": "OBS",
+  "source": "drums stem; kick = 40-120 Hz onset strength, snare/clap = 1-5 kHz onset strength (hi-hats not excluded)",
+  "kick_grid": {
+   "bpm": 78.1,
+   "period_s": 0.7682,
+   "first_grid_s": 0.405,
+   "autocorr_at_period": 0.595,
+   "autocorr_at_half_lag": 0.409,
+   "autocorr_at_double_lag": 0.461,
+   "kick_onsets_n": 791,
+   "kick_onsets_within_50ms_of_grid_frac": 0.212,
+   "grid_points_with_kick_frac": 0.988,
+   "residual_std_ms": 25.6
+  },
+  "level_vs_whole_mix": {
+   "whole_mix_tempo_bpm": 78.3,
+   "ratio_mix_to_kick_grid": 1.003,
+   "relation": "same_level",
+   "same_level": true,
+   "half_double_ambiguous": false,
+   "half_double_notes": [],
+   "tempo_candidates_warnings": [
+    "whole-mix tempo 78.3 BPM vs drums-stem candidate 155.83 BPM (autocorr 0.466): ratio 0.502 is about 2:1; the beat grid may be on a different metrical level or feel than the drums.",
+    "whole-mix tempo 78.3 BPM vs drums-stem candidate 103.89 BPM (autocorr 0.353): ratio 0.754 is about 3:4; the beat grid may be on a different metrical level or feel than the drums."
+   ]
+  },
+  "backbeat_test": {
+   "beat_grid_used": "kick grid as is",
+   "beat_grid_bpm": 78.1,
+   "active_beats_n": 243,
+   "assumes": "4 beats per bar",
+   "snare_mean_by_beat_position": [
+    6.37,
+    6.631,
+    5.723,
+    6.576
+   ],
+   "kick_mean_by_beat_position": [
+    0.528,
+    0.528,
+    0.473,
+    0.615
+   ],
+   "backbeat_ratio_beats_2_4_over_1_3": 1.092,
+   "verdict": "no_clear_backbeat",
+   "kick_beats_1_3_over_2_4": 0.877
+  },
+  "downbeat_guess": {
+   "first_downbeat_s": 3.478,
+   "grid_position_mod4": 0,
+   "snare_parity_decides": "beats 2 and 4 are the positions with the larger snare/clap energy; which of the two beat-1 candidates is the downbeat is picked by the kick (kick_1_vs_3 ratio below), a weak cue",
+   "kick_beat1_over_beat3": 1.116,
+   "confidence": "low",
+   "note": "assumes 4/4; confidence is capped at moderate and is low unless the backbeat ratio is at least 1.5, the kick separates beat 1 from 3 by 10%, and the kick grid is the same level as the whole-mix tempo."
+  }
+ },
+ "mode_reading": {
+  "tag": "OBS",
+  "method": "mean chroma_cqt of the whole mix as a pitch-class histogram; each mode scored by Pearson correlation with a template (scale degrees 1, tonic 2, fifth degree 1.5). Relative modes share a pitch set, so they differ only through the tonic weighting.",
+  "pitch_class_histogram": {
+   "C": 0.0907,
+   "C#": 0.0783,
+   "D": 0.1267,
+   "D#": 0.0691,
+   "E": 0.0777,
+   "F": 0.0815,
+   "F#": 0.0777,
+   "G": 0.0812,
+   "G#": 0.0771,
+   "A": 0.0941,
+   "A#": 0.0697,
+   "B": 0.0761
+  },
+  "pitch_classes_by_weight": [
+   "D",
+   "A",
+   "C",
+   "F",
+   "G",
+   "C#",
+   "F#",
+   "E",
+   "G#",
+   "B",
+   "A#",
+   "D#"
+  ],
+  "reference_tonic": "D",
+  "reference_tonic_source": "Krumhansl-Schmuckler top key 'D major' (score 0.76)",
+  "mode_scores_at_reference_tonic": {
+   "ionian": 0.66,
+   "dorian": 0.797,
+   "phrygian": 0.669,
+   "lydian": 0.625,
+   "mixolydian": 0.766,
+   "aeolian": 0.743,
+   "locrian": 0.452
+  },
+  "top_mode_at_reference_tonic": "dorian",
+  "top_two_margin": 0.031,
+  "mode_best_over_all_tonics": {
+   "ionian": {
+    "tonic": "D",
+    "score": 0.66
+   },
+   "dorian": {
+    "tonic": "D",
+    "score": 0.797
+   },
+   "phrygian": {
+    "tonic": "D",
+    "score": 0.669
+   },
+   "lydian": {
+    "tonic": "D",
+    "score": 0.625
+   },
+   "mixolydian": {
+    "tonic": "D",
+    "score": 0.766
+   },
+   "aeolian": {
+    "tonic": "D",
+    "score": 0.743
+   },
+   "locrian": {
+    "tonic": "D",
+    "score": 0.452
+   }
+  },
+  "top5_tonic_mode_pairs": [
+   {
+    "tonic": "D",
+    "mode": "dorian",
+    "score": 0.797
+   },
+   {
+    "tonic": "D",
+    "mode": "mixolydian",
+    "score": 0.766
+   },
+   {
+    "tonic": "D",
+    "mode": "aeolian",
+    "score": 0.743
+   },
+   {
+    "tonic": "D",
+    "mode": "phrygian",
+    "score": 0.669
+   },
+   {
+    "tonic": "D",
+    "mode": "ionian",
+    "score": 0.66
+   }
+  ],
+  "overall_best_agrees_with_reference_tonic": true,
+  "evidence": {
+   "third_above_reference_tonic": {
+    "minor3_semitones_3": 0.0815,
+    "major3_semitones_4": 0.0777,
+    "share_of_major3": 0.488
+   },
+   "seventh_above_reference_tonic": {
+    "minor7_semitones_10": 0.0907,
+    "major7_semitones_11": 0.0783,
+    "share_of_major7": 0.464
+   },
+   "sixth_above_reference_tonic": {
+    "minor6_semitones_8": 0.0697,
+    "major6_semitones_9": 0.0761,
+    "share_of_major6": 0.522
+   },
+   "second_above_reference_tonic": {
+    "minor2_semitones_1": 0.0691,
+    "major2_semitones_2": 0.0777,
+    "share_of_major2": 0.529
+   },
+   "fourth_above_reference_tonic": {
+    "perfect4_semitones_5": 0.0812,
+    "tritone_semitones_6": 0.0771,
+    "share_of_tritone": 0.487
+   }
+  },
+  "third_agrees_with_ks_quality": false,
+  "key_ambiguous": true,
+  "mode_ambiguous": true,
+  "ambiguous": true,
+  "ambiguity_note": "key_ambiguous is the Krumhansl-Schmuckler flag (top two keys within 0.05); mode_ambiguous means the top two mode scores at the reference tonic are within 0.05; ambiguous is true if either is. Treat the reading as a measurement of the pitch content, not as a verdict on mode."
+ },
+ "production_era": {
+  "peak_dbfs": -0.0,
+  "rms_dbfs": -11.11,
+  "crest_factor_db": 11.11,
+  "kick_onset_spread_ms": 206.3,
+  "kick_onsets_n": 791,
+  "kick_source": "drums stem",
+  "energy_ratio_300_3400hz_to_full": 0.272,
+  "energy_below_300hz": 0.695,
+  "energy_above_3400hz": 0.033,
+  "loop_regularity_bar_chroma_corr": 0.697,
+  "hint": "Indicative only, not a dating of the recording: peak -0.0 dBFS is near full scale; crest factor 11.1 dB (moderate dynamics); kick-onset spread 206 ms around the beat grid (loose, human-played or live feel; the grid itself is estimated, so treat as indicative); 27% of energy in 300-3400 Hz vs 73% outside (full-range mix); bar-to-bar chroma similarity 0.70 (varied)."
+ }
 }

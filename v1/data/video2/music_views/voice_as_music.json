@@ -1,0 +1,1302 @@
+{
+ "vid": "video2",
+ "duration_s": 305.95,
+ "evidence": "OBS (measurements only; no interpretation is stated)",
+ "params": {
+  "bleed_db": 20.0,
+  "floor_db": -55.0,
+  "gap_s": 0.25,
+  "min_seg_s": 0.3,
+  "min_total_s": 1.0,
+  "hop_s": 0.01
+ },
+ "vad": {
+  "n_segments_before_filter": 44,
+  "voiced_time_before_filter_s": 56.5,
+  "voiced_time_without_bleed_rule_s": 105.5,
+  "n_segments_kept": 30,
+  "voiced_time_kept_s": 36.8,
+  "voiced_share_of_track": 0.12,
+  "max_vocal_minus_mix_db": 114.1,
+  "vocal_peak_db": -9.2,
+  "segments": [
+   {
+    "start_s": 42.62,
+    "end_s": 45.53,
+    "dur_s": 2.91,
+    "vocal_db_mean": -29.6,
+    "mix_db_mean": -18.4,
+    "vocal_minus_mix_db": -11.2,
+    "whisper_support": "reliable"
+   },
+   {
+    "start_s": 51.3,
+    "end_s": 53.88,
+    "dur_s": 2.58,
+    "vocal_db_mean": -26.3,
+    "mix_db_mean": -17.8,
+    "vocal_minus_mix_db": -8.6,
+    "whisper_support": "reliable"
+   },
+   {
+    "start_s": 59.13,
+    "end_s": 60.57,
+    "dur_s": 1.44,
+    "vocal_db_mean": -25.7,
+    "mix_db_mean": -17.2,
+    "vocal_minus_mix_db": -8.5,
+    "whisper_support": "reliable"
+   },
+   {
+    "start_s": 64.53,
+    "end_s": 70.13,
+    "dur_s": 5.6,
+    "vocal_db_mean": -23.3,
+    "mix_db_mean": -16.5,
+    "vocal_minus_mix_db": -6.8,
+    "whisper_support": "reliable"
+   },
+   {
+    "start_s": 80.04,
+    "end_s": 82.55,
+    "dur_s": 2.51,
+    "vocal_db_mean": -26.7,
+    "mix_db_mean": -17.1,
+    "vocal_minus_mix_db": -9.6,
+    "whisper_support": "reliable"
+   },
+   {
+    "start_s": 84.49,
+    "end_s": 88.59,
+    "dur_s": 4.1,
+    "vocal_db_mean": -27.8,
+    "mix_db_mean": -23.7,
+    "vocal_minus_mix_db": -4.1,
+    "whisper_support": "reliable"
+   },
+   {
+    "start_s": 208.59,
+    "end_s": 209.11,
+    "dur_s": 0.52,
+    "vocal_db_mean": -25.8,
+    "mix_db_mean": -12.6,
+    "vocal_minus_mix_db": -13.2,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 212.45,
+    "end_s": 213.25,
+    "dur_s": 0.8,
+    "vocal_db_mean": -27.1,
+    "mix_db_mean": -12.3,
+    "vocal_minus_mix_db": -14.8,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 216.46,
+    "end_s": 217.34,
+    "dur_s": 0.88,
+    "vocal_db_mean": -28.4,
+    "mix_db_mean": -11.8,
+    "vocal_minus_mix_db": -16.6,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 218.63,
+    "end_s": 219.45,
+    "dur_s": 0.82,
+    "vocal_db_mean": -31.1,
+    "mix_db_mean": -12.1,
+    "vocal_minus_mix_db": -19.0,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 220.59,
+    "end_s": 221.06,
+    "dur_s": 0.47,
+    "vocal_db_mean": -27.7,
+    "mix_db_mean": -11.8,
+    "vocal_minus_mix_db": -15.9,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 222.3,
+    "end_s": 223.32,
+    "dur_s": 1.02,
+    "vocal_db_mean": -29.8,
+    "mix_db_mean": -12.3,
+    "vocal_minus_mix_db": -17.5,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 224.6,
+    "end_s": 225.34,
+    "dur_s": 0.74,
+    "vocal_db_mean": -26.4,
+    "mix_db_mean": -11.3,
+    "vocal_minus_mix_db": -15.1,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 226.23,
+    "end_s": 227.21,
+    "dur_s": 0.98,
+    "vocal_db_mean": -29.8,
+    "mix_db_mean": -12.1,
+    "vocal_minus_mix_db": -17.7,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 228.62,
+    "end_s": 228.97,
+    "dur_s": 0.35,
+    "vocal_db_mean": -26.4,
+    "mix_db_mean": -11.9,
+    "vocal_minus_mix_db": -14.5,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 230.61,
+    "end_s": 231.07,
+    "dur_s": 0.46,
+    "vocal_db_mean": -23.0,
+    "mix_db_mean": -11.2,
+    "vocal_minus_mix_db": -11.7,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 234.33,
+    "end_s": 235.0,
+    "dur_s": 0.67,
+    "vocal_db_mean": -32.4,
+    "mix_db_mean": -12.0,
+    "vocal_minus_mix_db": -20.4,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 236.19,
+    "end_s": 237.54,
+    "dur_s": 1.35,
+    "vocal_db_mean": -30.8,
+    "mix_db_mean": -10.8,
+    "vocal_minus_mix_db": -19.9,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 244.62,
+    "end_s": 245.08,
+    "dur_s": 0.46,
+    "vocal_db_mean": -30.1,
+    "mix_db_mean": -11.1,
+    "vocal_minus_mix_db": -19.0,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 258.47,
+    "end_s": 258.85,
+    "dur_s": 0.38,
+    "vocal_db_mean": -33.7,
+    "mix_db_mean": -11.2,
+    "vocal_minus_mix_db": -22.4,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 266.42,
+    "end_s": 268.03,
+    "dur_s": 1.61,
+    "vocal_db_mean": -31.2,
+    "mix_db_mean": -10.2,
+    "vocal_minus_mix_db": -20.9,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 268.31,
+    "end_s": 269.46,
+    "dur_s": 1.15,
+    "vocal_db_mean": -31.6,
+    "mix_db_mean": -10.6,
+    "vocal_minus_mix_db": -21.0,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 269.79,
+    "end_s": 270.73,
+    "dur_s": 0.94,
+    "vocal_db_mean": -31.9,
+    "mix_db_mean": -10.4,
+    "vocal_minus_mix_db": -21.5,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 278.49,
+    "end_s": 278.84,
+    "dur_s": 0.35,
+    "vocal_db_mean": -32.1,
+    "mix_db_mean": -15.2,
+    "vocal_minus_mix_db": -16.9,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 280.65,
+    "end_s": 281.08,
+    "dur_s": 0.43,
+    "vocal_db_mean": -29.4,
+    "mix_db_mean": -15.2,
+    "vocal_minus_mix_db": -14.2,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 282.51,
+    "end_s": 283.23,
+    "dur_s": 0.72,
+    "vocal_db_mean": -31.0,
+    "mix_db_mean": -14.7,
+    "vocal_minus_mix_db": -16.3,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 284.52,
+    "end_s": 285.22,
+    "dur_s": 0.7,
+    "vocal_db_mean": -29.6,
+    "mix_db_mean": -13.1,
+    "vocal_minus_mix_db": -16.5,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 286.65,
+    "end_s": 287.22,
+    "dur_s": 0.57,
+    "vocal_db_mean": -33.3,
+    "mix_db_mean": -14.2,
+    "vocal_minus_mix_db": -19.1,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 288.62,
+    "end_s": 289.11,
+    "dur_s": 0.49,
+    "vocal_db_mean": -29.8,
+    "mix_db_mean": -16.2,
+    "vocal_minus_mix_db": -13.6,
+    "whisper_support": "none"
+   },
+   {
+    "start_s": 290.65,
+    "end_s": 291.44,
+    "dur_s": 0.79,
+    "vocal_db_mean": -32.6,
+    "mix_db_mean": -15.0,
+    "vocal_minus_mix_db": -17.6,
+    "whisper_support": "none"
+   }
+  ]
+ },
+ "whisper_filter": {
+  "status": "applied",
+  "rule": "doubtful if in *_doubtful.txt, avg_logprob<-1.0 or no_speech_prob>0.6; VAD segment dropped if >=50% of its length overlaps doubtful whisper and none overlaps reliable whisper",
+  "primary_source": "whisper_medium_vocals_auto_transcribe.json",
+  "sources": [
+   {
+    "file": "whisper_medium_mix_nl_transcribe.json",
+    "lang": "nl",
+    "lang_prob": 1,
+    "n_segments": 20,
+    "n_doubtful": 14,
+    "whisper_time_s": 51.3,
+    "whisper_reliable_time_s": 28.6,
+    "vad_time_s": 56.5,
+    "vad_time_overlapping_any_whisper_s": 30.7,
+    "vad_time_overlapping_reliable_whisper_s": 22.6,
+    "reliable_whisper_time_with_vad_s": 22.6
+   },
+   {
+    "file": "whisper_medium_vocals_auto_transcribe.json",
+    "lang": "cy",
+    "lang_prob": 0.567870557308197,
+    "n_segments": 25,
+    "n_doubtful": 19,
+    "whisper_time_s": 55.2,
+    "whisper_reliable_time_s": 20.3,
+    "vad_time_s": 56.5,
+    "vad_time_overlapping_any_whisper_s": 35.2,
+    "vad_time_overlapping_reliable_whisper_s": 16.7,
+    "reliable_whisper_time_with_vad_s": 16.7
+   },
+   {
+    "file": "whisper_small_mix.json",
+    "lang": "en",
+    "lang_prob": 0.5957943797111511,
+    "n_segments": 22,
+    "n_doubtful": 21,
+    "whisper_time_s": 59.7,
+    "whisper_reliable_time_s": 6.2,
+    "vad_time_s": 56.5,
+    "vad_time_overlapping_any_whisper_s": 36.8,
+    "vad_time_overlapping_reliable_whisper_s": 4.8,
+    "reliable_whisper_time_with_vad_s": 4.8
+   }
+  ],
+  "dropped_vad_segments": [
+   {
+    "start_s": 109.27,
+    "end_s": 111.95
+   },
+   {
+    "start_s": 113.43,
+    "end_s": 116.29
+   },
+   {
+    "start_s": 145.41,
+    "end_s": 147.97
+   },
+   {
+    "start_s": 149.05,
+    "end_s": 151.61
+   },
+   {
+    "start_s": 152.52,
+    "end_s": 155.83
+   },
+   {
+    "start_s": 238.16,
+    "end_s": 239.1
+   },
+   {
+    "start_s": 246.58,
+    "end_s": 246.96
+   },
+   {
+    "start_s": 248.56,
+    "end_s": 249.17
+   },
+   {
+    "start_s": 252.65,
+    "end_s": 253.46
+   },
+   {
+    "start_s": 256.66,
+    "end_s": 257.0
+   },
+   {
+    "start_s": 292.65,
+    "end_s": 293.47
+   },
+   {
+    "start_s": 294.64,
+    "end_s": 295.44
+   },
+   {
+    "start_s": 296.64,
+    "end_s": 296.99
+   },
+   {
+    "start_s": 298.67,
+    "end_s": 299.33
+   }
+  ]
+ },
+ "status": "voice found",
+ "pitch": {
+  "tonic_source": "audio_features/summary.json key_whole_song_top3[0] = B minor",
+  "n_segments_with_f0": 18,
+  "n_segments": 30,
+  "interval_histogram_semitones": {
+   "0": 2,
+   "1": 0,
+   "2": 0,
+   "3": 1,
+   "4": 1,
+   "5": 1,
+   "6": 0,
+   "7": 3,
+   "8": 3,
+   "9": 1,
+   "10": 4,
+   "11": 2
+  },
+  "segments_in_scale": 14,
+  "segments_median_on_chord_tone": 4,
+  "segments_with_chord_info": 13,
+  "pooled_frame_chord_tone_share": 0.234,
+  "pooled_frame_chord_tone_chance": 0.25,
+  "pooled_frames": 466,
+  "note": "OBS: speech f0 is not a sung note; chance = share of the 12 pitch classes that are chord tones for the same frames. A gap between share and chance is possible evidence of pitch-matching, not shown here.",
+  "segments": [
+   {
+    "start_s": 42.62,
+    "end_s": 45.53,
+    "n_frames": 146,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 51.3,
+    "end_s": 53.88,
+    "n_frames": 130,
+    "n_pitched_frames": 43,
+    "pitched_fraction": 0.33,
+    "f0_median_hz": 108.1,
+    "f0_p10_p90_hz": [
+     105.6,
+     137.7
+    ],
+    "nearest_note": "A2",
+    "cents_from_nearest_semitone": -31,
+    "interval_to_tonic_semitones": 10,
+    "in_scale_of_key": true,
+    "chord_at_median_time": null,
+    "frame_chord_tone_share": 0.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 18
+   },
+   {
+    "start_s": 59.13,
+    "end_s": 60.57,
+    "n_frames": 73,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 64.53,
+    "end_s": 70.13,
+    "n_frames": 281,
+    "n_pitched_frames": 109,
+    "pitched_fraction": 0.39,
+    "f0_median_hz": 122.7,
+    "f0_p10_p90_hz": [
+     92.5,
+     148.6
+    ],
+    "nearest_note": "B2",
+    "cents_from_nearest_semitone": -11,
+    "interval_to_tonic_semitones": 0,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": true,
+    "frame_chord_tone_share": 0.47,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 78
+   },
+   {
+    "start_s": 80.04,
+    "end_s": 82.55,
+    "n_frames": 126,
+    "n_pitched_frames": 15,
+    "pitched_fraction": 0.12,
+    "f0_median_hz": 149.3,
+    "f0_p10_p90_hz": [
+     145.1,
+     151.9
+    ],
+    "nearest_note": "D3",
+    "cents_from_nearest_semitone": 29,
+    "interval_to_tonic_semitones": 3,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "B",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.27,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 15
+   },
+   {
+    "start_s": 84.49,
+    "end_s": 88.59,
+    "n_frames": 206,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 208.59,
+    "end_s": 209.11,
+    "n_frames": 27,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 212.45,
+    "end_s": 213.25,
+    "n_frames": 41,
+    "n_pitched_frames": 36,
+    "pitched_fraction": 0.88,
+    "f0_median_hz": 436.0,
+    "f0_p10_p90_hz": [
+     404.5,
+     461.9
+    ],
+    "nearest_note": "A4",
+    "cents_from_nearest_semitone": -16,
+    "interval_to_tonic_semitones": 10,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.03,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 36
+   },
+   {
+    "start_s": 216.46,
+    "end_s": 217.34,
+    "n_frames": 45,
+    "n_pitched_frames": 27,
+    "pitched_fraction": 0.6,
+    "f0_median_hz": 186.0,
+    "f0_p10_p90_hz": [
+     154.2,
+     391.8
+    ],
+    "nearest_note": "F#3",
+    "cents_from_nearest_semitone": 9,
+    "interval_to_tonic_semitones": 7,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": true,
+    "frame_chord_tone_share": 0.26,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 19
+   },
+   {
+    "start_s": 218.63,
+    "end_s": 219.45,
+    "n_frames": 42,
+    "n_pitched_frames": 42,
+    "pitched_fraction": 1.0,
+    "f0_median_hz": 466.0,
+    "f0_p10_p90_hz": [
+     394.1,
+     610.9
+    ],
+    "nearest_note": "A#4",
+    "cents_from_nearest_semitone": -1,
+    "interval_to_tonic_semitones": 11,
+    "in_scale_of_key": false,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.17,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 42
+   },
+   {
+    "start_s": 220.59,
+    "end_s": 221.06,
+    "n_frames": 24,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 222.3,
+    "end_s": 223.32,
+    "n_frames": 52,
+    "n_pitched_frames": 18,
+    "pitched_fraction": 0.35,
+    "f0_median_hz": 395.2,
+    "f0_p10_p90_hz": [
+     391.8,
+     418.2
+    ],
+    "nearest_note": "G4",
+    "cents_from_nearest_semitone": 14,
+    "interval_to_tonic_semitones": 8,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "D",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 18
+   },
+   {
+    "start_s": 224.6,
+    "end_s": 225.34,
+    "n_frames": 38,
+    "n_pitched_frames": 16,
+    "pitched_fraction": 0.42,
+    "f0_median_hz": 620.2,
+    "f0_p10_p90_hz": [
+     394.1,
+     642.0
+    ],
+    "nearest_note": "D#5",
+    "cents_from_nearest_semitone": -6,
+    "interval_to_tonic_semitones": 4,
+    "in_scale_of_key": false,
+    "chord_at_median_time": "D",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 16
+   },
+   {
+    "start_s": 226.23,
+    "end_s": 227.21,
+    "n_frames": 50,
+    "n_pitched_frames": 12,
+    "pitched_fraction": 0.24,
+    "f0_median_hz": 463.3,
+    "f0_p10_p90_hz": [
+     460.9,
+     463.3
+    ],
+    "nearest_note": "A#4",
+    "cents_from_nearest_semitone": -11,
+    "interval_to_tonic_semitones": 11,
+    "in_scale_of_key": false,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 12
+   },
+   {
+    "start_s": 228.62,
+    "end_s": 228.97,
+    "n_frames": 18,
+    "n_pitched_frames": 15,
+    "pitched_fraction": 0.83,
+    "f0_median_hz": 165.7,
+    "f0_p10_p90_hz": [
+     162.3,
+     176.6
+    ],
+    "nearest_note": "E3",
+    "cents_from_nearest_semitone": 9,
+    "interval_to_tonic_semitones": 5,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 15
+   },
+   {
+    "start_s": 230.61,
+    "end_s": 231.07,
+    "n_frames": 24,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 234.33,
+    "end_s": 235.0,
+    "n_frames": 34,
+    "n_pitched_frames": 13,
+    "pitched_fraction": 0.38,
+    "f0_median_hz": 389.6,
+    "f0_p10_p90_hz": [
+     389.6,
+     393.6
+    ],
+    "nearest_note": "G4",
+    "cents_from_nearest_semitone": -11,
+    "interval_to_tonic_semitones": 8,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "D",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 13
+   },
+   {
+    "start_s": 236.19,
+    "end_s": 237.54,
+    "n_frames": 68,
+    "n_pitched_frames": 66,
+    "pitched_fraction": 0.97,
+    "f0_median_hz": 412.7,
+    "f0_p10_p90_hz": [
+     389.6,
+     457.9
+    ],
+    "nearest_note": "G#4",
+    "cents_from_nearest_semitone": -11,
+    "interval_to_tonic_semitones": 9,
+    "in_scale_of_key": false,
+    "chord_at_median_time": null,
+    "frame_chord_tone_share": 0.04,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 48
+   },
+   {
+    "start_s": 244.62,
+    "end_s": 245.08,
+    "n_frames": 24,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 258.47,
+    "end_s": 258.85,
+    "n_frames": 20,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 266.42,
+    "end_s": 268.03,
+    "n_frames": 81,
+    "n_pitched_frames": 41,
+    "pitched_fraction": 0.51,
+    "f0_median_hz": 391.8,
+    "f0_p10_p90_hz": [
+     369.8,
+     434.7
+    ],
+    "nearest_note": "G4",
+    "cents_from_nearest_semitone": -1,
+    "interval_to_tonic_semitones": 8,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": false,
+    "frame_chord_tone_share": 0.29,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 41
+   },
+   {
+    "start_s": 268.31,
+    "end_s": 269.46,
+    "n_frames": 58,
+    "n_pitched_frames": 39,
+    "pitched_fraction": 0.67,
+    "f0_median_hz": 372.0,
+    "f0_p10_p90_hz": [
+     195.9,
+     391.8
+    ],
+    "nearest_note": "F#4",
+    "cents_from_nearest_semitone": 9,
+    "interval_to_tonic_semitones": 7,
+    "in_scale_of_key": true,
+    "chord_at_median_time": null,
+    "frame_chord_tone_share": 0.19,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 27
+   },
+   {
+    "start_s": 269.79,
+    "end_s": 270.73,
+    "n_frames": 48,
+    "n_pitched_frames": 37,
+    "pitched_fraction": 0.77,
+    "f0_median_hz": 434.7,
+    "f0_p10_p90_hz": [
+     219.9,
+     439.8
+    ],
+    "nearest_note": "A4",
+    "cents_from_nearest_semitone": -21,
+    "interval_to_tonic_semitones": 10,
+    "in_scale_of_key": true,
+    "chord_at_median_time": null,
+    "frame_chord_tone_share": 1.0,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 21
+   },
+   {
+    "start_s": 278.49,
+    "end_s": 278.84,
+    "n_frames": 18,
+    "n_pitched_frames": 18,
+    "pitched_fraction": 1.0,
+    "f0_median_hz": 485.2,
+    "f0_p10_p90_hz": [
+     479.6,
+     647.6
+    ],
+    "nearest_note": "B4",
+    "cents_from_nearest_semitone": -31,
+    "interval_to_tonic_semitones": 0,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "Bm",
+    "median_pc_is_chord_tone": true,
+    "frame_chord_tone_share": 0.33,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 18
+   },
+   {
+    "start_s": 280.65,
+    "end_s": 281.08,
+    "n_frames": 22,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 282.51,
+    "end_s": 283.23,
+    "n_frames": 37,
+    "n_pitched_frames": 30,
+    "pitched_fraction": 0.81,
+    "f0_median_hz": 439.8,
+    "f0_p10_p90_hz": [
+     405.4,
+     775.1
+    ],
+    "nearest_note": "A4",
+    "cents_from_nearest_semitone": -1,
+    "interval_to_tonic_semitones": 10,
+    "in_scale_of_key": true,
+    "chord_at_median_time": "F#m",
+    "median_pc_is_chord_tone": true,
+    "frame_chord_tone_share": 0.32,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 25
+   },
+   {
+    "start_s": 284.52,
+    "end_s": 285.22,
+    "n_frames": 36,
+    "n_pitched_frames": 22,
+    "pitched_fraction": 0.61,
+    "f0_median_hz": 184.4,
+    "f0_p10_p90_hz": [
+     155.5,
+     187.0
+    ],
+    "nearest_note": "F#3",
+    "cents_from_nearest_semitone": -6,
+    "interval_to_tonic_semitones": 7,
+    "in_scale_of_key": true,
+    "chord_at_median_time": null,
+    "frame_chord_tone_share": 0.25,
+    "frame_chord_tone_chance": 0.25,
+    "frames_with_chord": 4
+   },
+   {
+    "start_s": 286.65,
+    "end_s": 287.22,
+    "n_frames": 29,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 288.62,
+    "end_s": 289.11,
+    "n_frames": 25,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   },
+   {
+    "start_s": 290.65,
+    "end_s": 291.44,
+    "n_frames": 40,
+    "n_pitched_frames": 0,
+    "pitched_fraction": 0.0,
+    "f0": "too few pitched frames (<5)"
+   }
+  ]
+ },
+ "beat_phase": {
+  "status": "ok",
+  "beat_times_source": "audio_features/beat_times.json",
+  "n_onsets": 29,
+  "onsets": [
+   {
+    "onset_s": 42.62,
+    "phase": null,
+    "note": "outside beat grid"
+   },
+   {
+    "onset_s": 51.3,
+    "beat_interval_s": 0.372,
+    "phase": 0.145,
+    "offset_to_nearest_beat_ms": 54
+   },
+   {
+    "onset_s": 59.13,
+    "beat_interval_s": 0.372,
+    "phase": 0.22,
+    "offset_to_nearest_beat_ms": 82
+   },
+   {
+    "onset_s": 64.53,
+    "beat_interval_s": 0.371,
+    "phase": 0.693,
+    "offset_to_nearest_beat_ms": -114
+   },
+   {
+    "onset_s": 80.04,
+    "beat_interval_s": 0.348,
+    "phase": 0.736,
+    "offset_to_nearest_beat_ms": -92
+   },
+   {
+    "onset_s": 84.49,
+    "beat_interval_s": 0.348,
+    "phase": 0.713,
+    "offset_to_nearest_beat_ms": -100
+   },
+   {
+    "onset_s": 208.59,
+    "beat_interval_s": 0.372,
+    "phase": 0.14,
+    "offset_to_nearest_beat_ms": 52
+   },
+   {
+    "onset_s": 212.45,
+    "beat_interval_s": 0.372,
+    "phase": 0.403,
+    "offset_to_nearest_beat_ms": 150
+   },
+   {
+    "onset_s": 216.46,
+    "beat_interval_s": 0.371,
+    "phase": 0.197,
+    "offset_to_nearest_beat_ms": 73
+   },
+   {
+    "onset_s": 218.63,
+    "beat_interval_s": 0.371,
+    "phase": 0.914,
+    "offset_to_nearest_beat_ms": -32
+   },
+   {
+    "onset_s": 220.59,
+    "beat_interval_s": 0.395,
+    "phase": 0.177,
+    "offset_to_nearest_beat_ms": 70
+   },
+   {
+    "onset_s": 222.3,
+    "beat_interval_s": 0.372,
+    "phase": 0.728,
+    "offset_to_nearest_beat_ms": -101
+   },
+   {
+    "onset_s": 224.6,
+    "beat_interval_s": 0.371,
+    "phase": 0.857,
+    "offset_to_nearest_beat_ms": -53
+   },
+   {
+    "onset_s": 226.23,
+    "beat_interval_s": 0.372,
+    "phase": 0.183,
+    "offset_to_nearest_beat_ms": 68
+   },
+   {
+    "onset_s": 228.62,
+    "beat_interval_s": 0.371,
+    "phase": 0.553,
+    "offset_to_nearest_beat_ms": -166
+   },
+   {
+    "onset_s": 230.61,
+    "beat_interval_s": 0.371,
+    "phase": 0.846,
+    "offset_to_nearest_beat_ms": -57
+   },
+   {
+    "onset_s": 234.33,
+    "beat_interval_s": 0.371,
+    "phase": 0.798,
+    "offset_to_nearest_beat_ms": -75
+   },
+   {
+    "onset_s": 236.19,
+    "beat_interval_s": 0.394,
+    "phase": 0.756,
+    "offset_to_nearest_beat_ms": -96
+   },
+   {
+    "onset_s": 244.62,
+    "beat_interval_s": 0.372,
+    "phase": 0.245,
+    "offset_to_nearest_beat_ms": 91
+   },
+   {
+    "onset_s": 258.47,
+    "beat_interval_s": 0.371,
+    "phase": 0.148,
+    "offset_to_nearest_beat_ms": 55
+   },
+   {
+    "onset_s": 266.42,
+    "beat_interval_s": 0.372,
+    "phase": 0.36,
+    "offset_to_nearest_beat_ms": 134
+   },
+   {
+    "onset_s": 268.31,
+    "beat_interval_s": 0.372,
+    "phase": 0.446,
+    "offset_to_nearest_beat_ms": 166
+   },
+   {
+    "onset_s": 269.79,
+    "beat_interval_s": 0.372,
+    "phase": 0.368,
+    "offset_to_nearest_beat_ms": 137
+   },
+   {
+    "onset_s": 278.49,
+    "beat_interval_s": 0.372,
+    "phase": 0.223,
+    "offset_to_nearest_beat_ms": 83
+   },
+   {
+    "onset_s": 280.65,
+    "beat_interval_s": 0.372,
+    "phase": 0.349,
+    "offset_to_nearest_beat_ms": 130
+   },
+   {
+    "onset_s": 282.51,
+    "beat_interval_s": 0.372,
+    "phase": 0.293,
+    "offset_to_nearest_beat_ms": 109
+   },
+   {
+    "onset_s": 284.52,
+    "beat_interval_s": 0.371,
+    "phase": 0.642,
+    "offset_to_nearest_beat_ms": -133
+   },
+   {
+    "onset_s": 286.65,
+    "beat_interval_s": 0.395,
+    "phase": 0.352,
+    "offset_to_nearest_beat_ms": 139
+   },
+   {
+    "onset_s": 288.62,
+    "beat_interval_s": 0.371,
+    "phase": 0.615,
+    "offset_to_nearest_beat_ms": -143
+   },
+   {
+    "onset_s": 290.65,
+    "beat_interval_s": 0.395,
+    "phase": 0.015,
+    "offset_to_nearest_beat_ms": 6
+   }
+  ],
+  "circular_mean_phase": 0.289,
+  "resultant_length_R": 0.122,
+  "uniform_chance_R_approx": 0.186,
+  "share_within_100ms_of_beat": 0.586,
+  "note": "OBS: segment onsets are VAD onsets (>=gap s after previous voiced block), not syllable onsets. R near uniform_chance_R means no phase preference measurable at this n."
+ },
+ "ducking": {
+  "status": "ok",
+  "definition": "power-mean dB of 10 ms RMS blocks; elsewhere = not within 1 s of any kept voiced segment; mix includes the voice itself, accompaniment = bass+drums+other stems power sum",
+  "seconds_per_region": {
+   "during_voiced": 36.8,
+   "margin_1s_around": 47.5,
+   "elsewhere": 221.6
+  },
+  "accompaniment_db": {
+   "during_voiced": -15.7,
+   "margin_1s_around": -13.7,
+   "elsewhere": -14.5
+  },
+  "other_stem_db": {
+   "during_voiced": -19.1,
+   "margin_1s_around": -17.5,
+   "elsewhere": -20.2
+  },
+  "mix_db": {
+   "during_voiced": -13.2,
+   "margin_1s_around": -12.1,
+   "elsewhere": -13.0
+  },
+  "accompaniment_during_minus_elsewhere_db": -1.2,
+  "other_during_minus_elsewhere_db": 1.1,
+  "per_segment_change_db": {
+   "n": 30,
+   "median": -0.6,
+   "share_negative": 0.73,
+   "segments": [
+    {
+     "start_s": 42.62,
+     "accompaniment_pre1s_db": -20.7,
+     "accompaniment_during_db": -19.7,
+     "change_db": 0.9
+    },
+    {
+     "start_s": 51.3,
+     "accompaniment_pre1s_db": -21.7,
+     "accompaniment_during_db": -20.2,
+     "change_db": 1.6
+    },
+    {
+     "start_s": 59.13,
+     "accompaniment_pre1s_db": -20.8,
+     "accompaniment_during_db": -20.1,
+     "change_db": 0.7
+    },
+    {
+     "start_s": 64.53,
+     "accompaniment_pre1s_db": -19.0,
+     "accompaniment_during_db": -20.5,
+     "change_db": -1.5
+    },
+    {
+     "start_s": 80.04,
+     "accompaniment_pre1s_db": -18.8,
+     "accompaniment_during_db": -19.9,
+     "change_db": -1.1
+    },
+    {
+     "start_s": 84.49,
+     "accompaniment_pre1s_db": -22.2,
+     "accompaniment_during_db": -29.6,
+     "change_db": -7.3
+    },
+    {
+     "start_s": 208.59,
+     "accompaniment_pre1s_db": -13.1,
+     "accompaniment_during_db": -13.9,
+     "change_db": -0.8
+    },
+    {
+     "start_s": 212.45,
+     "accompaniment_pre1s_db": -12.9,
+     "accompaniment_during_db": -13.7,
+     "change_db": -0.8
+    },
+    {
+     "start_s": 216.46,
+     "accompaniment_pre1s_db": -11.4,
+     "accompaniment_during_db": -13.5,
+     "change_db": -2.1
+    },
+    {
+     "start_s": 218.63,
+     "accompaniment_pre1s_db": -14.1,
+     "accompaniment_during_db": -13.5,
+     "change_db": 0.5
+    },
+    {
+     "start_s": 220.59,
+     "accompaniment_pre1s_db": -12.9,
+     "accompaniment_during_db": -13.4,
+     "change_db": -0.5
+    },
+    {
+     "start_s": 222.3,
+     "accompaniment_pre1s_db": -13.3,
+     "accompaniment_during_db": -13.8,
+     "change_db": -0.5
+    },
+    {
+     "start_s": 224.6,
+     "accompaniment_pre1s_db": -12.3,
+     "accompaniment_during_db": -12.7,
+     "change_db": -0.4
+    },
+    {
+     "start_s": 226.23,
+     "accompaniment_pre1s_db": -12.1,
+     "accompaniment_during_db": -13.8,
+     "change_db": -1.7
+    },
+    {
+     "start_s": 228.62,
+     "accompaniment_pre1s_db": -11.2,
+     "accompaniment_during_db": -13.7,
+     "change_db": -2.6
+    },
+    {
+     "start_s": 230.61,
+     "accompaniment_pre1s_db": -12.4,
+     "accompaniment_during_db": -13.2,
+     "change_db": -0.8
+    },
+    {
+     "start_s": 234.33,
+     "accompaniment_pre1s_db": -12.5,
+     "accompaniment_during_db": -13.2,
+     "change_db": -0.7
+    },
+    {
+     "start_s": 236.19,
+     "accompaniment_pre1s_db": -12.5,
+     "accompaniment_during_db": -12.1,
+     "change_db": 0.4
+    },
+    {
+     "start_s": 244.62,
+     "accompaniment_pre1s_db": -12.5,
+     "accompaniment_during_db": -12.8,
+     "change_db": -0.3
+    },
+    {
+     "start_s": 258.47,
+     "accompaniment_pre1s_db": -12.0,
+     "accompaniment_during_db": -13.0,
+     "change_db": -0.9
+    },
+    {
+     "start_s": 266.42,
+     "accompaniment_pre1s_db": -11.8,
+     "accompaniment_during_db": -11.7,
+     "change_db": 0.0
+    },
+    {
+     "start_s": 268.31,
+     "accompaniment_pre1s_db": -11.4,
+     "accompaniment_during_db": -12.2,
+     "change_db": -0.8
+    },
+    {
+     "start_s": 269.79,
+     "accompaniment_pre1s_db": -12.0,
+     "accompaniment_during_db": -11.9,
+     "change_db": 0.2
+    },
+    {
+     "start_s": 278.49,
+     "accompaniment_pre1s_db": -13.6,
+     "accompaniment_during_db": -14.7,
+     "change_db": -1.1
+    },
+    {
+     "start_s": 280.65,
+     "accompaniment_pre1s_db": -14.0,
+     "accompaniment_during_db": -15.3,
+     "change_db": -1.3
+    },
+    {
+     "start_s": 282.51,
+     "accompaniment_pre1s_db": -14.3,
+     "accompaniment_during_db": -14.7,
+     "change_db": -0.4
+    },
+    {
+     "start_s": 284.52,
+     "accompaniment_pre1s_db": -14.0,
+     "accompaniment_during_db": -13.7,
+     "change_db": 0.3
+    },
+    {
+     "start_s": 286.65,
+     "accompaniment_pre1s_db": -13.8,
+     "accompaniment_during_db": -13.9,
+     "change_db": -0.1
+    },
+    {
+     "start_s": 288.62,
+     "accompaniment_pre1s_db": -12.3,
+     "accompaniment_during_db": -16.8,
+     "change_db": -4.5
+    },
+    {
+     "start_s": 290.65,
+     "accompaniment_pre1s_db": -15.1,
+     "accompaniment_during_db": -15.5,
+     "change_db": -0.5
+    }
+   ]
+  },
+  "note": "OBS: a level difference is not shown to be deliberate ducking; section changes (voice often enters with a section) confound it."
+ }
+}

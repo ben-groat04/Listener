@@ -5,6 +5,8 @@ import json, os
 import numpy as np, librosa, torch, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from transformers import ClapModel, ClapProcessor
+def _t(x):  # transformers 5 returns a ModelOutput instead of a tensor
+    return x if torch.is_tensor(x) else (x.pooler_output if getattr(x, 'pooler_output', None) is not None else x[0])
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 VID = os.environ.get("VID", "video2"); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "music_views"); os.makedirs(O, exist_ok=True)
 SETS = {
@@ -21,12 +23,12 @@ m = ClapModel.from_pretrained("laion/larger_clap_music_and_speech").eval(); p = 
 y, sr = librosa.load(os.path.join(D, "audio/song.wav"), sr=48000, mono=True)
 W = 5; wins = [y[i:i + W * sr] for i in range(0, len(y) - sr, W * sr)]
 with torch.no_grad():
-    te = {k: m.get_text_features(**p(text=[f"the sound of {l}" if k in ("instrument", "sound") else f"{l}" for l in v], return_tensors="pt", padding=True)) for k, v in SETS.items()}
+    te = {k: _t(m.get_text_features(**p(text=[f"the sound of {l}" if k in ("instrument", "sound") else f"{l}" for l in v], return_tensors="pt", padding=True))) for k, v in SETS.items()}
     te = {k: torch.nn.functional.normalize(v, dim=-1) for k, v in te.items()}
     ae = []
     for i in range(0, len(wins), 8):
-        b = p(audios=[w for w in wins[i:i + 8]], sampling_rate=48000, return_tensors="pt")
-        ae.append(torch.nn.functional.normalize(m.get_audio_features(**b), dim=-1))
+        b = p(audio=[w for w in wins[i:i + 8]], sampling_rate=48000, return_tensors="pt")
+        ae.append(torch.nn.functional.normalize(_t(m.get_audio_features(**b)), dim=-1))
     ae = torch.cat(ae)
 out = {"window_s": W, "labels": SETS, "windows": []}
 for j in range(len(wins)):

@@ -1,0 +1,1 @@
+{"has_stems": true, "chord_time_share_top10": [["D", 94.3], ["Dm", 33.1], ["N", 15.6], ["G", 13.2], ["C", 10.8], ["Am", 6.2], ["Bm", 5.5], ["Gm", 3.1], ["F", 2.3], ["Cm", 1.6]], "n_chord_changes": 143, "lead_note_range": ["C\u266f2", "C5"], "files": "chords.json, lead_notes.json, per_second_levels.json, window_XXXXs.png (one per 20 s)"}

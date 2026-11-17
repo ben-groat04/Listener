@@ -1,0 +1,4672 @@
+{
+"window_s": 5,
+"labels": {
+"genre": [
+"rock",
+"post-rock",
+"electronic music",
+"ambient music",
+"techno",
+"hip hop",
+"pop",
+"folk",
+"classical music",
+"jazz",
+"metal",
+"soul",
+"country",
+"krautrock",
+"orchestral film score",
+"drum and bass",
+"indie rock",
+"synth-pop",
+"R&B",
+"reggae"
+],
+"instrument": [
+"electric guitar",
+"distorted guitar",
+"acoustic guitar",
+"bass guitar",
+"synthesizer",
+"piano",
+"drum kit",
+"drum machine",
+"strings",
+"brass",
+"banjo",
+"organ",
+"choir",
+"glockenspiel",
+"violin",
+"saxophone",
+"sampled voice"
+],
+"mood": [
+"happy",
+"sad",
+"tense",
+"calm",
+"triumphant",
+"melancholic",
+"eerie",
+"energetic",
+"hopeful",
+"nostalgic",
+"aggressive",
+"dreamy",
+"solemn",
+"playful"
+],
+"voice": [
+"male singing",
+"female singing",
+"male speech",
+"female speech",
+"radio announcer speech",
+"crowd chanting",
+"rapping",
+"no vocals",
+"choir singing"
+],
+"sound": [
+"wind",
+"crowd cheering",
+"applause",
+"ice skating",
+"footsteps in snow",
+"engine",
+"tape hiss",
+"vinyl crackle",
+"silence",
+"bells"
+]
+},
+"windows": [
+{
+"t": 0,
+"genre": [
+[
+"electronic music",
+0.55
+],
+[
+"metal",
+0.259
+],
+[
+"hip hop",
+0.178
+]
+],
+"instrument": [
+[
+"piano",
+0.476
+],
+[
+"organ",
+0.199
+],
+[
+"choir",
+0.191
+]
+],
+"mood": [
+[
+"calm",
+0.973
+],
+[
+"aggressive",
+0.021
+],
+[
+"tense",
+0.005
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.845
+],
+[
+"vinyl crackle",
+0.121
+],
+[
+"ice skating",
+0.032
+]
+]
+},
+{
+"t": 5,
+"genre": [
+[
+"electronic music",
+0.721
+],
+[
+"ambient music",
+0.267
+],
+[
+"metal",
+0.012
+]
+],
+"instrument": [
+[
+"choir",
+0.994
+],
+[
+"organ",
+0.006
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.856
+],
+[
+"nostalgic",
+0.114
+],
+[
+"tense",
+0.014
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.454
+],
+[
+"silence",
+0.254
+],
+[
+"crowd cheering",
+0.201
+]
+]
+},
+{
+"t": 10,
+"genre": [
+[
+"electronic music",
+0.768
+],
+[
+"ambient music",
+0.139
+],
+[
+"metal",
+0.09
+]
+],
+"instrument": [
+[
+"choir",
+0.985
+],
+[
+"organ",
+0.015
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.56
+],
+[
+"nostalgic",
+0.416
+],
+[
+"tense",
+0.017
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"choir singing",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+0.704
+],
+[
+"bells",
+0.225
+],
+[
+"crowd cheering",
+0.038
+]
+]
+},
+{
+"t": 15,
+"genre": [
+[
+"electronic music",
+0.473
+],
+[
+"metal",
+0.299
+],
+[
+"ambient music",
+0.226
+]
+],
+"instrument": [
+[
+"choir",
+0.875
+],
+[
+"organ",
+0.124
+],
+[
+"piano",
+0.001
+]
+],
+"mood": [
+[
+"calm",
+0.924
+],
+[
+"nostalgic",
+0.043
+],
+[
+"tense",
+0.029
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.99
+],
+[
+"ice skating",
+0.006
+],
+[
+"silence",
+0.002
+]
+]
+},
+{
+"t": 20,
+"genre": [
+[
+"electronic music",
+0.989
+],
+[
+"ambient music",
+0.008
+],
+[
+"metal",
+0.003
+]
+],
+"instrument": [
+[
+"choir",
+0.972
+],
+[
+"organ",
+0.016
+],
+[
+"piano",
+0.011
+]
+],
+"mood": [
+[
+"calm",
+0.869
+],
+[
+"tense",
+0.061
+],
+[
+"aggressive",
+0.056
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.496
+],
+[
+"silence",
+0.418
+],
+[
+"ice skating",
+0.068
+]
+]
+},
+{
+"t": 25,
+"genre": [
+[
+"electronic music",
+0.896
+],
+[
+"ambient music",
+0.104
+],
+[
+"classical music",
+0.0
+]
+],
+"instrument": [
+[
+"choir",
+0.783
+],
+[
+"organ",
+0.21
+],
+[
+"bass guitar",
+0.006
+]
+],
+"mood": [
+[
+"calm",
+0.992
+],
+[
+"nostalgic",
+0.005
+],
+[
+"solemn",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.514
+],
+[
+"silence",
+0.285
+],
+[
+"crowd cheering",
+0.188
+]
+]
+},
+{
+"t": 30,
+"genre": [
+[
+"electronic music",
+0.999
+],
+[
+"ambient music",
+0.001
+],
+[
+"classical music",
+0.0
+]
+],
+"instrument": [
+[
+"organ",
+0.976
+],
+[
+"choir",
+0.024
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.991
+],
+[
+"nostalgic",
+0.009
+],
+[
+"solemn",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"choir singing",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.985
+],
+[
+"crowd cheering",
+0.009
+],
+[
+"vinyl crackle",
+0.004
+]
+]
+},
+{
+"t": 35,
+"genre": [
+[
+"electronic music",
+0.954
+],
+[
+"ambient music",
+0.045
+],
+[
+"classical music",
+0.001
+]
+],
+"instrument": [
+[
+"organ",
+0.538
+],
+[
+"choir",
+0.462
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.979
+],
+[
+"nostalgic",
+0.009
+],
+[
+"solemn",
+0.005
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.966
+],
+[
+"crowd cheering",
+0.028
+],
+[
+"silence",
+0.004
+]
+]
+},
+{
+"t": 40,
+"genre": [
+[
+"electronic music",
+0.998
+],
+[
+"pop",
+0.001
+],
+[
+"hip hop",
+0.001
+]
+],
+"instrument": [
+[
+"organ",
+0.822
+],
+[
+"choir",
+0.177
+],
+[
+"bass guitar",
+0.001
+]
+],
+"mood": [
+[
+"calm",
+0.977
+],
+[
+"hopeful",
+0.021
+],
+[
+"aggressive",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.602
+],
+[
+"silence",
+0.397
+],
+[
+"ice skating",
+0.001
+]
+]
+},
+{
+"t": 45,
+"genre": [
+[
+"electronic music",
+0.987
+],
+[
+"ambient music",
+0.013
+],
+[
+"orchestral film score",
+0.0
+]
+],
+"instrument": [
+[
+"choir",
+0.984
+],
+[
+"organ",
+0.016
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.9
+],
+[
+"nostalgic",
+0.094
+],
+[
+"hopeful",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.935
+],
+[
+"bells",
+0.049
+],
+[
+"ice skating",
+0.011
+]
+]
+},
+{
+"t": 50,
+"genre": [
+[
+"electronic music",
+0.986
+],
+[
+"pop",
+0.011
+],
+[
+"techno",
+0.003
+]
+],
+"instrument": [
+[
+"organ",
+0.833
+],
+[
+"choir",
+0.167
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.999
+],
+[
+"hopeful",
+0.001
+],
+[
+"nostalgic",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"choir singing",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.869
+],
+[
+"silence",
+0.13
+],
+[
+"crowd cheering",
+0.0
+]
+]
+},
+{
+"t": 55,
+"genre": [
+[
+"electronic music",
+0.893
+],
+[
+"orchestral film score",
+0.083
+],
+[
+"pop",
+0.013
+]
+],
+"instrument": [
+[
+"organ",
+0.973
+],
+[
+"choir",
+0.027
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.807
+],
+[
+"aggressive",
+0.075
+],
+[
+"nostalgic",
+0.058
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.996
+],
+[
+"silence",
+0.003
+],
+[
+"ice skating",
+0.001
+]
+]
+},
+{
+"t": 60,
+"genre": [
+[
+"electronic music",
+0.934
+],
+[
+"pop",
+0.027
+],
+[
+"orchestral film score",
+0.018
+]
+],
+"instrument": [
+[
+"organ",
+0.967
+],
+[
+"choir",
+0.032
+],
+[
+"brass",
+0.001
+]
+],
+"mood": [
+[
+"hopeful",
+0.813
+],
+[
+"aggressive",
+0.174
+],
+[
+"solemn",
+0.007
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"female singing",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.997
+],
+[
+"silence",
+0.003
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 65,
+"genre": [
+[
+"hip hop",
+0.527
+],
+[
+"electronic music",
+0.25
+],
+[
+"techno",
+0.094
+]
+],
+"instrument": [
+[
+"organ",
+0.971
+],
+[
+"choir",
+0.029
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.912
+],
+[
+"nostalgic",
+0.031
+],
+[
+"hopeful",
+0.027
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"ice skating",
+0.987
+],
+[
+"bells",
+0.009
+],
+[
+"silence",
+0.003
+]
+]
+},
+{
+"t": 70,
+"genre": [
+[
+"electronic music",
+0.997
+],
+[
+"ambient music",
+0.003
+],
+[
+"techno",
+0.0
+]
+],
+"instrument": [
+[
+"organ",
+1.0
+],
+[
+"choir",
+0.0
+],
+[
+"drum machine",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.914
+],
+[
+"calm",
+0.084
+],
+[
+"tense",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"choir singing",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.96
+],
+[
+"crowd cheering",
+0.023
+],
+[
+"vinyl crackle",
+0.015
+]
+]
+},
+{
+"t": 75,
+"genre": [
+[
+"electronic music",
+0.966
+],
+[
+"ambient music",
+0.033
+],
+[
+"synth-pop",
+0.001
+]
+],
+"instrument": [
+[
+"organ",
+0.999
+],
+[
+"choir",
+0.001
+],
+[
+"drum machine",
+0.0
+]
+],
+"mood": [
+[
+"calm",
+0.5
+],
+[
+"nostalgic",
+0.486
+],
+[
+"tense",
+0.009
+]
+],
+"voice": [
+[
+"no vocals",
+0.638
+],
+[
+"choir singing",
+0.361
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.902
+],
+[
+"vinyl crackle",
+0.035
+],
+[
+"engine",
+0.023
+]
+]
+},
+{
+"t": 80,
+"genre": [
+[
+"techno",
+0.69
+],
+[
+"synth-pop",
+0.233
+],
+[
+"metal",
+0.031
+]
+],
+"instrument": [
+[
+"organ",
+0.777
+],
+[
+"brass",
+0.144
+],
+[
+"saxophone",
+0.041
+]
+],
+"mood": [
+[
+"calm",
+0.392
+],
+[
+"triumphant",
+0.315
+],
+[
+"tense",
+0.119
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"radio announcer speech",
+0.001
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.974
+],
+[
+"ice skating",
+0.018
+],
+[
+"silence",
+0.006
+]
+]
+},
+{
+"t": 85,
+"genre": [
+[
+"hip hop",
+0.997
+],
+[
+"electronic music",
+0.001
+],
+[
+"pop",
+0.001
+]
+],
+"instrument": [
+[
+"saxophone",
+0.711
+],
+[
+"organ",
+0.287
+],
+[
+"brass",
+0.002
+]
+],
+"mood": [
+[
+"calm",
+0.939
+],
+[
+"hopeful",
+0.055
+],
+[
+"tense",
+0.005
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.646
+],
+[
+"bells",
+0.339
+],
+[
+"vinyl crackle",
+0.009
+]
+]
+},
+{
+"t": 90,
+"genre": [
+[
+"synth-pop",
+0.997
+],
+[
+"electronic music",
+0.003
+],
+[
+"post-rock",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.994
+],
+[
+"organ",
+0.006
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.998
+],
+[
+"tense",
+0.002
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"choir singing",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.54
+],
+[
+"wind",
+0.434
+],
+[
+"silence",
+0.024
+]
+]
+},
+{
+"t": 95,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"techno",
+0.0
+],
+[
+"electronic music",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.99
+],
+[
+"organ",
+0.01
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.982
+],
+[
+"calm",
+0.013
+],
+[
+"tense",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+0.995
+],
+[
+"rapping",
+0.004
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.939
+],
+[
+"bells",
+0.046
+],
+[
+"silence",
+0.013
+]
+]
+},
+{
+"t": 100,
+"genre": [
+[
+"synth-pop",
+0.999
+],
+[
+"post-rock",
+0.001
+],
+[
+"techno",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.988
+],
+[
+"tense",
+0.005
+],
+[
+"calm",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.534
+],
+[
+"vinyl crackle",
+0.417
+],
+[
+"silence",
+0.046
+]
+]
+},
+{
+"t": 105,
+"genre": [
+[
+"post-rock",
+0.942
+],
+[
+"synth-pop",
+0.03
+],
+[
+"krautrock",
+0.016
+]
+],
+"instrument": [
+[
+"drum machine",
+0.999
+],
+[
+"saxophone",
+0.001
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.54
+],
+[
+"triumphant",
+0.222
+],
+[
+"hopeful",
+0.212
+]
+],
+"voice": [
+[
+"no vocals",
+0.998
+],
+[
+"radio announcer speech",
+0.002
+],
+[
+"rapping",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.806
+],
+[
+"engine",
+0.104
+],
+[
+"silence",
+0.046
+]
+]
+},
+{
+"t": 110,
+"genre": [
+[
+"techno",
+0.686
+],
+[
+"post-rock",
+0.241
+],
+[
+"country",
+0.033
+]
+],
+"instrument": [
+[
+"brass",
+0.827
+],
+[
+"drum machine",
+0.163
+],
+[
+"saxophone",
+0.009
+]
+],
+"mood": [
+[
+"aggressive",
+0.861
+],
+[
+"triumphant",
+0.117
+],
+[
+"hopeful",
+0.011
+]
+],
+"voice": [
+[
+"radio announcer speech",
+0.508
+],
+[
+"no vocals",
+0.488
+],
+[
+"male speech",
+0.003
+]
+],
+"sound": [
+[
+"silence",
+0.878
+],
+[
+"wind",
+0.111
+],
+[
+"engine",
+0.007
+]
+]
+},
+{
+"t": 115,
+"genre": [
+[
+"post-rock",
+0.384
+],
+[
+"krautrock",
+0.311
+],
+[
+"synth-pop",
+0.294
+]
+],
+"instrument": [
+[
+"drum machine",
+0.995
+],
+[
+"saxophone",
+0.005
+],
+[
+"brass",
+0.001
+]
+],
+"mood": [
+[
+"nostalgic",
+0.893
+],
+[
+"aggressive",
+0.086
+],
+[
+"hopeful",
+0.02
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"radio announcer speech",
+0.001
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.989
+],
+[
+"silence",
+0.009
+],
+[
+"engine",
+0.002
+]
+]
+},
+{
+"t": 120,
+"genre": [
+[
+"synth-pop",
+0.987
+],
+[
+"electronic music",
+0.013
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"bass guitar",
+0.0
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.997
+],
+[
+"hopeful",
+0.002
+],
+[
+"dreamy",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+0.992
+],
+[
+"rapping",
+0.008
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.996
+],
+[
+"engine",
+0.002
+],
+[
+"vinyl crackle",
+0.001
+]
+]
+},
+{
+"t": 125,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"electronic music",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"triumphant",
+0.001
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.589
+],
+[
+"wind",
+0.364
+],
+[
+"engine",
+0.038
+]
+]
+},
+{
+"t": 130,
+"genre": [
+[
+"electronic music",
+0.778
+],
+[
+"synth-pop",
+0.2
+],
+[
+"drum and bass",
+0.015
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"bass guitar",
+0.0
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.951
+],
+[
+"hopeful",
+0.043
+],
+[
+"tense",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.974
+],
+[
+"engine",
+0.022
+],
+[
+"silence",
+0.004
+]
+]
+},
+{
+"t": 135,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"electronic music",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.99
+],
+[
+"organ",
+0.01
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"melancholic",
+0.0
+],
+[
+"triumphant",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.911
+],
+[
+"rapping",
+0.062
+],
+[
+"female speech",
+0.026
+]
+],
+"sound": [
+[
+"wind",
+0.557
+],
+[
+"engine",
+0.442
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 140,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"electronic music",
+0.0
+],
+[
+"techno",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.719
+],
+[
+"organ",
+0.28
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"playful",
+0.001
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.659
+],
+[
+"silence",
+0.313
+],
+[
+"engine",
+0.021
+]
+]
+},
+{
+"t": 145,
+"genre": [
+[
+"techno",
+0.757
+],
+[
+"post-rock",
+0.145
+],
+[
+"krautrock",
+0.066
+]
+],
+"instrument": [
+[
+"drum machine",
+0.838
+],
+[
+"brass",
+0.156
+],
+[
+"saxophone",
+0.006
+]
+],
+"mood": [
+[
+"aggressive",
+0.974
+],
+[
+"hopeful",
+0.018
+],
+[
+"nostalgic",
+0.003
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"radio announcer speech",
+0.001
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.763
+],
+[
+"wind",
+0.21
+],
+[
+"vinyl crackle",
+0.013
+]
+]
+},
+{
+"t": 150,
+"genre": [
+[
+"post-rock",
+0.724
+],
+[
+"techno",
+0.114
+],
+[
+"krautrock",
+0.101
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"saxophone",
+0.0
+],
+[
+"brass",
+0.0
+]
+],
+"mood": [
+[
+"aggressive",
+0.995
+],
+[
+"nostalgic",
+0.004
+],
+[
+"hopeful",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"radio announcer speech",
+0.001
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.918
+],
+[
+"ice skating",
+0.051
+],
+[
+"silence",
+0.03
+]
+]
+},
+{
+"t": 155,
+"genre": [
+[
+"synth-pop",
+0.809
+],
+[
+"post-rock",
+0.188
+],
+[
+"techno",
+0.003
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"brass",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.956
+],
+[
+"aggressive",
+0.029
+],
+[
+"triumphant",
+0.008
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"radio announcer speech",
+0.0
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"wind",
+0.704
+],
+[
+"engine",
+0.139
+],
+[
+"silence",
+0.068
+]
+]
+},
+{
+"t": 160,
+"genre": [
+[
+"synth-pop",
+0.983
+],
+[
+"post-rock",
+0.011
+],
+[
+"electronic music",
+0.003
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"bass guitar",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"hopeful",
+0.827
+],
+[
+"playful",
+0.171
+],
+[
+"tense",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+0.668
+],
+[
+"rapping",
+0.332
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"silence",
+0.509
+],
+[
+"vinyl crackle",
+0.464
+],
+[
+"wind",
+0.027
+]
+]
+},
+{
+"t": 165,
+"genre": [
+[
+"synth-pop",
+0.72
+],
+[
+"drum and bass",
+0.259
+],
+[
+"post-rock",
+0.02
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"saxophone",
+0.0
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"triumphant",
+0.61
+],
+[
+"tense",
+0.223
+],
+[
+"nostalgic",
+0.123
+]
+],
+"voice": [
+[
+"no vocals",
+0.993
+],
+[
+"rapping",
+0.007
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.963
+],
+[
+"wind",
+0.034
+],
+[
+"engine",
+0.002
+]
+]
+},
+{
+"t": 170,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"electronic music",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.992
+],
+[
+"organ",
+0.008
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.97
+],
+[
+"hopeful",
+0.019
+],
+[
+"melancholic",
+0.011
+]
+],
+"voice": [
+[
+"no vocals",
+0.996
+],
+[
+"rapping",
+0.004
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"bells",
+0.764
+],
+[
+"vinyl crackle",
+0.206
+],
+[
+"silence",
+0.026
+]
+]
+},
+{
+"t": 175,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"drum and bass",
+0.0
+],
+[
+"electronic music",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"piano",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+1.0
+],
+[
+"melancholic",
+0.0
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.999
+],
+[
+"bells",
+0.001
+],
+[
+"engine",
+0.0
+]
+]
+},
+{
+"t": 180,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"post-rock",
+0.0
+],
+[
+"indie rock",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.997
+],
+[
+"triumphant",
+0.002
+],
+[
+"melancholic",
+0.001
+]
+],
+"voice": [
+[
+"no vocals",
+0.729
+],
+[
+"rapping",
+0.271
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"engine",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 185,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"drum and bass",
+0.0
+],
+[
+"post-rock",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.97
+],
+[
+"triumphant",
+0.023
+],
+[
+"hopeful",
+0.007
+]
+],
+"voice": [
+[
+"no vocals",
+0.91
+],
+[
+"rapping",
+0.09
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"engine",
+0.0
+],
+[
+"silence",
+0.0
+]
+]
+},
+{
+"t": 190,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"post-rock",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"playful",
+0.0
+],
+[
+"triumphant",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.978
+],
+[
+"rapping",
+0.022
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"wind",
+0.0
+],
+[
+"engine",
+0.0
+]
+]
+},
+{
+"t": 195,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"post-rock",
+0.0
+],
+[
+"indie rock",
+0.0
+]
+],
+"instrument": [
+[
+"organ",
+0.953
+],
+[
+"drum machine",
+0.047
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"melancholic",
+0.001
+],
+[
+"triumphant",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.816
+],
+[
+"rapping",
+0.184
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"engine",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 200,
+"genre": [
+[
+"synth-pop",
+0.999
+],
+[
+"indie rock",
+0.0
+],
+[
+"drum and bass",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.996
+],
+[
+"electric guitar",
+0.004
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"triumphant",
+0.001
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+0.999
+],
+[
+"rapping",
+0.001
+],
+[
+"female speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"engine",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 205,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"indie rock",
+0.0
+],
+[
+"electronic music",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.906
+],
+[
+"organ",
+0.093
+],
+[
+"electric guitar",
+0.001
+]
+],
+"mood": [
+[
+"nostalgic",
+1.0
+],
+[
+"triumphant",
+0.0
+],
+[
+"melancholic",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"choir singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.693
+],
+[
+"engine",
+0.278
+],
+[
+"wind",
+0.023
+]
+]
+},
+{
+"t": 210,
+"genre": [
+[
+"synth-pop",
+1.0
+],
+[
+"drum and bass",
+0.0
+],
+[
+"electronic music",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.994
+],
+[
+"organ",
+0.006
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"triumphant",
+0.001
+],
+[
+"melancholic",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"engine",
+0.0
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 215,
+"genre": [
+[
+"krautrock",
+0.724
+],
+[
+"synth-pop",
+0.102
+],
+[
+"post-rock",
+0.101
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"saxophone",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"triumphant",
+0.001
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.381
+],
+[
+"ice skating",
+0.305
+],
+[
+"engine",
+0.3
+]
+]
+},
+{
+"t": 220,
+"genre": [
+[
+"synth-pop",
+0.992
+],
+[
+"indie rock",
+0.005
+],
+[
+"krautrock",
+0.002
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"organ",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+1.0
+],
+[
+"triumphant",
+0.0
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.998
+],
+[
+"ice skating",
+0.002
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 225,
+"genre": [
+[
+"krautrock",
+0.578
+],
+[
+"post-rock",
+0.382
+],
+[
+"indie rock",
+0.022
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"electric guitar",
+0.0
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.921
+],
+[
+"triumphant",
+0.053
+],
+[
+"aggressive",
+0.02
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.999
+],
+[
+"engine",
+0.001
+],
+[
+"wind",
+0.001
+]
+]
+},
+{
+"t": 230,
+"genre": [
+[
+"krautrock",
+0.653
+],
+[
+"indie rock",
+0.334
+],
+[
+"post-rock",
+0.008
+]
+],
+"instrument": [
+[
+"drum machine",
+0.979
+],
+[
+"electric guitar",
+0.021
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.776
+],
+[
+"triumphant",
+0.22
+],
+[
+"hopeful",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+0.998
+],
+[
+"rapping",
+0.002
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"engine",
+0.0
+],
+[
+"ice skating",
+0.0
+]
+]
+},
+{
+"t": 235,
+"genre": [
+[
+"indie rock",
+0.519
+],
+[
+"krautrock",
+0.434
+],
+[
+"post-rock",
+0.045
+]
+],
+"instrument": [
+[
+"drum machine",
+0.984
+],
+[
+"electric guitar",
+0.016
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+1.0
+],
+[
+"triumphant",
+0.0
+],
+[
+"aggressive",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"engine",
+0.0
+]
+]
+},
+{
+"t": 240,
+"genre": [
+[
+"krautrock",
+0.925
+],
+[
+"indie rock",
+0.059
+],
+[
+"post-rock",
+0.016
+]
+],
+"instrument": [
+[
+"drum machine",
+0.84
+],
+[
+"electric guitar",
+0.16
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.786
+],
+[
+"aggressive",
+0.141
+],
+[
+"triumphant",
+0.072
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 245,
+"genre": [
+[
+"krautrock",
+0.971
+],
+[
+"post-rock",
+0.019
+],
+[
+"indie rock",
+0.009
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"electric guitar",
+0.0
+],
+[
+"bass guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.9
+],
+[
+"aggressive",
+0.099
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"engine",
+0.0
+]
+]
+},
+{
+"t": 250,
+"genre": [
+[
+"krautrock",
+0.728
+],
+[
+"indie rock",
+0.262
+],
+[
+"post-rock",
+0.01
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.99
+],
+[
+"distorted guitar",
+0.01
+],
+[
+"drum machine",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.978
+],
+[
+"aggressive",
+0.021
+],
+[
+"triumphant",
+0.002
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.994
+],
+[
+"wind",
+0.004
+],
+[
+"engine",
+0.002
+]
+]
+},
+{
+"t": 255,
+"genre": [
+[
+"krautrock",
+0.925
+],
+[
+"indie rock",
+0.073
+],
+[
+"synth-pop",
+0.001
+]
+],
+"instrument": [
+[
+"drum machine",
+0.999
+],
+[
+"organ",
+0.0
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.997
+],
+[
+"aggressive",
+0.002
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.976
+],
+[
+"ice skating",
+0.023
+],
+[
+"applause",
+0.0
+]
+]
+},
+{
+"t": 260,
+"genre": [
+[
+"krautrock",
+0.793
+],
+[
+"indie rock",
+0.2
+],
+[
+"post-rock",
+0.003
+]
+],
+"instrument": [
+[
+"drum machine",
+0.999
+],
+[
+"bass guitar",
+0.001
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.518
+],
+[
+"aggressive",
+0.428
+],
+[
+"happy",
+0.034
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.943
+],
+[
+"ice skating",
+0.057
+],
+[
+"applause",
+0.0
+]
+]
+},
+{
+"t": 265,
+"genre": [
+[
+"krautrock",
+0.934
+],
+[
+"indie rock",
+0.061
+],
+[
+"post-rock",
+0.004
+]
+],
+"instrument": [
+[
+"drum machine",
+0.968
+],
+[
+"electric guitar",
+0.031
+],
+[
+"organ",
+0.001
+]
+],
+"mood": [
+[
+"nostalgic",
+1.0
+],
+[
+"aggressive",
+0.0
+],
+[
+"triumphant",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.999
+],
+[
+"ice skating",
+0.001
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 270,
+"genre": [
+[
+"krautrock",
+0.942
+],
+[
+"indie rock",
+0.048
+],
+[
+"post-rock",
+0.01
+]
+],
+"instrument": [
+[
+"electric guitar",
+0.9
+],
+[
+"drum machine",
+0.069
+],
+[
+"distorted guitar",
+0.03
+]
+],
+"mood": [
+[
+"nostalgic",
+0.999
+],
+[
+"aggressive",
+0.001
+],
+[
+"playful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.999
+],
+[
+"ice skating",
+0.001
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 275,
+"genre": [
+[
+"krautrock",
+0.72
+],
+[
+"indie rock",
+0.15
+],
+[
+"rock",
+0.086
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"electric guitar",
+0.0
+],
+[
+"organ",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.98
+],
+[
+"playful",
+0.015
+],
+[
+"aggressive",
+0.004
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"crowd chanting",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"wind",
+0.0
+]
+]
+},
+{
+"t": 280,
+"genre": [
+[
+"synth-pop",
+0.89
+],
+[
+"drum and bass",
+0.107
+],
+[
+"electronic music",
+0.002
+]
+],
+"instrument": [
+[
+"drum machine",
+0.992
+],
+[
+"organ",
+0.007
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.789
+],
+[
+"playful",
+0.211
+],
+[
+"dreamy",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 285,
+"genre": [
+[
+"drum and bass",
+0.925
+],
+[
+"synth-pop",
+0.056
+],
+[
+"electronic music",
+0.012
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"synthesizer",
+0.0
+],
+[
+"electric guitar",
+0.0
+]
+],
+"mood": [
+[
+"nostalgic",
+0.779
+],
+[
+"playful",
+0.22
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"female singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 290,
+"genre": [
+[
+"drum and bass",
+0.985
+],
+[
+"synth-pop",
+0.013
+],
+[
+"electronic music",
+0.001
+]
+],
+"instrument": [
+[
+"drum machine",
+0.999
+],
+[
+"organ",
+0.001
+],
+[
+"saxophone",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+0.986
+],
+[
+"nostalgic",
+0.014
+],
+[
+"hopeful",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+},
+{
+"t": 295,
+"genre": [
+[
+"drum and bass",
+0.846
+],
+[
+"reggae",
+0.154
+],
+[
+"pop",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+1.0
+],
+[
+"saxophone",
+0.0
+],
+[
+"synthesizer",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+1.0
+],
+[
+"nostalgic",
+0.0
+],
+[
+"calm",
+0.0
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"male singing",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"ice skating",
+0.0
+],
+[
+"tape hiss",
+0.0
+]
+]
+},
+{
+"t": 300,
+"genre": [
+[
+"reggae",
+0.998
+],
+[
+"drum and bass",
+0.002
+],
+[
+"rock",
+0.0
+]
+],
+"instrument": [
+[
+"drum machine",
+0.996
+],
+[
+"saxophone",
+0.004
+],
+[
+"drum kit",
+0.0
+]
+],
+"mood": [
+[
+"playful",
+0.484
+],
+[
+"happy",
+0.386
+],
+[
+"hopeful",
+0.13
+]
+],
+"voice": [
+[
+"no vocals",
+1.0
+],
+[
+"rapping",
+0.0
+],
+[
+"radio announcer speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+1.0
+],
+[
+"silence",
+0.0
+],
+[
+"bells",
+0.0
+]
+]
+}
+],
+"song_average": {
+"genre": [
+[
+"synth-pop",
+0.351
+],
+[
+"electronic music",
+0.232
+],
+[
+"krautrock",
+0.161
+],
+[
+"post-rock",
+0.055
+],
+[
+"drum and bass",
+0.052
+],
+[
+"techno",
+0.039
+]
+],
+"instrument": [
+[
+"drum machine",
+0.632
+],
+[
+"organ",
+0.182
+],
+[
+"choir",
+0.11
+],
+[
+"electric guitar",
+0.035
+],
+[
+"brass",
+0.019
+],
+[
+"saxophone",
+0.013
+]
+],
+"mood": [
+[
+"nostalgic",
+0.575
+],
+[
+"calm",
+0.224
+],
+[
+"aggressive",
+0.067
+],
+[
+"playful",
+0.052
+],
+[
+"hopeful",
+0.038
+],
+[
+"triumphant",
+0.027
+]
+],
+"voice": [
+[
+"no vocals",
+0.969
+],
+[
+"rapping",
+0.016
+],
+[
+"radio announcer speech",
+0.008
+],
+[
+"choir singing",
+0.006
+],
+[
+"female speech",
+0.0
+],
+[
+"male speech",
+0.0
+]
+],
+"sound": [
+[
+"vinyl crackle",
+0.458
+],
+[
+"bells",
+0.223
+],
+[
+"wind",
+0.153
+],
+[
+"silence",
+0.096
+],
+[
+"ice skating",
+0.039
+],
+[
+"engine",
+0.023
+]
+]
+}
+}

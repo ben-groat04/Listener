@@ -26,3 +26,4 @@
 - Fixed silent failure of visual features (OpenCV 5). Re-running for both videos.
 - Next (after reset): music-first workflow (per-section listeners + specialist music panel), then interpret panel, cross-video comparison, blind runs, test videos, cold-read loops.
 - 00:26 video2: all 16 segment notes + words.md done. A viewer questions whether video2 is really "Part 2" (context says Part 2 is calmer/electronic, but 3:20-4:00 is a loud dense plateau). **Must be verified** in the music/research phase.
+- 00:45 Music tools complete for both videos (check_outputs OK). CLAP: video1 = post-rock, distorted guitar, announcer speech, "triumphant/aggressive"; video2 = synth-pop/electronic/krautrock, drum machine, "nostalgic/calm". Chords: video1 centred on D, video2 on B minor. Supports research's Part 1 (rock) / Part 2 (electronic) order. Launched video1 window listeners (listen.js, windows_only).

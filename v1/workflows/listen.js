@@ -8,7 +8,7 @@ export const meta = {
     { title: 'Reading', detail: 'synthesis + refutation + fixes' },
   ],
 }
-// args: { videos: [{vid, dur}], rounds: 2, blind: false, out: 'analysis', skip_windows: ['video1:0040', ...] }
+// args: { videos: [{vid, dur}], rounds: 2, blind: false, out: 'analysis', skip_windows: ['video1:0040', ...], windows_only: false }
 const R = '/home/user/Listener'
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const BLIND = !!args.blind
@@ -98,6 +98,7 @@ UNVERIFIABLE: ${JSON.stringify(unver)}`, { label: `fix:${vid}`, phase: 'Reading'
 const byVid = args.videos.map(v => v.vid)
 const res = await parallel(byVid.map(vid => async () => {
   await parallel(WIN.filter(x => x.vid === vid).map(x => () => listenWindow(x)))
+  if (args.windows_only) return { vid, windows_only: true }
   return doVideo(vid)
 }))
 return res

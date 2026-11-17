@@ -4,6 +4,7 @@
  "frames": 4715,
  "threshold": 3.0,
  "n_cuts": 201,
+ "n_missed_strong_or_medium": 94,
  "n_missed_by_shots_json": 143,
  "cuts": [
   {
@@ -12,6 +13,7 @@
    "score": 4.9,
    "diff": 36.2,
    "hist": 0.056,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -21,6 +23,7 @@
    "score": 7.6,
    "diff": 40.16,
    "hist": 0.1,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -30,6 +33,7 @@
    "score": 8.0,
    "diff": 34.26,
    "hist": 0.173,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -39,6 +43,7 @@
    "score": 36.9,
    "diff": 116.42,
    "hist": 0.558,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 1.32
   },
@@ -48,6 +53,7 @@
    "score": 16.3,
    "diff": 21.7,
    "hist": 0.121,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -57,6 +63,7 @@
    "score": 69.4,
    "diff": 53.48,
    "hist": 0.326,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -66,6 +73,7 @@
    "score": 90.5,
    "diff": 55.19,
    "hist": 0.578,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -75,6 +83,7 @@
    "score": 4.3,
    "diff": 8.14,
    "hist": 0.036,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 1.32
   },
@@ -84,6 +93,7 @@
    "score": 54.1,
    "diff": 49.64,
    "hist": 0.523,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -93,6 +103,7 @@
    "score": 17.0,
    "diff": 13.96,
    "hist": 0.056,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -102,6 +113,7 @@
    "score": 116.7,
    "diff": 74.11,
    "hist": 0.691,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -111,6 +123,7 @@
    "score": 4.2,
    "diff": 3.19,
    "hist": 0.036,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -120,6 +133,7 @@
    "score": 12.4,
    "diff": 36.02,
    "hist": 0.031,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -129,6 +143,7 @@
    "score": 3.1,
    "diff": 9.81,
    "hist": 0.041,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -138,6 +153,7 @@
    "score": 90.2,
    "diff": 94.23,
    "hist": 0.798,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 12.04
   },
@@ -147,6 +163,7 @@
    "score": 4.0,
    "diff": 5.63,
    "hist": 0.022,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -156,6 +173,7 @@
    "score": 49.0,
    "diff": 63.55,
    "hist": 0.399,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -165,6 +183,7 @@
    "score": 3.8,
    "diff": 6.97,
    "hist": 0.082,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -174,6 +193,7 @@
    "score": 4.3,
    "diff": 9.36,
    "hist": 0.093,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -183,6 +203,7 @@
    "score": 5.5,
    "diff": 38.28,
    "hist": 0.087,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -192,6 +213,7 @@
    "score": 8.9,
    "diff": 67.79,
    "hist": 0.087,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -201,6 +223,7 @@
    "score": 21.4,
    "diff": 52.12,
    "hist": 0.284,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -210,6 +233,7 @@
    "score": 5.0,
    "diff": 16.16,
    "hist": 0.004,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -219,6 +243,7 @@
    "score": 67.9,
    "diff": 61.13,
    "hist": 0.517,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -228,6 +253,7 @@
    "score": 4.2,
    "diff": 3.63,
    "hist": 0.04,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -237,6 +263,7 @@
    "score": 3.1,
    "diff": 2.84,
    "hist": 0.037,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -246,6 +273,7 @@
    "score": 17.6,
    "diff": 12.21,
    "hist": 0.159,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -255,6 +283,7 @@
    "score": 11.3,
    "diff": 17.66,
    "hist": 0.101,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -264,6 +293,7 @@
    "score": 12.2,
    "diff": 23.6,
    "hist": 0.137,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -273,6 +303,7 @@
    "score": 3.0,
    "diff": 11.76,
    "hist": 0.049,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -282,6 +313,7 @@
    "score": 14.5,
    "diff": 73.78,
    "hist": 0.585,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 12.04
   },
@@ -291,6 +323,7 @@
    "score": 3.2,
    "diff": 25.14,
    "hist": 0.037,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -300,6 +333,7 @@
    "score": 9.0,
    "diff": 37.43,
    "hist": 0.074,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -309,6 +343,7 @@
    "score": 15.9,
    "diff": 44.88,
    "hist": 0.217,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -318,6 +353,7 @@
    "score": 3.5,
    "diff": 15.57,
    "hist": 0.026,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -327,6 +363,7 @@
    "score": 42.2,
    "diff": 65.07,
    "hist": 0.32,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -336,6 +373,7 @@
    "score": 4.9,
    "diff": 3.57,
    "hist": 0.063,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -345,6 +383,7 @@
    "score": 3.3,
    "diff": 3.11,
    "hist": 0.049,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -354,6 +393,7 @@
    "score": 5.5,
    "diff": 4.4,
    "hist": 0.059,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -363,6 +403,7 @@
    "score": 4.6,
    "diff": 3.45,
    "hist": 0.033,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -372,6 +413,7 @@
    "score": 49.7,
    "diff": 45.7,
    "hist": 0.67,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -381,6 +423,7 @@
    "score": 3.3,
    "diff": 8.25,
    "hist": 0.012,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -390,6 +433,7 @@
    "score": 39.5,
    "diff": 60.66,
    "hist": 0.705,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -399,6 +443,7 @@
    "score": 4.5,
    "diff": 12.65,
    "hist": 0.104,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 42.36
   },
@@ -408,6 +453,7 @@
    "score": 17.8,
    "diff": 90.73,
    "hist": 0.622,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 42.36
   },
@@ -417,6 +463,7 @@
    "score": 5.3,
    "diff": 115.83,
    "hist": 0.277,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 43.68
   },
@@ -426,6 +473,7 @@
    "score": 8.3,
    "diff": 122.3,
    "hist": 0.643,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 44.44
   },
@@ -435,6 +483,7 @@
    "score": 5.2,
    "diff": 23.41,
    "hist": 0.946,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 44.44
   },
@@ -444,6 +493,7 @@
    "score": 3.4,
    "diff": 8.62,
    "hist": 0.085,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 44.44
   },
@@ -453,6 +503,7 @@
    "score": 30.3,
    "diff": 60.01,
    "hist": 0.383,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 44.44
   },
@@ -462,6 +513,7 @@
    "score": 94.4,
    "diff": 71.51,
    "hist": 0.539,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 56.8
   },
@@ -471,6 +523,7 @@
    "score": 4.3,
    "diff": 29.3,
    "hist": 0.059,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 56.8
   },
@@ -480,6 +533,7 @@
    "score": 6.1,
    "diff": 50.18,
    "hist": 0.058,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 56.8
   },
@@ -489,6 +543,7 @@
    "score": 7.7,
    "diff": 39.02,
    "hist": 0.092,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 56.8
   },
@@ -498,6 +553,7 @@
    "score": 41.5,
    "diff": 111.39,
    "hist": 0.534,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 56.8
   },
@@ -507,6 +563,7 @@
    "score": 63.3,
    "diff": 85.74,
    "hist": 0.413,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 58.08
   },
@@ -516,6 +573,7 @@
    "score": 3.1,
    "diff": 13.76,
    "hist": 0.005,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 59.52
   },
@@ -525,6 +583,7 @@
    "score": 51.2,
    "diff": 168.31,
    "hist": 0.815,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 59.52
   },
@@ -534,6 +593,7 @@
    "score": 29.9,
    "diff": 88.61,
    "hist": 0.298,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 61.72
   },
@@ -543,6 +603,7 @@
    "score": 27.7,
    "diff": 77.9,
    "hist": 0.21,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 61.72
   },
@@ -552,6 +613,7 @@
    "score": 5.7,
    "diff": 14.35,
    "hist": 0.11,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 64.96
   },
@@ -561,6 +623,7 @@
    "score": 28.2,
    "diff": 128.55,
    "hist": 0.677,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 64.96
   },
@@ -570,6 +633,7 @@
    "score": 16.7,
    "diff": 100.19,
    "hist": 0.531,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 64.96
   },
@@ -579,6 +643,7 @@
    "score": 30.3,
    "diff": 115.07,
    "hist": 0.702,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 66.56
   },
@@ -588,6 +653,7 @@
    "score": 39.8,
    "diff": 101.37,
    "hist": 0.619,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 67.36
   },
@@ -597,6 +663,7 @@
    "score": 3.6,
    "diff": 24.28,
    "hist": 0.093,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 67.36
   },
@@ -606,6 +673,7 @@
    "score": 17.1,
    "diff": 68.48,
    "hist": 0.192,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 67.36
   },
@@ -615,6 +683,7 @@
    "score": 4.5,
    "diff": 33.42,
    "hist": 0.047,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 69.08
   },
@@ -624,6 +693,7 @@
    "score": 24.2,
    "diff": 87.15,
    "hist": 0.395,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 69.08
   },
@@ -633,6 +703,7 @@
    "score": 18.4,
    "diff": 84.33,
    "hist": 0.604,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 69.8
   },
@@ -642,6 +713,7 @@
    "score": 11.7,
    "diff": 76.49,
    "hist": 0.51,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 71.08
   },
@@ -651,6 +723,7 @@
    "score": 13.4,
    "diff": 88.08,
    "hist": 0.464,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 71.08
   },
@@ -660,6 +733,7 @@
    "score": 3.1,
    "diff": 30.09,
    "hist": 0.012,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 71.84
   },
@@ -669,6 +743,7 @@
    "score": 3.4,
    "diff": 32.84,
    "hist": 0.039,
+   "tier": "weak",
    "in_shots_json": true,
    "nearest_shots_json": 71.84
   },
@@ -678,6 +753,7 @@
    "score": 15.1,
    "diff": 86.96,
    "hist": 0.329,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 71.84
   },
@@ -687,6 +763,7 @@
    "score": 16.4,
    "diff": 64.94,
    "hist": 0.281,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 71.84
   },
@@ -696,6 +773,7 @@
    "score": 43.4,
    "diff": 181.29,
    "hist": 1.0,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 73.44
   },
@@ -705,6 +783,7 @@
    "score": 3.9,
    "diff": 18.39,
    "hist": 0.178,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 73.44
   },
@@ -714,6 +793,7 @@
    "score": 4.9,
    "diff": 9.08,
    "hist": 0.124,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 73.44
   },
@@ -723,6 +803,7 @@
    "score": 53.8,
    "diff": 73.88,
    "hist": 0.565,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 73.44
   },
@@ -732,6 +813,7 @@
    "score": 5.1,
    "diff": 9.52,
    "hist": 0.047,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 73.44
   },
@@ -741,6 +823,7 @@
    "score": 4.9,
    "diff": 9.54,
    "hist": 0.044,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 73.44
   },
@@ -750,6 +833,7 @@
    "score": 52.1,
    "diff": 61.83,
    "hist": 0.351,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 73.44
   },
@@ -759,6 +843,7 @@
    "score": 10.6,
    "diff": 70.16,
    "hist": 0.132,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 84.6
   },
@@ -768,6 +853,7 @@
    "score": 3.3,
    "diff": 43.04,
    "hist": 0.068,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 84.6
   },
@@ -777,6 +863,7 @@
    "score": 18.9,
    "diff": 71.75,
    "hist": 0.327,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 84.6
   },
@@ -786,6 +873,7 @@
    "score": 17.2,
    "diff": 71.93,
    "hist": 0.237,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 84.6
   },
@@ -795,6 +883,7 @@
    "score": 19.5,
    "diff": 84.63,
    "hist": 0.145,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 84.6
   },
@@ -804,6 +893,7 @@
    "score": 12.4,
    "diff": 78.8,
    "hist": 0.32,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -813,6 +903,7 @@
    "score": 4.8,
    "diff": 22.88,
    "hist": 0.112,
+   "tier": "weak",
    "in_shots_json": true,
    "nearest_shots_json": 87.16
   },
@@ -822,6 +913,7 @@
    "score": 25.7,
    "diff": 112.79,
    "hist": 0.279,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 87.16
   },
@@ -831,6 +923,7 @@
    "score": 53.8,
    "diff": 49.55,
    "hist": 0.533,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -840,6 +933,7 @@
    "score": 26.8,
    "diff": 23.33,
    "hist": 0.241,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -849,6 +943,7 @@
    "score": 4.8,
    "diff": 5.44,
    "hist": 0.053,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -858,6 +953,7 @@
    "score": 3.3,
    "diff": 5.97,
    "hist": 0.075,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -867,6 +963,7 @@
    "score": 3.2,
    "diff": 8.98,
    "hist": 0.057,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -876,6 +973,7 @@
    "score": 24.2,
    "diff": 51.37,
    "hist": 0.176,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 87.16
   },
@@ -885,6 +983,7 @@
    "score": 17.1,
    "diff": 48.27,
    "hist": 0.365,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 108.68
   },
@@ -894,6 +993,7 @@
    "score": 41.9,
    "diff": 76.77,
    "hist": 0.59,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 108.68
   },
@@ -903,6 +1003,7 @@
    "score": 40.3,
    "diff": 74.53,
    "hist": 0.303,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 108.68
   },
@@ -912,6 +1013,7 @@
    "score": 15.2,
    "diff": 86.4,
    "hist": 0.222,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 108.68
   },
@@ -921,6 +1023,7 @@
    "score": 13.1,
    "diff": 117.87,
    "hist": 0.513,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 109.6
   },
@@ -930,6 +1033,7 @@
    "score": 10.1,
    "diff": 83.44,
    "hist": 0.411,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 110.4
   },
@@ -939,6 +1043,7 @@
    "score": 3.8,
    "diff": 29.87,
    "hist": 0.053,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 110.4
   },
@@ -948,6 +1053,7 @@
    "score": 29.2,
    "diff": 93.1,
    "hist": 0.655,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 111.16
   },
@@ -957,6 +1063,7 @@
    "score": 14.3,
    "diff": 66.56,
    "hist": 0.182,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 111.16
   },
@@ -966,6 +1073,7 @@
    "score": 13.0,
    "diff": 71.66,
    "hist": 0.187,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 112.8
   },
@@ -975,6 +1083,7 @@
    "score": 14.1,
    "diff": 105.65,
    "hist": 0.459,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 112.8
   },
@@ -984,6 +1093,7 @@
    "score": 14.8,
    "diff": 73.72,
    "hist": 0.281,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 114.32
   },
@@ -993,6 +1103,7 @@
    "score": 9.7,
    "diff": 82.02,
    "hist": 0.197,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 114.32
   },
@@ -1002,6 +1113,7 @@
    "score": 3.2,
    "diff": 39.88,
    "hist": 0.04,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 114.32
   },
@@ -1011,6 +1123,7 @@
    "score": 10.8,
    "diff": 68.21,
    "hist": 0.381,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 114.32
   },
@@ -1020,6 +1133,7 @@
    "score": 4.4,
    "diff": 23.37,
    "hist": 0.027,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 114.32
   },
@@ -1029,6 +1143,7 @@
    "score": 3.6,
    "diff": 11.2,
    "hist": 0.078,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 121.08
   },
@@ -1038,6 +1153,7 @@
    "score": 32.3,
    "diff": 73.64,
    "hist": 0.164,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 121.08
   },
@@ -1047,6 +1163,7 @@
    "score": 28.0,
    "diff": 103.7,
    "hist": 0.57,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 121.08
   },
@@ -1056,6 +1173,7 @@
    "score": 13.0,
    "diff": 72.32,
    "hist": 0.219,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 121.08
   },
@@ -1065,6 +1183,7 @@
    "score": 10.5,
    "diff": 56.14,
    "hist": 0.175,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 125.16
   },
@@ -1074,6 +1193,7 @@
    "score": 61.8,
    "diff": 106.85,
    "hist": 0.694,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 125.16
   },
@@ -1083,6 +1203,7 @@
    "score": 43.5,
    "diff": 83.48,
    "hist": 0.382,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 126.72
   },
@@ -1092,6 +1213,7 @@
    "score": 4.3,
    "diff": 11.22,
    "hist": 0.072,
+   "tier": "weak",
    "in_shots_json": true,
    "nearest_shots_json": 126.72
   },
@@ -1101,6 +1223,7 @@
    "score": 3.3,
    "diff": 9.29,
    "hist": 0.069,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 126.72
   },
@@ -1110,6 +1233,7 @@
    "score": 18.1,
    "diff": 87.86,
    "hist": 0.197,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 128.32
   },
@@ -1119,6 +1243,7 @@
    "score": 15.1,
    "diff": 81.44,
    "hist": 0.198,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 131.24
   },
@@ -1128,6 +1253,7 @@
    "score": 20.1,
    "diff": 93.71,
    "hist": 0.392,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 133.36
   },
@@ -1137,6 +1263,7 @@
    "score": 3.6,
    "diff": 36.12,
    "hist": 0.021,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 133.36
   },
@@ -1146,6 +1273,7 @@
    "score": 8.0,
    "diff": 77.55,
    "hist": 0.398,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 133.36
   },
@@ -1155,6 +1283,7 @@
    "score": 16.6,
    "diff": 81.94,
    "hist": 0.137,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 136.6
   },
@@ -1164,6 +1293,7 @@
    "score": 9.6,
    "diff": 50.46,
    "hist": 0.358,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 136.6
   },
@@ -1173,6 +1303,7 @@
    "score": 79.9,
    "diff": 67.14,
    "hist": 0.805,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 136.6
   },
@@ -1182,6 +1313,7 @@
    "score": 3.2,
    "diff": 8.33,
    "hist": 0.01,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 136.6
   },
@@ -1191,6 +1323,7 @@
    "score": 25.6,
    "diff": 60.09,
    "hist": 0.42,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 136.6
   },
@@ -1200,6 +1333,7 @@
    "score": 3.9,
    "diff": 18.25,
    "hist": 0.094,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 136.6
   },
@@ -1209,6 +1343,7 @@
    "score": 3.8,
    "diff": 14.5,
    "hist": 0.145,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 147.32
   },
@@ -1218,6 +1353,7 @@
    "score": 14.3,
    "diff": 51.01,
    "hist": 0.249,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 147.32
   },
@@ -1227,6 +1363,7 @@
    "score": 30.7,
    "diff": 62.36,
    "hist": 0.283,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 147.32
   },
@@ -1236,6 +1373,7 @@
    "score": 16.2,
    "diff": 49.62,
    "hist": 0.087,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 147.32
   },
@@ -1245,6 +1383,7 @@
    "score": 4.9,
    "diff": 7.44,
    "hist": 0.161,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 147.32
   },
@@ -1254,6 +1393,7 @@
    "score": 3.2,
    "diff": 7.47,
    "hist": 0.107,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 147.32
   },
@@ -1263,6 +1403,7 @@
    "score": 55.5,
    "diff": 87.84,
    "hist": 0.37,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 147.32
   },
@@ -1272,6 +1413,7 @@
    "score": 61.7,
    "diff": 90.35,
    "hist": 0.361,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 148.76
   },
@@ -1281,6 +1423,7 @@
    "score": 4.3,
    "diff": 13.24,
    "hist": 0.007,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 148.76
   },
@@ -1290,6 +1433,7 @@
    "score": 48.8,
    "diff": 61.64,
    "hist": 0.521,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 148.76
   },
@@ -1299,6 +1443,7 @@
    "score": 47.4,
    "diff": 157.02,
    "hist": 0.929,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 150.76
   },
@@ -1308,6 +1453,7 @@
    "score": 23.8,
    "diff": 71.27,
    "hist": 0.354,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 150.76
   },
@@ -1317,6 +1463,7 @@
    "score": 73.4,
    "diff": 84.68,
    "hist": 0.53,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 153.56
   },
@@ -1326,6 +1473,7 @@
    "score": 44.0,
    "diff": 76.08,
    "hist": 0.697,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 153.56
   },
@@ -1335,6 +1483,7 @@
    "score": 36.0,
    "diff": 63.75,
    "hist": 0.604,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 157.56
   },
@@ -1344,6 +1493,7 @@
    "score": 22.0,
    "diff": 107.0,
    "hist": 0.639,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 157.56
   },
@@ -1353,6 +1503,7 @@
    "score": 33.2,
    "diff": 148.7,
    "hist": 0.817,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 158.24
   },
@@ -1362,6 +1513,7 @@
    "score": 42.7,
    "diff": 58.4,
    "hist": 0.245,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 160.8
   },
@@ -1371,6 +1523,7 @@
    "score": 56.9,
    "diff": 102.14,
    "hist": 0.457,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 160.8
   },
@@ -1380,6 +1533,7 @@
    "score": 35.7,
    "diff": 65.2,
    "hist": 0.26,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 160.8
   },
@@ -1389,6 +1543,7 @@
    "score": 12.6,
    "diff": 40.89,
    "hist": 0.179,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 160.8
   },
@@ -1398,6 +1553,7 @@
    "score": 13.2,
    "diff": 64.99,
    "hist": 0.266,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 160.8
   },
@@ -1407,6 +1563,7 @@
    "score": 20.5,
    "diff": 49.56,
    "hist": 0.021,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 160.8
   },
@@ -1416,6 +1573,7 @@
    "score": 4.7,
    "diff": 11.11,
    "hist": 0.014,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 160.8
   },
@@ -1425,6 +1583,7 @@
    "score": 7.7,
    "diff": 14.51,
    "hist": 0.034,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1434,6 +1593,7 @@
    "score": 27.4,
    "diff": 49.08,
    "hist": 0.151,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1443,6 +1603,7 @@
    "score": 13.6,
    "diff": 40.74,
    "hist": 0.136,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1452,6 +1613,7 @@
    "score": 19.0,
    "diff": 36.96,
    "hist": 0.067,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1461,6 +1623,7 @@
    "score": 23.1,
    "diff": 64.14,
    "hist": 0.059,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1470,6 +1633,7 @@
    "score": 11.7,
    "diff": 43.51,
    "hist": 0.041,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1479,6 +1643,7 @@
    "score": 6.9,
    "diff": 45.24,
    "hist": 0.078,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1488,6 +1653,7 @@
    "score": 5.6,
    "diff": 67.32,
    "hist": 0.145,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 168.8
   },
@@ -1497,6 +1663,7 @@
    "score": 7.3,
    "diff": 101.41,
    "hist": 0.405,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 168.8
   },
@@ -1506,6 +1673,7 @@
    "score": 5.5,
    "diff": 66.5,
    "hist": 0.412,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 168.8
   },
@@ -1515,6 +1683,7 @@
    "score": 8.2,
    "diff": 124.16,
    "hist": 0.466,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 169.52
   },
@@ -1524,6 +1693,7 @@
    "score": 4.3,
    "diff": 68.83,
    "hist": 0.319,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 169.52
   },
@@ -1533,6 +1703,7 @@
    "score": 4.8,
    "diff": 86.28,
    "hist": 0.361,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 171.84
   },
@@ -1542,6 +1713,7 @@
    "score": 5.4,
    "diff": 42.37,
    "hist": 0.549,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 171.84
   },
@@ -1551,6 +1723,7 @@
    "score": 27.6,
    "diff": 142.42,
    "hist": 0.825,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 172.72
   },
@@ -1560,6 +1733,7 @@
    "score": 5.6,
    "diff": 71.33,
    "hist": 0.03,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 172.72
   },
@@ -1569,6 +1743,7 @@
    "score": 3.7,
    "diff": 34.58,
    "hist": 0.07,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 174.84
   },
@@ -1578,6 +1753,7 @@
    "score": 40.4,
    "diff": 172.52,
    "hist": 0.899,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 174.84
   },
@@ -1587,6 +1763,7 @@
    "score": 7.4,
    "diff": 58.07,
    "hist": 0.181,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 174.84
   },
@@ -1596,6 +1773,7 @@
    "score": 9.0,
    "diff": 46.96,
    "hist": 0.13,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 174.84
   },
@@ -1605,6 +1783,7 @@
    "score": 23.3,
    "diff": 72.16,
    "hist": 0.412,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 174.84
   },
@@ -1614,6 +1793,7 @@
    "score": 3.5,
    "diff": 19.18,
    "hist": 0.104,
+   "tier": "weak",
    "in_shots_json": false,
    "nearest_shots_json": 174.84
   },
@@ -1623,6 +1803,7 @@
    "score": 3.8,
    "diff": 17.07,
    "hist": 0.181,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 179.04
   },
@@ -1632,6 +1813,7 @@
    "score": 13.8,
    "diff": 53.57,
    "hist": 0.547,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 179.04
   },
@@ -1641,6 +1823,7 @@
    "score": 9.4,
    "diff": 85.33,
    "hist": 0.535,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 179.04
   },
@@ -1650,6 +1833,7 @@
    "score": 8.7,
    "diff": 95.3,
    "hist": 0.345,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 179.04
   },
@@ -1659,6 +1843,7 @@
    "score": 3.3,
    "diff": 48.84,
    "hist": 0.187,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 181.4
   },
@@ -1668,6 +1853,7 @@
    "score": 26.3,
    "diff": 142.55,
    "hist": 0.419,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 181.4
   },
@@ -1677,6 +1863,7 @@
    "score": 14.5,
    "diff": 63.59,
    "hist": 0.368,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 181.4
   },
@@ -1686,6 +1873,7 @@
    "score": 5.6,
    "diff": 60.33,
    "hist": 0.307,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 181.4
   },
@@ -1695,6 +1883,7 @@
    "score": 3.5,
    "diff": 44.0,
    "hist": 0.091,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 184.44
   },
@@ -1704,6 +1893,7 @@
    "score": 4.9,
    "diff": 59.97,
    "hist": 0.054,
+   "tier": "medium",
    "in_shots_json": false,
    "nearest_shots_json": 184.44
   },
@@ -1713,6 +1903,7 @@
    "score": 7.0,
    "diff": 60.36,
    "hist": 0.222,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 184.44
   },
@@ -1722,6 +1913,7 @@
    "score": 13.7,
    "diff": 54.03,
    "hist": 0.223,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 184.44
   },
@@ -1731,6 +1923,7 @@
    "score": 53.4,
    "diff": 164.12,
    "hist": 0.763,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 184.44
   },
@@ -1740,6 +1933,7 @@
    "score": 42.0,
    "diff": 126.18,
    "hist": 0.613,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 185.04
   },
@@ -1749,6 +1943,7 @@
    "score": 3.6,
    "diff": 26.74,
    "hist": 0.025,
+   "tier": "weak",
    "in_shots_json": true,
    "nearest_shots_json": 185.04
   },
@@ -1758,6 +1953,7 @@
    "score": 27.9,
    "diff": 110.42,
    "hist": 0.769,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 185.04
   },
@@ -1767,6 +1963,7 @@
    "score": 16.6,
    "diff": 55.89,
    "hist": 0.486,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 186.56
   },
@@ -1776,6 +1973,7 @@
    "score": 24.9,
    "diff": 54.7,
    "hist": 0.638,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 186.56
   },
@@ -1785,6 +1983,7 @@
    "score": 33.3,
    "diff": 82.95,
    "hist": 0.587,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 186.56
   },
@@ -1794,6 +1993,7 @@
    "score": 15.8,
    "diff": 62.03,
    "hist": 0.15,
+   "tier": "strong",
    "in_shots_json": false,
    "nearest_shots_json": 186.56
   },
@@ -1803,6 +2003,7 @@
    "score": 16.5,
    "diff": 96.72,
    "hist": 0.209,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 187.36
   },
@@ -1812,6 +2013,7 @@
    "score": 34.1,
    "diff": 155.45,
    "hist": 0.834,
+   "tier": "strong",
    "in_shots_json": true,
    "nearest_shots_json": 188.08
   }

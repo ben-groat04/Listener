@@ -1,0 +1,202 @@
+{
+ "n_cuts": 51,
+ "median_beat_interval_s": 0.766,
+ "cuts_within_80ms_of_beat": 0.078,
+ "chance_beat": 0.197,
+ "cuts_within_150ms_of_bar_start(4-beat guess)": 0.137,
+ "chance_bar": 0.093,
+ "section_boundaries_with_cut_within_0.5s": [
+  {
+   "t": 14.81,
+   "nearest_cut_s": 2.77
+  },
+  {
+   "t": 66.36,
+   "nearest_cut_s": 0.2
+  },
+  {
+   "t": 75.6,
+   "nearest_cut_s": 2.16
+  },
+  {
+   "t": 87.93,
+   "nearest_cut_s": 0.77
+  },
+  {
+   "t": 109.44,
+   "nearest_cut_s": 0.16
+  },
+  {
+   "t": 118.65,
+   "nearest_cut_s": 2.43
+  },
+  {
+   "t": 121.74,
+   "nearest_cut_s": 0.66
+  },
+  {
+   "t": 134.05,
+   "nearest_cut_s": 0.69
+  },
+  {
+   "t": 158.69,
+   "nearest_cut_s": 0.45
+  }
+ ],
+ "cut_rate_vs_loudness": {
+  "lag_s_picture_after_music": -4,
+  "r": 0.27,
+  "r_lag0": 0.262
+ },
+ "motion_vs_onset": {
+  "lag_s_picture_after_music": 2,
+  "r": -0.315,
+  "r_lag0": -0.257
+ },
+ "motion_vs_loudness": {
+  "lag_s_picture_after_music": -4,
+  "r": 0.32,
+  "r_lag0": 0.299
+ },
+ "picture_brightness_vs_sound_brightness": {
+  "lag_s_picture_after_music": -4,
+  "r": 0.259,
+  "r_lag0": 0.249
+ },
+ "picture_warmth_vs_loudness": {
+  "lag_s_picture_after_music": 0,
+  "r": 0.0,
+  "r_lag0": null
+ },
+ "per_section": [
+  {
+   "start": 0.0,
+   "end": 14.81,
+   "label": "C",
+   "mean_loudness": 0.1862,
+   "cuts_per_10s": 1.35,
+   "mean_motion": 6.13,
+   "mean_brightness": 54.8,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 14.81,
+   "end": 66.36,
+   "label": "B",
+   "mean_loudness": 0.2514,
+   "cuts_per_10s": 1.55,
+   "mean_motion": 7.81,
+   "mean_brightness": 100.6,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.25
+  },
+  {
+   "start": 66.36,
+   "end": 75.6,
+   "label": "D",
+   "mean_loudness": 0.28,
+   "cuts_per_10s": 7.58,
+   "mean_motion": 16.56,
+   "mean_brightness": 118.0,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 75.6,
+   "end": 87.93,
+   "label": "A",
+   "mean_loudness": 0.163,
+   "cuts_per_10s": 1.62,
+   "mean_motion": 9.4,
+   "mean_brightness": 86.9,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 87.93,
+   "end": 109.44,
+   "label": "B",
+   "mean_loudness": 0.2501,
+   "cuts_per_10s": 0.46,
+   "mean_motion": 6.86,
+   "mean_brightness": 147.3,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 1.0
+  },
+  {
+   "start": 109.44,
+   "end": 118.65,
+   "label": "B",
+   "mean_loudness": 0.2851,
+   "cuts_per_10s": 5.43,
+   "mean_motion": 16.44,
+   "mean_brightness": 104.0,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 118.65,
+   "end": 121.74,
+   "label": "A",
+   "mean_loudness": 0.1299,
+   "cuts_per_10s": 3.24,
+   "mean_motion": 9.03,
+   "mean_brightness": 75.2,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 121.74,
+   "end": 134.05,
+   "label": "A",
+   "mean_loudness": 0.1669,
+   "cuts_per_10s": 4.06,
+   "mean_motion": 10.63,
+   "mean_brightness": 103.7,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.2
+  },
+  {
+   "start": 134.05,
+   "end": 158.69,
+   "label": "E",
+   "mean_loudness": 0.2325,
+   "cuts_per_10s": 2.84,
+   "mean_motion": 10.55,
+   "mean_brightness": 113.4,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 158.69,
+   "end": 188.66,
+   "label": "B",
+   "mean_loudness": 0.2624,
+   "cuts_per_10s": 4.34,
+   "mean_motion": 17.1,
+   "mean_brightness": 98.5,
+   "mean_warmth": 0.0,
+   "cuts_on_beat_frac": 0.0
+  }
+ ],
+ "cut_phase_in_beat": {
+  "n": 39,
+  "mean_phase_0to1": 0.32,
+  "resultant_R": 0.365,
+  "rayleigh_p": 0.0055
+ },
+ "cut_phase_in_half_beat": {
+  "n": 39,
+  "mean_phase_0to1": 0.463,
+  "resultant_R": 0.036,
+  "rayleigh_p": 0.952
+ },
+ "cut_phase_in_bar": {
+  "n": 39,
+  "mean_phase_0to1": 0.017,
+  "resultant_R": 0.121,
+  "rayleigh_p": 0.5633
+ },
+ "notes": "Correlations use 5 s smoothing; lag>0 means the picture change follows the music by that many seconds. cut_phase: Rayleigh p<0.05 means cuts cluster at a consistent beat phase (cutting to the rhythm even if the tracker phase is offset). Bars assume 4/4 from beat 1 (unverified)."
+}

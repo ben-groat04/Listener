@@ -16,6 +16,7 @@ for V in $NAMES; do
   [ -f v1/data/$V/stems/stem_rms_per_second.json ] || $S/06_stem_one.sh > $L/${V}_stems.log 2>&1
   [ -f v1/data/$V/music_views/summary.json ] || python3 $S/07_audio_views.py 2>&1 | grep -vi warn > $L/${V}_music_views.log
   [ -f v1/data/$V/music_views/clap_tags.json ] || python3 $S/08_clap_tags.py 2>&1 | grep -vi warn | tail -3 > $L/${V}_clap.log
+  [ -f v1/data/$V/sync/sync.json ] || python3 $S/09_sync.py 2>&1 | grep -vi warn > $L/${V}_sync.log
   [ -f v1/data/$V/context.md ] || printf "# Context for %s\n\nPer-video facts discovered by agents (subject, artist, sources). Toolkit prompts read this file; keep subject-specific knowledge here, not in the toolkit.\n" "$V" > v1/data/$V/context.md
 done
 python3 $S/check_outputs.py $NAMES

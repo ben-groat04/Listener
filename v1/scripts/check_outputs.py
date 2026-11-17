@@ -4,7 +4,7 @@ import json, os, sys, glob
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 EXPECT = ["audio/song.wav", "contact_sheets/sheet_01.jpg", "frames_1fps/f_0001.jpg", "scenes/shots.json", "audio_features/summary.json",
           "audio_features/beat_times.json", "visual_features/per_second.json", "visual_features/cut_beat_alignment.json",
-          "stems/stem_rms_per_second.json", "music_views/summary.json", "music_views/chords.json", "music_views/clap_tags.json", "context.md"]
+          "stems/stem_rms_per_second.json", "music_views/summary.json", "music_views/chords.json", "music_views/clap_tags.json", "sync/sync.json", "context.md"]
 vids = sys.argv[1:] or sorted(os.path.basename(p) for p in glob.glob(f"{root}/v1/data/*") if os.path.isdir(p))
 bad = 0
 for v in vids:

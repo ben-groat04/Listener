@@ -36,3 +36,4 @@
 5. Cold-read improvement loops on the analysis and on the toolkit (can a fresh session run it from TOOLKIT docs?).
 6. Toolkit entry doc + single command; final human-readable report per video.
 - 01:52 Research wave 2: **Part mapping confirmed** (MusicBrainz: Part 1 = 3:09 = video1; Part 2 = 5:04 = video2). Archive = Fries Film (en Audio) Archief; specific films/narrator unidentified. Reception thin but positive (live highlights 2014). Applying corrections; launched blind chain for video1.
+- 02:00 New `09_sync.py` (music-picture relationship). **Finding:** video1 cuts are phase-locked to the beat (Rayleigh p=0.006, mean phase 0.32 of a beat: tracker phase offset, cuts on the pulse); video2 cuts are not rhythm-locked (p=0.82). Cut rate rises with loudness in both (r~0.25). Wired into interpret/compare/perceive prompts and extract_all/check_outputs.

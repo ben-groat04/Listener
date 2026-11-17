@@ -12,7 +12,7 @@ const SUM = { type: 'object', properties: { summary: { type: 'string' } }, requi
 const VER = { type: 'object', properties: { refuted: { type: 'array', items: { type: 'object', properties: { claim: { type: 'string' }, evidence: { type: 'string' }, fix: { type: 'string' } }, required: ['claim', 'evidence', 'fix'] } } }, required: ['refuted'] }
 const vids = args.videos
 const base = `You are comparing related music videos as one body of work: ${vids.map(v => `videos/${v}.mp4`).join(', ')} in repo ${R}. Stated relation: ${args.relation || 'unknown'} (verify it).
-For each video read, in this order: ${OUT}/music/<video>/music_reading.md (music comes first), ${OUT}/<video>/interpretation.md, ${OUT}/<video>/dossier.md; dip into raw data in v1/data/<video>/ (contact sheets, music_views images and JSON, lyrics) to check anything you claim.
+For each video read, in this order: ${OUT}/music/<video>/music_reading.md (music comes first), ${OUT}/<video>/interpretation.md, ${OUT}/<video>/dossier.md; dip into raw data in v1/data/<video>/ (sync/sync.json = measured music-picture relationship; contact sheets, music_views images and JSON, lyrics) to check anything you claim.
 ${BLIND ? 'BLIND MODE: no context.md, no research, no web.' : 'Background: v1/data/<video>/context.md and v1/analysis/research/*.md.'}
 Rules: British English; every claim traceable to data or the analysis files; mark speculation; timestamps as <video> m:ss.`
 

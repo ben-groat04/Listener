@@ -21,6 +21,7 @@ Extracted material lives in v1/data/${vid}/:
 - lyrics/*.txt: whisper transcripts (may be wrong, especially names and non-English speech; correct with judgement and say so).
 - audio_features/summary.json (tempo, key estimate, auto sections, per-second loudness/brightness/onset), overview.png, spectrogram.png.
 - visual_features/per_second.json (brightness, saturation, warmth, motion, faces, dominant colours), overview.png, colour_barcode.png, cut_beat_alignment.json.
+- sync/sync.json + sync.png (if present): measured music-picture relationship (cut/beat phase locking, cut rate vs loudness, motion vs onsets).
 - stems/ (if present): per-second loudness of vocals/drums/bass/other from source separation, stems.png.
 ${BLIND ? '' : '- v1/analysis/research/ may hold background research; use it.'}
 You cannot play audio; infer the music from spectrogram/features/stems/transcripts and say how confident you are.

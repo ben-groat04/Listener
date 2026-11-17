@@ -35,6 +35,11 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Town list filled from route knowledge; dropped Hindelopen which Whisper did transcribe.
 - Voice spectral figures (3.7 kHz, 4 to 5 dB under band) stated without per-passage checking.
 - 02:14 · Push rejected: agents and the autosave loop push concurrently, so the remote moved. · Fetched + merged, pushed; autosave now fetch-merges on rejection. · Concurrent writers need merge-on-reject.
+- Video1 reading: summary.json chord_time_share_top10 is in seconds; I called D "94.3 percent" (it is 50 percent of chord time).
+- Video1: called the 2:47.8 cut "one bar / 1.2 s" (it is 0.4 s) and the 2:37 click "absent for six beats" (it is about 10 dB weaker, 2:38.7-2:43.7); claimed drums and bass cut together at 3:08.2 (drums fade about 0.4 s first); quoted ending levels not reproducible at 0.1 s.
+- Video1: "centred on D" ignored A-led pitch classes in 2:13-2:38; "settles on D" from 2:38 ignored CH noise labels; held A/C timing and 1:15-1:24 extent wrong versus chroma.
+- Video1: width ranges, drum swell span, onset rate (4.3/s) and "no drift" (tracker ends 2:47.97) misquoted.
+- Video1: treated "Elfstedentocht" as Whisper output in the first block (it is Elfstedentuin there), put MUZIEK at the wrong bursts (it is 1:42 on a silent stem), assumed one place name per bar, and stated "low male" voice from an f0 overlap range; leaned on CLAP guitar/mood tags as support.
 
 ## Music check: video2
 - Attributed the 0:42 top-band jump (about 26 dB) to a filter or layer opening with speech; it is the narrator's voice entering (the vocals stem shows the same jump, the "other" layer rises only about 8 dB).

@@ -1,0 +1,8424 @@
+{
+ "video": "video1",
+ "label": "OBS: measurements only (pYIN f0 on the bass stem, 0.25 s windows); roots are pitch classes, not harmonic interpretation (INT)",
+ "source_bass": "stems/bass.mp3",
+ "caveat": null,
+ "method": {
+  "f0": "librosa.pyin 30-300 Hz, hop 256 at 22050 Hz",
+  "window_s": 0.25,
+  "dominant_pitch": "RMS-weighted histogram of rounded MIDI notes among voiced frames; confidence = weight share of the winner x voiced-frame fraction",
+  "silence_rule": "RMS more than 40 dB below file maximum or unvoiced: null (no claim)",
+  "octave_error_flag": "likely if >=25% of weighted mass sits on the same pitch class in another octave, or median f0 <41 Hz or >200 Hz (pYIN octave slips and sub-bass tracks are common); an unflagged window is not proof of the right octave",
+  "segments": "run-length of pitch class; a single-window blip between two equal neighbours is absorbed"
+ },
+ "windows": [
+  {
+   "start": 0.0,
+   "end": 0.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 0.25,
+   "end": 0.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 0.5,
+   "end": 0.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 0.75,
+   "end": 1.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 1.0,
+   "end": 1.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 1.25,
+   "end": 1.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 1.5,
+   "end": 1.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 1.75,
+   "end": 2.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 2.0,
+   "end": 2.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 2.25,
+   "end": 2.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 2.5,
+   "end": 2.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 2.75,
+   "end": 3.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 3.0,
+   "end": 3.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 3.25,
+   "end": 3.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 3.5,
+   "end": 3.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 3.75,
+   "end": 4.0,
+   "hz": 43.42,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.727,
+   "octave_error_likely": false
+  },
+  {
+   "start": 4.0,
+   "end": 4.25,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 4.25,
+   "end": 4.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 4.5,
+   "end": 4.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 4.75,
+   "end": 5.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 5.0,
+   "end": 5.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 5.25,
+   "end": 5.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 5.5,
+   "end": 5.75,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.818,
+   "octave_error_likely": false
+  },
+  {
+   "start": 5.75,
+   "end": 6.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 6.0,
+   "end": 6.25,
+   "hz": 51.19,
+   "note": "G#1",
+   "pc": 8,
+   "confidence": 0.091,
+   "octave_error_likely": false
+  },
+  {
+   "start": 6.25,
+   "end": 6.5,
+   "hz": 50.16,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.53,
+   "octave_error_likely": false
+  },
+  {
+   "start": 6.5,
+   "end": 6.75,
+   "hz": 49.87,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.097,
+   "octave_error_likely": true
+  },
+  {
+   "start": 6.75,
+   "end": 7.0,
+   "hz": 96.35,
+   "note": "G2",
+   "pc": 7,
+   "confidence": 0.684,
+   "octave_error_likely": false
+  },
+  {
+   "start": 7.0,
+   "end": 7.25,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.955,
+   "octave_error_likely": false
+  },
+  {
+   "start": 7.25,
+   "end": 7.5,
+   "hz": 49.16,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.571,
+   "octave_error_likely": false
+  },
+  {
+   "start": 7.5,
+   "end": 7.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 7.75,
+   "end": 8.0,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.671,
+   "octave_error_likely": false
+  },
+  {
+   "start": 8.0,
+   "end": 8.25,
+   "hz": 65.62,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.978,
+   "octave_error_likely": false
+  },
+  {
+   "start": 8.25,
+   "end": 8.5,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.768,
+   "octave_error_likely": false
+  },
+  {
+   "start": 8.5,
+   "end": 8.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.667,
+   "octave_error_likely": false
+  },
+  {
+   "start": 8.75,
+   "end": 9.0,
+   "hz": 64.68,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.826,
+   "octave_error_likely": false
+  },
+  {
+   "start": 9.0,
+   "end": 9.25,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.941,
+   "octave_error_likely": false
+  },
+  {
+   "start": 9.25,
+   "end": 9.5,
+   "hz": 49.59,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.477,
+   "octave_error_likely": false
+  },
+  {
+   "start": 9.5,
+   "end": 9.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.546,
+   "octave_error_likely": false
+  },
+  {
+   "start": 9.75,
+   "end": 10.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.721,
+   "octave_error_likely": false
+  },
+  {
+   "start": 10.0,
+   "end": 10.25,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 10.25,
+   "end": 10.5,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.449,
+   "octave_error_likely": false
+  },
+  {
+   "start": 10.5,
+   "end": 10.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 10.75,
+   "end": 11.0,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.795,
+   "octave_error_likely": false
+  },
+  {
+   "start": 11.0,
+   "end": 11.25,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.807,
+   "octave_error_likely": false
+  },
+  {
+   "start": 11.25,
+   "end": 11.5,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 11.5,
+   "end": 11.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.505,
+   "octave_error_likely": false
+  },
+  {
+   "start": 11.75,
+   "end": 12.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.869,
+   "octave_error_likely": false
+  },
+  {
+   "start": 12.0,
+   "end": 12.25,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.778,
+   "octave_error_likely": false
+  },
+  {
+   "start": 12.25,
+   "end": 12.5,
+   "hz": 49.16,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.426,
+   "octave_error_likely": false
+  },
+  {
+   "start": 12.5,
+   "end": 12.75,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.99,
+   "octave_error_likely": false
+  },
+  {
+   "start": 12.75,
+   "end": 13.0,
+   "hz": 44.3,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.603,
+   "octave_error_likely": false
+  },
+  {
+   "start": 13.0,
+   "end": 13.25,
+   "hz": 47.9,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.981,
+   "octave_error_likely": false
+  },
+  {
+   "start": 13.25,
+   "end": 13.5,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.952,
+   "octave_error_likely": false
+  },
+  {
+   "start": 13.5,
+   "end": 13.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 13.75,
+   "end": 14.0,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.626,
+   "octave_error_likely": false
+  },
+  {
+   "start": 14.0,
+   "end": 14.25,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.982,
+   "octave_error_likely": false
+  },
+  {
+   "start": 14.25,
+   "end": 14.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.666,
+   "octave_error_likely": false
+  },
+  {
+   "start": 14.5,
+   "end": 14.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.455,
+   "octave_error_likely": false
+  },
+  {
+   "start": 14.75,
+   "end": 15.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 15.0,
+   "end": 15.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.388,
+   "octave_error_likely": true
+  },
+  {
+   "start": 15.25,
+   "end": 15.5,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.864,
+   "octave_error_likely": true
+  },
+  {
+   "start": 15.5,
+   "end": 15.75,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.81,
+   "octave_error_likely": false
+  },
+  {
+   "start": 15.75,
+   "end": 16.0,
+   "hz": 64.31,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.887,
+   "octave_error_likely": false
+  },
+  {
+   "start": 16.0,
+   "end": 16.25,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.653,
+   "octave_error_likely": false
+  },
+  {
+   "start": 16.25,
+   "end": 16.5,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 16.5,
+   "end": 16.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.668,
+   "octave_error_likely": false
+  },
+  {
+   "start": 16.75,
+   "end": 17.0,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.636,
+   "octave_error_likely": false
+  },
+  {
+   "start": 17.0,
+   "end": 17.25,
+   "hz": 64.31,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.755,
+   "octave_error_likely": false
+  },
+  {
+   "start": 17.25,
+   "end": 17.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.795,
+   "octave_error_likely": false
+  },
+  {
+   "start": 17.5,
+   "end": 17.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.857,
+   "octave_error_likely": true
+  },
+  {
+   "start": 17.75,
+   "end": 18.0,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.573,
+   "octave_error_likely": false
+  },
+  {
+   "start": 18.0,
+   "end": 18.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.51,
+   "octave_error_likely": true
+  },
+  {
+   "start": 18.25,
+   "end": 18.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 18.5,
+   "end": 18.75,
+   "hz": 48.74,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.724,
+   "octave_error_likely": false
+  },
+  {
+   "start": 18.75,
+   "end": 19.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.513,
+   "octave_error_likely": true
+  },
+  {
+   "start": 19.0,
+   "end": 19.25,
+   "hz": 87.85,
+   "note": "F2",
+   "pc": 5,
+   "confidence": 0.682,
+   "octave_error_likely": false
+  },
+  {
+   "start": 19.25,
+   "end": 19.5,
+   "hz": 97.47,
+   "note": "G2",
+   "pc": 7,
+   "confidence": 0.653,
+   "octave_error_likely": false
+  },
+  {
+   "start": 19.5,
+   "end": 19.75,
+   "hz": 98.03,
+   "note": "G2",
+   "pc": 7,
+   "confidence": 0.377,
+   "octave_error_likely": false
+  },
+  {
+   "start": 19.75,
+   "end": 20.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 20.0,
+   "end": 20.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.955,
+   "octave_error_likely": true
+  },
+  {
+   "start": 20.25,
+   "end": 20.5,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.577,
+   "octave_error_likely": false
+  },
+  {
+   "start": 20.5,
+   "end": 20.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.544,
+   "octave_error_likely": true
+  },
+  {
+   "start": 20.75,
+   "end": 21.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.525,
+   "octave_error_likely": true
+  },
+  {
+   "start": 21.0,
+   "end": 21.25,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.524,
+   "octave_error_likely": false
+  },
+  {
+   "start": 21.25,
+   "end": 21.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 21.5,
+   "end": 21.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.955,
+   "octave_error_likely": true
+  },
+  {
+   "start": 21.75,
+   "end": 22.0,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.492,
+   "octave_error_likely": false
+  },
+  {
+   "start": 22.0,
+   "end": 22.25,
+   "hz": 64.68,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.818,
+   "octave_error_likely": false
+  },
+  {
+   "start": 22.25,
+   "end": 22.5,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.81,
+   "octave_error_likely": false
+  },
+  {
+   "start": 22.5,
+   "end": 22.75,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.866,
+   "octave_error_likely": false
+  },
+  {
+   "start": 22.75,
+   "end": 23.0,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.96,
+   "octave_error_likely": true
+  },
+  {
+   "start": 23.0,
+   "end": 23.25,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 23.25,
+   "end": 23.5,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.682,
+   "octave_error_likely": true
+  },
+  {
+   "start": 23.5,
+   "end": 23.75,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 23.75,
+   "end": 24.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.955,
+   "octave_error_likely": true
+  },
+  {
+   "start": 24.0,
+   "end": 24.25,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.438,
+   "octave_error_likely": false
+  },
+  {
+   "start": 24.25,
+   "end": 24.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 24.5,
+   "end": 24.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.716,
+   "octave_error_likely": true
+  },
+  {
+   "start": 24.75,
+   "end": 25.0,
+   "hz": 48.74,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.667,
+   "octave_error_likely": false
+  },
+  {
+   "start": 25.0,
+   "end": 25.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 25.25,
+   "end": 25.5,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.833,
+   "octave_error_likely": false
+  },
+  {
+   "start": 25.5,
+   "end": 25.75,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.915,
+   "octave_error_likely": false
+  },
+  {
+   "start": 25.75,
+   "end": 26.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.926,
+   "octave_error_likely": true
+  },
+  {
+   "start": 26.0,
+   "end": 26.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 26.25,
+   "end": 26.5,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.611,
+   "octave_error_likely": true
+  },
+  {
+   "start": 26.5,
+   "end": 26.75,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.505,
+   "octave_error_likely": false
+  },
+  {
+   "start": 26.75,
+   "end": 27.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 27.0,
+   "end": 27.25,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.548,
+   "octave_error_likely": false
+  },
+  {
+   "start": 27.25,
+   "end": 27.5,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.574,
+   "octave_error_likely": true
+  },
+  {
+   "start": 27.5,
+   "end": 27.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 27.75,
+   "end": 28.0,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.745,
+   "octave_error_likely": false
+  },
+  {
+   "start": 28.0,
+   "end": 28.25,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.408,
+   "octave_error_likely": false
+  },
+  {
+   "start": 28.25,
+   "end": 28.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.513,
+   "octave_error_likely": false
+  },
+  {
+   "start": 28.5,
+   "end": 28.75,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 28.75,
+   "end": 29.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.314,
+   "octave_error_likely": true
+  },
+  {
+   "start": 29.0,
+   "end": 29.25,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 29.25,
+   "end": 29.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.429,
+   "octave_error_likely": true
+  },
+  {
+   "start": 29.5,
+   "end": 29.75,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.409,
+   "octave_error_likely": true
+  },
+  {
+   "start": 29.75,
+   "end": 30.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 30.0,
+   "end": 30.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.736,
+   "octave_error_likely": true
+  },
+  {
+   "start": 30.25,
+   "end": 30.5,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.414,
+   "octave_error_likely": false
+  },
+  {
+   "start": 30.5,
+   "end": 30.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 30.75,
+   "end": 31.0,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.591,
+   "octave_error_likely": true
+  },
+  {
+   "start": 31.0,
+   "end": 31.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.722,
+   "octave_error_likely": true
+  },
+  {
+   "start": 31.25,
+   "end": 31.5,
+   "hz": 87.09,
+   "note": "F2",
+   "pc": 5,
+   "confidence": 0.486,
+   "octave_error_likely": false
+  },
+  {
+   "start": 31.5,
+   "end": 31.75,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.716,
+   "octave_error_likely": false
+  },
+  {
+   "start": 31.75,
+   "end": 32.0,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.955,
+   "octave_error_likely": false
+  },
+  {
+   "start": 32.0,
+   "end": 32.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.952,
+   "octave_error_likely": true
+  },
+  {
+   "start": 32.25,
+   "end": 32.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.818,
+   "octave_error_likely": true
+  },
+  {
+   "start": 32.5,
+   "end": 32.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.952,
+   "octave_error_likely": false
+  },
+  {
+   "start": 32.75,
+   "end": 33.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.527,
+   "octave_error_likely": true
+  },
+  {
+   "start": 33.0,
+   "end": 33.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.952,
+   "octave_error_likely": true
+  },
+  {
+   "start": 33.25,
+   "end": 33.5,
+   "hz": 32.9,
+   "note": "C1",
+   "pc": 0,
+   "confidence": 0.682,
+   "octave_error_likely": true
+  },
+  {
+   "start": 33.5,
+   "end": 33.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.824,
+   "octave_error_likely": true
+  },
+  {
+   "start": 33.75,
+   "end": 34.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.506,
+   "octave_error_likely": true
+  },
+  {
+   "start": 34.0,
+   "end": 34.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.755,
+   "octave_error_likely": false
+  },
+  {
+   "start": 34.25,
+   "end": 34.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 34.5,
+   "end": 34.75,
+   "hz": 43.42,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.396,
+   "octave_error_likely": false
+  },
+  {
+   "start": 34.75,
+   "end": 35.0,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.905,
+   "octave_error_likely": false
+  },
+  {
+   "start": 35.0,
+   "end": 35.25,
+   "hz": 36.83,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.818,
+   "octave_error_likely": true
+  },
+  {
+   "start": 35.25,
+   "end": 35.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.453,
+   "octave_error_likely": true
+  },
+  {
+   "start": 35.5,
+   "end": 35.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 35.75,
+   "end": 36.0,
+   "hz": 72.81,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.762,
+   "octave_error_likely": false
+  },
+  {
+   "start": 36.0,
+   "end": 36.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 36.25,
+   "end": 36.5,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.731,
+   "octave_error_likely": false
+  },
+  {
+   "start": 36.5,
+   "end": 36.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.619,
+   "octave_error_likely": true
+  },
+  {
+   "start": 36.75,
+   "end": 37.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 37.0,
+   "end": 37.25,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.682,
+   "octave_error_likely": false
+  },
+  {
+   "start": 37.25,
+   "end": 37.5,
+   "hz": 73.66,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.584,
+   "octave_error_likely": false
+  },
+  {
+   "start": 37.5,
+   "end": 37.75,
+   "hz": 66.57,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.673,
+   "octave_error_likely": false
+  },
+  {
+   "start": 37.75,
+   "end": 38.0,
+   "hz": 69.32,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 38.0,
+   "end": 38.25,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.91,
+   "octave_error_likely": false
+  },
+  {
+   "start": 38.25,
+   "end": 38.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.452,
+   "octave_error_likely": true
+  },
+  {
+   "start": 38.5,
+   "end": 38.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 38.75,
+   "end": 39.0,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.655,
+   "octave_error_likely": false
+  },
+  {
+   "start": 39.0,
+   "end": 39.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 39.25,
+   "end": 39.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.523,
+   "octave_error_likely": false
+  },
+  {
+   "start": 39.5,
+   "end": 39.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.512,
+   "octave_error_likely": true
+  },
+  {
+   "start": 39.75,
+   "end": 40.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 40.0,
+   "end": 40.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.517,
+   "octave_error_likely": true
+  },
+  {
+   "start": 40.25,
+   "end": 40.5,
+   "hz": 66.57,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.476,
+   "octave_error_likely": false
+  },
+  {
+   "start": 40.5,
+   "end": 40.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.743,
+   "octave_error_likely": false
+  },
+  {
+   "start": 40.75,
+   "end": 41.0,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 41.0,
+   "end": 41.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.646,
+   "octave_error_likely": true
+  },
+  {
+   "start": 41.25,
+   "end": 41.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 41.5,
+   "end": 41.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 41.75,
+   "end": 42.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.396,
+   "octave_error_likely": true
+  },
+  {
+   "start": 42.0,
+   "end": 42.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.472,
+   "octave_error_likely": true
+  },
+  {
+   "start": 42.25,
+   "end": 42.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.762,
+   "octave_error_likely": true
+  },
+  {
+   "start": 42.5,
+   "end": 42.75,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.691,
+   "octave_error_likely": false
+  },
+  {
+   "start": 42.75,
+   "end": 43.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.857,
+   "octave_error_likely": true
+  },
+  {
+   "start": 43.0,
+   "end": 43.25,
+   "hz": 87.85,
+   "note": "F2",
+   "pc": 5,
+   "confidence": 0.864,
+   "octave_error_likely": false
+  },
+  {
+   "start": 43.25,
+   "end": 43.5,
+   "hz": 88.35,
+   "note": "F2",
+   "pc": 5,
+   "confidence": 0.591,
+   "octave_error_likely": false
+  },
+  {
+   "start": 43.5,
+   "end": 43.75,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 43.75,
+   "end": 44.0,
+   "hz": 66.19,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.857,
+   "octave_error_likely": false
+  },
+  {
+   "start": 44.0,
+   "end": 44.25,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 44.25,
+   "end": 44.5,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 44.5,
+   "end": 44.75,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.692,
+   "octave_error_likely": true
+  },
+  {
+   "start": 44.75,
+   "end": 45.0,
+   "hz": 34.26,
+   "note": "C#1",
+   "pc": 1,
+   "confidence": 0.373,
+   "octave_error_likely": true
+  },
+  {
+   "start": 45.0,
+   "end": 45.25,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.565,
+   "octave_error_likely": false
+  },
+  {
+   "start": 45.25,
+   "end": 45.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 45.5,
+   "end": 45.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.663,
+   "octave_error_likely": false
+  },
+  {
+   "start": 45.75,
+   "end": 46.0,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.775,
+   "octave_error_likely": true
+  },
+  {
+   "start": 46.0,
+   "end": 46.25,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 46.25,
+   "end": 46.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.818,
+   "octave_error_likely": true
+  },
+  {
+   "start": 46.5,
+   "end": 46.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 46.75,
+   "end": 47.0,
+   "hz": 44.18,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.503,
+   "octave_error_likely": false
+  },
+  {
+   "start": 47.0,
+   "end": 47.25,
+   "hz": 44.43,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.5,
+   "octave_error_likely": false
+  },
+  {
+   "start": 47.25,
+   "end": 47.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.682,
+   "octave_error_likely": true
+  },
+  {
+   "start": 47.5,
+   "end": 47.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 47.75,
+   "end": 48.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 48.0,
+   "end": 48.25,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.566,
+   "octave_error_likely": true
+  },
+  {
+   "start": 48.25,
+   "end": 48.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 48.5,
+   "end": 48.75,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.651,
+   "octave_error_likely": false
+  },
+  {
+   "start": 48.75,
+   "end": 49.0,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.656,
+   "octave_error_likely": false
+  },
+  {
+   "start": 49.0,
+   "end": 49.25,
+   "hz": 73.23,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.488,
+   "octave_error_likely": true
+  },
+  {
+   "start": 49.25,
+   "end": 49.5,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.597,
+   "octave_error_likely": false
+  },
+  {
+   "start": 49.5,
+   "end": 49.75,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.855,
+   "octave_error_likely": false
+  },
+  {
+   "start": 49.75,
+   "end": 50.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 50.0,
+   "end": 50.25,
+   "hz": 68.52,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.877,
+   "octave_error_likely": false
+  },
+  {
+   "start": 50.25,
+   "end": 50.5,
+   "hz": 71.97,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.657,
+   "octave_error_likely": false
+  },
+  {
+   "start": 50.5,
+   "end": 50.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.773,
+   "octave_error_likely": false
+  },
+  {
+   "start": 50.75,
+   "end": 51.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.587,
+   "octave_error_likely": true
+  },
+  {
+   "start": 51.0,
+   "end": 51.25,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.655,
+   "octave_error_likely": false
+  },
+  {
+   "start": 51.25,
+   "end": 51.5,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.379,
+   "octave_error_likely": false
+  },
+  {
+   "start": 51.5,
+   "end": 51.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.641,
+   "octave_error_likely": true
+  },
+  {
+   "start": 51.75,
+   "end": 52.0,
+   "hz": 33.0,
+   "note": "C1",
+   "pc": 0,
+   "confidence": 0.692,
+   "octave_error_likely": true
+  },
+  {
+   "start": 52.0,
+   "end": 52.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 52.25,
+   "end": 52.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.645,
+   "octave_error_likely": true
+  },
+  {
+   "start": 52.5,
+   "end": 52.75,
+   "hz": 48.74,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.864,
+   "octave_error_likely": false
+  },
+  {
+   "start": 52.75,
+   "end": 53.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.818,
+   "octave_error_likely": false
+  },
+  {
+   "start": 53.0,
+   "end": 53.25,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.952,
+   "octave_error_likely": false
+  },
+  {
+   "start": 53.25,
+   "end": 53.5,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.882,
+   "octave_error_likely": false
+  },
+  {
+   "start": 53.5,
+   "end": 53.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 53.75,
+   "end": 54.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 54.0,
+   "end": 54.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 54.25,
+   "end": 54.5,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 54.5,
+   "end": 54.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.952,
+   "octave_error_likely": true
+  },
+  {
+   "start": 54.75,
+   "end": 55.0,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.479,
+   "octave_error_likely": false
+  },
+  {
+   "start": 55.0,
+   "end": 55.25,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.921,
+   "octave_error_likely": false
+  },
+  {
+   "start": 55.25,
+   "end": 55.5,
+   "hz": 82.44,
+   "note": "E2",
+   "pc": 4,
+   "confidence": 0.802,
+   "octave_error_likely": false
+  },
+  {
+   "start": 55.5,
+   "end": 55.75,
+   "hz": 82.44,
+   "note": "E2",
+   "pc": 4,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 55.75,
+   "end": 56.0,
+   "hz": 86.09,
+   "note": "F2",
+   "pc": 5,
+   "confidence": 0.734,
+   "octave_error_likely": false
+  },
+  {
+   "start": 56.0,
+   "end": 56.25,
+   "hz": 82.91,
+   "note": "E2",
+   "pc": 4,
+   "confidence": 0.546,
+   "octave_error_likely": false
+  },
+  {
+   "start": 56.25,
+   "end": 56.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.379,
+   "octave_error_likely": false
+  },
+  {
+   "start": 56.5,
+   "end": 56.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.784,
+   "octave_error_likely": false
+  },
+  {
+   "start": 56.75,
+   "end": 57.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.625,
+   "octave_error_likely": true
+  },
+  {
+   "start": 57.0,
+   "end": 57.25,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.509,
+   "octave_error_likely": true
+  },
+  {
+   "start": 57.25,
+   "end": 57.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.896,
+   "octave_error_likely": false
+  },
+  {
+   "start": 57.5,
+   "end": 57.75,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 57.75,
+   "end": 58.0,
+   "hz": 72.81,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.515,
+   "octave_error_likely": false
+  },
+  {
+   "start": 58.0,
+   "end": 58.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.53,
+   "octave_error_likely": true
+  },
+  {
+   "start": 58.25,
+   "end": 58.5,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 58.5,
+   "end": 58.75,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.656,
+   "octave_error_likely": false
+  },
+  {
+   "start": 58.75,
+   "end": 59.0,
+   "hz": 49.3,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.707,
+   "octave_error_likely": false
+  },
+  {
+   "start": 59.0,
+   "end": 59.25,
+   "hz": 66.19,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.418,
+   "octave_error_likely": false
+  },
+  {
+   "start": 59.25,
+   "end": 59.5,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 59.5,
+   "end": 59.75,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.634,
+   "octave_error_likely": false
+  },
+  {
+   "start": 59.75,
+   "end": 60.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 60.0,
+   "end": 60.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.716,
+   "octave_error_likely": true
+  },
+  {
+   "start": 60.25,
+   "end": 60.5,
+   "hz": 66.19,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.748,
+   "octave_error_likely": false
+  },
+  {
+   "start": 60.5,
+   "end": 60.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.714,
+   "octave_error_likely": true
+  },
+  {
+   "start": 60.75,
+   "end": 61.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.491,
+   "octave_error_likely": true
+  },
+  {
+   "start": 61.0,
+   "end": 61.25,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.712,
+   "octave_error_likely": false
+  },
+  {
+   "start": 61.25,
+   "end": 61.5,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 61.5,
+   "end": 61.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.551,
+   "octave_error_likely": false
+  },
+  {
+   "start": 61.75,
+   "end": 62.0,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.644,
+   "octave_error_likely": false
+  },
+  {
+   "start": 62.0,
+   "end": 62.25,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.579,
+   "octave_error_likely": true
+  },
+  {
+   "start": 62.25,
+   "end": 62.5,
+   "hz": 32.72,
+   "note": "C1",
+   "pc": 0,
+   "confidence": 0.845,
+   "octave_error_likely": true
+  },
+  {
+   "start": 62.5,
+   "end": 62.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.624,
+   "octave_error_likely": true
+  },
+  {
+   "start": 62.75,
+   "end": 63.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 63.0,
+   "end": 63.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 63.25,
+   "end": 63.5,
+   "hz": 35.99,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.906,
+   "octave_error_likely": true
+  },
+  {
+   "start": 63.5,
+   "end": 63.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 63.75,
+   "end": 64.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.949,
+   "octave_error_likely": true
+  },
+  {
+   "start": 64.0,
+   "end": 64.25,
+   "hz": 33.0,
+   "note": "C1",
+   "pc": 0,
+   "confidence": 0.735,
+   "octave_error_likely": true
+  },
+  {
+   "start": 64.25,
+   "end": 64.5,
+   "hz": 36.09,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.956,
+   "octave_error_likely": true
+  },
+  {
+   "start": 64.5,
+   "end": 64.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 64.75,
+   "end": 65.0,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.784,
+   "octave_error_likely": false
+  },
+  {
+   "start": 65.0,
+   "end": 65.25,
+   "hz": 65.62,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.296,
+   "octave_error_likely": false
+  },
+  {
+   "start": 65.25,
+   "end": 65.5,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.497,
+   "octave_error_likely": false
+  },
+  {
+   "start": 65.5,
+   "end": 65.75,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.923,
+   "octave_error_likely": false
+  },
+  {
+   "start": 65.75,
+   "end": 66.0,
+   "hz": 74.73,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.81,
+   "octave_error_likely": false
+  },
+  {
+   "start": 66.0,
+   "end": 66.25,
+   "hz": 74.3,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 66.25,
+   "end": 66.5,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 66.5,
+   "end": 66.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 66.75,
+   "end": 67.0,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.704,
+   "octave_error_likely": true
+  },
+  {
+   "start": 67.0,
+   "end": 67.25,
+   "hz": 62.12,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.558,
+   "octave_error_likely": false
+  },
+  {
+   "start": 67.25,
+   "end": 67.5,
+   "hz": 61.76,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.839,
+   "octave_error_likely": false
+  },
+  {
+   "start": 67.5,
+   "end": 67.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.864,
+   "octave_error_likely": true
+  },
+  {
+   "start": 67.75,
+   "end": 68.0,
+   "hz": 55.02,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 0.667,
+   "octave_error_likely": false
+  },
+  {
+   "start": 68.0,
+   "end": 68.25,
+   "hz": 57.96,
+   "note": "A#1",
+   "pc": 10,
+   "confidence": 0.425,
+   "octave_error_likely": false
+  },
+  {
+   "start": 68.25,
+   "end": 68.5,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.81,
+   "octave_error_likely": true
+  },
+  {
+   "start": 68.5,
+   "end": 68.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.339,
+   "octave_error_likely": false
+  },
+  {
+   "start": 68.75,
+   "end": 69.0,
+   "hz": 73.23,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.49,
+   "octave_error_likely": false
+  },
+  {
+   "start": 69.0,
+   "end": 69.25,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 69.25,
+   "end": 69.5,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.716,
+   "octave_error_likely": false
+  },
+  {
+   "start": 69.5,
+   "end": 69.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 69.75,
+   "end": 70.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.73,
+   "octave_error_likely": true
+  },
+  {
+   "start": 70.0,
+   "end": 70.25,
+   "hz": 36.83,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.539,
+   "octave_error_likely": true
+  },
+  {
+   "start": 70.25,
+   "end": 70.5,
+   "hz": 64.68,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.532,
+   "octave_error_likely": false
+  },
+  {
+   "start": 70.5,
+   "end": 70.75,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.406,
+   "octave_error_likely": true
+  },
+  {
+   "start": 70.75,
+   "end": 71.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.778,
+   "octave_error_likely": true
+  },
+  {
+   "start": 71.0,
+   "end": 71.25,
+   "hz": 55.02,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 71.25,
+   "end": 71.5,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.864,
+   "octave_error_likely": true
+  },
+  {
+   "start": 71.5,
+   "end": 71.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.52,
+   "octave_error_likely": true
+  },
+  {
+   "start": 71.75,
+   "end": 72.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.762,
+   "octave_error_likely": false
+  },
+  {
+   "start": 72.0,
+   "end": 72.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.955,
+   "octave_error_likely": false
+  },
+  {
+   "start": 72.25,
+   "end": 72.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.559,
+   "octave_error_likely": true
+  },
+  {
+   "start": 72.5,
+   "end": 72.75,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.348,
+   "octave_error_likely": false
+  },
+  {
+   "start": 72.75,
+   "end": 73.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.525,
+   "octave_error_likely": true
+  },
+  {
+   "start": 73.0,
+   "end": 73.25,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.954,
+   "octave_error_likely": true
+  },
+  {
+   "start": 73.25,
+   "end": 73.5,
+   "hz": 63.94,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.566,
+   "octave_error_likely": false
+  },
+  {
+   "start": 73.5,
+   "end": 73.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.511,
+   "octave_error_likely": false
+  },
+  {
+   "start": 73.75,
+   "end": 74.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 74.0,
+   "end": 74.25,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.765,
+   "octave_error_likely": false
+  },
+  {
+   "start": 74.25,
+   "end": 74.5,
+   "hz": 36.83,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.761,
+   "octave_error_likely": true
+  },
+  {
+   "start": 74.5,
+   "end": 74.75,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.35,
+   "octave_error_likely": false
+  },
+  {
+   "start": 74.75,
+   "end": 75.0,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 75.0,
+   "end": 75.25,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 75.25,
+   "end": 75.5,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.318,
+   "octave_error_likely": false
+  },
+  {
+   "start": 75.5,
+   "end": 75.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 75.75,
+   "end": 76.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 76.0,
+   "end": 76.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 76.25,
+   "end": 76.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 76.5,
+   "end": 76.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 76.75,
+   "end": 77.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 77.0,
+   "end": 77.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 77.25,
+   "end": 77.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 77.5,
+   "end": 77.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 77.75,
+   "end": 78.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 78.0,
+   "end": 78.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 78.25,
+   "end": 78.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 78.5,
+   "end": 78.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 78.75,
+   "end": 79.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 79.0,
+   "end": 79.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 79.25,
+   "end": 79.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 79.5,
+   "end": 79.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 79.75,
+   "end": 80.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 80.0,
+   "end": 80.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 80.25,
+   "end": 80.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 80.5,
+   "end": 80.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 80.75,
+   "end": 81.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 81.0,
+   "end": 81.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 81.25,
+   "end": 81.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 81.5,
+   "end": 81.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 81.75,
+   "end": 82.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 82.0,
+   "end": 82.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 82.25,
+   "end": 82.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 82.5,
+   "end": 82.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 82.75,
+   "end": 83.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 83.0,
+   "end": 83.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 83.25,
+   "end": 83.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 83.5,
+   "end": 83.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 83.75,
+   "end": 84.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 84.0,
+   "end": 84.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 84.25,
+   "end": 84.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 84.5,
+   "end": 84.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 84.75,
+   "end": 85.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 85.0,
+   "end": 85.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 85.25,
+   "end": 85.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 85.5,
+   "end": 85.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 85.75,
+   "end": 86.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 86.0,
+   "end": 86.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 86.25,
+   "end": 86.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 86.5,
+   "end": 86.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 86.75,
+   "end": 87.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 87.0,
+   "end": 87.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 87.25,
+   "end": 87.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 87.5,
+   "end": 87.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 87.75,
+   "end": 88.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 88.0,
+   "end": 88.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 88.25,
+   "end": 88.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 88.5,
+   "end": 88.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 88.75,
+   "end": 89.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 89.0,
+   "end": 89.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 89.25,
+   "end": 89.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 89.5,
+   "end": 89.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 89.75,
+   "end": 90.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 90.0,
+   "end": 90.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 90.25,
+   "end": 90.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 90.5,
+   "end": 90.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 90.75,
+   "end": 91.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 91.0,
+   "end": 91.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 91.25,
+   "end": 91.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 91.5,
+   "end": 91.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 91.75,
+   "end": 92.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 92.0,
+   "end": 92.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 92.25,
+   "end": 92.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 92.5,
+   "end": 92.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 92.75,
+   "end": 93.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 93.0,
+   "end": 93.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 93.25,
+   "end": 93.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 93.5,
+   "end": 93.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 93.75,
+   "end": 94.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 94.0,
+   "end": 94.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 94.25,
+   "end": 94.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 94.5,
+   "end": 94.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 94.75,
+   "end": 95.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 95.0,
+   "end": 95.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 95.25,
+   "end": 95.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 95.5,
+   "end": 95.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 95.75,
+   "end": 96.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 96.0,
+   "end": 96.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 96.25,
+   "end": 96.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 96.5,
+   "end": 96.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 96.75,
+   "end": 97.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 97.0,
+   "end": 97.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 97.25,
+   "end": 97.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 97.5,
+   "end": 97.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 97.75,
+   "end": 98.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 98.0,
+   "end": 98.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 98.25,
+   "end": 98.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 98.5,
+   "end": 98.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 98.75,
+   "end": 99.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 99.0,
+   "end": 99.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 99.25,
+   "end": 99.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 99.5,
+   "end": 99.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 99.75,
+   "end": 100.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.216,
+   "octave_error_likely": true
+  },
+  {
+   "start": 100.0,
+   "end": 100.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 100.25,
+   "end": 100.5,
+   "hz": 36.62,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.586,
+   "octave_error_likely": true
+  },
+  {
+   "start": 100.5,
+   "end": 100.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 100.75,
+   "end": 101.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 101.0,
+   "end": 101.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.476,
+   "octave_error_likely": true
+  },
+  {
+   "start": 101.25,
+   "end": 101.5,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 101.5,
+   "end": 101.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.692,
+   "octave_error_likely": true
+  },
+  {
+   "start": 101.75,
+   "end": 102.0,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.646,
+   "octave_error_likely": false
+  },
+  {
+   "start": 102.0,
+   "end": 102.25,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.517,
+   "octave_error_likely": true
+  },
+  {
+   "start": 102.25,
+   "end": 102.5,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.905,
+   "octave_error_likely": false
+  },
+  {
+   "start": 102.5,
+   "end": 102.75,
+   "hz": 43.42,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.675,
+   "octave_error_likely": false
+  },
+  {
+   "start": 102.75,
+   "end": 103.0,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 103.0,
+   "end": 103.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.571,
+   "octave_error_likely": true
+  },
+  {
+   "start": 103.25,
+   "end": 103.5,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.483,
+   "octave_error_likely": false
+  },
+  {
+   "start": 103.5,
+   "end": 103.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 103.75,
+   "end": 104.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.77,
+   "octave_error_likely": false
+  },
+  {
+   "start": 104.0,
+   "end": 104.25,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.721,
+   "octave_error_likely": false
+  },
+  {
+   "start": 104.25,
+   "end": 104.5,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.905,
+   "octave_error_likely": true
+  },
+  {
+   "start": 104.5,
+   "end": 104.75,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.967,
+   "octave_error_likely": true
+  },
+  {
+   "start": 104.75,
+   "end": 105.0,
+   "hz": 65.62,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.509,
+   "octave_error_likely": false
+  },
+  {
+   "start": 105.0,
+   "end": 105.25,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.79,
+   "octave_error_likely": false
+  },
+  {
+   "start": 105.25,
+   "end": 105.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.377,
+   "octave_error_likely": false
+  },
+  {
+   "start": 105.5,
+   "end": 105.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.619,
+   "octave_error_likely": true
+  },
+  {
+   "start": 105.75,
+   "end": 106.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.517,
+   "octave_error_likely": true
+  },
+  {
+   "start": 106.0,
+   "end": 106.25,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 106.25,
+   "end": 106.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.443,
+   "octave_error_likely": false
+  },
+  {
+   "start": 106.5,
+   "end": 106.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.412,
+   "octave_error_likely": false
+  },
+  {
+   "start": 106.75,
+   "end": 107.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 107.0,
+   "end": 107.25,
+   "hz": 32.53,
+   "note": "C1",
+   "pc": 0,
+   "confidence": 0.589,
+   "octave_error_likely": true
+  },
+  {
+   "start": 107.25,
+   "end": 107.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.48,
+   "octave_error_likely": true
+  },
+  {
+   "start": 107.5,
+   "end": 107.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 107.75,
+   "end": 108.0,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.764,
+   "octave_error_likely": false
+  },
+  {
+   "start": 108.0,
+   "end": 108.25,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.67,
+   "octave_error_likely": false
+  },
+  {
+   "start": 108.25,
+   "end": 108.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.864,
+   "octave_error_likely": false
+  },
+  {
+   "start": 108.5,
+   "end": 108.75,
+   "hz": 44.43,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.81,
+   "octave_error_likely": false
+  },
+  {
+   "start": 108.75,
+   "end": 109.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.664,
+   "octave_error_likely": true
+  },
+  {
+   "start": 109.0,
+   "end": 109.25,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 109.25,
+   "end": 109.5,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.48,
+   "octave_error_likely": false
+  },
+  {
+   "start": 109.5,
+   "end": 109.75,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 109.75,
+   "end": 110.0,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.19,
+   "octave_error_likely": false
+  },
+  {
+   "start": 110.0,
+   "end": 110.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.942,
+   "octave_error_likely": false
+  },
+  {
+   "start": 110.25,
+   "end": 110.5,
+   "hz": 62.12,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.968,
+   "octave_error_likely": false
+  },
+  {
+   "start": 110.5,
+   "end": 110.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.598,
+   "octave_error_likely": true
+  },
+  {
+   "start": 110.75,
+   "end": 111.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 111.0,
+   "end": 111.25,
+   "hz": 62.12,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.706,
+   "octave_error_likely": false
+  },
+  {
+   "start": 111.25,
+   "end": 111.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.593,
+   "octave_error_likely": true
+  },
+  {
+   "start": 111.5,
+   "end": 111.75,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.909,
+   "octave_error_likely": true
+  },
+  {
+   "start": 111.75,
+   "end": 112.0,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.857,
+   "octave_error_likely": false
+  },
+  {
+   "start": 112.0,
+   "end": 112.25,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.955,
+   "octave_error_likely": false
+  },
+  {
+   "start": 112.25,
+   "end": 112.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.609,
+   "octave_error_likely": true
+  },
+  {
+   "start": 112.5,
+   "end": 112.75,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.864,
+   "octave_error_likely": false
+  },
+  {
+   "start": 112.75,
+   "end": 113.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.615,
+   "octave_error_likely": true
+  },
+  {
+   "start": 113.0,
+   "end": 113.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 113.25,
+   "end": 113.5,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.427,
+   "octave_error_likely": false
+  },
+  {
+   "start": 113.5,
+   "end": 113.75,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.405,
+   "octave_error_likely": false
+  },
+  {
+   "start": 113.75,
+   "end": 114.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.955,
+   "octave_error_likely": true
+  },
+  {
+   "start": 114.0,
+   "end": 114.25,
+   "hz": 55.02,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 0.559,
+   "octave_error_likely": false
+  },
+  {
+   "start": 114.25,
+   "end": 114.5,
+   "hz": 60.7,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.666,
+   "octave_error_likely": false
+  },
+  {
+   "start": 114.5,
+   "end": 114.75,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 114.75,
+   "end": 115.0,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.53,
+   "octave_error_likely": true
+  },
+  {
+   "start": 115.0,
+   "end": 115.25,
+   "hz": 70.94,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.593,
+   "octave_error_likely": false
+  },
+  {
+   "start": 115.25,
+   "end": 115.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.818,
+   "octave_error_likely": false
+  },
+  {
+   "start": 115.5,
+   "end": 115.75,
+   "hz": 74.3,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.571,
+   "octave_error_likely": false
+  },
+  {
+   "start": 115.75,
+   "end": 116.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 116.0,
+   "end": 116.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 116.25,
+   "end": 116.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 116.5,
+   "end": 116.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 116.75,
+   "end": 117.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 117.0,
+   "end": 117.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 117.25,
+   "end": 117.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 117.5,
+   "end": 117.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 117.75,
+   "end": 118.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 118.0,
+   "end": 118.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 118.25,
+   "end": 118.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 118.5,
+   "end": 118.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 118.75,
+   "end": 119.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 119.0,
+   "end": 119.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 119.25,
+   "end": 119.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 119.5,
+   "end": 119.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 119.75,
+   "end": 120.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 120.0,
+   "end": 120.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 120.25,
+   "end": 120.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 120.5,
+   "end": 120.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 120.75,
+   "end": 121.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 121.0,
+   "end": 121.25,
+   "hz": 46.27,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.535,
+   "octave_error_likely": false
+  },
+  {
+   "start": 121.25,
+   "end": 121.5,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 121.5,
+   "end": 121.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 121.75,
+   "end": 122.0,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 122.0,
+   "end": 122.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 122.25,
+   "end": 122.5,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 122.5,
+   "end": 122.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.971,
+   "octave_error_likely": false
+  },
+  {
+   "start": 122.75,
+   "end": 123.0,
+   "hz": 41.7,
+   "note": "E1",
+   "pc": 4,
+   "confidence": 0.318,
+   "octave_error_likely": false
+  },
+  {
+   "start": 123.0,
+   "end": 123.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 123.25,
+   "end": 123.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 123.5,
+   "end": 123.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 123.75,
+   "end": 124.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 124.0,
+   "end": 124.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 124.25,
+   "end": 124.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 124.5,
+   "end": 124.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 124.75,
+   "end": 125.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 125.0,
+   "end": 125.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 125.25,
+   "end": 125.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 125.5,
+   "end": 125.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 125.75,
+   "end": 126.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 126.0,
+   "end": 126.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 126.25,
+   "end": 126.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 126.5,
+   "end": 126.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 126.75,
+   "end": 127.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 127.0,
+   "end": 127.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 127.25,
+   "end": 127.5,
+   "hz": 46.0,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.442,
+   "octave_error_likely": false
+  },
+  {
+   "start": 127.5,
+   "end": 127.75,
+   "hz": 43.17,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 127.75,
+   "end": 128.0,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 128.0,
+   "end": 128.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 128.25,
+   "end": 128.5,
+   "hz": 42.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 128.5,
+   "end": 128.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 128.75,
+   "end": 129.0,
+   "hz": 42.43,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.859,
+   "octave_error_likely": false
+  },
+  {
+   "start": 129.0,
+   "end": 129.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 129.25,
+   "end": 129.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 129.5,
+   "end": 129.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 129.75,
+   "end": 130.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 130.0,
+   "end": 130.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 130.25,
+   "end": 130.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 130.5,
+   "end": 130.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 130.75,
+   "end": 131.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 131.0,
+   "end": 131.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 131.25,
+   "end": 131.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 131.5,
+   "end": 131.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 131.75,
+   "end": 132.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 132.0,
+   "end": 132.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 132.25,
+   "end": 132.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 132.5,
+   "end": 132.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 132.75,
+   "end": 133.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 133.0,
+   "end": 133.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 133.25,
+   "end": 133.5,
+   "hz": 46.8,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.371,
+   "octave_error_likely": false
+  },
+  {
+   "start": 133.5,
+   "end": 133.75,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.677,
+   "octave_error_likely": false
+  },
+  {
+   "start": 133.75,
+   "end": 134.0,
+   "hz": 42.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 134.0,
+   "end": 134.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 134.25,
+   "end": 134.5,
+   "hz": 42.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 134.5,
+   "end": 134.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 134.75,
+   "end": 135.0,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 135.0,
+   "end": 135.25,
+   "hz": 43.04,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.455,
+   "octave_error_likely": false
+  },
+  {
+   "start": 135.25,
+   "end": 135.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 135.5,
+   "end": 135.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 135.75,
+   "end": 136.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 136.0,
+   "end": 136.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 136.25,
+   "end": 136.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 136.5,
+   "end": 136.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 136.75,
+   "end": 137.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 137.0,
+   "end": 137.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 137.25,
+   "end": 137.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 137.5,
+   "end": 137.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 137.75,
+   "end": 138.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 138.0,
+   "end": 138.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 138.25,
+   "end": 138.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 138.5,
+   "end": 138.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 138.75,
+   "end": 139.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 139.0,
+   "end": 139.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 139.25,
+   "end": 139.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 139.5,
+   "end": 139.75,
+   "hz": 46.53,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.384,
+   "octave_error_likely": false
+  },
+  {
+   "start": 139.75,
+   "end": 140.0,
+   "hz": 43.42,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 140.0,
+   "end": 140.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 140.25,
+   "end": 140.5,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 140.5,
+   "end": 140.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 140.75,
+   "end": 141.0,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 141.0,
+   "end": 141.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.716,
+   "octave_error_likely": false
+  },
+  {
+   "start": 141.25,
+   "end": 141.5,
+   "hz": 41.22,
+   "note": "E1",
+   "pc": 4,
+   "confidence": 0.119,
+   "octave_error_likely": false
+  },
+  {
+   "start": 141.5,
+   "end": 141.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 141.75,
+   "end": 142.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 142.0,
+   "end": 142.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 142.25,
+   "end": 142.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 142.5,
+   "end": 142.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 142.75,
+   "end": 143.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 143.0,
+   "end": 143.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 143.25,
+   "end": 143.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 143.5,
+   "end": 143.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 143.75,
+   "end": 144.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 144.0,
+   "end": 144.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 144.25,
+   "end": 144.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 144.5,
+   "end": 144.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 144.75,
+   "end": 145.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 145.0,
+   "end": 145.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 145.25,
+   "end": 145.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 145.5,
+   "end": 145.75,
+   "hz": 49.44,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.138,
+   "octave_error_likely": false
+  },
+  {
+   "start": 145.75,
+   "end": 146.0,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.524,
+   "octave_error_likely": false
+  },
+  {
+   "start": 146.0,
+   "end": 146.25,
+   "hz": 43.17,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 146.25,
+   "end": 146.5,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 146.5,
+   "end": 146.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 146.75,
+   "end": 147.0,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 147.0,
+   "end": 147.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 147.25,
+   "end": 147.5,
+   "hz": 43.17,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.961,
+   "octave_error_likely": false
+  },
+  {
+   "start": 147.5,
+   "end": 147.75,
+   "hz": 46.0,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.409,
+   "octave_error_likely": false
+  },
+  {
+   "start": 147.75,
+   "end": 148.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 148.0,
+   "end": 148.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 148.25,
+   "end": 148.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 148.5,
+   "end": 148.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 148.75,
+   "end": 149.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 149.0,
+   "end": 149.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 149.25,
+   "end": 149.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 149.5,
+   "end": 149.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 149.75,
+   "end": 150.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 150.0,
+   "end": 150.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 150.25,
+   "end": 150.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 150.5,
+   "end": 150.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 150.75,
+   "end": 151.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 151.0,
+   "end": 151.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 151.25,
+   "end": 151.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 151.5,
+   "end": 151.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 151.75,
+   "end": 152.0,
+   "hz": 46.13,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.368,
+   "octave_error_likely": false
+  },
+  {
+   "start": 152.0,
+   "end": 152.25,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.903,
+   "octave_error_likely": false
+  },
+  {
+   "start": 152.25,
+   "end": 152.5,
+   "hz": 42.8,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 152.5,
+   "end": 152.75,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 152.75,
+   "end": 153.0,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 153.0,
+   "end": 153.25,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 153.25,
+   "end": 153.5,
+   "hz": 42.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 153.5,
+   "end": 153.75,
+   "hz": 42.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.333,
+   "octave_error_likely": false
+  },
+  {
+   "start": 153.75,
+   "end": 154.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 154.0,
+   "end": 154.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 154.25,
+   "end": 154.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 154.5,
+   "end": 154.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 154.75,
+   "end": 155.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 155.0,
+   "end": 155.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 155.25,
+   "end": 155.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 155.5,
+   "end": 155.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 155.75,
+   "end": 156.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 156.0,
+   "end": 156.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 156.25,
+   "end": 156.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 156.5,
+   "end": 156.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 156.75,
+   "end": 157.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 157.0,
+   "end": 157.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 157.25,
+   "end": 157.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 157.5,
+   "end": 157.75,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 157.75,
+   "end": 158.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 158.0,
+   "end": 158.25,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 158.25,
+   "end": 158.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 158.5,
+   "end": 158.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.939,
+   "octave_error_likely": false
+  },
+  {
+   "start": 158.75,
+   "end": 159.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.909,
+   "octave_error_likely": false
+  },
+  {
+   "start": 159.0,
+   "end": 159.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.857,
+   "octave_error_likely": true
+  },
+  {
+   "start": 159.25,
+   "end": 159.5,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.423,
+   "octave_error_likely": false
+  },
+  {
+   "start": 159.5,
+   "end": 159.75,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.56,
+   "octave_error_likely": false
+  },
+  {
+   "start": 159.75,
+   "end": 160.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.741,
+   "octave_error_likely": true
+  },
+  {
+   "start": 160.0,
+   "end": 160.25,
+   "hz": 99.75,
+   "note": "G2",
+   "pc": 7,
+   "confidence": 0.52,
+   "octave_error_likely": false
+  },
+  {
+   "start": 160.25,
+   "end": 160.5,
+   "hz": 99.17,
+   "note": "G2",
+   "pc": 7,
+   "confidence": 0.284,
+   "octave_error_likely": false
+  },
+  {
+   "start": 160.5,
+   "end": 160.75,
+   "hz": 65.05,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.952,
+   "octave_error_likely": false
+  },
+  {
+   "start": 160.75,
+   "end": 161.0,
+   "hz": 43.42,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.909,
+   "octave_error_likely": false
+  },
+  {
+   "start": 161.0,
+   "end": 161.25,
+   "hz": 43.17,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.66,
+   "octave_error_likely": false
+  },
+  {
+   "start": 161.25,
+   "end": 161.5,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.962,
+   "octave_error_likely": true
+  },
+  {
+   "start": 161.5,
+   "end": 161.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.905,
+   "octave_error_likely": true
+  },
+  {
+   "start": 161.75,
+   "end": 162.0,
+   "hz": 72.6,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.714,
+   "octave_error_likely": false
+  },
+  {
+   "start": 162.0,
+   "end": 162.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.628,
+   "octave_error_likely": true
+  },
+  {
+   "start": 162.25,
+   "end": 162.5,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.762,
+   "octave_error_likely": true
+  },
+  {
+   "start": 162.5,
+   "end": 162.75,
+   "hz": 32.9,
+   "note": "C1",
+   "pc": 0,
+   "confidence": 0.793,
+   "octave_error_likely": true
+  },
+  {
+   "start": 162.75,
+   "end": 163.0,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 163.0,
+   "end": 163.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 163.25,
+   "end": 163.5,
+   "hz": 37.04,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.387,
+   "octave_error_likely": true
+  },
+  {
+   "start": 163.5,
+   "end": 163.75,
+   "hz": 66.0,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.429,
+   "octave_error_likely": false
+  },
+  {
+   "start": 163.75,
+   "end": 164.0,
+   "hz": 66.57,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.78,
+   "octave_error_likely": false
+  },
+  {
+   "start": 164.0,
+   "end": 164.25,
+   "hz": 69.32,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 164.25,
+   "end": 164.5,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 164.5,
+   "end": 164.75,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 164.75,
+   "end": 165.0,
+   "hz": 74.3,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.383,
+   "octave_error_likely": false
+  },
+  {
+   "start": 165.0,
+   "end": 165.25,
+   "hz": 74.73,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.858,
+   "octave_error_likely": false
+  },
+  {
+   "start": 165.25,
+   "end": 165.5,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 165.5,
+   "end": 165.75,
+   "hz": 72.18,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 165.75,
+   "end": 166.0,
+   "hz": 72.6,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.364,
+   "octave_error_likely": false
+  },
+  {
+   "start": 166.0,
+   "end": 166.25,
+   "hz": 72.81,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.985,
+   "octave_error_likely": false
+  },
+  {
+   "start": 166.25,
+   "end": 166.5,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 166.5,
+   "end": 166.75,
+   "hz": 73.23,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.667,
+   "octave_error_likely": false
+  },
+  {
+   "start": 166.75,
+   "end": 167.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.594,
+   "octave_error_likely": false
+  },
+  {
+   "start": 167.0,
+   "end": 167.25,
+   "hz": 72.6,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 167.25,
+   "end": 167.5,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 167.5,
+   "end": 167.75,
+   "hz": 72.6,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.268,
+   "octave_error_likely": false
+  },
+  {
+   "start": 167.75,
+   "end": 168.0,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 168.0,
+   "end": 168.25,
+   "hz": 66.96,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.17,
+   "octave_error_likely": false
+  },
+  {
+   "start": 168.25,
+   "end": 168.5,
+   "hz": 66.19,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.796,
+   "octave_error_likely": false
+  },
+  {
+   "start": 168.5,
+   "end": 168.75,
+   "hz": 43.67,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 168.75,
+   "end": 169.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.318,
+   "octave_error_likely": true
+  },
+  {
+   "start": 169.0,
+   "end": 169.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 169.25,
+   "end": 169.5,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.436,
+   "octave_error_likely": true
+  },
+  {
+   "start": 169.5,
+   "end": 169.75,
+   "hz": 69.32,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.441,
+   "octave_error_likely": false
+  },
+  {
+   "start": 169.75,
+   "end": 170.0,
+   "hz": 72.18,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 170.0,
+   "end": 170.25,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.944,
+   "octave_error_likely": false
+  },
+  {
+   "start": 170.25,
+   "end": 170.5,
+   "hz": 63.94,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.67,
+   "octave_error_likely": false
+  },
+  {
+   "start": 170.5,
+   "end": 170.75,
+   "hz": 36.83,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.429,
+   "octave_error_likely": true
+  },
+  {
+   "start": 170.75,
+   "end": 171.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.511,
+   "octave_error_likely": true
+  },
+  {
+   "start": 171.0,
+   "end": 171.25,
+   "hz": 55.66,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 0.612,
+   "octave_error_likely": false
+  },
+  {
+   "start": 171.25,
+   "end": 171.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.584,
+   "octave_error_likely": true
+  },
+  {
+   "start": 171.5,
+   "end": 171.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.864,
+   "octave_error_likely": true
+  },
+  {
+   "start": 171.75,
+   "end": 172.0,
+   "hz": 66.57,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.517,
+   "octave_error_likely": false
+  },
+  {
+   "start": 172.0,
+   "end": 172.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.968,
+   "octave_error_likely": false
+  },
+  {
+   "start": 172.25,
+   "end": 172.5,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.57,
+   "octave_error_likely": true
+  },
+  {
+   "start": 172.5,
+   "end": 172.75,
+   "hz": 69.32,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.508,
+   "octave_error_likely": false
+  },
+  {
+   "start": 172.75,
+   "end": 173.0,
+   "hz": 71.77,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.524,
+   "octave_error_likely": true
+  },
+  {
+   "start": 173.0,
+   "end": 173.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 173.25,
+   "end": 173.5,
+   "hz": 62.84,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.519,
+   "octave_error_likely": false
+  },
+  {
+   "start": 173.5,
+   "end": 173.75,
+   "hz": 69.92,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.484,
+   "octave_error_likely": false
+  },
+  {
+   "start": 173.75,
+   "end": 174.0,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.909,
+   "octave_error_likely": true
+  },
+  {
+   "start": 174.0,
+   "end": 174.25,
+   "hz": 55.34,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 0.777,
+   "octave_error_likely": false
+  },
+  {
+   "start": 174.25,
+   "end": 174.5,
+   "hz": 57.96,
+   "note": "A#1",
+   "pc": 10,
+   "confidence": 0.349,
+   "octave_error_likely": false
+  },
+  {
+   "start": 174.5,
+   "end": 174.75,
+   "hz": 36.09,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 174.75,
+   "end": 175.0,
+   "hz": 66.19,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.618,
+   "octave_error_likely": false
+  },
+  {
+   "start": 175.0,
+   "end": 175.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.597,
+   "octave_error_likely": false
+  },
+  {
+   "start": 175.25,
+   "end": 175.5,
+   "hz": 74.3,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.978,
+   "octave_error_likely": false
+  },
+  {
+   "start": 175.5,
+   "end": 175.75,
+   "hz": 68.92,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.506,
+   "octave_error_likely": false
+  },
+  {
+   "start": 175.75,
+   "end": 176.0,
+   "hz": 72.18,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.341,
+   "octave_error_likely": true
+  },
+  {
+   "start": 176.0,
+   "end": 176.25,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 176.25,
+   "end": 176.5,
+   "hz": 62.12,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.529,
+   "octave_error_likely": false
+  },
+  {
+   "start": 176.5,
+   "end": 176.75,
+   "hz": 62.12,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.536,
+   "octave_error_likely": false
+  },
+  {
+   "start": 176.75,
+   "end": 177.0,
+   "hz": 37.26,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 177.0,
+   "end": 177.25,
+   "hz": 43.92,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.64,
+   "octave_error_likely": false
+  },
+  {
+   "start": 177.25,
+   "end": 177.5,
+   "hz": 49.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.71,
+   "octave_error_likely": false
+  },
+  {
+   "start": 177.5,
+   "end": 177.75,
+   "hz": 50.02,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 177.75,
+   "end": 178.0,
+   "hz": 48.59,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.594,
+   "octave_error_likely": false
+  },
+  {
+   "start": 178.0,
+   "end": 178.25,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.847,
+   "octave_error_likely": true
+  },
+  {
+   "start": 178.25,
+   "end": 178.5,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.716,
+   "octave_error_likely": true
+  },
+  {
+   "start": 178.5,
+   "end": 178.75,
+   "hz": 69.12,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.421,
+   "octave_error_likely": false
+  },
+  {
+   "start": 178.75,
+   "end": 179.0,
+   "hz": 68.52,
+   "note": "C#2",
+   "pc": 1,
+   "confidence": 0.501,
+   "octave_error_likely": false
+  },
+  {
+   "start": 179.0,
+   "end": 179.25,
+   "hz": 36.93,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.725,
+   "octave_error_likely": true
+  },
+  {
+   "start": 179.25,
+   "end": 179.5,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.658,
+   "octave_error_likely": true
+  },
+  {
+   "start": 179.5,
+   "end": 179.75,
+   "hz": 62.12,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.878,
+   "octave_error_likely": false
+  },
+  {
+   "start": 179.75,
+   "end": 180.0,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.905,
+   "octave_error_likely": true
+  },
+  {
+   "start": 180.0,
+   "end": 180.25,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.605,
+   "octave_error_likely": true
+  },
+  {
+   "start": 180.25,
+   "end": 180.5,
+   "hz": 55.34,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 0.938,
+   "octave_error_likely": false
+  },
+  {
+   "start": 180.5,
+   "end": 180.75,
+   "hz": 73.02,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.928,
+   "octave_error_likely": false
+  },
+  {
+   "start": 180.75,
+   "end": 181.0,
+   "hz": 36.83,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.545,
+   "octave_error_likely": true
+  },
+  {
+   "start": 181.0,
+   "end": 181.25,
+   "hz": 66.19,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.383,
+   "octave_error_likely": false
+  },
+  {
+   "start": 181.25,
+   "end": 181.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 181.5,
+   "end": 181.75,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.413,
+   "octave_error_likely": true
+  },
+  {
+   "start": 181.75,
+   "end": 182.0,
+   "hz": 65.81,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.989,
+   "octave_error_likely": false
+  },
+  {
+   "start": 182.0,
+   "end": 182.25,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.997,
+   "octave_error_likely": false
+  },
+  {
+   "start": 182.25,
+   "end": 182.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.877,
+   "octave_error_likely": false
+  },
+  {
+   "start": 182.5,
+   "end": 182.75,
+   "hz": 62.3,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.867,
+   "octave_error_likely": false
+  },
+  {
+   "start": 182.75,
+   "end": 183.0,
+   "hz": 64.87,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.594,
+   "octave_error_likely": false
+  },
+  {
+   "start": 183.0,
+   "end": 183.25,
+   "hz": 36.51,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 183.25,
+   "end": 183.5,
+   "hz": 55.34,
+   "note": "A1",
+   "pc": 9,
+   "confidence": 0.712,
+   "octave_error_likely": false
+  },
+  {
+   "start": 183.5,
+   "end": 183.75,
+   "hz": 36.72,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.311,
+   "octave_error_likely": true
+  },
+  {
+   "start": 183.75,
+   "end": 184.0,
+   "hz": 37.15,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.893,
+   "octave_error_likely": true
+  },
+  {
+   "start": 184.0,
+   "end": 184.25,
+   "hz": 65.43,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.424,
+   "octave_error_likely": false
+  },
+  {
+   "start": 184.25,
+   "end": 184.5,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 184.5,
+   "end": 184.75,
+   "hz": 74.51,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 184.75,
+   "end": 185.0,
+   "hz": 73.44,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 185.0,
+   "end": 185.25,
+   "hz": 73.66,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 185.25,
+   "end": 185.5,
+   "hz": 73.87,
+   "note": "D2",
+   "pc": 2,
+   "confidence": 0.714,
+   "octave_error_likely": false
+  },
+  {
+   "start": 185.5,
+   "end": 185.75,
+   "hz": 62.66,
+   "note": "B1",
+   "pc": 11,
+   "confidence": 0.491,
+   "octave_error_likely": false
+  },
+  {
+   "start": 185.75,
+   "end": 186.0,
+   "hz": 65.24,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.691,
+   "octave_error_likely": false
+  },
+  {
+   "start": 186.0,
+   "end": 186.25,
+   "hz": 36.3,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 1.0,
+   "octave_error_likely": true
+  },
+  {
+   "start": 186.25,
+   "end": 186.5,
+   "hz": 44.05,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.619,
+   "octave_error_likely": false
+  },
+  {
+   "start": 186.5,
+   "end": 186.75,
+   "hz": 46.13,
+   "note": "F#1",
+   "pc": 6,
+   "confidence": 0.463,
+   "octave_error_likely": false
+  },
+  {
+   "start": 186.75,
+   "end": 187.0,
+   "hz": 49.87,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.742,
+   "octave_error_likely": false
+  },
+  {
+   "start": 187.0,
+   "end": 187.25,
+   "hz": 48.74,
+   "note": "G1",
+   "pc": 7,
+   "confidence": 0.457,
+   "octave_error_likely": false
+  },
+  {
+   "start": 187.25,
+   "end": 187.5,
+   "hz": 37.04,
+   "note": "D1",
+   "pc": 2,
+   "confidence": 0.384,
+   "octave_error_likely": true
+  },
+  {
+   "start": 187.5,
+   "end": 187.75,
+   "hz": 65.62,
+   "note": "C2",
+   "pc": 0,
+   "confidence": 0.837,
+   "octave_error_likely": false
+  },
+  {
+   "start": 187.75,
+   "end": 188.0,
+   "hz": 43.42,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.952,
+   "octave_error_likely": false
+  },
+  {
+   "start": 188.0,
+   "end": 188.25,
+   "hz": 43.17,
+   "note": "F1",
+   "pc": 5,
+   "confidence": 0.727,
+   "octave_error_likely": false
+  },
+  {
+   "start": 188.25,
+   "end": 188.5,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  },
+  {
+   "start": 188.5,
+   "end": 188.662,
+   "hz": null,
+   "note": null,
+   "pc": null,
+   "confidence": 0.0,
+   "octave_error_likely": false
+  }
+ ],
+ "segments": [
+  {
+   "start": 0.0,
+   "end": 3.75,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 3.75,
+   "end": 4.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.863,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.55
+  },
+  {
+   "start": 4.25,
+   "end": 5.5,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 5.5,
+   "end": 5.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.818,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.43
+  },
+  {
+   "start": 5.75,
+   "end": 6.0,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 6.0,
+   "end": 6.25,
+   "root_pc": 8,
+   "root": "G#",
+   "mean_confidence": 0.091,
+   "octave_flag_share": 0.0,
+   "median_hz": 51.19
+  },
+  {
+   "start": 6.25,
+   "end": 7.5,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.567,
+   "octave_flag_share": 0.2,
+   "median_hz": 49.87
+  },
+  {
+   "start": 7.5,
+   "end": 7.75,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 7.75,
+   "end": 9.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.782,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.62
+  },
+  {
+   "start": 9.0,
+   "end": 9.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.941,
+   "octave_flag_share": 0.0,
+   "median_hz": 73.02
+  },
+  {
+   "start": 9.25,
+   "end": 9.5,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.477,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.59
+  },
+  {
+   "start": 9.5,
+   "end": 10.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.633,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.24
+  },
+  {
+   "start": 10.0,
+   "end": 10.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.725,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.8
+  },
+  {
+   "start": 10.5,
+   "end": 11.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.867,
+   "octave_flag_share": 0.0,
+   "median_hz": 73.44
+  },
+  {
+   "start": 11.25,
+   "end": 12.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.791,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.81
+  },
+  {
+   "start": 12.0,
+   "end": 12.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.778,
+   "octave_flag_share": 0.0,
+   "median_hz": 73.02
+  },
+  {
+   "start": 12.25,
+   "end": 13.5,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.79,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 13.5,
+   "end": 13.75,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 13.75,
+   "end": 15.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.712,
+   "octave_flag_share": 0.286,
+   "median_hz": 65.43
+  },
+  {
+   "start": 15.5,
+   "end": 15.75,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.81,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 15.75,
+   "end": 16.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.887,
+   "octave_flag_share": 0.0,
+   "median_hz": 64.31
+  },
+  {
+   "start": 16.0,
+   "end": 16.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.827,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.67
+  },
+  {
+   "start": 16.5,
+   "end": 17.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.652,
+   "octave_flag_share": 0.0,
+   "median_hz": 73.23
+  },
+  {
+   "start": 17.0,
+   "end": 17.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.802,
+   "octave_flag_share": 0.333,
+   "median_hz": 64.31
+  },
+  {
+   "start": 17.75,
+   "end": 19.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.664,
+   "octave_flag_share": 0.6,
+   "median_hz": 36.93
+  },
+  {
+   "start": 19.0,
+   "end": 19.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.682,
+   "octave_flag_share": 0.0,
+   "median_hz": 87.85
+  },
+  {
+   "start": 19.25,
+   "end": 19.75,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.515,
+   "octave_flag_share": 0.0,
+   "median_hz": 97.75
+  },
+  {
+   "start": 19.75,
+   "end": 21.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.76,
+   "octave_flag_share": 0.75,
+   "median_hz": 36.72
+  },
+  {
+   "start": 21.75,
+   "end": 22.0,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.492,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 22.0,
+   "end": 22.25,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.818,
+   "octave_flag_share": 0.0,
+   "median_hz": 64.68
+  },
+  {
+   "start": 22.25,
+   "end": 22.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.838,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.8
+  },
+  {
+   "start": 22.75,
+   "end": 25.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.824,
+   "octave_flag_share": 0.667,
+   "median_hz": 36.93
+  },
+  {
+   "start": 25.0,
+   "end": 25.75,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.916,
+   "octave_flag_share": 0.333,
+   "median_hz": 49.02
+  },
+  {
+   "start": 25.75,
+   "end": 27.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.77,
+   "octave_flag_share": 0.625,
+   "median_hz": 36.72
+  },
+  {
+   "start": 27.75,
+   "end": 28.0,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.745,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 28.0,
+   "end": 28.5,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.461,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.24
+  },
+  {
+   "start": 28.5,
+   "end": 28.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.67
+  },
+  {
+   "start": 28.75,
+   "end": 31.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.661,
+   "octave_flag_share": 0.9,
+   "median_hz": 36.61
+  },
+  {
+   "start": 31.25,
+   "end": 31.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.486,
+   "octave_flag_share": 0.0,
+   "median_hz": 87.09
+  },
+  {
+   "start": 31.5,
+   "end": 32.0,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.835,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.16
+  },
+  {
+   "start": 32.0,
+   "end": 34.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.774,
+   "octave_flag_share": 0.778,
+   "median_hz": 36.72
+  },
+  {
+   "start": 34.25,
+   "end": 34.5,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.43
+  },
+  {
+   "start": 34.5,
+   "end": 35.0,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.651,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.55
+  },
+  {
+   "start": 35.0,
+   "end": 37.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.765,
+   "octave_flag_share": 0.5,
+   "median_hz": 43.06
+  },
+  {
+   "start": 37.5,
+   "end": 37.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.673,
+   "octave_flag_share": 0.0,
+   "median_hz": 66.57
+  },
+  {
+   "start": 37.75,
+   "end": 38.0,
+   "root_pc": 1,
+   "root": "C#",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 69.32
+  },
+  {
+   "start": 38.0,
+   "end": 40.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.73,
+   "octave_flag_share": 0.556,
+   "median_hz": 73.02
+  },
+  {
+   "start": 40.25,
+   "end": 40.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.609,
+   "octave_flag_share": 0.0,
+   "median_hz": 66.19
+  },
+  {
+   "start": 40.75,
+   "end": 41.0,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.92
+  },
+  {
+   "start": 41.0,
+   "end": 43.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.728,
+   "octave_flag_share": 0.875,
+   "median_hz": 36.72
+  },
+  {
+   "start": 43.0,
+   "end": 43.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.818,
+   "octave_flag_share": 0.0,
+   "median_hz": 87.85
+  },
+  {
+   "start": 43.75,
+   "end": 44.5,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.952,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.81
+  },
+  {
+   "start": 44.5,
+   "end": 46.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.736,
+   "octave_flag_share": 0.625,
+   "median_hz": 37.04
+  },
+  {
+   "start": 46.5,
+   "end": 46.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.81
+  },
+  {
+   "start": 46.75,
+   "end": 47.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.502,
+   "octave_flag_share": 0.0,
+   "median_hz": 44.3
+  },
+  {
+   "start": 47.25,
+   "end": 48.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.85,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.72
+  },
+  {
+   "start": 48.5,
+   "end": 49.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.653,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.62
+  },
+  {
+   "start": 49.0,
+   "end": 49.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.488,
+   "octave_flag_share": 1.0,
+   "median_hz": 73.23
+  },
+  {
+   "start": 49.25,
+   "end": 49.75,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.726,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.3
+  },
+  {
+   "start": 49.75,
+   "end": 50.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.43
+  },
+  {
+   "start": 50.0,
+   "end": 50.25,
+   "root_pc": 1,
+   "root": "C#",
+   "mean_confidence": 0.877,
+   "octave_flag_share": 0.0,
+   "median_hz": 68.52
+  },
+  {
+   "start": 50.25,
+   "end": 51.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.672,
+   "octave_flag_share": 0.333,
+   "median_hz": 71.97
+  },
+  {
+   "start": 51.0,
+   "end": 51.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.558,
+   "octave_flag_share": 0.333,
+   "median_hz": 65.81
+  },
+  {
+   "start": 51.75,
+   "end": 52.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.779,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.3
+  },
+  {
+   "start": 52.5,
+   "end": 52.75,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.864,
+   "octave_flag_share": 0.0,
+   "median_hz": 48.74
+  },
+  {
+   "start": 52.75,
+   "end": 53.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.818,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.43
+  },
+  {
+   "start": 53.0,
+   "end": 53.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.917,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.8
+  },
+  {
+   "start": 53.5,
+   "end": 55.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.907,
+   "octave_flag_share": 0.714,
+   "median_hz": 36.72
+  },
+  {
+   "start": 55.25,
+   "end": 56.25,
+   "root_pc": 4,
+   "root": "E",
+   "mean_confidence": 0.77,
+   "octave_flag_share": 0.0,
+   "median_hz": 82.67
+  },
+  {
+   "start": 56.25,
+   "end": 56.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.582,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.24
+  },
+  {
+   "start": 56.75,
+   "end": 58.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.725,
+   "octave_flag_share": 0.571,
+   "median_hz": 36.72
+  },
+  {
+   "start": 58.5,
+   "end": 59.0,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.681,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.3
+  },
+  {
+   "start": 59.0,
+   "end": 59.25,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.418,
+   "octave_flag_share": 0.0,
+   "median_hz": 66.19
+  },
+  {
+   "start": 59.25,
+   "end": 59.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.817,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.8
+  },
+  {
+   "start": 59.75,
+   "end": 62.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.731,
+   "octave_flag_share": 0.444,
+   "median_hz": 65.81
+  },
+  {
+   "start": 62.0,
+   "end": 62.25,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.579,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.51
+  },
+  {
+   "start": 62.25,
+   "end": 64.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.901,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.51
+  },
+  {
+   "start": 64.75,
+   "end": 65.0,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.784,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 65.0,
+   "end": 65.25,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.296,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.62
+  },
+  {
+   "start": 65.25,
+   "end": 65.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.71,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.8
+  },
+  {
+   "start": 65.75,
+   "end": 67.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.903,
+   "octave_flag_share": 0.2,
+   "median_hz": 73.87
+  },
+  {
+   "start": 67.0,
+   "end": 67.5,
+   "root_pc": 11,
+   "root": "B",
+   "mean_confidence": 0.699,
+   "octave_flag_share": 0.0,
+   "median_hz": 61.94
+  },
+  {
+   "start": 67.5,
+   "end": 67.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.864,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.72
+  },
+  {
+   "start": 67.75,
+   "end": 68.0,
+   "root_pc": 9,
+   "root": "A",
+   "mean_confidence": 0.667,
+   "octave_flag_share": 0.0,
+   "median_hz": 55.02
+  },
+  {
+   "start": 68.0,
+   "end": 68.25,
+   "root_pc": 10,
+   "root": "A#",
+   "mean_confidence": 0.425,
+   "octave_flag_share": 0.0,
+   "median_hz": 57.96
+  },
+  {
+   "start": 68.25,
+   "end": 73.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.691,
+   "octave_flag_share": 0.5,
+   "median_hz": 59.85
+  },
+  {
+   "start": 73.25,
+   "end": 73.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.538,
+   "octave_flag_share": 0.0,
+   "median_hz": 64.5
+  },
+  {
+   "start": 73.75,
+   "end": 74.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.842,
+   "octave_flag_share": 0.667,
+   "median_hz": 36.93
+  },
+  {
+   "start": 74.5,
+   "end": 75.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.667,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.8
+  },
+  {
+   "start": 75.5,
+   "end": 99.75,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 99.75,
+   "end": 102.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.713,
+   "octave_flag_share": 0.9,
+   "median_hz": 36.72
+  },
+  {
+   "start": 102.25,
+   "end": 102.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.79,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.55
+  },
+  {
+   "start": 102.75,
+   "end": 106.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.731,
+   "octave_flag_share": 0.357,
+   "median_hz": 69.41
+  },
+  {
+   "start": 106.25,
+   "end": 107.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.618,
+   "octave_flag_share": 0.333,
+   "median_hz": 65.05
+  },
+  {
+   "start": 107.0,
+   "end": 107.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.69,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.51
+  },
+  {
+   "start": 107.75,
+   "end": 108.25,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.717,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 108.25,
+   "end": 108.5,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.864,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.43
+  },
+  {
+   "start": 108.5,
+   "end": 108.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.81,
+   "octave_flag_share": 0.0,
+   "median_hz": 44.43
+  },
+  {
+   "start": 108.75,
+   "end": 109.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.832,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.61
+  },
+  {
+   "start": 109.25,
+   "end": 109.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.74,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.43
+  },
+  {
+   "start": 109.75,
+   "end": 111.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.738,
+   "octave_flag_share": 0.5,
+   "median_hz": 49.42
+  },
+  {
+   "start": 111.75,
+   "end": 112.5,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.807,
+   "octave_flag_share": 0.333,
+   "median_hz": 65.05
+  },
+  {
+   "start": 112.5,
+   "end": 113.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.826,
+   "octave_flag_share": 0.667,
+   "median_hz": 36.72
+  },
+  {
+   "start": 113.25,
+   "end": 113.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.416,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.62
+  },
+  {
+   "start": 113.75,
+   "end": 114.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.955,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.51
+  },
+  {
+   "start": 114.0,
+   "end": 114.25,
+   "root_pc": 9,
+   "root": "A",
+   "mean_confidence": 0.559,
+   "octave_flag_share": 0.0,
+   "median_hz": 55.02
+  },
+  {
+   "start": 114.25,
+   "end": 114.5,
+   "root_pc": 11,
+   "root": "B",
+   "mean_confidence": 0.666,
+   "octave_flag_share": 0.0,
+   "median_hz": 60.7
+  },
+  {
+   "start": 114.5,
+   "end": 115.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.702,
+   "octave_flag_share": 0.4,
+   "median_hz": 70.94
+  },
+  {
+   "start": 115.75,
+   "end": 121.0,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 121.0,
+   "end": 121.25,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.535,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.27
+  },
+  {
+   "start": 121.25,
+   "end": 122.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.995,
+   "octave_flag_share": 0.0,
+   "median_hz": 42.67
+  },
+  {
+   "start": 122.75,
+   "end": 123.0,
+   "root_pc": 4,
+   "root": "E",
+   "mean_confidence": 0.318,
+   "octave_flag_share": 0.0,
+   "median_hz": 41.7
+  },
+  {
+   "start": 123.0,
+   "end": 127.25,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 127.25,
+   "end": 127.5,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.442,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.0
+  },
+  {
+   "start": 127.5,
+   "end": 129.0,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.977,
+   "octave_flag_share": 0.0,
+   "median_hz": 42.67
+  },
+  {
+   "start": 129.0,
+   "end": 133.25,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 133.25,
+   "end": 133.5,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.371,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.8
+  },
+  {
+   "start": 133.5,
+   "end": 135.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.876,
+   "octave_flag_share": 0.0,
+   "median_hz": 42.92
+  },
+  {
+   "start": 135.25,
+   "end": 139.5,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 139.5,
+   "end": 139.75,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.384,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.53
+  },
+  {
+   "start": 139.75,
+   "end": 141.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.953,
+   "octave_flag_share": 0.0,
+   "median_hz": 42.67
+  },
+  {
+   "start": 141.25,
+   "end": 141.5,
+   "root_pc": 4,
+   "root": "E",
+   "mean_confidence": 0.119,
+   "octave_flag_share": 0.0,
+   "median_hz": 41.22
+  },
+  {
+   "start": 141.5,
+   "end": 145.5,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 145.5,
+   "end": 145.75,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.138,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.44
+  },
+  {
+   "start": 145.75,
+   "end": 147.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.926,
+   "octave_flag_share": 0.0,
+   "median_hz": 42.67
+  },
+  {
+   "start": 147.5,
+   "end": 147.75,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.409,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.0
+  },
+  {
+   "start": 147.75,
+   "end": 151.75,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 151.75,
+   "end": 152.0,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.368,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.13
+  },
+  {
+   "start": 152.0,
+   "end": 153.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.891,
+   "octave_flag_share": 0.0,
+   "median_hz": 42.67
+  },
+  {
+   "start": 153.75,
+   "end": 158.5,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 158.5,
+   "end": 159.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.902,
+   "octave_flag_share": 0.333,
+   "median_hz": 73.44
+  },
+  {
+   "start": 159.25,
+   "end": 159.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.492,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.81
+  },
+  {
+   "start": 159.75,
+   "end": 160.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.741,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.51
+  },
+  {
+   "start": 160.0,
+   "end": 160.5,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.402,
+   "octave_flag_share": 0.0,
+   "median_hz": 99.46
+  },
+  {
+   "start": 160.5,
+   "end": 160.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.952,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.05
+  },
+  {
+   "start": 160.75,
+   "end": 161.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.784,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.3
+  },
+  {
+   "start": 161.25,
+   "end": 163.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.795,
+   "octave_flag_share": 0.889,
+   "median_hz": 36.72
+  },
+  {
+   "start": 163.5,
+   "end": 164.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.605,
+   "octave_flag_share": 0.0,
+   "median_hz": 66.28
+  },
+  {
+   "start": 164.0,
+   "end": 164.25,
+   "root_pc": 1,
+   "root": "C#",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 69.32
+  },
+  {
+   "start": 164.25,
+   "end": 167.75,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.794,
+   "octave_flag_share": 0.0,
+   "median_hz": 73.02
+  },
+  {
+   "start": 167.75,
+   "end": 168.0,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  },
+  {
+   "start": 168.0,
+   "end": 168.5,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.483,
+   "octave_flag_share": 0.0,
+   "median_hz": 66.57
+  },
+  {
+   "start": 168.5,
+   "end": 168.75,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.67
+  },
+  {
+   "start": 168.75,
+   "end": 173.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.661,
+   "octave_flag_share": 0.556,
+   "median_hz": 46.3
+  },
+  {
+   "start": 173.25,
+   "end": 173.5,
+   "root_pc": 11,
+   "root": "B",
+   "mean_confidence": 0.519,
+   "octave_flag_share": 0.0,
+   "median_hz": 62.84
+  },
+  {
+   "start": 173.5,
+   "end": 173.75,
+   "root_pc": 1,
+   "root": "C#",
+   "mean_confidence": 0.484,
+   "octave_flag_share": 0.0,
+   "median_hz": 69.92
+  },
+  {
+   "start": 173.75,
+   "end": 174.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.909,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.93
+  },
+  {
+   "start": 174.0,
+   "end": 174.25,
+   "root_pc": 9,
+   "root": "A",
+   "mean_confidence": 0.777,
+   "octave_flag_share": 0.0,
+   "median_hz": 55.34
+  },
+  {
+   "start": 174.25,
+   "end": 174.5,
+   "root_pc": 10,
+   "root": "A#",
+   "mean_confidence": 0.349,
+   "octave_flag_share": 0.0,
+   "median_hz": 57.96
+  },
+  {
+   "start": 174.5,
+   "end": 176.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.72,
+   "octave_flag_share": 0.429,
+   "median_hz": 68.92
+  },
+  {
+   "start": 176.25,
+   "end": 176.75,
+   "root_pc": 11,
+   "root": "B",
+   "mean_confidence": 0.532,
+   "octave_flag_share": 0.0,
+   "median_hz": 62.12
+  },
+  {
+   "start": 176.75,
+   "end": 177.0,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 1.0,
+   "median_hz": 37.26
+  },
+  {
+   "start": 177.0,
+   "end": 177.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.64,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.92
+  },
+  {
+   "start": 177.25,
+   "end": 178.0,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.768,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.02
+  },
+  {
+   "start": 178.0,
+   "end": 178.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.781,
+   "octave_flag_share": 1.0,
+   "median_hz": 37.04
+  },
+  {
+   "start": 178.5,
+   "end": 179.0,
+   "root_pc": 1,
+   "root": "C#",
+   "mean_confidence": 0.461,
+   "octave_flag_share": 0.0,
+   "median_hz": 68.82
+  },
+  {
+   "start": 179.0,
+   "end": 182.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.774,
+   "octave_flag_share": 0.429,
+   "median_hz": 58.73
+  },
+  {
+   "start": 182.5,
+   "end": 182.75,
+   "root_pc": 11,
+   "root": "B",
+   "mean_confidence": 0.867,
+   "octave_flag_share": 0.0,
+   "median_hz": 62.3
+  },
+  {
+   "start": 182.75,
+   "end": 183.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.594,
+   "octave_flag_share": 0.0,
+   "median_hz": 64.87
+  },
+  {
+   "start": 183.0,
+   "end": 185.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.805,
+   "octave_flag_share": 0.3,
+   "median_hz": 69.44
+  },
+  {
+   "start": 185.5,
+   "end": 185.75,
+   "root_pc": 11,
+   "root": "B",
+   "mean_confidence": 0.491,
+   "octave_flag_share": 0.0,
+   "median_hz": 62.66
+  },
+  {
+   "start": 185.75,
+   "end": 186.0,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.691,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.24
+  },
+  {
+   "start": 186.0,
+   "end": 186.25,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 1.0,
+   "octave_flag_share": 1.0,
+   "median_hz": 36.3
+  },
+  {
+   "start": 186.25,
+   "end": 186.5,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.619,
+   "octave_flag_share": 0.0,
+   "median_hz": 44.05
+  },
+  {
+   "start": 186.5,
+   "end": 186.75,
+   "root_pc": 6,
+   "root": "F#",
+   "mean_confidence": 0.463,
+   "octave_flag_share": 0.0,
+   "median_hz": 46.13
+  },
+  {
+   "start": 186.75,
+   "end": 187.25,
+   "root_pc": 7,
+   "root": "G",
+   "mean_confidence": 0.6,
+   "octave_flag_share": 0.0,
+   "median_hz": 49.3
+  },
+  {
+   "start": 187.25,
+   "end": 187.5,
+   "root_pc": 2,
+   "root": "D",
+   "mean_confidence": 0.384,
+   "octave_flag_share": 1.0,
+   "median_hz": 37.04
+  },
+  {
+   "start": 187.5,
+   "end": 187.75,
+   "root_pc": 0,
+   "root": "C",
+   "mean_confidence": 0.837,
+   "octave_flag_share": 0.0,
+   "median_hz": 65.62
+  },
+  {
+   "start": 187.75,
+   "end": 188.25,
+   "root_pc": 5,
+   "root": "F",
+   "mean_confidence": 0.839,
+   "octave_flag_share": 0.0,
+   "median_hz": 43.3
+  },
+  {
+   "start": 188.25,
+   "end": 188.662,
+   "root_pc": null,
+   "root": null,
+   "mean_confidence": 0.0,
+   "octave_flag_share": 0.0,
+   "median_hz": null
+  }
+ ],
+ "summary": {
+  "pitch_class_seconds": [
+   {
+    "pitch_class": "D",
+    "seconds": 75.0,
+    "share": 0.589
+   },
+   {
+    "pitch_class": "F",
+    "seconds": 19.5,
+    "share": 0.153
+   },
+   {
+    "pitch_class": "C",
+    "seconds": 15.25,
+    "share": 0.12
+   },
+   {
+    "pitch_class": "G",
+    "seconds": 9.25,
+    "share": 0.073
+   },
+   {
+    "pitch_class": "B",
+    "seconds": 2.0,
+    "share": 0.016
+   },
+   {
+    "pitch_class": "F#",
+    "seconds": 1.75,
+    "share": 0.014
+   },
+   {
+    "pitch_class": "C#",
+    "seconds": 1.5,
+    "share": 0.012
+   },
+   {
+    "pitch_class": "E",
+    "seconds": 1.5,
+    "share": 0.012
+   },
+   {
+    "pitch_class": "A",
+    "seconds": 0.75,
+    "share": 0.006
+   },
+   {
+    "pitch_class": "A#",
+    "seconds": 0.5,
+    "share": 0.004
+   },
+   {
+    "pitch_class": "G#",
+    "seconds": 0.25,
+    "share": 0.002
+   }
+  ],
+  "pitch_class_set_ge3pct": [
+   "C",
+   "D",
+   "F",
+   "G"
+  ],
+  "n_windows": 755,
+  "n_voiced_windows": 509,
+  "silent_or_unvoiced_share": 0.326,
+  "octave_flag_windows": 180,
+  "octave_flag_share": 0.354,
+  "n_segments": 155
+ },
+ "kick_grid": {
+  "period_s": 0.76967,
+  "bpm": 77.96,
+  "anchor_s": 85.845,
+  "phase_concentration_R": 0.376,
+  "autocorr_peak": 0.566,
+  "n_onsets_used": 975,
+  "note": "OBS: beat period and phase from 40-120 Hz drums-stem onsets; anchor is a kick-aligned beat (the strongest onset), NOT a confirmed bar downbeat. Half/double-time ambiguity is possible.",
+  "command_09b": "VID=video1 python3 v1/scripts/09b_kick_grid.py --period 0.76967 --anchor 85.845 --bar-beats 4 --name grid_kick"
+ }
+}

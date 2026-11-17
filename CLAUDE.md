@@ -13,3 +13,5 @@ Key rules (short form):
 - Log mistakes in `v1/logs/ERRORS.md`. Commit and push often (survive container resets).
 - English with British spelling. Never stop on "waiting on…"; leave a finished, useful state.
 - Shell: put `cd` on its own line before backgrounding jobs; filter noisy logs before reading.
+
+**Entry points:** to run the toolkit on a new video, follow `TOOLKIT.md` (repo root); `v1/README.md` ('Start here') is the map of results and layout.

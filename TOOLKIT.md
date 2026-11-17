@@ -5,7 +5,7 @@ Give a fresh Claude Code session this repo and a video. It should end with a che
 ## New video quickstart
 ```bash
 cd /home/user/Listener
-VID=<name>; VIDEO_DIR=videos          # use VIDEO_DIR=testvideos for the test folder; the file is $VIDEO_DIR/$VID.mp4
+export VID=<name> VIDEO_DIR=videos     # VIDEO_DIR=testvideos for the test folder; the file is $VIDEO_DIR/$VID.mp4
 bash v1/scripts/00_setup.sh
 nohup bash v1/scripts/extract_all.sh $VID > v1/logs/${VID}_extract.log 2>&1 &   # long: run with nohup
 tail -n 20 v1/logs/${VID}_extract.log                                          # filter, do not cat noisy logs

@@ -21,3 +21,4 @@
 | 02:47 | 75% | 64% | |
 | 02:48 | ~76% | 64% | rules check-in 1 |
 | 02:50 | 84% | 65% | blind video1 chain done (71 agents, 7.1M tokens) |
+| 03:05 | 97% | 67% | window nearly spent; t_birdwalk blind chain still running and may be cut off (resume from its run id next window: wf_4fc94b33-454) |

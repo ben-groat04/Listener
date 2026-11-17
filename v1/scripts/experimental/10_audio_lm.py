@@ -1,3 +1,4 @@
+# EXPERIMENTAL (failed: audio not received, ~15 min/window on CPU; see logs/ERRORS.md 02:30). Not part of the pipeline.
 """EXPERIMENTAL / NOT WORKING (2026-11-17): on this 4-core CPU it took ~15 min per 20 s window and the audio was not actually
 received by the thinker (it replied that it could not hear; token-id/config mismatch warnings). Kept for reference only.
 A second pair of 'ears': an open audio-language model (Qwen2.5-Omni-3B, thinker only, CPU) listens to each 20 s window
@@ -5,8 +6,8 @@ of the mix and of the vocal stem and describes it in words. Video-agnostic. Slow
 Output: v1/data/<VID>/audio_lm/window_NNNNs.json (+ all.md). Treat as one more noisy witness, not ground truth."""
 import json, os, sys, time
 import numpy as np, librosa, torch
-root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-VID = os.environ.get("VID", "video2"); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "audio_lm"); os.makedirs(O, exist_ok=True)
+root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+VID = os.environ.get("VID") or sys.exit("VID is mandatory: run as VID=<name> python3 ..."); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "audio_lm"); os.makedirs(O, exist_ok=True)
 MAXW = int(os.environ.get("MAXW", "999")); WIN = 20
 from transformers import Qwen2_5OmniThinkerForConditionalGeneration, Qwen2_5OmniProcessor
 torch.set_num_threads(int(os.environ.get("THREADS", "4")))

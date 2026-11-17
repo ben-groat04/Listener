@@ -7,8 +7,9 @@ matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from transformers import ClapModel, ClapProcessor
 def _t(x):  # transformers 5 returns a ModelOutput instead of a tensor
     return x if torch.is_tensor(x) else (x.pooler_output if getattr(x, 'pooler_output', None) is not None else x[0])
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from _common import require_vid, find_video
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-VID = os.environ.get("VID", "video2"); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "music_views"); os.makedirs(O, exist_ok=True)
+VID = require_vid(); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "music_views"); os.makedirs(O, exist_ok=True)
 SETS = {
  "genre": ["rock", "post-rock", "electronic music", "ambient music", "techno", "hip hop", "pop", "folk", "classical music", "jazz", "metal", "soul", "country", "krautrock", "orchestral film score", "drum and bass", "indie rock", "synth-pop", "R&B", "reggae"],
  "instrument": ["electric guitar", "distorted guitar", "acoustic guitar", "bass guitar", "synthesizer", "piano", "drum kit", "drum machine", "strings", "brass", "banjo", "organ", "choir", "glockenspiel", "violin", "saxophone", "sampled voice"],

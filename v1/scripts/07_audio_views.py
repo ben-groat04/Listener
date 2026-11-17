@@ -4,8 +4,9 @@ loudness (LUFS-ish), stereo width and a section-level summary. Uses demucs stems
 import json, os, glob
 import numpy as np, librosa, librosa.display, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from _common import require_vid, find_video
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-VID = os.environ.get("VID", "video2"); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "music_views"); os.makedirs(O, exist_ok=True)
+VID = require_vid(); D = os.path.join(root, f"v1/data/{VID}"); O = os.path.join(D, "music_views"); os.makedirs(O, exist_ok=True)
 SR = 22050; HOP = 512
 mix, _ = librosa.load(f"{D}/audio/song.wav", sr=SR, mono=True)
 st_dir = glob.glob(f"{D}/stems_raw/htdemucs/song")

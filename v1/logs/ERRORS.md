@@ -69,3 +69,12 @@ Applied 2026-11-17 to research/{artist_and_tracks,elfstedentocht_1963,cultural_c
 - Called 2:48-3:08 the loudest stretch (equal to 1:07-1:15 within 0.1 LU); said the 1:40 bass return adds 0.1 LU (ebur128 gives 0.2-0.5); called 1:40-1:55 "loudest" in raw dBFS only.
 - Narrator "steady 4 to 5 per second, no quickening" (varies about 25%); Whisper gap at "Leeuwarden" 3.6 s not 3 s; chord changes placed with the bass return (they precede it by about 1 s); bass gap 24 s (about 25 s); town-list start given inconsistently (2:15 vs 2:16).
 - Process: the fact-checker's frame filenames for 1:46-1:48 were off by 60 (f_NNNN is second NNNN-1); check the number against the timestamp.
+
+## Fact-check: video2 interpretation
+
+- Trusted the shot list: put the drop at 1:28.6 over a 1.7 s picture hold and an 8.2 s hold at 1:22; the cut is at about 1:28.5 (no cut at 1:22.1, which is a tint swing). Also took the 252 to 260 s shot as one 8.16 s hold (it has a hard cut at about 254.55 s) and counted long holds from a list that hides cuts.
+- Frame-time slips: golden skater placed at 4:11 to 4:14 (face 4:10.3 in a separate shot, skater 4:10.5 to 4:12.0); bobble-hat at 0:59 to 1:01 (about 0:59.6 to 1:01.7); "empty road" listed for frames with people; curved mark given as 3:00 to 4:36 (2:49 to 4:46); "only modern footage" at 2:36.6 (cars at 2:04 to 2:12); "mostly inside the pack" after 2:36 (about 85 s of 150 s).
+- Audio overstated: mix "steps" at 1:28.5 and 3:36 (second step about 1:40; none at 3:36); bright-layer ramp "by 2:45" (recovery from a mute; real rise from about 3:10); narration start 0:41 and "40 s of pad" (0:42.5; pad alone 28 s); "half zes" as H (p 0.49); "17 of 21" bar-locked fragments (about half of about 29); "thirdless" pad as H; width 0.9 to 1.0 at 1:13 to 1:24 (mostly 0.7 to 0.85); B Aeolian as H (bass E-G-D is ambiguous).
+- Facts: 2012 cancellation reduced to "2 cm of ice"; 575 and 9,500 called "pre-race entry-style" and "close to 568" (sources give 568 or 577); "-16 to -18" attributed to sources (-16 is the narrator's); "a generation" gloss (22 years to 1985); spelled-out date and "wedstrijdrijders" presented as heard (Whisper gave digits; "wedstrijd-" is a restoration).
+- Process: quote Whisper timestamps only after checking the vocal stem; check a shot-list cut against frames before building an argument on it.
+

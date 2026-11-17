@@ -1,9 +1,9 @@
 """Shot/cut detection with PySceneDetect; saves shot list + a mid-shot keyframe per shot."""
 import json, os, subprocess, sys
 from scenedetect import detect, ContentDetector
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from _common import require_vid, find_video
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-VID = os.environ.get("VID", "video2")
-V = os.path.join(root, f"{os.environ.get('VIDEO_DIR', 'videos')}/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/scenes")
+VID = require_vid(); V = find_video(root, VID); D = os.path.join(root, f"v1/data/{VID}/scenes")
 os.makedirs(os.path.join(D, "keyframes"), exist_ok=True)
 scenes = detect(V, ContentDetector(threshold=27.0))
 out = []

@@ -2,9 +2,9 @@
 import json, os, glob
 import numpy as np, cv2, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from _common import require_vid, find_video
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-VID = os.environ.get("VID", "video2")
-V = os.path.join(root, f"{os.environ.get('VIDEO_DIR', 'videos')}/{VID}.mp4"); D = os.path.join(root, f"v1/data/{VID}/visual_features"); os.makedirs(D, exist_ok=True)
+VID = require_vid(); V = find_video(root, VID); D = os.path.join(root, f"v1/data/{VID}/visual_features"); os.makedirs(D, exist_ok=True)
 cap = cv2.VideoCapture(V); fps = cap.get(cv2.CAP_PROP_FPS)
 face = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml") if hasattr(cv2, "CascadeClassifier") else None  # removed in OpenCV 5
 per = {}; prev = None; i = 0

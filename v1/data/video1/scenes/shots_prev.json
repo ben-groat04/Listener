@@ -1,0 +1,366 @@
+[
+ {
+  "shot": 1,
+  "start": 0.0,
+  "end": 1.32,
+  "dur": 1.32,
+  "keyframe": "keyframes/shot_001_0000.66s.jpg"
+ },
+ {
+  "shot": 2,
+  "start": 1.32,
+  "end": 12.04,
+  "dur": 10.72,
+  "keyframe": "keyframes/shot_002_0006.68s.jpg"
+ },
+ {
+  "shot": 3,
+  "start": 12.04,
+  "end": 42.36,
+  "dur": 30.32,
+  "keyframe": "keyframes/shot_003_0027.20s.jpg"
+ },
+ {
+  "shot": 4,
+  "start": 42.36,
+  "end": 43.68,
+  "dur": 1.32,
+  "keyframe": "keyframes/shot_004_0043.02s.jpg"
+ },
+ {
+  "shot": 5,
+  "start": 43.68,
+  "end": 44.44,
+  "dur": 0.76,
+  "keyframe": "keyframes/shot_005_0044.06s.jpg"
+ },
+ {
+  "shot": 6,
+  "start": 44.44,
+  "end": 56.8,
+  "dur": 12.36,
+  "keyframe": "keyframes/shot_006_0050.62s.jpg"
+ },
+ {
+  "shot": 7,
+  "start": 56.8,
+  "end": 58.08,
+  "dur": 1.28,
+  "keyframe": "keyframes/shot_007_0057.44s.jpg"
+ },
+ {
+  "shot": 8,
+  "start": 58.08,
+  "end": 59.52,
+  "dur": 1.44,
+  "keyframe": "keyframes/shot_008_0058.80s.jpg"
+ },
+ {
+  "shot": 9,
+  "start": 59.52,
+  "end": 61.72,
+  "dur": 2.2,
+  "keyframe": "keyframes/shot_009_0060.62s.jpg"
+ },
+ {
+  "shot": 10,
+  "start": 61.72,
+  "end": 64.96,
+  "dur": 3.24,
+  "keyframe": "keyframes/shot_010_0063.34s.jpg"
+ },
+ {
+  "shot": 11,
+  "start": 64.96,
+  "end": 66.56,
+  "dur": 1.6,
+  "keyframe": "keyframes/shot_011_0065.76s.jpg"
+ },
+ {
+  "shot": 12,
+  "start": 66.56,
+  "end": 67.36,
+  "dur": 0.8,
+  "keyframe": "keyframes/shot_012_0066.96s.jpg"
+ },
+ {
+  "shot": 13,
+  "start": 67.36,
+  "end": 69.08,
+  "dur": 1.72,
+  "keyframe": "keyframes/shot_013_0068.22s.jpg"
+ },
+ {
+  "shot": 14,
+  "start": 69.08,
+  "end": 69.8,
+  "dur": 0.72,
+  "keyframe": "keyframes/shot_014_0069.44s.jpg"
+ },
+ {
+  "shot": 15,
+  "start": 69.8,
+  "end": 71.08,
+  "dur": 1.28,
+  "keyframe": "keyframes/shot_015_0070.44s.jpg"
+ },
+ {
+  "shot": 16,
+  "start": 71.08,
+  "end": 71.84,
+  "dur": 0.76,
+  "keyframe": "keyframes/shot_016_0071.46s.jpg"
+ },
+ {
+  "shot": 17,
+  "start": 71.84,
+  "end": 73.44,
+  "dur": 1.6,
+  "keyframe": "keyframes/shot_017_0072.64s.jpg"
+ },
+ {
+  "shot": 18,
+  "start": 73.44,
+  "end": 84.6,
+  "dur": 11.16,
+  "keyframe": "keyframes/shot_018_0079.02s.jpg"
+ },
+ {
+  "shot": 19,
+  "start": 84.6,
+  "end": 87.16,
+  "dur": 2.56,
+  "keyframe": "keyframes/shot_019_0085.88s.jpg"
+ },
+ {
+  "shot": 20,
+  "start": 87.16,
+  "end": 108.68,
+  "dur": 21.52,
+  "keyframe": "keyframes/shot_020_0097.92s.jpg"
+ },
+ {
+  "shot": 21,
+  "start": 108.68,
+  "end": 109.6,
+  "dur": 0.92,
+  "keyframe": "keyframes/shot_021_0109.14s.jpg"
+ },
+ {
+  "shot": 22,
+  "start": 109.6,
+  "end": 110.4,
+  "dur": 0.8,
+  "keyframe": "keyframes/shot_022_0110.00s.jpg"
+ },
+ {
+  "shot": 23,
+  "start": 110.4,
+  "end": 111.16,
+  "dur": 0.76,
+  "keyframe": "keyframes/shot_023_0110.78s.jpg"
+ },
+ {
+  "shot": 24,
+  "start": 111.16,
+  "end": 112.8,
+  "dur": 1.64,
+  "keyframe": "keyframes/shot_024_0111.98s.jpg"
+ },
+ {
+  "shot": 25,
+  "start": 112.8,
+  "end": 114.32,
+  "dur": 1.52,
+  "keyframe": "keyframes/shot_025_0113.56s.jpg"
+ },
+ {
+  "shot": 26,
+  "start": 114.32,
+  "end": 121.08,
+  "dur": 6.76,
+  "keyframe": "keyframes/shot_026_0117.70s.jpg"
+ },
+ {
+  "shot": 27,
+  "start": 121.08,
+  "end": 125.16,
+  "dur": 4.08,
+  "keyframe": "keyframes/shot_027_0123.12s.jpg"
+ },
+ {
+  "shot": 28,
+  "start": 125.16,
+  "end": 126.72,
+  "dur": 1.56,
+  "keyframe": "keyframes/shot_028_0125.94s.jpg"
+ },
+ {
+  "shot": 29,
+  "start": 126.72,
+  "end": 128.32,
+  "dur": 1.6,
+  "keyframe": "keyframes/shot_029_0127.52s.jpg"
+ },
+ {
+  "shot": 30,
+  "start": 128.32,
+  "end": 131.24,
+  "dur": 2.92,
+  "keyframe": "keyframes/shot_030_0129.78s.jpg"
+ },
+ {
+  "shot": 31,
+  "start": 131.24,
+  "end": 133.36,
+  "dur": 2.12,
+  "keyframe": "keyframes/shot_031_0132.30s.jpg"
+ },
+ {
+  "shot": 32,
+  "start": 133.36,
+  "end": 136.6,
+  "dur": 3.24,
+  "keyframe": "keyframes/shot_032_0134.98s.jpg"
+ },
+ {
+  "shot": 33,
+  "start": 136.6,
+  "end": 147.32,
+  "dur": 10.72,
+  "keyframe": "keyframes/shot_033_0141.96s.jpg"
+ },
+ {
+  "shot": 34,
+  "start": 147.32,
+  "end": 148.76,
+  "dur": 1.44,
+  "keyframe": "keyframes/shot_034_0148.04s.jpg"
+ },
+ {
+  "shot": 35,
+  "start": 148.76,
+  "end": 150.76,
+  "dur": 2.0,
+  "keyframe": "keyframes/shot_035_0149.76s.jpg"
+ },
+ {
+  "shot": 36,
+  "start": 150.76,
+  "end": 153.56,
+  "dur": 2.8,
+  "keyframe": "keyframes/shot_036_0152.16s.jpg"
+ },
+ {
+  "shot": 37,
+  "start": 153.56,
+  "end": 157.56,
+  "dur": 4.0,
+  "keyframe": "keyframes/shot_037_0155.56s.jpg"
+ },
+ {
+  "shot": 38,
+  "start": 157.56,
+  "end": 158.24,
+  "dur": 0.68,
+  "keyframe": "keyframes/shot_038_0157.90s.jpg"
+ },
+ {
+  "shot": 39,
+  "start": 158.24,
+  "end": 160.8,
+  "dur": 2.56,
+  "keyframe": "keyframes/shot_039_0159.52s.jpg"
+ },
+ {
+  "shot": 40,
+  "start": 160.8,
+  "end": 168.8,
+  "dur": 8.0,
+  "keyframe": "keyframes/shot_040_0164.80s.jpg"
+ },
+ {
+  "shot": 41,
+  "start": 168.8,
+  "end": 169.52,
+  "dur": 0.72,
+  "keyframe": "keyframes/shot_041_0169.16s.jpg"
+ },
+ {
+  "shot": 42,
+  "start": 169.52,
+  "end": 171.84,
+  "dur": 2.32,
+  "keyframe": "keyframes/shot_042_0170.68s.jpg"
+ },
+ {
+  "shot": 43,
+  "start": 171.84,
+  "end": 172.72,
+  "dur": 0.88,
+  "keyframe": "keyframes/shot_043_0172.28s.jpg"
+ },
+ {
+  "shot": 44,
+  "start": 172.72,
+  "end": 174.84,
+  "dur": 2.12,
+  "keyframe": "keyframes/shot_044_0173.78s.jpg"
+ },
+ {
+  "shot": 45,
+  "start": 174.84,
+  "end": 179.04,
+  "dur": 4.2,
+  "keyframe": "keyframes/shot_045_0176.94s.jpg"
+ },
+ {
+  "shot": 46,
+  "start": 179.04,
+  "end": 181.4,
+  "dur": 2.36,
+  "keyframe": "keyframes/shot_046_0180.22s.jpg"
+ },
+ {
+  "shot": 47,
+  "start": 181.4,
+  "end": 184.44,
+  "dur": 3.04,
+  "keyframe": "keyframes/shot_047_0182.92s.jpg"
+ },
+ {
+  "shot": 48,
+  "start": 184.44,
+  "end": 185.04,
+  "dur": 0.6,
+  "keyframe": "keyframes/shot_048_0184.74s.jpg"
+ },
+ {
+  "shot": 49,
+  "start": 185.04,
+  "end": 186.56,
+  "dur": 1.52,
+  "keyframe": "keyframes/shot_049_0185.80s.jpg"
+ },
+ {
+  "shot": 50,
+  "start": 186.56,
+  "end": 187.36,
+  "dur": 0.8,
+  "keyframe": "keyframes/shot_050_0186.96s.jpg"
+ },
+ {
+  "shot": 51,
+  "start": 187.36,
+  "end": 188.08,
+  "dur": 0.72,
+  "keyframe": "keyframes/shot_051_0187.72s.jpg"
+ },
+ {
+  "shot": 52,
+  "start": 188.08,
+  "end": 188.6,
+  "dur": 0.52,
+  "keyframe": "keyframes/shot_052_0188.34s.jpg"
+ }
+]

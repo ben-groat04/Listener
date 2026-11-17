@@ -27,3 +27,11 @@
 - Next (after reset): music-first workflow (per-section listeners + specialist music panel), then interpret panel, cross-video comparison, blind runs, test videos, cold-read loops.
 - 00:26 video2: all 16 segment notes + words.md done. A viewer questions whether video2 is really "Part 2" (context says Part 2 is calmer/electronic, but 3:20-4:00 is a loud dense plateau). **Must be verified** in the music/research phase.
 - 00:45 Music tools complete for both videos (check_outputs OK). CLAP: video1 = post-rock, distorted guitar, announcer speech, "triumphant/aggressive"; video2 = synth-pop/electronic/krautrock, drum machine, "nostalgic/calm". Chords: video1 centred on D, video2 on B minor. Supports research's Part 1 (rock) / Part 2 (electronic) order. Launched video1 window listeners (listen.js, windows_only).
+- 00:45 video1 music window notes done (10). Holding at 97% usage until reset.
+### Plan from 01:42 (post-reset)
+1. listen.js: video2 windows, then specialists + debate + reading + checks for both videos.
+2. interpret.js on both (panel reads the music reading first).
+3. Cross-video diptych comparison (Part 1 vs Part 2) incl. verifying which is which.
+4. Blind runs (listen + interpret with blind=true, out=analysis_blind) on the PSB videos and the test videos; compare blind vs informed.
+5. Cold-read improvement loops on the analysis and on the toolkit (can a fresh session run it from TOOLKIT docs?).
+6. Toolkit entry doc + single command; final human-readable report per video.

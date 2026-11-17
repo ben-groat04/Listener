@@ -8,12 +8,14 @@ export const meta = {
     { title: 'Verify', detail: 'lens-specific fact-checkers try to refute claims; corrections applied' },
   ],
 }
-// args: { videos: ['video1','video2'], rounds: 3, blind: false, out: 'analysis' }
+// args: { root: optional repo root, videos: ['video1','video2'] (bare names or {vid,dur} objects), rounds: 3, blind: false, out: 'analysis' }
 // blind=true: agents must NOT read context.md, v1/analysis/research/, or use the web; they rely on sight/sound data only.
-const R = '/home/user/Listener'
+// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+const R = (args && args.root) || (typeof __dirname !== 'undefined' && __dirname ? __dirname.replace(/\/v1\/workflows\/?$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const ROUNDS = args.rounds || 3
 const BLIND = !!args.blind
+const VID_NAMES = (args.videos || []).map(v => (typeof v === 'string' ? v : v.vid))
 const SUM = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 const VER = { type: 'object', properties: { checked: { type: 'integer' }, refuted: { type: 'array', items: { type: 'object', properties: { claim: { type: 'string' }, evidence: { type: 'string' }, fix: { type: 'string' } }, required: ['claim', 'evidence', 'fix'] } }, unverifiable: { type: 'array', items: { type: 'string' } } }, required: ['checked', 'refuted', 'unverifiable'] }
 
@@ -90,5 +92,5 @@ UNVERIFIABLE: ${JSON.stringify(unver)}`, { label: `apply-fixes:${vid}`, phase: '
   return { vid, refuted: refuted.length, unverifiable: unver.length }
 }
 
-const res = await parallel(args.videos.map(v => () => doVideo(v)))
+const res = await parallel(VID_NAMES.map(v => () => doVideo(v)))
 return res

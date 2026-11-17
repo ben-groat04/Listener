@@ -6,10 +6,24 @@ export const meta = {
     { title: 'Listen', detail: 'music + words agents per video' },
   ],
 }
-// args: { videos: [{ vid: 'video1', dur: 188.7 }, ...], skip_done: [ 'video1:seg_01', ... ], blind: false, out: 'analysis', video_dir: 'videos' }
-const R = '/home/user/Listener'
+// args: { root: optional repo root, videos: ['video1', ...] or [{ vid: 'video1', dur: 188.7 }, ...] (dur read from audio_features/summary.json when omitted), skip_done: [ 'video1:seg_01', ... ], blind: false, out: 'analysis', video_dir: 'videos' }
+// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+const R = (args && args.root) || (typeof __dirname !== 'undefined' && __dirname ? __dirname.replace(/\/v1\/workflows\/?$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))
 const A = `${R}/v1/${args.out || 'analysis'}`
 const BLIND = !!args.blind
+// Accept bare names or {vid, dur}; when dur is omitted an agent reads duration_s from v1/data/<vid>/audio_features/summary.json.
+async function resolveVideos(list) {
+  const vs = (list || []).map(v => (typeof v === 'string' ? { vid: v } : { ...v }))
+  const need = vs.filter(v => !(v.dur > 0))
+  if (need.length) {
+    const got = await agent(`Read "duration_s" from ${R}/v1/data/<vid>/audio_features/summary.json for each of these videos: ${need.map(v => v.vid).join(', ')}. Return the numbers exactly as stored (do not invent any; omit a video whose file is missing).`, { label: 'durations', model: 'sonnet', effort: 'low', schema: { type: 'object', properties: { durations: { type: 'array', items: { type: 'object', properties: { vid: { type: 'string' }, dur: { type: 'number' } }, required: ['vid', 'dur'] } } }, required: ['durations'] } })
+    for (const v of need) { const g = got && got.durations.find(d => d.vid === v.vid); if (g && g.dur > 0) v.dur = g.dur }
+    const bad = need.filter(v => !(v.dur > 0)).map(v => v.vid)
+    if (bad.length) throw new Error(`No duration for: ${bad.join(', ')} (pass {vid,dur} or run 04_audio_features.py first)`)
+  }
+  return vs
+}
+const VIDEOS = await resolveVideos(args.videos)
 const SUM = { type: 'object', properties: { summary: { type: 'string' }, open_questions: { type: 'array', items: { type: 'string' } } }, required: ['summary', 'open_questions'] }
 const common = vid => `
 You are part of a team analysing music videos the way a thoughtful HUMAN viewer would: what you see, hear, feel, and what it means.
@@ -32,7 +46,7 @@ const pad = n => String(n).padStart(2, '0')
 const mmss = s => `${Math.floor(s / 60)}:${pad(Math.floor(s % 60))}`
 const skip = new Set(args.skip_done || [])
 const SEGS = []
-for (const { vid, dur } of args.videos) for (let n = 1; (n - 1) * 20 < dur; n++) if (!skip.has(`${vid}:seg_${pad(n)}`)) SEGS.push({ vid, n, from: (n - 1) * 20, to: Math.min(n * 20, Math.ceil(dur)) })
+for (const { vid, dur } of VIDEOS) for (let n = 1; (n - 1) * 20 < dur; n++) if (!skip.has(`${vid}:seg_${pad(n)}`)) SEGS.push({ vid, n, from: (n - 1) * 20, to: Math.min(n * 20, Math.ceil(dur)) })
 
 const watch = s => agent(`${common(s.vid)}
 
@@ -48,7 +62,7 @@ YOUR JOB: be the eyes for ${s.vid}, seconds ${s.from}-${s.to} (${mmss(s.from)}-$
    - Symbols, motifs, visual rhymes worth tracking across the film
    - Open questions for the team`, { label: `watch:${s.vid}:${pad(s.n)}`, phase: 'Watch', model: 'sonnet', schema: SUM })
 
-const aux = args.videos.flatMap(({ vid }) => [
+const aux = VIDEOS.flatMap(({ vid }) => [
   ...(skip.has(`${vid}:music`) ? [] : [() => agent(`${common(vid)}
 
 YOUR JOB: be the ears (music) for ${vid}. Study audio_features/, stems/ if present, the beat/cut alignment and the transcripts.

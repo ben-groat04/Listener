@@ -8,10 +8,24 @@ export const meta = {
     { title: 'Reading', detail: 'synthesis + refutation + fixes' },
   ],
 }
-// args: { videos: [{vid, dur}], rounds: 2, blind: false, out: 'analysis', skip_windows: ['video1:0040', ...], windows_only: false }
-const R = '/home/user/Listener'
+// args: { root: optional repo root, videos: ['video1'] or [{vid, dur}] (dur auto-read from audio_features/summary.json), rounds: 2, blind: false, out: 'analysis', skip_windows: ['video1:0040', ...], windows_only: false }
+// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+const R = (args && args.root) || (typeof __dirname !== 'undefined' && __dirname ? __dirname.replace(/\/v1\/workflows\/?$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))
 const OUT = `${R}/v1/${args.out || 'analysis'}`
 const BLIND = !!args.blind
+// Accept bare names or {vid, dur}; when dur is omitted an agent reads duration_s from v1/data/<vid>/audio_features/summary.json.
+async function resolveVideos(list) {
+  const vs = (list || []).map(v => (typeof v === 'string' ? { vid: v } : { ...v }))
+  const need = vs.filter(v => !(v.dur > 0))
+  if (need.length) {
+    const got = await agent(`Read "duration_s" from ${R}/v1/data/<vid>/audio_features/summary.json for each of these videos: ${need.map(v => v.vid).join(', ')}. Return the numbers exactly as stored (do not invent any; omit a video whose file is missing).`, { label: 'durations', model: 'sonnet', effort: 'low', schema: { type: 'object', properties: { durations: { type: 'array', items: { type: 'object', properties: { vid: { type: 'string' }, dur: { type: 'number' } }, required: ['vid', 'dur'] } } }, required: ['durations'] } })
+    for (const v of need) { const g = got && got.durations.find(d => d.vid === v.vid); if (g && g.dur > 0) v.dur = g.dur }
+    const bad = need.filter(v => !(v.dur > 0)).map(v => v.vid)
+    if (bad.length) throw new Error(`No duration for: ${bad.join(', ')} (pass {vid,dur} or run 04_audio_features.py first)`)
+  }
+  return vs
+}
+const VIDEOS = await resolveVideos(args.videos)
 const ROUNDS = args.rounds || 2
 const SUM = { type: 'object', properties: { summary: { type: 'string' } }, required: ['summary'] }
 const VER = { type: 'object', properties: { checked: { type: 'integer' }, refuted: { type: 'array', items: { type: 'object', properties: { claim: { type: 'string' }, evidence: { type: 'string' }, fix: { type: 'string' } }, required: ['claim', 'evidence', 'fix'] } }, unverifiable: { type: 'array', items: { type: 'string' } } }, required: ['checked', 'refuted', 'unverifiable'] }
@@ -28,7 +42,7 @@ ${BLIND ? 'BLIND MODE: do NOT read context.md, v1/analysis/research/, or non-bli
 Rules: British English. Every claim must cite its evidence (which measurement, which image, which time). Give confidence (high/medium/low). Be honest about what measurements cannot tell you (e.g. exact instrument identity). Timestamps m:ss.`
 
 const WIN = []
-for (const { vid, dur } of args.videos) for (let w = 0; w < dur; w += 20) if (!(args.skip_windows || []).includes(`${vid}:${pad4(w)}`)) WIN.push({ vid, w, to: Math.min(w + 20, Math.ceil(dur)) })
+for (const { vid, dur } of VIDEOS) for (let w = 0; w < dur; w += 20) if (!(args.skip_windows || []).includes(`${vid}:${pad4(w)}`)) WIN.push({ vid, w, to: Math.min(w + 20, Math.ceil(dur)) })
 
 const listenWindow = x => agent(`${base(x.vid)}
 
@@ -95,7 +109,7 @@ UNVERIFIABLE: ${JSON.stringify(unver)}`, { label: `fix:${vid}`, phase: 'Reading'
 }
 
 // windows for every video run first (pipeline per video: its windows, then its specialists)
-const byVid = args.videos.map(v => v.vid)
+const byVid = VIDEOS.map(v => v.vid)
 const res = await parallel(byVid.map(vid => async () => {
   await parallel(WIN.filter(x => x.vid === vid).map(x => () => listenWindow(x)))
   if (args.windows_only) return { vid, windows_only: true }

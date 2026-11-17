@@ -3,8 +3,9 @@ export const meta = {
   description: 'Cold-read improvement loop: fresh readers with different lenses audit the analysis/toolkit, a triage agent builds a backlog, workers fix the top items, verifiers check the fixes; repeat',
   phases: [{ title: 'Cold read' }, { title: 'Triage' }, { title: 'Fix' }, { title: 'Verify' }],
 }
-// args: { scope: 'analysis' | 'toolkit' | 'all', videos: ['video1','video2'], rounds: 1, fixes_per_round: 6, tag: 'cr1' }
-const R = '/home/user/Listener'
+// args: { root: optional repo root, scope: 'analysis' | 'toolkit' | 'all', videos: ['video1','video2'], rounds: 1, fixes_per_round: 6, tag: 'cr1' }
+// Root: args.root, else two directories up from this script (v1/workflows), else the working directory.
+const R = (args && args.root) || (typeof __dirname !== 'undefined' && __dirname ? __dirname.replace(/\/v1\/workflows\/?$/, '') : (typeof process !== 'undefined' && process.cwd ? process.cwd() : '.'))
 const TAG = args.tag || 'cr'
 const SCOPE = args.scope || 'all'
 const F = { type: 'object', properties: { findings: { type: 'array', items: { type: 'object', properties: { title: { type: 'string' }, where: { type: 'string' }, problem: { type: 'string' }, fix: { type: 'string' }, severity: { type: 'string', enum: ['high', 'medium', 'low'] } }, required: ['title', 'where', 'problem', 'fix', 'severity'] } } }, required: ['findings'] }

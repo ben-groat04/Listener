@@ -1,0 +1,202 @@
+{
+ "n_cuts": 51,
+ "median_beat_interval_s": 0.394,
+ "cuts_within_80ms_of_beat": 0.216,
+ "chance_beat": 0.422,
+ "cuts_within_150ms_of_bar_start(4-beat guess)": 0.137,
+ "chance_bar": 0.188,
+ "section_boundaries_with_cut_within_0.5s": [
+  {
+   "t": 12.86,
+   "nearest_cut_s": 0.69
+  },
+  {
+   "t": 47.46,
+   "nearest_cut_s": 0.48
+  },
+  {
+   "t": 59.79,
+   "nearest_cut_s": 0.0
+  },
+  {
+   "t": 83.43,
+   "nearest_cut_s": 0.58
+  },
+  {
+   "t": 93.79,
+   "nearest_cut_s": 3.0
+  },
+  {
+   "t": 119.47,
+   "nearest_cut_s": 1.08
+  },
+  {
+   "t": 131.96,
+   "nearest_cut_s": 1.47
+  },
+  {
+   "t": 143.08,
+   "nearest_cut_s": 1.57
+  },
+  {
+   "t": 156.41,
+   "nearest_cut_s": 0.19
+  }
+ ],
+ "cut_rate_vs_loudness": {
+  "lag_s_picture_after_music": 4,
+  "r": 0.266,
+  "r_lag0": 0.27
+ },
+ "motion_vs_onset": {
+  "lag_s_picture_after_music": -4,
+  "r": 0.302,
+  "r_lag0": 0.3
+ },
+ "motion_vs_loudness": {
+  "lag_s_picture_after_music": 3,
+  "r": 0.169,
+  "r_lag0": 0.214
+ },
+ "picture_brightness_vs_sound_brightness": {
+  "lag_s_picture_after_music": 4,
+  "r": -0.162,
+  "r_lag0": 0.114
+ },
+ "picture_warmth_vs_loudness": {
+  "lag_s_picture_after_music": 4,
+  "r": 0.382,
+  "r_lag0": 0.251
+ },
+ "per_section": [
+  {
+   "start": 0.0,
+   "end": 12.86,
+   "label": "B",
+   "mean_loudness": 0.102,
+   "cuts_per_10s": 2.33,
+   "mean_motion": 5.17,
+   "mean_brightness": 123.2,
+   "mean_warmth": 12.7,
+   "cuts_on_beat_frac": 0.33
+  },
+  {
+   "start": 12.86,
+   "end": 47.46,
+   "label": "C",
+   "mean_loudness": 0.2348,
+   "cuts_per_10s": 4.05,
+   "mean_motion": 6.29,
+   "mean_brightness": 141.8,
+   "mean_warmth": 54.8,
+   "cuts_on_beat_frac": 0.14
+  },
+  {
+   "start": 47.46,
+   "end": 59.79,
+   "label": "A",
+   "mean_loudness": 0.1054,
+   "cuts_per_10s": 1.62,
+   "mean_motion": 6.87,
+   "mean_brightness": 129.0,
+   "mean_warmth": 61.6,
+   "cuts_on_beat_frac": 0.5
+  },
+  {
+   "start": 59.79,
+   "end": 83.43,
+   "label": "C",
+   "mean_loudness": 0.2181,
+   "cuts_per_10s": 2.12,
+   "mean_motion": 5.95,
+   "mean_brightness": 132.3,
+   "mean_warmth": 44.0,
+   "cuts_on_beat_frac": 0.4
+  },
+  {
+   "start": 83.43,
+   "end": 93.79,
+   "label": "E",
+   "mean_loudness": 0.2063,
+   "cuts_per_10s": 2.9,
+   "mean_motion": 6.02,
+   "mean_brightness": 141.3,
+   "mean_warmth": 48.6,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 93.79,
+   "end": 119.47,
+   "label": "C",
+   "mean_loudness": 0.2152,
+   "cuts_per_10s": 1.95,
+   "mean_motion": 8.25,
+   "mean_brightness": 123.2,
+   "mean_warmth": 33.5,
+   "cuts_on_beat_frac": 0.4
+  },
+  {
+   "start": 119.47,
+   "end": 131.96,
+   "label": "A",
+   "mean_loudness": 0.1058,
+   "cuts_per_10s": 1.6,
+   "mean_motion": 7.1,
+   "mean_brightness": 123.4,
+   "mean_warmth": 48.5,
+   "cuts_on_beat_frac": 0.0
+  },
+  {
+   "start": 131.96,
+   "end": 143.08,
+   "label": "D",
+   "mean_loudness": 0.2134,
+   "cuts_per_10s": 3.6,
+   "mean_motion": 4.39,
+   "mean_brightness": 149.2,
+   "mean_warmth": 69.5,
+   "cuts_on_beat_frac": 0.5
+  },
+  {
+   "start": 143.08,
+   "end": 156.41,
+   "label": "A",
+   "mean_loudness": 0.1146,
+   "cuts_per_10s": 3.0,
+   "mean_motion": 5.96,
+   "mean_brightness": 140.4,
+   "mean_warmth": 38.5,
+   "cuts_on_beat_frac": 0.25
+  },
+  {
+   "start": 156.41,
+   "end": 188.15,
+   "label": "D",
+   "mean_loudness": 0.1727,
+   "cuts_per_10s": 2.21,
+   "mean_motion": 5.48,
+   "mean_brightness": 131.3,
+   "mean_warmth": 50.6,
+   "cuts_on_beat_frac": 0.0
+  }
+ ],
+ "cut_phase_in_beat": {
+  "n": 49,
+  "mean_phase_0to1": 0.509,
+  "resultant_R": 0.255,
+  "rayleigh_p": 0.0412
+ },
+ "cut_phase_in_half_beat": {
+  "n": 49,
+  "mean_phase_0to1": 0.795,
+  "resultant_R": 0.06,
+  "rayleigh_p": 0.8359
+ },
+ "cut_phase_in_bar": {
+  "n": 48,
+  "mean_phase_0to1": 0.09,
+  "resultant_R": 0.189,
+  "rayleigh_p": 0.1788
+ },
+ "notes": "Correlations use 5 s smoothing; lag>0 means the picture change follows the music by that many seconds. cut_phase: Rayleigh p<0.05 means cuts cluster at a consistent beat phase (cutting to the rhythm even if the tracker phase is offset). Bars assume 4/4 from beat 1 (unverified)."
+}

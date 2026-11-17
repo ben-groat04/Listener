@@ -22,3 +22,5 @@
 | 02:48 | ~76% | 64% | rules check-in 1 |
 | 02:50 | 84% | 65% | blind video1 chain done (71 agents, 7.1M tokens) |
 | 03:05 | 97% | 67% | window nearly spent; t_birdwalk blind chain still running and may be cut off (resume from its run id next window: wf_4fc94b33-454) |
+| 03:11 | 100% | 67% | 5-hour limit hit (t_birdwalk blind chain cut off mid-panel; resumable) |
+| 06:43 | 0% | 67% | **RESET 2** (next 11:40). Weekly 67%: each full window has cost ~13% weekly, so plan to stop this window around **~80% weekly** to leave the user headroom until the Fri 10:00 weekly reset. |

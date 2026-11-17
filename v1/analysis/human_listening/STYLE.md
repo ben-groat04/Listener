@@ -1,8 +1,8 @@
 # Style guide: writing about music like a person
 
-Sources: `corpus/text.md` (13 short forum/thread comments), `corpus/review.md` (11 blog/zine excerpts, 4 of them on PSB), `corpus/forum.md` (NOT collected: blocked, so no long forum posts exist on disk), and our pieces `../video1/LISTENING.md` (V1), `../video2/LISTENING.md` (V2), `video1_human.md` (H1), `video2_human.md` (H2).
+Sources: `corpus/text.md` (12 forum replies of 35 to 130 words from Tildes threads, plus 13 shorter one-liners), `corpus/forum.md` (13 real Singletrack World forum posts, 30 to 142 words, five of them on Mogwai and six on PSB), `corpus/review.md` (11 blog/zine excerpts, 4 of them on PSB), and our pieces `../video1/LISTENING.md` (V1), `../video2/LISTENING.md` (V2), `video1_human.md` (H1), `video2_human.md` (H2). All quotes below were checked against these files.
 
-Caveats. The corpus is thin: comments are under 30 words, reviews are small-zine writing, and there are no genuine forum paragraphs. An earlier version of this guide quoted other items (a 56-year-old crying, "p7eaven", "Palace are now my new favourites") that are no longer in `corpus/`; those are used below only for the forum register and are marked "(earlier corpus, unverified on disk)". Re-collect before leaning on them.
+Caveats. The corpus is small and from few sites (Tildes, one cycling-forum off-topic board, small zines). It shows what ordinary online writing looks like; it is not a statistical sample. The earlier version of this guide quoted items no longer on disk ("p7eaven", a 56-year-old crying); they are dropped.
 
 **Music first.** The user's reminder: it is more music than video. Real listeners write about the sound, the bass, the drop, the voice, the song as a thing they keep. Our pieces spend most of their words on picture inventory (windmills, kettles, bibs). A piece should be at least two thirds about what was heard and what it did, with one picture detail at most, only where it changed how the music landed.
 
@@ -19,8 +19,18 @@ The user's verdict on our pieces: "such ai phrasing trying too hard". The facts 
 - Typos and rough grammar stay ("kinda of"). Emoji and "!!!" are fine.
 - Ends where it runs out. No sign-off, no moral.
 
-### Forum post (a paragraph or three; corpus gap)
-No real long posts survive in the corpus. From the earlier corpus (unverified on disk) and the short comments: starts from the poster's situation, mixed sentence lengths, digressions (how they found the band), vague on purpose ("some kind of", "I don't know why but"), one cheap image at most and then dropped, feelings stated flat and then qualified, honest about boredom, ends on a question to the thread or the last thing they thought of. Treat this register as guidance, not evidence.
+### Forum post (30 to 140 words; corpus/forum.md and the longer corpus/text.md replies)
+- Starts from the poster's situation or a position, not a scene: "Actually, just remembered the first time I saw Mogwai... I wasn't a fan." "I sort of dismissed them early on as being pretty derivative". "Hey, I think you're the one who posted about Pokey a while ago". "Sorry for the late reply, been travelling."
+- Personal story is the content. Venue, city, who they went with, why: "Saw them live in Brizzle earlier this year. Tbh, I probably wouldn't have gone but it was Stoner's first gig since he was a kid and he was afraid to go on his own." "They were playing the jaffa cake in edinburgh when I worked there, I think support was uresai yatsura."
+- Memory is shaky and says so: "I think support was", "possibly Like Herod", "whatever it was", "I don't know why but I really like", "I guess since". Vagueness about the sound is normal ("They just have a good sound." "a kind of magic to her songs and sound").
+- Sentences are mixed: a 3-word reaction ("Good times." "Dude yes." "So good.") next to one 50-word run-on with dashes and a list. Informal spelling and slang stay: "Brizzle", "deffo", "ace", "oop North", "Tbh", "cri evytime", "Good shit!".
+- Specific sound or live detail is physical and exaggerated, in the poster's own jokey voice, not literary: "glasses vibrating off tables, a strobe assault strong enough to use as an xray machine"; "the whole audience go completely silent for the quiet bits, just to have their heads knocked off when the guitars crash in again"; "everything turned up to 11, by now it was about 40'C in the hall"; "gently rocking back and forth, eyes closed, smiling kindly, and stroking their beards". These are humour about the crowd or the room more than about the music.
+- Humour and mild rudeness are common: "I reckon an awful lot of Mogwai is basically horrible rubbish"; "the piss out of themselves"; "mad drunk shouting down a well while hitting random notes on an out of tune piano with his face" (one comic comparison, to a musician, said to be unfair).
+- Comparison is to other bands: B.A.D., The Orb, British Sea Power, Krautrock, Paul Hardcastle's 19 (PSB posts); Tom Waits (Mogwai). Always other music.
+- Real disagreement and mixed feelings, with a reason: "pretty derivative... but the quality of their archive source material, and how they use it, lifts it"; "Every Valley is far more political than any of their past stuff but that's the nature of the topic, it's still a cracking album". They say what they first thought, then what changed.
+- Facts and practical tips are dropped in flat: "One of the band did a show on 6Music recently which might be still available on iplayer - worth a listen." "Spitfire and People Let's Dance (great, great video)".
+- The odd one is long and self-mocking (the "arch-cynicism cartwheel" post, 110 words). It is a joke and it is the exception: the writer is performing on purpose, in a thread that invites it. Do not copy it as our default.
+- Endings: "Good times.", a tip, a gag ("For every Fear Satan there's a Stereodee..."), a reassurance ("don't let that put you off"), or the last thought, even a trailing comma ("so don't let that put you off them if it's your first taste of PSB,"). No moral.
 
 ### Short review (corpus/review.md)
 - Medium to long sentences (25 to 60 words), stuffed with parentheses, dashes and a trailing clause. Unpolished: "the kind shown in cinemas in the early to mid 20th century"; "so it's more than a little odd".
@@ -38,7 +48,9 @@ No real long posts survive in the corpus. From the earlier corpus (unverified on
 - Metaphors are rare, dead or borrowed from other music. Never two in a row.
 - Evaluation is plain: awesome, catchy, odd, superb, a little flat.
 - Personal context does the work. Structure is not explained.
-- Short is normal.
+- Short is normal. Even the longest real forum post is 142 words and is one story.
+- Honest dislike or doubt appears in every register: "I wasn't a fan", "horrible rubbish", "derivative", "got sick of it".
+- Own-voice humour about the situation (crowd, heat, drunk piano) is normal. Humour in our pieces is absent.
 - Endings are abrupt, weak, or a recommendation.
 
 ## 2. The AI tells in our pieces
@@ -103,7 +115,7 @@ Quotes are from V1, V2, H1, H2. None is wrong on fact. All of it is written, not
 ## 3. Checklist (a piece must pass all of it)
 
 1. **Music first.** At least two thirds is about sound: bass, drums, voice, the moment it goes quiet, the ending. Count picture sentences; at most one or two, and only where they changed the music. No frame inventory.
-2. **Length.** Text: one to three lines. Forum post: one to three short paragraphs. Review: 150 to 300 words. Two or three moments, no walkthrough.
+2. **Length.** Text: one to three lines. Forum post: 40 to 140 words, one story or one opinion, one paragraph (two at most). Never more than one post-length anecdote. Review: 150 to 300 words. Two or three moments, no walkthrough.
 3. **Start.** Opens with where the writer was, a reaction, a plain opinion or the track name. Not a scene, not a headline, not a thesis line.
 4. **Similes.** At most one comparison, and it names other music, a film or a plain object (Vangelis, Kraftwerk, a washing machine). No stacking. No door, stair, hand on chest, heartbeat, wind, march, factory.
 5. **Body.** No braced, hollow, sat back, leaned in, held breath. One flat body word at most (goosebumps, bored), only if true.

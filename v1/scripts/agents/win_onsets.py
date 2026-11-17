@@ -1,14 +1,11 @@
-import sys,librosa,numpy as np
-t0,t1=float(sys.argv[1]),float(sys.argv[2]); base='stems_raw/htdemucs/song/'
-for s in ['drums','bass','other']:
-    y,sr=librosa.load(base+s+'.wav',sr=22050,offset=t0,duration=t1-t0,mono=True)
-    o=librosa.onset.onset_detect(y=y,sr=sr,units='time',backtrack=False)+t0
-    print(s,len(o),np.round(o,2).tolist())
-    if s=='drums':
-        S=np.abs(librosa.stft(y)); f=librosa.fft_frequencies(sr=sr)
-        for lo,hi in [(20,150),(150,1000),(1000,5000),(5000,11000)]:
-            print(' band',lo,hi,round(10*np.log10((S[(f>=lo)&(f<hi)]**2).mean()+1e-12),1))
-        env=librosa.onset.onset_strength(y=y,sr=sr); print(' tempo',librosa.feature.tempo(onset_envelope=env,sr=sr))
-    if s=='other':
-        c=librosa.feature.spectral_centroid(y=y,sr=sr); print(' centroid',c.mean())
-        h,p=librosa.effects.hpss(y); print(' harm/perc rms',np.sqrt((h**2).mean()),np.sqrt((p**2).mean()))
+import librosa,numpy as np,sys
+p,s,e=sys.argv[1],float(sys.argv[2]),float(sys.argv[3])
+y,sr=librosa.load(p,sr=22050,offset=s,duration=e-s)
+o=librosa.onset.onset_detect(y=y,sr=sr,units='time',backtrack=False)+s
+print(p.split('/')[-1],len(o),'onsets; IOI median %.3f'%np.median(np.diff(o)))
+print(np.round(o,2))
+S=np.abs(librosa.stft(y))**2;f=librosa.fft_frequencies(sr=sr)
+tot=S.sum()
+for lo,hi in[(0,150),(150,500),(500,2000),(2000,6000),(6000,11025)]:
+  print(lo,hi,round(S[(f>=lo)&(f<hi)].sum()/tot,3))
+print('centroid',librosa.feature.spectral_centroid(y=y,sr=sr).mean())

@@ -24,3 +24,4 @@
 | 03:05 | 97% | 67% | window nearly spent; t_birdwalk blind chain still running and may be cut off (resume from its run id next window: wf_4fc94b33-454) |
 | 03:11 | 100% | 67% | 5-hour limit hit (t_birdwalk blind chain cut off mid-panel; resumable) |
 | 06:43 | 0% | 67% | **RESET 2** (next 11:40). Weekly 67%: each full window has cost ~13% weekly, so plan to stop this window around **~80% weekly** to leave the user headroom until the Fri 10:00 weekly reset. |
+| 06:56 | 12% | 69% | ~2% weekly per 12% of window; cap this window near 55-60% (≈80% weekly) |

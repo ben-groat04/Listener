@@ -4,7 +4,6 @@
  "source_pad": "stems/other.mp3 chroma_cqt mean per bar",
  "silence_rule": "bass RMS more than 40 dB below its file maximum, or no voiced frames: root null (no root claim)",
  "grid": "sync/grid_120bpm.json: bar 2.000 s, downbeat anchor 88.6165 s (kick fit, 1:28.6 to 5:00); bars outside that span are extrapolated",
- "helper_script": "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/bass_roots.py (copy in v1/scripts/agents/t6_bass_roots.py)",
  "bar_seconds": 1.9998,
  "bars": [
   {
@@ -8047,5 +8046,52 @@
     ]
    ]
   }
- }
+ },
+ "events": [
+  {
+   "t": 28.0,
+   "what": "bass entry: E at -13 dB re max (-77 to -80 before)",
+   "src": "probe.py 0.25 s windows"
+  },
+  {
+   "t": 84.9,
+   "what": "B slot ends: -23 dB at 84.25, -39 at 84.75, floor (-67) from 85.0",
+   "src": "probe.py"
+  },
+  {
+   "t": 88.5,
+   "what": "bass returns on E (-17 dB)",
+   "src": "probe.py"
+  },
+  {
+   "t": 156.75,
+   "what": "loop B first B (D until 156.5, B from 156.75)",
+   "src": "probe.py"
+  },
+  {
+   "t": 288.5,
+   "what": "last sustained loop B note ends (-15 dB at 288.25, -55 dB at 288.5)",
+   "src": "probe.py"
+  },
+  {
+   "t": 290.25,
+   "what": "first gated stab (A -9 dB at 290.25, B -11 at 290.5); stabs again at 292.5 (B) and 294.25 (A then B); floor -55 to -65 between",
+   "src": "probe.py"
+  },
+  {
+   "t": 300.5,
+   "what": "last gated stab (B -11 dB), then floor (-78 to -84) from 301.0",
+   "src": "probe.py"
+  },
+  {
+   "t": 302.25,
+   "what": "end tag bass: A -9 dB at 302.25, B -8 at 302.5 and -13 at 302.75; floor from 303.0",
+   "src": "probe.py (onsets 302.34, 302.60, 302.84 from T2)"
+  }
+ ],
+ "helper_scripts": [
+  "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/bass_roots.py",
+  "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/post.py",
+  "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/probe.py"
+ ]
 }

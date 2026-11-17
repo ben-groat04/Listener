@@ -4,7 +4,6 @@
  "source_pad": "stems/other.mp3 chroma_cqt mean per bar",
  "silence_rule": "bass RMS more than 40 dB below its file maximum, or no voiced frames: root null (no root claim)",
  "grid": "audio_features/beat_times.json, bar = 4 beats from first beat 0.952 s (tracker-derived downbeat, unconfirmed); extrapolated at 0.7697 s beats after 167.973 s",
- "helper_script": "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/bass_roots.py (copy in v1/scripts/agents/t6_bass_roots.py)",
  "bar_seconds": 3.0787,
  "bars": [
   {
@@ -3270,5 +3269,42 @@
     ]
    ]
   }
- }
+ },
+ "events": [
+  {
+   "t": 6.25,
+   "what": "bass first faint pitched notes (G then C at 7.75), -35 to -22 dB re max",
+   "src": "probe.py 0.25 s windows"
+  },
+  {
+   "t": 7.75,
+   "what": "C, -23 dB",
+   "src": "probe.py"
+  },
+  {
+   "t": 75.3,
+   "what": "bass exit: F -17 dB at 75.0, -34 at 75.25, floor (-53) from 75.5",
+   "src": "probe.py"
+  },
+  {
+   "t": 99.75,
+   "what": "bass return: D -22 dB at 99.75, -9 at 100.0 (floor -50 before)",
+   "src": "probe.py"
+  },
+  {
+   "t": 115.0,
+   "what": "bass fades: -18 to -27 dB 114.75 to 115.5, floor (-51) from 115.75 until 121.0",
+   "src": "probe.py"
+  },
+  {
+   "t": 121.0,
+   "what": "first sub thump of six (pyin F#/F, 42.6 Hz per music_reading): no root claim",
+   "src": "probe.py + music_reading.md"
+  }
+ ],
+ "helper_scripts": [
+  "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/bass_roots.py",
+  "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/post.py",
+  "/tmp/claude-0/-home-user-Listener/cb832643-599e-5a16-8ae7-147fc9b20f96/scratchpad/probe.py"
+ ]
 }

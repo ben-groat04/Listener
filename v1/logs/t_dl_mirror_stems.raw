@@ -2,4 +2,4 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
 Selected model is a bag of 1 models. You will see that many progress bars per track.
 Separated tracks will be stored in /home/user/Listener/v1/data/t_dl_mirror/stems_raw/htdemucs
 Separating track v1/data/t_dl_mirror/audio/song.wav
-  0%|                                                                                 | 0.0/239.85 [00:00<?, ?seconds/s]
+  0%|                                                                                 | 0.0/239.85 [00:00<?, ?seconds/s]  2%|█▊                                                                      | 5.85/239.85 [00:58<38:53,  9.97s/seconds]  7%|████▏                                                     | 17.549999999999997/239.85 [01:00<10:03,  2.72s/seconds]

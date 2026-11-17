@@ -55,5 +55,4 @@ out = {"video": a.video, "fps": fps, "frames": i, "threshold": a.thr, "n_cuts": 
        "n_missed_strong_or_medium": sum(1 for c in cuts if not c["in_shots_json"] and c["tier"] != "weak"),
        "n_missed_by_shots_json": sum(1 for c in cuts if not c["in_shots_json"]), "cuts": cuts}
 od = os.path.join(root, f"v1/data/{a.video}/scenes"); json.dump(out, open(os.path.join(od, "dense_cuts.json"), "w"), indent=1)
-print(out["n_cuts"], "candidates;", out["n_missed_strong_or_medium": sum(1 for c in cuts if not c["in_shots_json"] and c["tier"] != "weak"),
-       "n_missed_by_shots_json"], "not in shots.json; shots.json boundaries:", len(sb))
+print(out["n_cuts"], "candidates;", out["n_missed_by_shots_json"], "not in shots.json (", out["n_missed_strong_or_medium"], "strong/medium ); shots.json boundaries:", len(sb))

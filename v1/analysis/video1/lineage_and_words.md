@@ -45,7 +45,7 @@ Public Service Broadcasting (PSB), "Elfstedentocht Part 1" (video1). British spe
 
 **What a listener without Dutch gets**
 - INTERPRETATION: the voice is timbre and rhythm: a formal male-sounding voice (inferred from the text register; sex and timbre are not established) that speaks, stops at changes of state, and returns. The town names become a run of unfamiliar syllables.
-- INTERPRETATION: the date and the numbers survive without Dutch (they are said as digits-like words), so "1963" and "575" come through. The picture helps: town signs are on screen during the list. [REPORT.md]
+- INTERPRETATION: a few numbers may be caught by ear even without Dutch, but the spoken forms are not digit-like, so little is secure. The picture helps: town signs are on screen during the list. [REPORT.md]
 - FACT: automatic transcription of this voice is unreliable. Whisper rendered Belgians as "Dalmatians" in one pass and gave "Thanks for watching" over music, which is not in the video. [words.md]
 
 **Narration as a short reading list**
@@ -62,7 +62,7 @@ Translations are machine or inferred from Whisper output on the full mix, then c
 | 0:28 | "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht." | "What everyone is preparing for, that is the Elfstedentocht." | Fairly sure; clean at 2:44. |
 | 0:51 | "Temperatuur 16 graden beneden nul." | "Temperature 16 degrees below zero." | Sure. This is what the film says; later sources give about -18. [cultural_context.md] |
 | 0:54 | "Een monsterrit van ruim 200 kilometer." | "A monster ride of more than 200 kilometres." | Fairly sure; "monsterrit" is corrected from "monsteret". |
-| 1:19 | "575 wedstrijdrijders, rond 9500 toerrijders, een aantal Zweden, Canadezen, Zwitsers en Belgen." | "575 racing skaters, about 9,500 touring skaters, some Swedes, Canadians, Swiss and Belgians." | Numbers fairly sure; nationalities less so. |
+| 1:19 | "575 wedstrijdrijders, rond 9500 toerrijders, een aantal Zweden, Canadezen, Zwitsers en Belgen." | "575 racing skaters, about 9,500 touring skaters, some Swedes, Canadians, Swiss and Belgians." | Numbers fairly sure (REPORT.md rates them unconfirmed); nationalities less so. |
 | 2:16 to 2:35 | The eleven towns, ending "Leeuwarden." | Sneek, IJlst, Sloten, Stavoren, Hindeloopen, Workum, Bolsward, Harlingen, Franeker, Dokkum, Leeuwarden. | Names heard badly over the band; matched to town signs in the frames. Leeuwarden is sure. |
 | 2:44 | "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht." | as above | Sure. |
 

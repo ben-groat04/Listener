@@ -42,7 +42,7 @@ Public Service Broadcasting (PSB), "Elfstedentocht Part 2" (video2). British spe
 - FACT: the same opening sentences also run through Part 1, so a Dutch listener hears Part 2 as the second telling of a story already begun. [words.md for both videos]
 
 **What a listener without Dutch gets**
-- INTERPRETATION: the voice is a low, dry, band-limited sound (as the measurements show) that appears, speaks in spaced blocks, and goes. Its meaning is mostly hidden; the digits and the repeated words "Elfstedentocht" and "Friesland" may stand out. The picture (a title board "De winter van 1963 in Friesland", colour ice and crowds) supplies much of what the words would.
+- INTERPRETATION: the voice is a dry, band-limited sound (as the measurements show) that appears, speaks in spaced blocks, and goes. Its meaning is mostly hidden; the digits and the repeated words "Elfstedentocht" and "Friesland" may stand out. The picture (a title board "De winter van 1963 in Friesland", colour ice and crowds) supplies much of what the words would.
 - INTERPRETATION: the late fragments of voice-like sound are the same to both audiences, because they carry no words we can read; they are heard as rhythm. [REPORT.md]
 - FACT: automatic transcription fails on this voice and in the second half invents words over music. Whisper produced "without rain" for "without weather" and unrelated words after about 3:20; those are not in the video. [words.md]
 
@@ -56,14 +56,14 @@ Translations are machine or inferred from Whisper output (the vocals-stem runs a
 | 0:51 | "Een schaatsmarathon zonder weer(ga)." | "A skating marathon without ... (weather? or 'without equal')." | Words clear, ending ambiguous. |
 | 0:59 | "Half zes in de ochtend, 200 kilometer door een Friesland waar tegen alleen de allersterkste ... opgewassen." | "Half past five in the morning, 200 km through a Friesland that only the very strongest could match." | "Half zes", "200 kilometer", "Friesland" fairly sure; the last verb is corrected by sense, and other passes misread the hour. |
 | 1:20 | "[Steden] zijn [klaar?] voor de twaalfde Elfstedentocht." | "[The towns are ready?] for the twelfth Elfstedentocht." | Only "for the twelfth Elfstedentocht" is reasonably clear. |
-| 1:24 | "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht." | "What everyone is preparing for, that is the Elfstedentocht." | Sure. |
-| 1:49 | "Temperatuur zestien graden beneden nul." | "Temperature 16 degrees below zero." | Sure. This is what the film says; later sources give about -18. [cultural_context.md] |
+| 1:24 | "Waar iedereen zich voor opmaakt, dat is de Elfstedentocht." | "What everyone is preparing for, that is the Elfstedentocht." | Fairly sure; the last word is rebuilt from garbled passes. |
+| 1:49 | "Temperatuur zestien graden beneden nul." | "Temperature 16 degrees below zero." | Fairly sure ("nul" appears only in an uncommitted run). This is what the film says; later sources give about -18. [cultural_context.md] |
 | 1:52 | "Een monsterrit van ruim 200 kilometer." | "A monster ride of more than 200 kilometres." | Fairly sure ("monstertocht" is an alternative). |
 | 2:26 to 2:36 | "575 wedstrijdrijders, rond 9500 toerrijders, een aantal Zweden, Canadezen, Zwitsers en Belgen." | "575 racing skaters, about 9,500 touring skaters, some Swedes, Canadians, Swiss and Belgians." | Numbers sure; "Canadezen" less so. |
 
 - FACT: after about 2:36 nothing intelligible is spoken; the later "words" in the transcripts are artefacts. [words.md; REPORT.md]
 - FACT: the narrator's 575 and about 9,500 fit the official split of 568 racers and 9,294 tour skaters; the voice's figures are rounder. [elfstedentocht_1963.md]
-- INTERPRETATION on delivery: it reads as a low, dry, formal commentary, spaced around the music. This is inferred from the text register and from measurement of the voice track, not heard by us; sex and age of the speaker are not established. It is a performed commentary in its own time, and we should not call the voice "unperformed". Our doubt is about its sound, not its intent.
+- INTERPRETATION on delivery: it reads as a dry, formal commentary, spaced around the music. This is inferred from the text register and from measurement of the voice track, not heard by us; sex and age of the speaker are not established. It is a performed commentary in its own time, and we should not call the voice "unperformed". Our doubt is about its sound, not its intent.
 
 ## What this note does not claim
 - No named narrator, source film, instrument or influence is claimed. Comparisons are to families of music, not to what the band heard.

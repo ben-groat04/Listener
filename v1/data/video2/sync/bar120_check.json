@@ -1,0 +1,413 @@
+{
+ "video": "video2",
+ "script": "v1/scripts/agents/sync_bar120_video2.py",
+ "args": {
+  "vid": "video2",
+  "bpm": 120.0,
+  "beats_per_bar": 4,
+  "split": 42.0,
+  "tol": 0.1,
+  "perm": 20000,
+  "seed": 20261117,
+  "end_window": [
+   301.8,
+   304.5
+  ],
+  "expect_drums": [
+   302.34,
+   302.59
+  ],
+  "expect_bass": [
+   302.34,
+   302.6,
+   302.85
+  ],
+  "end_tol": 0.03
+ },
+ "grid_used": {
+  "bpm": 120.0,
+  "beat_s": 0.5,
+  "bar_s": 2.0,
+  "beats_per_bar": 4,
+  "beat_offset_s": 0.107,
+  "bar_offset_s": 0.607,
+  "downbeat_beat_index_mod_bar": 1,
+  "kick_weight_by_beat_in_bar": [
+   6598.38,
+   11332.26,
+   5886.04,
+   5107.43
+  ],
+  "downbeat_note": "Bar phase = beat position with the largest summed kick onset strength; an assumption (bar lines could be offset by whole beats).",
+  "kick_ioi": {
+   "n_onsets": 247,
+   "median_ioi_s": 0.505,
+   "implied_bpm_from_median_ioi": 118.8
+  },
+  "kick_ioi_0_to_split": {
+   "n_onsets": 0,
+   "median_ioi_s": null,
+   "implied_bpm_from_median_ioi": null
+  },
+  "kick_ioi_split_to_end": {
+   "n_onsets": 247,
+   "median_ioi_s": 0.505,
+   "implied_bpm_from_median_ioi": 118.8
+  },
+  "phase_fit_whole_track": {
+   "offset_s": 0.107,
+   "n_onsets": 247,
+   "n_within_40ms": 246,
+   "median_resid_s": -0.0,
+   "resid_sd_s": 0.0083
+  },
+  "phase_fit_0_to_42s": null,
+  "phase_fit_42s_to_end": {
+   "offset_s": 0.107,
+   "n_onsets": 247,
+   "n_within_40ms": 246,
+   "median_resid_s": -0.0,
+   "resid_sd_s": 0.0083
+  },
+  "phase_difference_segments_s": null,
+  "free_period_scan_best_period_s": 0.49987,
+  "free_period_scan_best_bpm": 120.031,
+  "first_kick_s": 88.602,
+  "last_kick_s": 302.579,
+  "track_dur_s": 305.95
+ },
+ "cut_test": {
+  "cut_source": "v1/data/video2/scenes/shots.json (n_cuts=86; detector under-detects, LESSONS L8)",
+  "tolerance_s": 0.1,
+  "null": "20000 uniform-random cut sets of the same size in the segment, seed 20261117",
+  "results": {
+   "whole_track": {
+    "bars": {
+     "n_cuts": 86,
+     "within_tol": 12,
+     "frac": 0.14,
+     "null_expected_count": 8.62,
+     "null_expected_frac": 0.1,
+     "analytic_expected_frac": 0.1,
+     "p_one_sided_perm": 0.1514,
+     "summary": "12 of 86 cuts within 0.1 s of a bar line; null expectation 8.6 (p=0.151)"
+    },
+    "beats": {
+     "n_cuts": 86,
+     "within_tol": 41,
+     "frac": 0.477,
+     "null_expected_count": 34.38,
+     "null_expected_frac": 0.4,
+     "analytic_expected_frac": 0.4,
+     "p_one_sided_perm": 0.0886,
+     "summary": "41 of 86 cuts within 0.1 s of a beat line; null expectation 34.4 (p=0.089)"
+    }
+   },
+   "0_to_42s": {
+    "bars": {
+     "n_cuts": 10,
+     "within_tol": 0,
+     "frac": 0.0,
+     "null_expected_count": 0.99,
+     "null_expected_frac": 0.099,
+     "analytic_expected_frac": 0.1,
+     "p_one_sided_perm": 1.0,
+     "summary": "0 of 10 cuts within 0.1 s of a bar line; null expectation 1.0 (p=1.000)"
+    },
+    "beats": {
+     "n_cuts": 10,
+     "within_tol": 7,
+     "frac": 0.7,
+     "null_expected_count": 4.02,
+     "null_expected_frac": 0.402,
+     "analytic_expected_frac": 0.4,
+     "p_one_sided_perm": 0.0538,
+     "summary": "7 of 10 cuts within 0.1 s of a beat line; null expectation 4.0 (p=0.054)"
+    }
+   },
+   "42s_to_end": {
+    "bars": {
+     "n_cuts": 76,
+     "within_tol": 12,
+     "frac": 0.158,
+     "null_expected_count": 7.62,
+     "null_expected_frac": 0.1,
+     "analytic_expected_frac": 0.1,
+     "p_one_sided_perm": 0.0764,
+     "summary": "12 of 76 cuts within 0.1 s of a bar line; null expectation 7.6 (p=0.076)"
+    },
+    "beats": {
+     "n_cuts": 76,
+     "within_tol": 34,
+     "frac": 0.447,
+     "null_expected_count": 30.43,
+     "null_expected_frac": 0.4,
+     "analytic_expected_frac": 0.4,
+     "p_one_sided_perm": 0.2317,
+     "summary": "34 of 76 cuts within 0.1 s of a beat line; null expectation 30.4 (p=0.232)"
+    }
+   }
+  }
+ },
+ "ending_onsets": {
+  "window_s": [
+   301.8,
+   304.5
+  ],
+  "drums_stem": {
+   "source": "v1/data/video2/stems/drums.mp3",
+   "band_hz": null,
+   "method": "10 ms hop, 20 ms RMS window, dB; onset = local max of 30 ms rise > 4 dB (time of steepest 10 ms rise among frames within 20 dB of the following peak, so noise-floor ramps do not count), 0.1 s refractory; offsets = local max of 60 ms fall > 20 dB (time of steepest 10 ms fall)",
+   "onsets": [
+    {
+     "t_s": 302.323,
+     "level_after_db": -11.0,
+     "rise_db_30ms": 56.8
+    },
+    {
+     "t_s": 302.572,
+     "level_after_db": -16.8,
+     "rise_db_30ms": 41.9
+    },
+    {
+     "t_s": 302.892,
+     "level_after_db": -59.2,
+     "rise_db_30ms": 4.9
+    }
+   ],
+   "offsets": [],
+   "vs_expected": {
+    "expected_matches": [
+     {
+      "expected_s": 302.34,
+      "nearest_found_s": 302.323,
+      "diff_s": -0.017,
+      "match": true
+     },
+     {
+      "expected_s": 302.59,
+      "nearest_found_s": 302.572,
+      "diff_s": -0.018,
+      "match": true
+     }
+    ],
+    "unexpected_extra_onsets_s": [
+     302.892
+    ],
+    "n_found": 3,
+    "n_expected": 2
+   },
+   "expected_times_that_are_note_offsets_instead": []
+  },
+  "bass_stem": {
+   "source": "v1/data/video2/stems/bass.mp3",
+   "band_hz": null,
+   "method": "10 ms hop, 20 ms RMS window, dB; onset = local max of 30 ms rise > 4 dB (time of steepest 10 ms rise among frames within 20 dB of the following peak, so noise-floor ramps do not count), 0.1 s refractory; offsets = local max of 60 ms fall > 20 dB (time of steepest 10 ms fall)",
+   "onsets": [
+    {
+     "t_s": 302.273,
+     "level_after_db": -47.0,
+     "rise_db_30ms": 42.6
+    },
+    {
+     "t_s": 302.612,
+     "level_after_db": -15.7,
+     "rise_db_30ms": 4.8
+    }
+   ],
+   "offsets": [
+    {
+     "t_s": 302.902,
+     "fall_db_60ms": 40.1
+    }
+   ],
+   "vs_expected": {
+    "expected_matches": [
+     {
+      "expected_s": 302.34,
+      "nearest_found_s": 302.273,
+      "diff_s": -0.067,
+      "match": false
+     },
+     {
+      "expected_s": 302.6,
+      "nearest_found_s": 302.612,
+      "diff_s": 0.012,
+      "match": true
+     },
+     {
+      "expected_s": 302.85,
+      "nearest_found_s": 302.612,
+      "diff_s": -0.238,
+      "match": false
+     }
+    ],
+    "unexpected_extra_onsets_s": [
+     302.273
+    ],
+    "n_found": 2,
+    "n_expected": 3
+   },
+   "expected_times_that_are_note_offsets_instead": [
+    302.85
+   ]
+  },
+  "full_mix_song_wav": {
+   "source": "v1/data/video2/audio/song.wav",
+   "band_hz": null,
+   "method": "10 ms hop, 20 ms RMS window, dB; onset = local max of 30 ms rise > 4 dB (time of steepest 10 ms rise among frames within 20 dB of the following peak, so noise-floor ramps do not count), 0.1 s refractory; offsets = local max of 60 ms fall > 20 dB (time of steepest 10 ms fall)",
+   "onsets": [
+    {
+     "t_s": 302.323,
+     "level_after_db": -7.9,
+     "rise_db_30ms": 38.1
+    },
+    {
+     "t_s": 302.572,
+     "level_after_db": -11.3,
+     "rise_db_30ms": 14.6
+    },
+    {
+     "t_s": 302.961,
+     "level_after_db": -49.6,
+     "rise_db_30ms": 5.4
+    }
+   ],
+   "offsets": [
+    {
+     "t_s": 302.862,
+     "fall_db_60ms": 26.7
+    },
+    {
+     "t_s": 304.239,
+     "fall_db_60ms": 22.8
+    }
+   ],
+   "vs_expected_union": {
+    "expected_matches": [
+     {
+      "expected_s": 302.34,
+      "nearest_found_s": 302.323,
+      "diff_s": -0.017,
+      "match": true
+     },
+     {
+      "expected_s": 302.59,
+      "nearest_found_s": 302.572,
+      "diff_s": -0.018,
+      "match": true
+     },
+     {
+      "expected_s": 302.6,
+      "nearest_found_s": 302.572,
+      "diff_s": -0.028,
+      "match": true
+     },
+     {
+      "expected_s": 302.85,
+      "nearest_found_s": 302.961,
+      "diff_s": 0.111,
+      "match": false
+     }
+    ],
+    "unexpected_extra_onsets_s": [
+     302.961
+    ],
+    "n_found": 3,
+    "n_expected": 4
+   },
+   "expected_times_that_are_note_offsets_instead": [
+    302.85
+   ]
+  },
+  "full_mix_song_wav_below_250hz": {
+   "source": "v1/data/video2/audio/song.wav",
+   "band_hz": [
+    30,
+    250
+   ],
+   "method": "10 ms hop, 20 ms RMS window, dB; onset = local max of 30 ms rise > 4 dB (time of steepest 10 ms rise among frames within 20 dB of the following peak, so noise-floor ramps do not count), 0.1 s refractory; offsets = local max of 60 ms fall > 20 dB (time of steepest 10 ms fall)",
+   "onsets": [
+    {
+     "t_s": 302.323,
+     "level_after_db": -7.9,
+     "rise_db_30ms": 39.1
+    },
+    {
+     "t_s": 302.572,
+     "level_after_db": -11.3,
+     "rise_db_30ms": 14.5
+    },
+    {
+     "t_s": 302.961,
+     "level_after_db": -49.9,
+     "rise_db_30ms": 6.3
+    }
+   ],
+   "offsets": [
+    {
+     "t_s": 302.862,
+     "fall_db_60ms": 27.1
+    }
+   ],
+   "vs_expected_union": {
+    "expected_matches": [
+     {
+      "expected_s": 302.34,
+      "nearest_found_s": 302.323,
+      "diff_s": -0.017,
+      "match": true
+     },
+     {
+      "expected_s": 302.59,
+      "nearest_found_s": 302.572,
+      "diff_s": -0.018,
+      "match": true
+     },
+     {
+      "expected_s": 302.6,
+      "nearest_found_s": 302.572,
+      "diff_s": -0.028,
+      "match": true
+     },
+     {
+      "expected_s": 302.85,
+      "nearest_found_s": 302.961,
+      "diff_s": 0.111,
+      "match": false
+     }
+    ],
+    "unexpected_extra_onsets_s": [
+     302.961
+    ],
+    "n_found": 3,
+    "n_expected": 4
+   },
+   "expected_times_that_are_note_offsets_instead": [
+    302.85
+   ]
+  },
+  "tolerance_s": 0.03
+ },
+ "verdict": {
+  "cuts_rhythm_locked_whole_track": "rhythm-locked not supported (alignment test at 0.10 s tolerance; seeded permutation null; shot detector is the coarse one and under-detects cuts, LESSONS L8, so a null result is weak evidence of absence)",
+  "cuts_rhythm_locked_by_segment": {
+   "whole_track": {
+    "bars": "not supported: 12 of 86 cuts within 0.1 s of a bar line; null expectation 8.6 (p=0.151)",
+    "beats": "not supported: 41 of 86 cuts within 0.1 s of a beat line; null expectation 34.4 (p=0.089)"
+   },
+   "0_to_42s": {
+    "bars": "not supported: 0 of 10 cuts within 0.1 s of a bar line; null expectation 1.0 (p=1.000)",
+    "beats": "not supported: 7 of 10 cuts within 0.1 s of a beat line; null expectation 4.0 (p=0.054)"
+   },
+   "42s_to_end": {
+    "bars": "not supported: 12 of 76 cuts within 0.1 s of a bar line; null expectation 7.6 (p=0.076)",
+    "beats": "not supported: 34 of 76 cuts within 0.1 s of a beat line; null expectation 30.4 (p=0.232)"
+   }
+  },
+  "grid_basis": "grid fitted from drum-stem kicks over the whole track; kicks may be sparse or absent before the split, in which case the early-segment grid is an extrapolation (see phase_fit and n_onsets)",
+  "ending_drums_onsets": "onsets match expected (all within 0.03 s), extras: [302.892]",
+  "ending_bass_onsets": "discrepancy: [{\"expected_s\": 302.34, \"nearest_found_s\": 302.273, \"diff_s\": -0.067, \"match\": false}, {\"expected_s\": 302.85, \"nearest_found_s\": 302.612, \"diff_s\": -0.238, \"match\": false}]; extras: [302.273]; expected times that coincide with a note OFFSET (fall > 20 dB), not an onset: [302.85]",
+  "ending_full_mix_onsets": "discrepancy: [{\"expected_s\": 302.85, \"nearest_found_s\": 302.961, \"diff_s\": 0.111, \"match\": false}]; extras: [302.961]; expected times that coincide with a note OFFSET (fall > 20 dB), not an onset: [302.85] (full mix; low-band-only version listed separately)"
+ }
+}

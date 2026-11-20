@@ -76,6 +76,7 @@ def _factors(t, songs, dim=32, gap=1800, win=4):
     return F, r
 
 SEG_DIM = 16
+BETA2 = float(os.environ.get('B_BETA2', 10.0))
 def _seg_score(Zc, M, mask=None, mode="topk"):
     """Zc: (n, nseg, d). For each candidate segment: log kernel density over (weighted) train segments; average the best 2 segments
     (= 'the parts of this song that sit in familiar territory')."""
@@ -123,14 +124,16 @@ def _fit(train, meta, cutoff):
     # ---------- larger_clap_music terms (same recipe) ----------
     if len(cvec2) >= 30:
         allv = np.array([cvec2[s] for s in S.index[S.hasc2]])
-        pca2 = PCA(n_components=min(48, len(allv) - 1), whiten=True, random_state=0).fit(allv); M["pca2"] = pca
-        if M["ok"]:
+        pca2 = PCA(n_components=min(48, len(allv) - 1), whiten=True, random_state=0).fit(allv); M["pca2"] = pca2
+        mat2 = S[(S.age >= 90) & S.hasc2]
+        if len(mat2) >= 60 and mat2.love.nunique() == 2:
+            mat = mat2
             X = pca2.transform(np.array([cvec2[s] for s in mat.index])); w = 0.5 ** (mat.age.values / 730.0)
             lr = LogisticRegression(C=0.02, max_iter=500).fit(X, mat.love.values, sample_weight=w)
             sc = lr.decision_function(X); M["lr2"] = lr; M["lr2_mu"], M["lr2_sd"] = sc.mean(), sc.std() + 1e-9
         al = S[S.hasc2]
         M["dV2"] = np.array([cvec2[s] for s in al.index]); M["dW2"] = np.log1p(al.plays.values)
-        km = np.exp(10 * (M["dV2"] @ M["dV2"].T - 1)) * M["dW2"][None, :]; np.fill_diagonal(km, 0)
+        km = np.exp(BETA2 * (M["dV2"] @ M["dV2"].T - 1)) * M["dW2"][None, :]; np.fill_diagonal(km, 0)
         loo = np.log(km.sum(1) + 1e-6); M["den2_mu"], M["den2_sd"] = loo.mean(), loo.std() + 1e-9
     # ---------- hand-feature density ----------
     if len(hvec) >= 60:
@@ -190,6 +193,8 @@ def _fit(train, meta, cutoff):
         for name in ("cp", "cpl"):
             sc = _cp_score(M, Pcv, name, loo=True)
             M["cp_stat"][name] = (sc.mean(), sc.std() + 1e-9)
+    M["alb"] = t.groupby("albumId").size(); M["artn"] = t.drop_duplicates("song").groupby("artist").size()
+    M["arta"] = t.groupby("artist").size()
     d2 = t[["t", "artistIds"]].explode("artistIds").dropna()
     w = 0.5 ** ((cutoff - d2.t).dt.days.values / 180.0)
     M["art"] = pd.Series(w, index=d2.artistIds.values).groupby(level=0).sum()
@@ -225,6 +230,13 @@ def _components(train, cands, meta, cutoff):
             mu, sd, sp = M["seg"]; A = np.array([sv[cands.trackId.values[i]] for i in idx])
             Zc = sp.transform(np.clip((A.reshape(-1, A.shape[-1]) - mu) / sd, -5, 5)).reshape(len(idx), A.shape[1], -1)
             sden[idx] = (_seg_score(Zc, M) - M["sden_mu"]) / M["sden_sd"]
+    V2 = np.zeros((n, 1024), np.float32); h2 = np.zeros(n, bool); lc = _vecs(meta, _lc())
+    for i, tid in enumerate(cands.trackId.values):
+        if tid in lc: V2[i] = _unit(lc[tid]); h2[i] = True
+    lr2 = np.zeros(n); den2 = np.zeros(n)
+    if "dV2" in M and h2.any():
+        den2[h2] = (np.log((np.exp(BETA2 * (V2[h2] @ M["dV2"].T - 1)) * M["dW2"][None, :]).sum(1) + 1e-6) - M["den2_mu"]) / M["den2_sd"]
+        if "lr2" in M: lr2[h2] = (M["lr2"].decision_function(M["pca2"].transform(V2[h2])) - M["lr2_mu"]) / M["lr2_sd"]
     lr = np.zeros(n); den = np.zeros(n); hden = np.zeros(n); cp = np.zeros(n); cpl = np.zeros(n)
     if "lr" in M and hc.any():
         lr[hc] = (M["lr"].decision_function(M["pca"].transform(V[hc])) - M["lr_mu"]) / M["lr_sd"]
@@ -241,7 +253,10 @@ def _components(train, cands, meta, cutoff):
             for name, arr in (("cp", cp), ("cpl", cpl)):
                 m_, s_ = M["cp_stat"][name]; arr[b] = (_cp_score(M, P, name) - m_) / s_
     art = np.array([max([M["art"].get(a, 0.0) for a in ids], default=0.0) for ids in cands.artistIds])
-    out.update(sden=sden, den=den, lr=lr, hden=hden, cp=cp, cpl=cpl, art=(np.log1p(art) - M["art_mu"]) / M["art_sd"])
+    out["alb"] = np.log1p(cands.albumId.map(M["alb"]).fillna(0).values)
+    out["artn"] = np.log1p(cands.artist.map(M["artn"]).fillna(0).values)
+    out["arta"] = np.log1p(cands.artist.map(M["arta"]).fillna(0).values)
+    out.update(den2=den2, lr2=lr2, sden=sden, den=den, lr=lr, hden=hden, cp=cp, cpl=cpl, art=(np.log1p(art) - M["art_mu"]) / M["art_sd"])
     return out
 
 def _tie(c): return (c.trackId.values % 1000003) / 1e12

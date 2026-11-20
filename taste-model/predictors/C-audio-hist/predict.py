@@ -15,7 +15,7 @@ HAND = Path("/home/user/Listener/taste-model/.cache/shared/hand-audio-feat-v1/fe
 USE = dict(clap=True, hand=True, text=True, pcs=8)
 for _kv in os.environ.get("C_USE", "").split(","):
     if "=" in _kv: _k, _v = _kv.split("="); USE[_k] = int(_v)
-TARGET = os.environ.get("C_TARGET", "love"); LAM_ENV = float(os.environ.get("C_LAM", "1.0"))
+TARGET = os.environ.get("C_TARGET", "both"); LAM_ENV = float(os.environ.get("C_LAM", "1.0"))
 def _aud():
     if "aud" not in _E:
         try:

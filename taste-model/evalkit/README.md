@@ -12,7 +12,7 @@
   * tried pool (primary): loved vs tried-but-not-loved. Measures "which of the songs I try do I love".
   * open pool (end-goal proxy): tried songs + 5x as many decoys (~20x the loved songs): real songs by the user's top-300 artists or
     related artists that the user NEVER played (checked over the full history), already released by the end of the fold window
-    (stats.fm album dates), from `decoy_universe.csv.gz` (built once by `make_decoys.py`, 59k tracks, max 200 tracks/artist).
+    (stats.fm album dates), from `.cache/decoy_universe.csv.gz` (git-ignored, regenerable: `python3 -m evalkit.make_decoys`, 59k tracks, max 200 tracks/artist).
     Decoys are matched to the tried songs on (new-artist flag x Spotify-popularity decile), so popularity does not separate them
     (popularity baseline = chance). Decoy = "not tried", NOT "would hate": this is a weaker, separate metric.
 * What a predictor sees: `train` (streams < C), `cands` (song, trackId, albumId, artistIds, artist, trackName), `meta` indexed by

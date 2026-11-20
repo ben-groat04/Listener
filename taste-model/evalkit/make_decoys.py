@@ -1,5 +1,5 @@
 """Build the open-universe decoy universe (real songs the user never played) from the public stats.fm API.
-    python -m evalkit.make_decoys            # fetch (cached in .cache/decoy_raw) and write evalkit/decoy_universe.csv.gz
+    python -m evalkit.make_decoys            # fetch (cached in .cache/decoy_raw) and write .cache/decoy_universe.csv.gz
 Build-time only: this reads the full listening history to choose seed artists and to exclude anything the user ever
 played, so builders must not call it with their own seeds. Decoys: tracks of (a) the user's 300 most-played artists
 (unplayed tracks by artists they love) and (b) up to 6 'related' artists for each of the top 150 (mostly new artists).
@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 from . import data
 
-API = "https://api.stats.fm/api/v1"; RAW = data.ROOT / ".cache" / "decoy_raw"; OUT = data.ROOT / "evalkit" / "decoy_universe.csv.gz"
+API = "https://api.stats.fm/api/v1"; RAW = data.ROOT / ".cache" / "decoy_raw"; OUT = data.ROOT / ".cache" / "decoy_universe.csv.gz"
 N_SEED, N_REL_SEEDS, N_REL = 300, 150, 6
 
 def get(path, tries=4):

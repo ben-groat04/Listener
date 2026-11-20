@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STREAMS = ROOT.parent / "spotify-liked-songs/.cache/streams.jsonl"
 TOP_TRACKS = ROOT.parent / "spotify-liked-songs/.cache/top_tracks.json"
 SEALED_DIR = ROOT / ".sealed"
-DECOYS = ROOT / "evalkit" / "decoy_universe.csv.gz"  # build-time resource: builders must not read it
+DECOYS = ROOT / ".cache" / "decoy_universe.csv.gz"  # build-time resource: builders must not read it
 DECOY_RATIO = 5     # decoys per tried song in the open pool (~20x the loved songs at a ~25% love rate); label-independent
 ID_SALT = "evalkit-v2"
 

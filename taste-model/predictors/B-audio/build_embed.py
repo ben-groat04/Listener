@@ -1,16 +1,19 @@
+"""usage: python3 build_embed.py WORKDIR  -> .cache/shared/clap-preview-emb/emb.pkl (needs build_dl.py output in WORKDIR/audio)"""
+import sys; W=sys.argv[1]
 import numpy as np, os, json, hashlib, time, torch, librosa, pickle
 torch.set_num_threads(1)
 from transformers import ClapModel, ClapProcessor
 m=ClapModel.from_pretrained("laion/clap-htsat-unfused").eval(); p=ClapProcessor.from_pretrained("laion/clap-htsat-unfused")
-urls=json.load(open("order.json")); key=lambda u: hashlib.md5(u.encode()).hexdigest()
+urls=json.load(open(W+"/urls.json")); key=lambda u: hashlib.md5(u.encode()).hexdigest()
+EMB="/home/user/Listener/taste-model/.cache/shared/clap-preview-emb/emb.pkl"; os.makedirs(os.path.dirname(EMB),exist_ok=True)
 out={}; 
-if os.path.exists("emb.pkl"): out=pickle.load(open("emb.pkl","rb"))
-def save(): pickle.dump(out,open("emb.tmp","wb")); os.replace("emb.tmp","emb.pkl")
+if os.path.exists(EMB): out=pickle.load(open(EMB,"rb"))
+def save(): pickle.dump(out,open(EMB+".tmp","wb")); os.replace(EMB+".tmp",EMB)
 pending=[u for u in urls if u not in out]; n=0
 while pending:
     nxt=[]
     for u in pending:
-        f=f"audio/{key(u)}.npy"
+        f=f"{W}/audio/{key(u)}.npy"
         if os.path.exists(f+".bad"): out[u]=None; continue
         if not os.path.exists(f): nxt.append(u); continue
         a=np.load(f).astype(np.float32)/32768

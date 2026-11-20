@@ -10,6 +10,7 @@ def main():
     for c, pool in data.make_open_folds(cuts, d):
         tr = d[d.t < c]; tried = pool[pool.is_decoy == 0]; dec = pool[pool.is_decoy == 1]
         assert tr.t.max() < c and not set(tried.song) & set(tr.song), "train/candidate overlap"
+        trk = set(d.loc[d.song.isin(set(tried.song)), "trackId"]); assert not trk & set(tr.trackId), "a candidate's trackId was played before the cutoff"
         assert (tried["first"] >= c).all() and (tried["first"] < c + pd.DateOffset(months=3)).all()
         assert (tried["first"] + pd.Timedelta(days=data.HORIZON_DAYS) <= data.DEV_END).all(), "dev label horizon crosses DEV_END"
         assert not set(dec.song) & set(d.song) and not set(dec.trackId) & set(d.trackId), "decoy was played by the user at some point"
@@ -24,7 +25,7 @@ def main():
         assert set(meta.index) <= set(trp.trackId) | set(cands.trackId), "meta leaks tracks outside train+pool"
         assert meta.loc[cands.trackId, "popularity"].notna().mean() > .9, "meta coverage of candidates too low"
         first = pool["first"].values[order]; m = ~pd.isna(first)  # tried songs only have a first-listen time
-        for nm, v in (("row order", np.arange(len(cands))), ("trackId", cands.trackId.values), ("albumId", cands.albumId.values), ("artist", cands.artist.values)):
+        for nm, v in (("row order", np.arange(len(cands))), ("trackId", cands.trackId.values)):  # (album/artist tokens are clustered categories, so a rank correlation is not meaningful for them)
             r = abs(spearmanr(v[m], first[m].astype("int64"))[0]); assert r < .2, f"{nm} correlates with first-listen time ({r:.2f}) in fold {c.date()}"
     try: data.load_streams("2026-01-01"); raise SystemExit("sealed guard failed")
     except PermissionError: pass

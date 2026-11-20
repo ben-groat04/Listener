@@ -29,12 +29,27 @@ def song_key(name: str) -> str:
 
 
 def _load_all() -> pd.DataFrame:
+    """All streams, chronological, with a song identity that is robust to stats.fm quirks: the same trackId can appear
+    under different artist ids or as 'unknown track name' (3% of plays), so song keys (title|primary artist) and trackIds
+    are linked into connected components; every stream of a component gets the same song string (the earliest named key)."""
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.csgraph import connected_components
     d = pd.read_json(STREAMS, lines=True)
     d["t"] = pd.to_datetime(d.endTime).dt.tz_localize(None)
     d["artist"] = d.artistIds.map(lambda a: a[0] if len(a) else -1)
-    d["song"] = d.trackName.map(song_key) + "|" + d.artist.astype(str)
+    d = d.sort_values("t", kind="stable").reset_index(drop=True)
+    unk = d.trackName.str.lower().str.strip().isin(["unknown track name", ""])
+    key = np.where(unk, "unknown" + d.trackId.astype(str), d.trackName.map(song_key)) ; key = pd.Series(key) + "|" + d.artist.astype(str)
+    kc, ku = pd.factorize(key); tc, tu = pd.factorize(d.trackId)
+    n = len(ku) + len(tu)
+    _, comp = connected_components(coo_matrix((np.ones(len(d)), (kc, tc + len(ku))), shape=(n, n)), directed=False)
+    d["_comp"] = comp[kc]; d["_key"] = key.values
+    named_first = d[~unk].drop_duplicates("_comp").set_index("_comp")["_key"]   # earliest named stream's key
+    any_first = d.drop_duplicates("_comp").set_index("_comp")["_key"]
+    canon = any_first.copy(); canon.loc[named_first.index] = named_first
+    d["song"] = d._comp.map(canon)
     cols = ["t", "trackId", "albumId", "artistIds", "artist", "trackName", "song", "playedMs", "contextId"]
-    return d[cols].sort_values("t", kind="stable").reset_index(drop=True)
+    return d[cols]
 
 
 def load_streams(until=None, _sealed=False) -> pd.DataFrame:
@@ -52,7 +67,7 @@ def load_meta() -> pd.DataFrame:
     rows = []
     for r in json.load(open(TOP_TRACKS)):
         t = r["track"]
-        rows.append(dict(trackId=t["id"], durationMs=t.get("durationMs"), explicit=t.get("explicit"),
+        rows.append(dict(trackId=t["id"], name=t.get("name"), durationMs=t.get("durationMs"), explicit=t.get("explicit"),
                          popularity=t.get("spotifyPopularity"),
                          spotifyId=(t.get("externalIds", {}).get("spotify") or [None])[0],
                          previewUrl=t.get("spotifyPreview") or t.get("appleMusicPreview"),
@@ -128,25 +143,31 @@ def make_open_folds(cutoffs, all_streams=None):
     history incl. sealed era) and that were already released by the end of the fold window. Decoys get love=0 and are
     labelled 'not tried' (not 'would hate'). Sampling is seeded by the cutoff and independent of any label."""
     d = _load_all() if all_streams is None else all_streams
-    u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId)
+    u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId); pm = load_meta().popularity
     u = u[~u.song.isin(played_songs) & ~u.trackId.isin(played_tracks)].drop_duplicates("song")
     for c, f in make_folds(cutoffs, d):
         end = c + pd.DateOffset(months=3)
-        elig = u[u.release < end]
-        n = min(len(elig), DECOY_RATIO * len(f))
-        dec = elig.sample(n, random_state=int(c.strftime("%Y%m%d"))).copy()
         seen = set(d.loc[d.t < c, "artist"])
-        dec["new_artist"] = ~dec.artist.isin(seen)
-        dec = dec.assign(love=0, strong=0, plays90=0, days90=0, love_4_2=0, love_10_4=0, cutoff=c, is_decoy=1)
+        elig = u[u.release < end].copy(); elig["new_artist"] = ~elig.artist.isin(seen)
+        # popularity/new-artist matching: decoys follow the tried songs' joint (new-artist flag, popularity decile) distribution,
+        # so neither Spotify popularity nor 'this artist is unfamiliar' separates decoys from tried songs by construction.
+        # The target depends only on the tried songs' public metadata, never on love labels.
+        f = f.assign(_pb=(pm.reindex(f.trackId).fillna(0).values // 10).clip(0, 9)); elig["_pb"] = (elig.popularity.fillna(0) // 10).clip(0, 9)
+        parts = []
+        for (na, pb), g in f.groupby(["new_artist", "_pb"]):
+            pool_ = elig[(elig.new_artist == na) & (elig._pb == pb)]
+            parts.append(pool_.sample(min(len(pool_), DECOY_RATIO * len(g)), random_state=int(c.strftime("%Y%m%d")) + int(pb)))
+        dec = pd.concat(parts).copy()
+        dec = dec.assign(first=pd.NaT, love=0, strong=0, plays90=0, days90=0, love_4_2=0, love_10_4=0, cutoff=c, is_decoy=1)
         tried = f.assign(is_decoy=0)
-        cols = ["song", "trackId", "albumId", "artistIds", "artist", "trackName", "cutoff", "new_artist", "is_decoy",
+        cols = ["song", "trackId", "albumId", "artistIds", "artist", "trackName", "first", "cutoff", "new_artist", "is_decoy",
                 "love", "strong", "plays90", "days90", "love_4_2", "love_10_4"]
         yield c, pd.concat([tried[cols], dec[cols]], ignore_index=True)
 
 def load_meta_all() -> pd.DataFrame:
     """Meta for every track the harness can show (user's tracks + decoys), indexed by RAW trackId (internal)."""
     m = load_meta(); u = _decoys().drop_duplicates("trackId").set_index("trackId")
-    u = u[["durationMs", "explicit", "popularity", "spotifyId", "previewUrl", "albumName", "artistNames"]]
+    u = u.assign(name=u.trackName)[["name", "durationMs", "explicit", "popularity", "spotifyId", "previewUrl", "albumName", "artistNames"]]
     return pd.concat([m, u[~u.index.isin(m.index)]])
 
 def public_view(pool: pd.DataFrame, meta_all: pd.DataFrame, train_raw: pd.DataFrame, seed=0):

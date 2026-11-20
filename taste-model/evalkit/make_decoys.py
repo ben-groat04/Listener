@@ -45,7 +45,7 @@ def main():
         r = fetch_artist(a)
         rd = {al["id"]: al.get("releaseDate") for al in r["albums"]}
         for t in r["tracks"]:
-            dates = [rd.get(al["id"]) for al in t.get("albums", []) if rd.get(al["id"])]
+            dates = [rd.get(al["id"]) for al in t.get("albums", []) if rd.get(al["id"]) and 0 < rd.get(al["id"]) < 4.1e12]  # drop junk dates
             if not dates or not t.get("artists"): continue
             rows.append(dict(trackId=t["id"], trackName=t["name"], albumId=t["albums"][0]["id"], albumName=t["albums"][0]["name"],
                              artistIds=[x["id"] for x in t["artists"]], artistNames=[x["name"] for x in t["artists"]],

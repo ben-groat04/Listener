@@ -23,6 +23,9 @@ _E = {}
 def _seg():
     if "s" not in _E: _E["s"] = _load(os.environ.get("B_SEG", ROOT + "hand-audio-feat-v1/seg.pkl"))
     return _E["s"]
+def _lc():
+    if "l" not in _E: _E["l"] = _load(os.environ.get("B_LC", ROOT + "larger-clap-music-mid-v1/emb.pkl"))
+    return _E["l"]
 def _clap():
     if "c" not in _E: _E["c"] = _load(os.environ.get("B_EMB", ROOT + "clap-preview-emb/emb.pkl"))
     return _E["c"]
@@ -100,8 +103,8 @@ def _fit(train, meta, cutoff):
     S["age"] = (cutoff - S["first"]).dt.days
     S["rot"] = t[t.t >= cutoff - pd.Timedelta(days=120)].groupby("song").size().reindex(S.index).fillna(0)
     tr = t.drop_duplicates(["song", "trackId"])[["song", "trackId"]]
-    cvec = _song_vecs(tr, cv); hvec = _song_vecs(tr, hv, norm=False)
-    S["hasc"] = S.index.isin(list(cvec)); S["hash"] = S.index.isin(list(hvec))
+    cvec = _song_vecs(tr, cv); cvec2 = _song_vecs(tr, _vecs(meta, _lc())); hvec = _song_vecs(tr, hv, norm=False)
+    S["hasc"] = S.index.isin(list(cvec)); S["hasc2"] = S.index.isin(list(cvec2)); S["hash"] = S.index.isin(list(hvec))
     M = {"S": S, "cvec": cvec}
     mat = S[(S.age >= 90) & S.hasc]
     M["ok"] = len(mat) >= 60 and mat.love.nunique() == 2
@@ -117,6 +120,18 @@ def _fit(train, meta, cutoff):
         M["dV"] = np.array([cvec[s] for s in al.index]); M["dW"] = np.log1p(al.plays.values)
         km = np.exp(10 * (M["dV"] @ M["dV"].T - 1)) * M["dW"][None, :]; np.fill_diagonal(km, 0)
         loo = np.log(km.sum(1) + 1e-6); M["den_mu"], M["den_sd"] = loo.mean(), loo.std() + 1e-9
+    # ---------- larger_clap_music terms (same recipe) ----------
+    if len(cvec2) >= 30:
+        allv = np.array([cvec2[s] for s in S.index[S.hasc2]])
+        pca2 = PCA(n_components=min(48, len(allv) - 1), whiten=True, random_state=0).fit(allv); M["pca2"] = pca
+        if M["ok"]:
+            X = pca2.transform(np.array([cvec2[s] for s in mat.index])); w = 0.5 ** (mat.age.values / 730.0)
+            lr = LogisticRegression(C=0.02, max_iter=500).fit(X, mat.love.values, sample_weight=w)
+            sc = lr.decision_function(X); M["lr2"] = lr; M["lr2_mu"], M["lr2_sd"] = sc.mean(), sc.std() + 1e-9
+        al = S[S.hasc2]
+        M["dV2"] = np.array([cvec2[s] for s in al.index]); M["dW2"] = np.log1p(al.plays.values)
+        km = np.exp(10 * (M["dV2"] @ M["dV2"].T - 1)) * M["dW2"][None, :]; np.fill_diagonal(km, 0)
+        loo = np.log(km.sum(1) + 1e-6); M["den2_mu"], M["den2_sd"] = loo.mean(), loo.std() + 1e-9
     # ---------- hand-feature density ----------
     if len(hvec) >= 60:
         hs = S.index[S.hash]; H = np.array([hvec[s] for s in hs])

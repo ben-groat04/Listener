@@ -3,7 +3,8 @@ inside train only); features of each example are computed from streams strictly 
 P(love | what I knew about the user when the song first appeared). The same feature function is applied to candidates at t0=cutoff.
 Features: multi-scale artist/album history, artist exploration and love-rate history, metadata, title/album-name cues, a hashed
 char-ngram text model (out-of-fold stacked)."""
-import numpy as np, pandas as pd, re
+import numpy as np, pandas as pd, re, os
+V=os.environ.get("AV","")
 import lightgbm as lgb
 from evalkit.data import song_table
 
@@ -15,8 +16,9 @@ def _days(t): return t.values.astype("datetime64[s]").astype(np.int64) / 86400.0
 class Hist:
     def __init__(self, train, st):
         self.t0 = _days(train.t)
-        ex = pd.DataFrame({"d": _days(train.t), "a": train.artistIds.values, "dayi": np.floor(_days(train.t))}).explode("a").dropna(subset=["a"])
-        self.art = {a: (g.d.values, g.dayi.values) for a, g in ex.groupby("a")}   # sorted since train is time-sorted
+        ex = pd.DataFrame({"d": _days(train.t), "a": train.artistIds.values, "dayi": np.floor(_days(train.t)), "pm": train.playedMs.values / 1000.0}).explode("a").dropna(subset=["a"])
+        self.art = {a: (g.d.values, g.dayi.values) for a, g in ex.groupby("a")}
+        self.artpm = {a: np.concatenate([[0.0], np.cumsum(g.pm.values.astype(float))]) for a, g in ex.groupby("a")}   # sorted since train is time-sorted
         al = pd.DataFrame({"d": _days(train.t), "al": train.albumId.values, "s": train.song.values})
         self.alb = {k: (g.d.values, g.s.values) for k, g in al.groupby("al")}
         # artist -> arrays of (first day, love, song) for songs, love only trusted when mature (first+90 <= t)
@@ -39,9 +41,12 @@ class Hist:
                 r["adays"] = len(np.unique(dy[:i])) if i else 0
                 r["agap"] = (t - dd[-1]) if i else 9999.0
                 r["aage"] = (t - dd[0]) if i else 0.0
+                cs = self.artpm[a]; j = np.searchsorted(d, t - 365, "left")
+                r["apm"] = cs[i] / i if i else 0.0
+                r["apm365"] = (cs[i] - cs[j]) / (i - j) if i > j else 0.0
                 r["adays90"] = len(np.unique(dy[np.searchsorted(d, t - 90, "left"):i])) if i else 0
             else:
-                r = dict(ap=0, ap7=0, ap30=0, ap90=0, ap365=0, adays=0, agap=9999.0, aage=0.0, adays90=0)
+                r = dict(apm=0.0, apm365=0.0, ap=0, ap7=0, ap30=0, ap90=0, ap365=0, adays=0, agap=9999.0, aage=0.0, adays90=0)
             if a in self.sa:
                 fd, lv, p90 = self.sa[a]; i = np.searchsorted(fd, t, "left"); j = np.searchsorted(fd, t - 90, "left")
                 r["as_n"] = i; r["as_n90"] = i - np.searchsorted(fd, t - 90, "left"); r["as_n365"] = i - np.searchsorted(fd, t - 365, "left")
@@ -84,6 +89,23 @@ def _static(df, meta):
     o["feat"] = [1.0 if re.search(r"feat\.|ft\.|with ", x.lower()) else 0.0 for x in nm]
     return o
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GroupKFold
+def _text(df, meta):
+    m = meta.reindex(df.trackId.values)
+    return [f"{a} | {b} | {', '.join(c) if isinstance(c, (list, np.ndarray)) else ''}" for a, b, c in zip(df.trackName.fillna(""), m.albumName.fillna(""), m.artistNames)]
+
+def _fit_text(ex, meta, X_rows):
+    txt = _text(ex.reset_index(), meta); y = ex.love.values
+    vec = TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 4), min_df=3, sublinear_tf=True, max_features=60000)
+    M = vec.fit_transform(txt)
+    oof = np.zeros(len(y)); grp = ex.artist.values
+    for tr, te in GroupKFold(5).split(M, y, grp):
+        oof[te] = LogisticRegression(C=0.3, max_iter=300).fit(M[tr], y[tr]).decision_function(M[te])
+    clf = LogisticRegression(C=0.3, max_iter=300).fit(M, y)
+    return vec, clf, oof
+
 def _fit(train, meta, cutoff):
     train = train.sort_values("t", kind="stable").reset_index(drop=True)
     st = song_table(train)
@@ -94,18 +116,36 @@ def _fit(train, meta, cutoff):
     rows = [H.row(a, al, d) for a, al, d in zip(ex.artistIds, ex.albumId, _days(ex["first"]))]
     X = pd.concat([pd.DataFrame(rows).reset_index(drop=True), _static(ex.reset_index(), meta)], axis=1)
     y = ex.love.values
+    tx = None
+    if "T" in V:
+        vec, clf, oof = _fit_text(ex, meta, None); X["txt"] = oof; tx = (vec, clf)
     age = (cutoff - ex["first"]).dt.days.values
     w = 0.5 ** (age / 500.0) + 0.1
     params = dict(objective="binary", learning_rate=0.03, num_leaves=7, min_data_in_leaf=60, feature_fraction=0.7, bagging_fraction=0.8,
                   bagging_freq=1, lambda_l2=10.0, num_threads=1, verbose=-1, seed=1)
     models = [lgb.train({**params, "seed": s}, lgb.Dataset(X, y, weight=w), num_boost_round=250) for s in range(3)]
-    return H, models, list(X.columns)
+    reg = []
+    if "R" in V:
+        yr = np.log1p(ex.plays90.values) + 0.5 * np.log1p(ex.days90.values)
+        reg = [lgb.train({**params, "objective": "regression", "seed": s}, lgb.Dataset(X, yr, weight=w), num_boost_round=250) for s in range(3)]
+    return H, (models, reg, tx), list(X.columns)
 
 def predict(train, cands, meta, cutoff):
     key = (str(cutoff), len(train))
     if key not in _CACHE: _CACHE[key] = _fit(train, meta, cutoff)
     H, models, cols = _CACHE[key]
+    models, reg, tx = models
     t = _days(pd.Series([cutoff]))[0]
     rows = [H.row(a, al, t) for a, al in zip(cands.artistIds, cands.albumId)]
-    X = pd.concat([pd.DataFrame(rows).reset_index(drop=True), _static(cands.reset_index(drop=True), meta)], axis=1)[cols]
-    return np.mean([m.predict(X) for m in models], axis=0)
+    X = pd.concat([pd.DataFrame(rows).reset_index(drop=True), _static(cands.reset_index(drop=True), meta)], axis=1)
+    if tx: X["txt"] = tx[1].decision_function(tx[0].transform(_text(cands.reset_index(drop=True), meta)))
+    X = X[cols]
+    from scipy.stats import rankdata
+    p = np.mean([m.predict(X) for m in models], axis=0)
+    sc = np.log(p / (1 - p))
+    if reg:
+        r = np.mean([m.predict(X) for m in reg], axis=0)
+        sc = 0.5 * sc / 0.5 + 0.5 * r * 1.0   # crude blend of two comparably scaled scores
+    beta = float(os.environ.get("AB", "0"))
+    if beta: sc = sc + beta * np.log1p(X["ap90"].values + 0.3 * X["ap365"].values)
+    return sc

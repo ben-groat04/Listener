@@ -67,6 +67,8 @@ def _fit(train, meta, cutoff):
             M["mW"] = 0.5 ** (mat.age.values / 730.0); M["prior"] = float(np.average(M["mY"], weights=M["mW"]))
         al = S[S.has]
         M["dV"] = np.array([vec[s] for s in al.index]); M["dW"] = np.log1p(al.plays.values)
+        sm = M["dV"] @ M["dV"].T; km = np.exp(10 * (sm - 1)) * M["dW"][None, :]; np.fill_diagonal(km, 0)   # leave-one-out density of train songs
+        loo = np.log(km.sum(1) + 1e-6); M["den_mu"], M["den_sd"] = loo.mean(), loo.std() + 1e-9
         rs = S[(S.rot > 0) & S.has]
         M["rotS"] = rs
         if len(rs):
@@ -75,6 +77,7 @@ def _fit(train, meta, cutoff):
     d2 = t[["t", "artistIds"]].explode("artistIds").dropna()
     w = 0.5 ** ((cutoff - d2.t).dt.days.values / 180.0)
     M["art"] = pd.Series(w, index=d2.artistIds.values).groupby(level=0).sum()
+    la = np.log1p(M["art"].reindex(t.artist.values).fillna(0).values); M["art_mu"], M["art_sd"] = la.mean(), la.std() + 1e-9
     _CACHE.clear(); _CACHE[key] = M
     return M
 
@@ -117,10 +120,15 @@ def lr_only(train, cands, meta, cutoff): return _components(train, cands, meta, 
 def rot_only(train, cands, meta, cutoff): return _components(train, cands, meta, cutoff)["rot"] + _tie(cands)
 def art_only(train, cands, meta, cutoff): return _components(train, cands, meta, cutoff)["art"] + _tie(cands)
 
-W = dict(lr=1.0, rot=0.3, art=0.3)
+W = dict(den=1.0, lr=0.5, art=0.5)
 def blend(train, cands, meta, cutoff):
-    c = _components(train, cands, meta, cutoff)
-    return W["lr"] * c["lr"] + W["rot"] * c["rot"] / 3 + W["art"] * c["art"] + _tie(cands)
+    """z(density) + 0.5 z(lr) + 0.5 z(artist recency); z constants come from the train history, never from the candidate pool.
+    Candidates without a preview embedding get 0 (neutral) on the audio terms."""
+    c = _components(train, cands, meta, cutoff); M = _fit(train, meta, cutoff)
+    has = c["has"] > 0
+    den = np.where(has, (c["den"] - M.get("den_mu", 0)) / M.get("den_sd", 1), 0.0)
+    art = (c["art"] - M["art_mu"]) / M["art_sd"]
+    return W["den"] * den + W["lr"] * c["lr"] + W["art"] * art + _tie(cands)
 
 def knn_only(train, cands, meta, cutoff): return _components(train, cands, meta, cutoff)["knn"] + _tie(cands)
 def den_only(train, cands, meta, cutoff): return _components(train, cands, meta, cutoff)["den"] + _tie(cands)

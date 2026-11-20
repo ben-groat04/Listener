@@ -9,3 +9,4 @@
 - Before launching any workflow, a Sonnet agent audits its prompts (accuracy of user quotes, steering, correctness); fix issues and show the user before launch.
 - Workflows auto-forward the user's latest message to every agent as an overriding "user request": launch only right after a neutral message (e.g. "go"), and never add method hints to prompts.
 - The main session ONLY orchestrates: it launches and briefs agents and relays results. Agents do all the work, including folder cleanup. The main session never steers methods or makes project decisions itself.
+- Messages to the user: concise. Status = what + why only; no timestamps, no filler. Commit acknowledgements: one word ("Committed.").

@@ -13,6 +13,9 @@ _E = {}; _MODEL = []; _FIT = {}
 CLAP = Path("/home/user/Listener/taste-model/.cache/shared/clap-preview-emb/emb.pkl")   # {previewUrl: 768-d} (built by B-audio/build_*.py)
 HAND = Path("/home/user/Listener/taste-model/.cache/shared/hand-audio-feat-v1/feat.pkl")  # {previewUrl: 93-d handcrafted}
 USE = dict(clap=True, hand=True, text=True, pcs=8)
+for _kv in os.environ.get("C_USE", "").split(","):
+    if "=" in _kv: _k, _v = _kv.split("="); USE[_k] = int(_v)
+TARGET = os.environ.get("C_TARGET", "love"); LAM_ENV = float(os.environ.get("C_LAM", "1.0"))
 def _aud():
     if "aud" not in _E:
         try:
@@ -199,7 +202,7 @@ def _pseudo(train, meta, anm, cutoff, step_days=30):
             cemb = np.stack([E[s] for s in cand.song])
             Xs = _sem_features(hist, cand, cemb, anm, c, sp_all, E) if USE["text"] else pd.DataFrame(index=range(len(cand)))
             Xa = _audio_block(hist, cand, meta, c, Ea)
-            X = pd.concat([X, Xs, Xa], axis=1); X["y"] = f.love.values * (1 - isd); X["dec"] = isd; X["cut"] = c; X["age"] = (pd.Timestamp(cutoff) - c).days
+            X = pd.concat([X, Xs, Xa], axis=1); X["y"] = f.love.values * (1 - isd); X["lp"] = np.log1p(f.plays90.values) + 0.5 * np.log1p(f.days90.values); X["dec"] = isd; X["cut"] = c; X["age"] = (pd.Timestamp(cutoff) - c).days
             X["song"] = f.index.values
             rows.append(X)
         c += pd.Timedelta(days=step_days)
@@ -212,15 +215,16 @@ def _fit(train, meta, cutoff):
     # artist names need meta of train tracks; a singleton call restricts meta to train tracks + candidate, so this is complete for train
     anm = _artist_names(train, train.iloc[:0].assign(trackId=[]) if False else pd.DataFrame(dict(trackId=[], artist=[])), meta)
     D, tr, E = _pseudo(train, meta, anm, cutoff)
-    feats = [c for c in D.columns if c not in ("y", "cut", "age", "song", "dec")]
+    feats = [c for c in D.columns if c not in ("y", "cut", "age", "song", "dec", "lp")]
     w = np.exp(-D.age.values / 900.0)  # mild recency weighting
     ms = []
-    for which in (0,):   # 0: love among tried songs; 1: open-pool target (love vs tried-not-loved AND never-tried-yet songs)
-        sel = (D.dec == 0).values if which == 0 else np.ones(len(D), bool)
-        for seed in range(3):
-            m = lgb.LGBMClassifier(n_estimators=250, learning_rate=0.03, num_leaves=8, min_child_samples=30, subsample=0.8, subsample_freq=1,
-                                   colsample_bytree=0.7, reg_lambda=5.0, random_state=seed, n_jobs=1, verbose=-1)
-            m.fit(D[feats][sel], D.y[sel], sample_weight=w[sel]); ms.append((which, m))
+    for seed in range(3):
+        kw = dict(n_estimators=250, learning_rate=0.03, num_leaves=8, min_child_samples=30, subsample=0.8, subsample_freq=1,
+                  colsample_bytree=0.7, reg_lambda=5.0, random_state=seed, n_jobs=1, verbose=-1)
+        if TARGET in ("love", "both"):
+            m = lgb.LGBMClassifier(**kw); m.fit(D[feats], D.y, sample_weight=w); ms.append(("c", m))
+        if TARGET in ("reg", "both"):
+            m = lgb.LGBMRegressor(**kw); m.fit(D[feats], D.lp, sample_weight=w); ms.append(("r", m))
     _FIT[key] = (ms, feats, anm, tr, E); return _FIT[key]
 
 def predict(train, cands, meta, cutoff, lam=None, w0=None):
@@ -238,10 +242,16 @@ def predict(train, cands, meta, cutoff, lam=None, w0=None):
     Xa = _audio_block(tr, cands.reset_index(drop=True), meta, c, Ea)
     X = pd.concat([X, Xs, Xa], axis=1)
     lg = lambda q: np.log(np.clip(q, 1e-4, 1 - 1e-4) / (1 - np.clip(q, 1e-4, 1 - 1e-4)))
-    p = [np.mean([lg(m.predict_proba(X[feats])[:, 1]) for w_, m in ms if w_ == k], axis=0) for k in (0, 0)]
+    zs = []
+    for kind in ("c", "r"):
+        mm = [m for k_, m in ms if k_ == kind]
+        if not mm: continue
+        v = np.mean([lg(m.predict_proba(X[feats])[:, 1]) if kind == "c" else m.predict(X[feats]) for m in mm], axis=0)
+        zs.append(v if kind == "c" else v * 1.5)   # regression output scaled to roughly logit units
+    p = [np.mean(zs, axis=0)] * 2
     w0 = W0 if w0 is None else w0; lam = LAM if lam is None else lam
     fam = np.log1p(np.nan_to_num(X.a_n180.values) + 0.0)
     return w0 * p[0] + (1 - w0) * p[1] + lam * fam
 
 
-PREDICTORS = {"C_audio_hist": lambda tr, ca, me, cu: predict(tr, ca, me, cu, lam=1.0, w0=1.0)}   # w0=1: love-among-tried head only (+ familiarity term); chosen on dev
+PREDICTORS = {"C_audio_hist": lambda tr, ca, me, cu: predict(tr, ca, me, cu, lam=LAM_ENV, w0=1.0)}   # w0=1: love-among-tried head only (+ familiarity term); chosen on dev

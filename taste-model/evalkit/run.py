@@ -29,7 +29,17 @@ def prepare_folds(cutoffs):
     key = tuple(map(str, cutoffs))
     if key not in _PREP:
         d = data._load_all(); pub = data.anon_streams(d); meta_all = data.load_meta_all(); out = []
-        for c, pool in data.make_open_folds(cutoffs, d):
+        sealed_run = any(pd.Timestamp(c) >= data.DEV_END for c in cutoffs)
+        pp = data.ROOT / ".cache" / "shared" / f"evalkit-pools-{_code_hash()}.pkl"   # dev open pools: label-/predictor-independent, slow to build (decoy matching)
+        try: pools = {} if sealed_run or not pp.exists() else pickle.load(open(pp, "rb"))
+        except Exception: pools = {}
+        miss = [c for c in cutoffs if str(pd.Timestamp(c).date()) not in pools]
+        if miss:
+            for c, pool in data.make_open_folds(miss, d): pools[str(c.date())] = pool
+            if not sealed_run:
+                pp.parent.mkdir(parents=True, exist_ok=True); tmp = pp.with_suffix(f".tmp{os.getpid()}"); pickle.dump(pools, open(tmp, "wb")); os.replace(tmp, pp)
+        for c in cutoffs:
+            c = pd.Timestamp(c); pool = pools[str(c.date())]
             mask = (d.t < c).values
             cands, meta, order = data.public_view(pool, meta_all, d[mask], seed=int(c.strftime("%Y%m%d")))
             out.append(dict(c=c, pool=pool, train=pub[mask], cands=cands, meta=meta, order=order))

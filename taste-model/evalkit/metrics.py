@@ -19,11 +19,19 @@ def fold_metrics(y, s, seed=0):
     ap = prec[o == 1].mean(); base = y.mean(); k = max(1, round(.1 * n)); k2 = max(1, round(.2 * n))
     return dict(auc=auc(y, s), ap=ap, lift=ap / base, p10=o[:k].mean(), r20=o[:k2].sum() / y.sum())
 
-def macro(df, label, subset=None, rng=None):
-    """Mean over folds of fold_metrics. df has columns fold, score, <label>, new_artist. With rng: bootstrap resample songs within fold."""
+def folds_arrays(df, label, subset=None):
+    """List of (y, score) arrays per fold, optionally restricted to new-artist (True) / known-artist (False) songs."""
     out = []
     for _, g in df.groupby("fold"):
         if subset is not None: g = g[g.new_artist == subset]
-        if rng is not None: g = g.iloc[rng.integers(0, len(g), len(g))]
-        out.append(fold_metrics(g[label].values, g.score.values))
+        out.append((g[label].values, g.score.values))
+    return out
+
+def macro(arrs, idx=None):
+    """Mean over folds of fold_metrics. idx: optional list of per-fold resample indices (bootstrap)."""
+    out = [fold_metrics(y[i], s[i]) if idx is not None else fold_metrics(y, s)
+           for (y, s), i in zip(arrs, idx if idx is not None else arrs)]
     return {k: float(np.nanmean([o[k] for o in out])) for k in out[0]}
+
+def boot_idx(arrs, rng):
+    return [rng.integers(0, len(y), len(y)) for y, _ in arrs]

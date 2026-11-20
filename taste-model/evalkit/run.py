@@ -17,30 +17,29 @@ def score_predictor(fn, cutoffs, sealed=False):
         rows.append(fold.assign(fold=str(c.date()), score=sc))
     return pd.concat(rows, ignore_index=True)
 
-def summarize(preds, nboot=300, ref=None):
-    """preds: {name: scored df}. Returns table of macro metrics (+95% bootstrap CI on auc/lift) per label/subset."""
-    lines = []
+def summarize(preds, nboot=200, ref=None):
+    """preds: {name: scored df}. Macro metrics over folds (+95% bootstrap CI over songs; paired CI of AUC diff vs ref)."""
+    lines = []; q = lambda x: tuple(np.nanpercentile(x, [2.5, 97.5]).round(3))
     for label in ("love", "strong"):
         for sub, nm in ((None, "all"), (True, "new-artist"), (False, "known-artist")):
-            for name, df in preds.items():
-                m = metrics.macro(df, label, sub)
-                rng = np.random.default_rng(0)
-                b = [metrics.macro(df, label, sub, rng) for _ in range(nboot)]
-                ci = lambda k: np.nanpercentile([x[k] for x in b], [2.5, 97.5])
-                row = dict(label=label, subset=nm, model=name, base=df[df.new_artist == sub][label].mean() if sub is not None else df[label].mean(),
-                           **{k: round(v, 3) for k, v in m.items()}, auc_ci=tuple(ci("auc").round(3)), lift_ci=tuple(ci("lift").round(2)))
-                if ref and name != ref:  # paired bootstrap of AUC difference vs ref
-                    rng = np.random.default_rng(0); dd = []
-                    for _ in range(nboot):
-                        seed = rng.integers(1 << 30)
-                        dd.append(metrics.macro(df, label, sub, np.random.default_rng(seed))["auc"] - metrics.macro(preds[ref], label, sub, np.random.default_rng(seed))["auc"])
-                    row["dAUC_vs_" + ref] = tuple(np.percentile(dd, [2.5, 97.5]).round(3))
+            A = {n: metrics.folds_arrays(df, label, sub) for n, df in preds.items()}
+            rng = np.random.default_rng(0)
+            idxs = [metrics.boot_idx(next(iter(A.values())), rng) for _ in range(nboot)]  # shared => paired
+            B = {n: [metrics.macro(a, ix) for ix in idxs] for n, a in A.items()}
+            for n, a in A.items():
+                y = np.concatenate([f[0] for f in a])
+                row = dict(label=label, subset=nm, model=n, base=round(y.mean(), 3),
+                           **{k: round(v, 3) for k, v in metrics.macro(a).items()},
+                           auc_ci=q([b["auc"] for b in B[n]]), lift_ci=q([b["lift"] for b in B[n]]))
+                if ref and n != ref: row["dAUC_vs_" + ref] = q([x["auc"] - z["auc"] for x, z in zip(B[n], B[ref])])
                 lines.append(row)
     return pd.DataFrame(lines)
 
 def main(argv):
     sealed = "--sealed" in argv; mods = [a for a in argv if not a.startswith("--")]
     cutoffs = data.SEALED_CUTOFFS if sealed else data.DEV_CUTOFFS
+    if sealed:
+        from . import make_sealed; assert make_sealed.main(), "sealed labels do not match manifest (data changed?)"
     preds = {}
     for p in mods:
         spec = importlib.util.spec_from_file_location("pred", p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
@@ -52,6 +51,8 @@ def main(argv):
         with open(data.SEALED_DIR / "runs.log", "a") as fh: fh.write(f"{datetime.datetime.utcnow().isoformat()} {list(preds)}\n")
     pd.set_option("display.width", 250, "display.max_columns", 30)
     print(summarize(scored, ref="artist_love_rate" if "artist_love_rate" in scored else None).to_string(index=False))
+    print("\nper-fold AUC (love, all songs)")
+    print(pd.DataFrame({k: v.groupby("fold").apply(lambda g: metrics.auc(g.love, g.score)) for k, v in scored.items()}).round(3).to_string())
     return scored
 
 if __name__ == "__main__": main(sys.argv[1:])

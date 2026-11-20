@@ -2,8 +2,6 @@
    python3 build_features.py urls  WORKDIR                 # list of preview URLs in the dev folds' meta -> WORKDIR/urls.json
    python3 build_features.py dl    WORKDIR                 # 30 s previews -> WORKDIR/audio/<md5>.npy  (32 kHz mono int16; needs ffmpeg, network)
    python3 build_features.py hand  WORKDIR                 # -> .cache/shared/hand-audio-feat-v1/{feat,seg}.pkl   (librosa, ~0.1 s/clip)
-   python3 build_features.py lclap WORKDIR SHARD NSHARDS   # laion/larger_clap_music, middle 10 s -> WORKDIR/lc_mid_<SHARD>of<NSHARDS>.pkl (~0.5 s/clip/thread)
-   python3 build_features.py merge WORKDIR NSHARDS         # -> .cache/shared/larger-clap-music-mid-v1/emb.pkl
 The CLAP (htsat-unfused) cache clap-preview-emb/emb.pkl comes from ../B-audio/build_dl.py + build_embed.py (unprojected pooler_output of the middle 10 s)."""
 import sys, os, json, hashlib, pickle, time
 import numpy as np
@@ -55,22 +53,3 @@ elif stage == "hand":
             [np.log(segf[:, 0].max() / (segf[:, 0].min() + 1e-4) + 1e-4)]]).astype(np.float32)
         G[u] = np.array([np.concatenate([mf[:, s].mean(1), ch[:, s].mean(1), [ds[s].mean(), cen[s].mean(), on[s].mean()]]) for s in seg], dtype=np.float32)
     atomic(H, SH + "hand-audio-feat-v1/feat.pkl"); atomic(G, SH + "hand-audio-feat-v1/seg.pkl")
-elif stage == "lclap":
-    import torch, librosa
-    from transformers import ClapModel, ClapProcessor
-    torch.set_num_threads(1); sh, nsh = int(sys.argv[3]), int(sys.argv[4])
-    m = ClapModel.from_pretrained("laion/larger_clap_music").eval(); p = ClapProcessor.from_pretrained("laion/larger_clap_music")
-    urls = json.load(open(W + "/urls.json")); out = {}; fn = f"{W}/lc_mid_{sh}of{nsh}.pkl"
-    for i, u in enumerate(urls):
-        if i % nsh != sh: continue
-        f = f"{W}/audio/{key(u)}.npy"
-        if not os.path.exists(f): out[u] = None; continue
-        a = np.load(f).astype(np.float32) / 32768; s = len(a) // 2; a = a[max(0, s - 160000):s + 160000]
-        a = librosa.resample(a, orig_sr=32000, target_sr=48000)
-        x = p(audio=[a], sampling_rate=48000, return_tensors="pt")
-        with torch.no_grad(): out[u] = m.audio_model(**x).pooler_output[0].numpy().astype(np.float32)
-    atomic(out, fn)
-elif stage == "merge":
-    out = {}
-    for i in range(int(sys.argv[3])): out.update(pickle.load(open(f"{W}/lc_mid_{i}of{sys.argv[3]}.pkl", "rb")))
-    atomic(out, SH + "larger-clap-music-mid-v1/emb.pkl"); print(len(out))

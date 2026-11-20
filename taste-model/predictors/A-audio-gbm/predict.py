@@ -2,6 +2,7 @@
 similarity, within-artist similarity, kNN) + log-plays regression head + PCA logistic audio head + prominence/typicality prior for the open pool.
 Audio embeddings: .cache/shared/clap-preview-emb/emb.pkl (previewUrl -> 768d CLAP, built by predictors/B-audio); missing -> NaN/neutral."""
 BETA = 0.3
+import numpy as np, pandas as pd, re, pickle, os
 GAMMA = 0.6
 WREG = 1.0
 WLR = 0.5

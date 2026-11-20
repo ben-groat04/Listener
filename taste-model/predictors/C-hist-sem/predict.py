@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np, pandas as pd
 
 OUT = Path("/home/user/Listener/taste-model/.cache/shared/C-textemb-v1"); EMB_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+W0 = 0.5; LAM = 0.5
 _E = {}; _MODEL = []; _FIT = {}
 
 # ------------------------------------------------------------------ text embeddings (persistent cache, regenerable)
@@ -144,11 +145,15 @@ def _pseudo(train, meta, anm, cutoff, step_days=30):
         hist = tr[tr.t < c]
         f = sp_all[(sp_all["first"] >= c) & (sp_all["first"] < c + pd.DateOffset(months=3))]
         if len(f) >= 5:
+            fut = sp_all[sp_all["first"] >= c + pd.DateOffset(months=3)]
+            if len(fut) > 0:
+                fut = fut.sample(min(len(fut), 3 * len(f)), random_state=int(c.strftime("%y%m%d")))
+            f = pd.concat([f, fut]); isd = np.r_[np.zeros(len(f) - len(fut)), np.ones(len(fut))]
             cand = f.reset_index()[["song", "trackId", "albumId", "artist", "artistIds", "trackName"]]
             X = _features(hist, meta, cand, c, anm, None)
             cemb = np.stack([E[s] for s in cand.song])
             Xs = _sem_features(hist, cand, cemb, anm, c, sp_all, E)
-            X = pd.concat([X, Xs], axis=1); X["y"] = f.love.values; X["cut"] = c; X["age"] = (pd.Timestamp(cutoff) - c).days
+            X = pd.concat([X, Xs], axis=1); X["y"] = f.love.values * (1 - isd); X["dec"] = isd; X["cut"] = c; X["age"] = (pd.Timestamp(cutoff) - c).days
             X["song"] = f.index.values
             rows.append(X)
         c += pd.Timedelta(days=step_days)
@@ -161,16 +166,18 @@ def _fit(train, meta, cutoff):
     # artist names need meta of train tracks; a singleton call restricts meta to train tracks + candidate, so this is complete for train
     anm = _artist_names(train, train.iloc[:0].assign(trackId=[]) if False else pd.DataFrame(dict(trackId=[], artist=[])), meta)
     D, tr, E = _pseudo(train, meta, anm, cutoff)
-    feats = [c for c in D.columns if c not in ("y", "cut", "age", "song")]
+    feats = [c for c in D.columns if c not in ("y", "cut", "age", "song", "dec")]
     w = np.exp(-D.age.values / 900.0)  # mild recency weighting
     ms = []
-    for seed in range(3):
-        m = lgb.LGBMClassifier(n_estimators=250, learning_rate=0.03, num_leaves=8, min_child_samples=30, subsample=0.8, subsample_freq=1,
-                               colsample_bytree=0.7, reg_lambda=5.0, random_state=seed, n_jobs=1, verbose=-1)
-        m.fit(D[feats], D.y, sample_weight=w); ms.append(m)
+    for which in (0, 1):   # 0: love among tried songs; 1: open-pool target (love vs tried-not-loved AND never-tried-yet songs)
+        sel = (D.dec == 0).values if which == 0 else np.ones(len(D), bool)
+        for seed in range(3):
+            m = lgb.LGBMClassifier(n_estimators=250, learning_rate=0.03, num_leaves=8, min_child_samples=30, subsample=0.8, subsample_freq=1,
+                                   colsample_bytree=0.7, reg_lambda=5.0, random_state=seed, n_jobs=1, verbose=-1)
+            m.fit(D[feats][sel], D.y[sel], sample_weight=w[sel]); ms.append((which, m))
     _FIT[key] = (ms, feats, anm, tr, E); return _FIT[key]
 
-def predict(train, cands, meta, cutoff):
+def predict(train, cands, meta, cutoff, lam=None, w0=None):
     ms, feats, anm, tr, E = _fit(train, meta, cutoff)
     c = pd.Timestamp(cutoff)
     anm2 = dict(anm)
@@ -182,5 +189,11 @@ def predict(train, cands, meta, cutoff):
     cemb = embed(names)
     Xs = _sem_features(tr, cands, cemb, anm2, c, None, E)
     X = pd.concat([X, Xs], axis=1)
-    p = np.mean([m.predict_proba(X[feats])[:, 1] for m in ms], axis=0)
-    return p
+    lg = lambda q: np.log(np.clip(q, 1e-4, 1 - 1e-4) / (1 - np.clip(q, 1e-4, 1 - 1e-4)))
+    p = [np.mean([lg(m.predict_proba(X[feats])[:, 1]) for w_, m in ms if w_ == k], axis=0) for k in (0, 1)]
+    w0 = W0 if w0 is None else w0; lam = LAM if lam is None else lam
+    fam = np.log1p(np.nan_to_num(X.a_n180.values) + 0.0)
+    return w0 * p[0] + (1 - w0) * p[1] + lam * fam
+
+
+PREDICTORS = {"C_hist_sem": lambda tr, ca, me, cu: predict(tr, ca, me, cu, lam=1.0, w0=1.0)}   # w0=1: love-among-tried head only (+ familiarity term); chosen on dev

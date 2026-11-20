@@ -25,7 +25,8 @@ def song_key(name: str) -> str:
     """Normalised title: merges re-releases/remasters/live/deluxe versions of the same song."""
     n = re.sub(r"\s*[\(\[][^)\]]*[\)\]]", "", name.lower())
     n = re.sub(r"\s+-\s+.*$", "", n)
-    return re.sub(r"\W+", " ", n).strip()
+    k = re.sub(r"\W+", " ", n).strip()
+    return k or re.sub(r"\W+", " ", name.lower()).strip()   # a title that is entirely in brackets, e.g. '(JFK)', keeps its text
 
 
 def _load_all() -> pd.DataFrame:
@@ -37,7 +38,7 @@ def _load_all() -> pd.DataFrame:
     d = pd.read_json(STREAMS, lines=True)
     d["t"] = pd.to_datetime(d.endTime).dt.tz_localize(None)
     d["artist"] = d.artistIds.map(lambda a: a[0] if len(a) else -1)
-    d = d.sort_values("t", kind="stable").reset_index(drop=True)
+    d = d.sort_values("t", kind="stable").drop_duplicates(["trackId", "t"]).reset_index(drop=True)  # exact re-imported duplicate plays
     unk = d.trackName.str.lower().str.strip().isin(["unknown track name", ""])
     key = np.where(unk, "unknown" + d.trackId.astype(str), d.trackName.map(song_key)) ; key = pd.Series(key) + "|" + d.artist.astype(str)
     kc, ku = pd.factorize(key); tc, tu = pd.factorize(d.trackId)
@@ -47,8 +48,8 @@ def _load_all() -> pd.DataFrame:
     named_first = d[~unk].drop_duplicates("_comp").set_index("_comp")["_key"]   # earliest named stream's key
     any_first = d.drop_duplicates("_comp").set_index("_comp")["_key"]
     canon = any_first.copy(); canon.loc[named_first.index] = named_first
-    d["song"] = d._comp.map(canon)
-    cols = ["t", "trackId", "albumId", "artistIds", "artist", "trackName", "song", "playedMs", "contextId"]
+    d["song"] = d._comp.map(canon); d["named"] = ~unk.values
+    cols = ["t", "trackId", "albumId", "artistIds", "artist", "trackName", "song", "playedMs", "contextId", "named"]
     return d[cols]
 
 
@@ -83,8 +84,14 @@ def song_table(all_streams: pd.DataFrame) -> pd.DataFrame:
     d = d.assign(first=first)
     inh = d[d.t < d["first"] + pd.Timedelta(days=HORIZON_DAYS)]
     st = inh.groupby("song").agg(plays90=("t", "size"), days90=("t", lambda s: s.dt.normalize().nunique()))
-    rep = d.sort_values("t").drop_duplicates("song")[["song", "t", "trackId", "albumId", "artistIds", "artist", "trackName"]]
-    s = rep.rename(columns={"t": "first"}).set_index("song").join(st)
+    rc = ["song", "t", "trackId", "albumId", "artistIds", "artist", "trackName"]
+    d = d.sort_values("t", kind="stable")
+    rep = d.drop_duplicates("song")[rc].set_index("song")
+    if "named" in d:   # representative = earliest NAMED stream ('unknown track name' streams carry no usable identity/meta); `first` stays the earliest stream
+        nm = d[d.named].drop_duplicates("song")[rc].set_index("song")
+        rep = pd.concat([rep[~rep.index.isin(nm.index)], nm])
+        rep["t"] = d.groupby("song").t.min().reindex(rep.index)
+    s = rep.rename(columns={"t": "first"}).join(st)
     s["love"] = ((s.plays90 >= LOVE_PLAYS) & (s.days90 >= LOVE_DAYS)).astype(int)
     s["strong"] = ((s.plays90 >= STRONG_PLAYS) & (s.days90 >= STRONG_DAYS)).astype(int)
     # neighbouring label definitions for the sensitivity check (never the primary target)
@@ -92,6 +99,12 @@ def song_table(all_streams: pd.DataFrame) -> pd.DataFrame:
     s["love_10_4"] = ((s.plays90 >= 10) & (s.days90 >= 4)).astype(int)
     return s
 
+
+_MOK = []
+def _meta_ok():
+    if not _MOK:
+        m = load_meta(); _MOK.append(set(m.index[m.name.notna() & m.popularity.notna()]))
+    return _MOK[0]
 
 def make_folds(cutoffs, all_streams=None):
     """Yield (cutoff, candidates_with_labels). Candidates = songs never heard before cutoff whose
@@ -105,7 +118,11 @@ def make_folds(cutoffs, all_streams=None):
         f["cutoff"] = c
         seen = set(d.loc[d.t < c, "artist"])
         f["new_artist"] = ~f.artist.isin(seen)
-        yield c, f.reset_index()
+        # songs with no usable identity (never named in any stream, or no metadata record) cannot be scored from anything and
+        # would otherwise be recognisable as 'user-played' (decoys always have full metadata): not candidates. Label-independent.
+        f = f.reset_index()
+        ok = f.trackId.isin(_meta_ok()) & ~f.song.str.startswith("unknown")
+        yield c, f[ok].reset_index(drop=True)
 
 
 # ---------------------------------------------------------------- anonymisation (what predictors see)
@@ -117,16 +134,20 @@ def h(x) -> int:
     if v is None: v = _hc[k] = int(hashlib.sha1(f"{ID_SALT}|{k}".encode()).hexdigest()[:13], 16)
     return v
 
+def _anon_title(t: pd.Series) -> pd.Series:
+    """'unknown<rawTrackId>' song keys carry a raw id: hash it like every other id."""
+    return t.map(lambda x: "unknown%d" % h(int(x[7:])) if x.startswith("unknown") and x[7:].isdigit() else x)
+
 def anon_streams(d: pd.DataFrame) -> pd.DataFrame:
     """Hash trackId/albumId/artistIds/artist, and the artist part of the song key. Row order stays chronological (it is the stream log)."""
     o = d.copy()
     o["trackId"] = o.trackId.map(h); o["albumId"] = o.albumId.map(h)
     o["artistIds"] = o.artistIds.map(lambda a: [h(x) for x in a]); o["artist"] = o.artist.map(h)
-    o["song"] = d.song.str.rsplit("|", n=1).str[0] + "|" + o.artist.astype(str)
+    o["song"] = _anon_title(d.song.str.rsplit("|", n=1).str[0]) + "|" + o.artist.astype(str)
     return o
 
 def anon_song(song: pd.Series) -> pd.Series:
-    return song.str.rsplit("|", n=1).str[0] + "|" + song.str.rsplit("|", n=1).str[1].map(lambda a: str(h(int(a))))
+    return _anon_title(song.str.rsplit("|", n=1).str[0]) + "|" + song.str.rsplit("|", n=1).str[1].map(lambda a: str(h(int(a))))
 
 # ---------------------------------------------------------------- open-universe (decoy) pool
 def _decoys():
@@ -143,20 +164,41 @@ def make_open_folds(cutoffs, all_streams=None):
     history incl. sealed era) and that were already released by the end of the fold window. Decoys get love=0 and are
     labelled 'not tried' (not 'would hate'). Sampling is seeded by the cutoff and independent of any label."""
     d = _load_all() if all_streams is None else all_streams
-    u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId); pm = load_meta().popularity
+    u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId); mm = load_meta_all()
     u = u[~u.song.isin(played_songs) & ~u.trackId.isin(played_tracks)].drop_duplicates("song")
     for c, f in make_folds(cutoffs, d):
         end = c + pd.DateOffset(months=3)
         seen = set(d.loc[d.t < c, "artist"])
         elig = u[u.release < end].copy(); elig["new_artist"] = ~elig.artist.isin(seen)
-        # popularity/new-artist matching: decoys follow the tried songs' joint (new-artist flag, popularity decile) distribution,
-        # so neither Spotify popularity nor 'this artist is unfamiliar' separates decoys from tried songs by construction.
-        # The target depends only on the tried songs' public metadata, never on love labels.
-        f = f.assign(_pb=(pm.reindex(f.trackId).fillna(0).values // 10).clip(0, 9)); elig["_pb"] = (elig.popularity.fillna(0) // 10).clip(0, 9)
-        parts = []
-        for (na, pb), g in f.groupby(["new_artist", "_pb"]):
-            pool_ = elig[(elig.new_artist == na) & (elig._pb == pb)]
-            parts.append(pool_.sample(min(len(pool_), DECOY_RATIO * len(g)), random_state=int(c.strftime("%Y%m%d")) + int(pb)))
+        # Covariate-matched decoys. v2.0 audit: a tried-vs-decoy classifier on metadata shape (missing fields, preview/spotifyId presence,
+        # title==album, duration, explicit, #artists, popularity) reached AUC 0.73, so the open pool could be 'solved' without music or
+        # history. Decoys are now drawn with probability proportional to the odds p/(1-p) of a logistic model (fit per fold on tried vs all
+        # eligible decoys, metadata/public features only, NEVER labels), which re-weights the decoy universe to the tried songs' joint
+        # distribution of these features and of the new-artist flag; popularity deciles + new-artist are additionally matched exactly.
+        fm = mm.reindex(f.trackId); em = mm.reindex(elig.trackId)
+        def feats(m, names, na):
+            nm = names.str.lower().str.strip().values
+            X = pd.DataFrame(dict(pv=m.previewUrl.notna().values, sid=m.spotifyId.notna().values,
+                                  ae=(m.albumName.fillna("").str.lower().str.strip().values == nm), ex=m.explicit.fillna(False).astype(bool).values,
+                                  dur=(m.durationMs.fillna(240000).values - 240000) / 60000.0, nart=m.artistNames.map(lambda a: len(a) if isinstance(a, list) else 1).values,
+                                  ln=np.log1p(names.str.len().values), na=na.values.astype(float)))
+            pop = m.popularity.fillna(0).values / 100.0
+            for a_, b_ in (("pv", "sid"), ("pv", "ae"), ("sid", "ae"), ("pv", "ex"), ("sid", "ex"), ("ae", "ex"), ("pv", "dur"), ("sid", "dur"), ("ae", "dur"), ("pv", "ln"), ("sid", "ln"), ("ae", "ln"), ("pv", "nart"), ("sid", "nart"), ("na", "pv"), ("na", "sid"), ("na", "ae")):
+                X[a_ + "_" + b_] = X[a_].astype(float) * X[b_].astype(float)
+            for a_ in ("pv", "sid", "ae", "ex"): X[a_ + "_pop"] = X[a_].astype(float) * pop
+            X["dur2"] = X.dur ** 2; X["ln2"] = X.ln ** 2; X["na_pop"] = X.na * (m.popularity.fillna(0).values / 100.0)
+            return X.astype(float).values
+        f = f.assign(_pb=(fm.popularity.fillna(0).values // 10).clip(0, 9)); elig["_pb"] = (em.popularity.fillna(0).values // 10).clip(0, 9)
+        Xf, Xe = feats(fm, f.trackName, f.new_artist), feats(em, elig.trackName, elig.new_artist)
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.preprocessing import OneHotEncoder
+        oh = OneHotEncoder(handle_unknown="ignore").fit(np.r_[f._pb.values, elig._pb.values].reshape(-1, 1))
+        Z = lambda X, pb: np.c_[X, oh.transform(pb.values.reshape(-1, 1)).toarray()]
+        clf = LogisticRegression(C=5.0, max_iter=2000, class_weight="balanced").fit(np.r_[Z(Xf, f._pb), Z(Xe, elig._pb)], np.r_[np.ones(len(f)), np.zeros(len(elig))])
+        pr = np.clip(clf.predict_proba(Z(Xe, elig._pb))[:, 1], 1e-4, 1 - 1e-4); w = pr / (1 - pr); w = np.minimum(w, np.quantile(w, .995))
+        rng = np.random.default_rng(int(c.strftime("%Y%m%d")))
+        n_dec = min(len(elig), DECOY_RATIO * len(f)); key = np.log(rng.random(len(elig))) / w   # Efraimidis-Spirakis weighted sampling w/o replacement
+        parts = [elig.iloc[np.argsort(-key)[:n_dec]]]
         dec = pd.concat(parts).copy()
         dec = dec.assign(first=pd.NaT, love=0, strong=0, plays90=0, days90=0, love_4_2=0, love_10_4=0, cutoff=c, is_decoy=1)
         tried = f.assign(is_decoy=0)
@@ -180,5 +222,9 @@ def public_view(pool: pd.DataFrame, meta_all: pd.DataFrame, train_raw: pd.DataFr
                               artistIds=[[h(x) for x in a] for a in p.artistIds], artist=p.artist.map(h).values,
                               trackName=p.trackName.values))
     raw = pd.Index(train_raw.trackId.unique()).union(pd.Index(p.trackId.values))
-    m = meta_all.reindex(raw); m.index = [h(x) for x in raw]; m.index.name = "trackId"
+    m = meta_all.reindex(raw)
+    # meta.name of a pool track is overwritten with the candidate's title: v2.0 meta.name equalled the title for every decoy but differed
+    # (version suffix / missing) for ~7% of tried songs, which identified them as user-played.
+    m.loc[p.trackId.values, "name"] = p.trackName.values
+    m.index = [h(x) for x in raw]; m.index.name = "trackId"
     return cands, m, order

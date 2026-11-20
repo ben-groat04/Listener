@@ -160,7 +160,7 @@ def main(argv):
     for p in mods:
         spec = importlib.util.spec_from_file_location("pred", p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
         for k, f in (getattr(m, "PREDICTORS", None) or {p: m.predict}).items(): preds[k] = f
-    n_looks = sealed_looks(hashes) if sealed else 1
+    n_looks = max(1, sealed_looks(hashes)) if sealed else 1
     scored = {k: score_predictor(f, cutoffs, k, indep_n, null, WINDOWS[win]) for k, f in preds.items()}
     if sealed:  # log every sealed evaluation (file hash included) so overuse is visible and multiplicity is counted
         data.SEALED_DIR.mkdir(exist_ok=True)

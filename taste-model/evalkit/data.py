@@ -1,5 +1,5 @@
 """Data loading, song identity, fold construction and labels. All time logic lives here."""
-import re, json
+import re, json, hashlib
 from pathlib import Path
 import numpy as np, pandas as pd
 
@@ -7,6 +7,9 @@ ROOT = Path(__file__).resolve().parents[1]
 STREAMS = ROOT.parent / "spotify-liked-songs/.cache/streams.jsonl"
 TOP_TRACKS = ROOT.parent / "spotify-liked-songs/.cache/top_tracks.json"
 SEALED_DIR = ROOT / ".sealed"
+DECOYS = ROOT / "evalkit" / "decoy_universe.csv.gz"  # build-time resource: builders must not read it
+DECOY_RATIO = 5     # decoys per tried song in the open pool (~20x the loved songs at a ~25% love rate); label-independent
+ID_SALT = "evalkit-v2"
 
 HORIZON_DAYS = 90            # how long after first listen we watch a song to decide if it was loved
 LOVE_PLAYS, LOVE_DAYS = 6, 3     # "love": >=6 plays on >=3 distinct days within the horizon
@@ -69,6 +72,9 @@ def song_table(all_streams: pd.DataFrame) -> pd.DataFrame:
     s = rep.rename(columns={"t": "first"}).set_index("song").join(st)
     s["love"] = ((s.plays90 >= LOVE_PLAYS) & (s.days90 >= LOVE_DAYS)).astype(int)
     s["strong"] = ((s.plays90 >= STRONG_PLAYS) & (s.days90 >= STRONG_DAYS)).astype(int)
+    # neighbouring label definitions for the sensitivity check (never the primary target)
+    s["love_4_2"] = ((s.plays90 >= 4) & (s.days90 >= 2)).astype(int)
+    s["love_10_4"] = ((s.plays90 >= 10) & (s.days90 >= 4)).astype(int)
     return s
 
 
@@ -87,6 +93,71 @@ def make_folds(cutoffs, all_streams=None):
         yield c, f.reset_index()
 
 
-def public_candidates(fold: pd.DataFrame) -> pd.DataFrame:
-    """What a predictor is allowed to see about the pool (no labels, no first-listen time)."""
-    return fold[["song", "trackId", "albumId", "artistIds", "artist", "trackName"]].copy()
+# ---------------------------------------------------------------- anonymisation (what predictors see)
+_hc = {}
+def h(x) -> int:
+    """Opaque stable token for an id: usable for equality joins, carries no order/time information."""
+    k = x if isinstance(x, (int, np.integer, str)) else str(x)
+    v = _hc.get(k)
+    if v is None: v = _hc[k] = int(hashlib.sha1(f"{ID_SALT}|{k}".encode()).hexdigest()[:13], 16)
+    return v
+
+def anon_streams(d: pd.DataFrame) -> pd.DataFrame:
+    """Hash trackId/albumId/artistIds/artist, and the artist part of the song key. Row order stays chronological (it is the stream log)."""
+    o = d.copy()
+    o["trackId"] = o.trackId.map(h); o["albumId"] = o.albumId.map(h)
+    o["artistIds"] = o.artistIds.map(lambda a: [h(x) for x in a]); o["artist"] = o.artist.map(h)
+    o["song"] = d.song.str.rsplit("|", n=1).str[0] + "|" + o.artist.astype(str)
+    return o
+
+def anon_song(song: pd.Series) -> pd.Series:
+    return song.str.rsplit("|", n=1).str[0] + "|" + song.str.rsplit("|", n=1).str[1].map(lambda a: str(h(int(a))))
+
+# ---------------------------------------------------------------- open-universe (decoy) pool
+def _decoys():
+    u = pd.read_csv(DECOYS)
+    u["artistIds"] = u.artistIds.map(lambda x: [int(i) for i in str(x).split(";")])
+    u["artistNames"] = u.artistNames.map(lambda x: str(x).split(";"))
+    u["artist"] = u.artistIds.map(lambda a: a[0]); u["release"] = pd.to_datetime(u.release)
+    u["song"] = u.trackName.map(song_key) + "|" + u.artist.astype(str)
+    return u
+
+def make_open_folds(cutoffs, all_streams=None):
+    """Yield (cutoff, pool). pool = the tried songs of make_folds (is_decoy=0) plus DECOY_RATIO x as many decoys
+    (is_decoy=1): real songs by the user's artists / related artists that the user NEVER played (checked against the whole
+    history incl. sealed era) and that were already released by the end of the fold window. Decoys get love=0 and are
+    labelled 'not tried' (not 'would hate'). Sampling is seeded by the cutoff and independent of any label."""
+    d = _load_all() if all_streams is None else all_streams
+    u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId)
+    u = u[~u.song.isin(played_songs) & ~u.trackId.isin(played_tracks)].drop_duplicates("song")
+    for c, f in make_folds(cutoffs, d):
+        end = c + pd.DateOffset(months=3)
+        elig = u[u.release < end]
+        n = min(len(elig), DECOY_RATIO * len(f))
+        dec = elig.sample(n, random_state=int(c.strftime("%Y%m%d"))).copy()
+        seen = set(d.loc[d.t < c, "artist"])
+        dec["new_artist"] = ~dec.artist.isin(seen)
+        dec = dec.assign(love=0, strong=0, plays90=0, days90=0, love_4_2=0, love_10_4=0, cutoff=c, is_decoy=1)
+        tried = f.assign(is_decoy=0)
+        cols = ["song", "trackId", "albumId", "artistIds", "artist", "trackName", "cutoff", "new_artist", "is_decoy",
+                "love", "strong", "plays90", "days90", "love_4_2", "love_10_4"]
+        yield c, pd.concat([tried[cols], dec[cols]], ignore_index=True)
+
+def load_meta_all() -> pd.DataFrame:
+    """Meta for every track the harness can show (user's tracks + decoys), indexed by RAW trackId (internal)."""
+    m = load_meta(); u = _decoys().drop_duplicates("trackId").set_index("trackId")
+    u = u[["durationMs", "explicit", "popularity", "spotifyId", "previewUrl", "albumName", "artistNames"]]
+    return pd.concat([m, u[~u.index.isin(m.index)]])
+
+def public_view(pool: pd.DataFrame, meta_all: pd.DataFrame, train_raw: pd.DataFrame, seed=0):
+    """What a predictor may see about the pool: shuffled rows, opaque ids, no labels/flags/timing.
+    Returns (cands, meta, order); order[i] = row of `pool` that public row i came from.
+    meta covers only tracks in the train history or in the pool, so its index says nothing about other future tracks."""
+    order = np.random.default_rng(seed).permutation(len(pool))
+    p = pool.iloc[order]
+    cands = pd.DataFrame(dict(song=anon_song(p.song).values, trackId=p.trackId.map(h).values, albumId=p.albumId.map(h).values,
+                              artistIds=[[h(x) for x in a] for a in p.artistIds], artist=p.artist.map(h).values,
+                              trackName=p.trackName.values))
+    raw = pd.Index(train_raw.trackId.unique()).union(pd.Index(p.trackId.values))
+    m = meta_all.reindex(raw); m.index = [h(x) for x in raw]; m.index.name = "trackId"
+    return cands, m, order

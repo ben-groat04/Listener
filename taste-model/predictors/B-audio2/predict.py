@@ -20,6 +20,9 @@ def _load(p):
     try: return pickle.load(open(p, "rb"))
     except Exception: return {}
 _E = {}
+def _seg():
+    if "s" not in _E: _E["s"] = _load(os.environ.get("B_SEG", ROOT + "hand-audio-feat-v1/seg.pkl"))
+    return _E["s"]
 def _clap():
     if "c" not in _E: _E["c"] = _load(os.environ.get("B_EMB", ROOT + "clap-preview-emb/emb.pkl"))
     return _E["c"]
@@ -69,6 +72,19 @@ def _factors(t, songs, dim=32, gap=1800, win=4):
     F = U * np.sqrt(S)[None, :]
     return F, r
 
+SEG_DIM = 16
+def _seg_score(Zc, M, mask=None, mode="topk"):
+    """Zc: (n, nseg, d). For each candidate segment: log kernel density over (weighted) train segments; average the best 2 segments
+    (= 'the parts of this song that sit in familiar territory')."""
+    Zt, W = (M["sZ"], M["sW"]) if mask is None else (M["sZ"][mask], M["sW"][mask])
+    n, k, d = Zc.shape; out = np.zeros(n)
+    flat = Zc.reshape(-1, d); res = np.zeros(len(flat))
+    for a in range(0, len(flat), 4000):
+        sq = _sqd(flat[a:a + 4000], Zt)
+        res[a:a + 4000] = np.log((np.exp(-sq / (0.25 * M["smed"])) * W[None, :]).sum(1) + 1e-6)
+    res = res.reshape(n, k)
+    return np.sort(res, 1)[:, -2:].mean(1) if mode == "topk" else res.mean(1)
+
 _CACHE = {}
 def _fit(train, meta, cutoff):
     key = (str(cutoff), len(train), len(meta))
@@ -111,6 +127,26 @@ def _fit(train, meta, cutoff):
         M["hmed"] = float(np.median(sq)); M["hZ"] = Zp; M["hW"] = np.log1p(S.loc[hs].plays.values)
         km = np.exp(-sq / (0.25 * M["hmed"])) * M["hW"][None, :]; np.fill_diagonal(km, 0)
         loo = np.log(km.sum(1) + 1e-6); M["hden_mu"], M["hden_sd"] = loo.mean(), loo.std() + 1e-9
+    # ---------- segment-level ("parts") density ----------
+    sv = _vecs(meta, _seg())
+    svec = {}
+    for ss, tid in zip(tr.song, tr.trackId):
+        if tid in sv and ss not in svec: svec[ss] = sv[tid]
+    if len(svec) >= 60:
+        ss_ = [x for x in S.index if x in svec]; A = np.array([svec[x] for x in ss_])        # (n, 6, 35)
+        flat = A.reshape(-1, A.shape[-1]); mu, sd = flat.mean(0), flat.std(0) + 1e-6
+        sp = PCA(n_components=SEG_DIM, whiten=True, random_state=0).fit(np.clip((flat - mu) / sd, -5, 5))
+        Zs = sp.transform(np.clip((flat - mu) / sd, -5, 5))
+        M["seg"] = (mu, sd, sp); M["sZ"] = Zs; M["sW"] = np.repeat(np.log1p(S.loc[ss_].plays.values), A.shape[1])
+        M["sid"] = np.repeat(np.arange(len(ss_)), A.shape[1])
+        rs = np.random.RandomState(0); sub = rs.choice(len(Zs), min(2000, len(Zs)), replace=False)
+        M["smed"] = float(np.median(_sqd(Zs[sub], Zs[sub])))
+        # leave-one-song-out score of train songs (subsample of 600 songs) for z constants
+        pick = rs.choice(len(ss_), min(600, len(ss_)), replace=False); vals = []
+        for j in pick:
+            m = M["sid"] != j; zc = Zs[M["sid"] == j]
+            vals.append(_seg_score(zc[None], M, mask=m)[0])
+        vals = np.array(vals); M["sden_mu"], M["sden_sd"] = vals.mean(), vals.std() + 1e-9
     # ---------- co-play factors regressed from audio ----------
     songs = list(S.index)
     both = S[S.hasc & S.hash & (S.plays >= 3)]
@@ -167,6 +203,13 @@ def _components(train, cands, meta, cutoff):
     for i, tid in enumerate(cands.trackId.values):
         if tid in cv: V[i] = _unit(cv[tid]); hc[i] = True
         if tid in hv: Hh[i] = hv[tid]; hh[i] = True
+    sden = np.zeros(n)
+    if "seg" in M:
+        sv = _vecs(meta, _seg()); idx = [i for i, tid in enumerate(cands.trackId.values) if tid in sv]
+        if idx:
+            mu, sd, sp = M["seg"]; A = np.array([sv[cands.trackId.values[i]] for i in idx])
+            Zc = sp.transform(np.clip((A.reshape(-1, A.shape[-1]) - mu) / sd, -5, 5)).reshape(len(idx), A.shape[1], -1)
+            sden[idx] = (_seg_score(Zc, M) - M["sden_mu"]) / M["sden_sd"]
     lr = np.zeros(n); den = np.zeros(n); hden = np.zeros(n); cp = np.zeros(n); cpl = np.zeros(n)
     if "lr" in M and hc.any():
         lr[hc] = (M["lr"].decision_function(M["pca"].transform(V[hc])) - M["lr_mu"]) / M["lr_sd"]
@@ -183,7 +226,7 @@ def _components(train, cands, meta, cutoff):
             for name, arr in (("cp", cp), ("cpl", cpl)):
                 m_, s_ = M["cp_stat"][name]; arr[b] = (_cp_score(M, P, name) - m_) / s_
     art = np.array([max([M["art"].get(a, 0.0) for a in ids], default=0.0) for ids in cands.artistIds])
-    out.update(den=den, lr=lr, hden=hden, cp=cp, cpl=cpl, art=(np.log1p(art) - M["art_mu"]) / M["art_sd"])
+    out.update(sden=sden, den=den, lr=lr, hden=hden, cp=cp, cpl=cpl, art=(np.log1p(art) - M["art_mu"]) / M["art_sd"])
     return out
 
 def _tie(c): return (c.trackId.values % 1000003) / 1e12

@@ -45,7 +45,7 @@ def score_predictor(fn, cutoffs, name="", indep_n=8, null=False, window=None):
 def _q(x, alpha): return tuple(np.nanpercentile(x, [100 * alpha / 2, 100 * (1 - alpha / 2)]).round(3))
 
 def summarize(preds, nboot=300, refs=(), n_looks=1):
-    """Tables. Bootstrap CIs resample songs within folds (shared across models => paired differences). CI level is 95% for
+    """Tables. Bootstrap CIs resample whole primary artists within folds (shared across models => paired differences). CI level is 95% for
     a single look and Bonferroni-widened to 1-0.05/n_looks when several sealed looks have been spent."""
     alpha = 0.05 / max(1, n_looks); rng = np.random.default_rng(0)
     tabs = {}
@@ -59,7 +59,8 @@ def summarize(preds, nboot=300, refs=(), n_looks=1):
                 y = np.concatenate([f[0] for f in a]); m = metrics.macro(a)
                 row = dict(label=label, pool=pool, subset=nm, model=n, n=len(y), base=round(y.mean(), 3),
                            **{k: round(v, 3) for k, v in m.items()},
-                           sauc_ci=_q([b["sauc"] for b in B[n]], alpha), plift_ci=_q([b["plift"] for b in B[n]], alpha))
+                           sauc_ci=_q([b["sauc"] for b in B[n]], alpha), plift_ci=_q([b["plift"] for b in B[n]], alpha),
+                           p20_ci=_q([b["p20"] for b in B[n]], alpha))
                 rr = [r for r in refs if r in preds and r != n]
                 if rr:
                     lo = {r: np.nanpercentile([x["sauc"] - z["sauc"] for x, z in zip(B[n], B[r])], 100 * alpha / 2) for r in rr}
@@ -86,11 +87,43 @@ def summarize(preds, nboot=300, refs=(), n_looks=1):
     lo = {}
     for n, df in preds.items():
         for f, g in df[df.is_decoy == 0].groupby("fold"):
-            y, s = g.love.values, g.score.values
-            lo.setdefault(n, {})[f] = np.nanpercentile([metrics.auc(y[i], s[i]) for i in (rng.integers(0, len(y), len(y)) for _ in range(200))], 100 * alpha / 2).round(3)
+            y, s, cl = g.love.values, g.score.values, g.artist.values
+            lo.setdefault(n, {})[f] = np.nanpercentile([metrics.auc(y[i], s[i]) for i in (metrics.cluster_idx(cl, rng) for _ in range(200))], 100 * alpha / 2).round(3)
     tabs["fold_auc_lower_bound"] = pd.DataFrame(lo)
     tabs["independence"] = pd.Series({n: df.attrs.get("indep", np.nan) for n, df in preds.items()}, name="median_rel_score_change_alone_vs_pool").round(4)
     return tabs
+
+BAR = """SUCCESS BAR ('works VERY WELL'); every line must pass on SEALED (and first on dev). CI = cluster bootstrap over artists,
+Bonferroni-widened by the number of sealed looks. Fixed baseline set = all of baselines.BASELINES (incl. the pool diagnostics).
+ T1 tried pool: stratified AUC (love, all songs) lower CI bound >= 0.65
+ T2 tried pool: stratified AUC on new-artist songs lower CI bound >= 0.60
+ T3 tried pool: paired dSAUC lower bound > 0 against EVERY baseline
+ T4 tried pool: pooled top-10% lift >= 1.8 and its lower CI bound >= 1.3
+ T5 sanity (not a test): fold AUC >= 0.55 in >= 4 of the 5 folds and no fold below 0.50
+ T6 labels: sAUC for love_4_2, love_10_4, strong each >= love sAUC - 0.03 and mean Spearman(score, days90) >= 0.15
+ O1 open pool (tried + decoys): sAUC (love) lower CI bound >= 0.75
+ O2 open pool: paired dSAUC lower bound > 0 against EVERY baseline
+ O3 open pool, new-artist subset: sAUC lower CI bound >= 0.65
+ O4 open pool: precision in top 20 songs (macro) >= 0.40, >= 1.3 x best baseline, lower CI bound >= 0.30
+ I  independence: median relative score change (alone vs pool) < 0.01
+ N  null control (--null-control run): tried sAUC <= 0.56, i.e. the signal comes from the user's history, not from a static prior"""
+
+def gates(tabs, model, null_tabs=None):
+    t = tabs["tried_love"]; o = tabs["open_love"]; g = lambda df, sub: df[(df.subset == sub) & (df.model == model)].iloc[0]
+    ta, tn, oa, on = g(t, "all"), g(t, "new-artist"), g(o, "all"), g(o, "new-artist")
+    base_p20 = max(o[(o.subset == "all") & o.model.isin(BASELINES)].p20)
+    fa = tabs["fold_auc_tried"][model]; s = tabs["label_sensitivity_sauc"].set_index("model").loc[model]
+    res = {
+     "T1": (ta.sauc_ci[0], ta.sauc_ci[0] >= .65), "T2": (tn.sauc_ci[0], tn.sauc_ci[0] >= .60),
+     "T3": (ta.get("dSAUC_lo", np.nan), ta.get("dSAUC_lo", -1) > 0), "T4": (ta.plift, ta.plift >= 1.8 and ta.plift_ci[0] >= 1.3),
+     "T5": ((fa >= .55).sum(), (fa >= .55).sum() >= len(fa) - 1 and (fa >= .5).all()),
+     "T6": (s.spearman_days90, all(s[k] >= s["love"] - .03 for k in ("love_4_2", "love_10_4", "strong")) and s.spearman_days90 >= .15),
+     "O1": (oa.sauc_ci[0], oa.sauc_ci[0] >= .75), "O2": (oa.get("dSAUC_lo", np.nan), oa.get("dSAUC_lo", -1) > 0),
+     "O3": (on.sauc_ci[0], on.sauc_ci[0] >= .65), "O4": (oa.p20, oa.p20 >= .40 and oa.p20 >= 1.3 * base_p20 and oa.p20_ci[0] >= .30),
+     "I": (tabs["independence"][model], tabs["independence"][model] < .01)}
+    if null_tabs is not None:
+        nv = g(null_tabs["tried_love"], "all").sauc; res["N"] = (nv, nv <= .56)
+    return pd.DataFrame(res, index=["value", "pass"]).T
 
 def _sha(p): return hashlib.sha256(open(p, "rb").read()).hexdigest()
 
@@ -121,11 +154,10 @@ def main(argv):
         for p, h in zip(mods, hashes):
             if h not in reg: sys.exit(f"{p}: sha256 {h[:12]} is not registered. Only the main session registers the final model(s): python -m evalkit.register {p} <name>")
             if h in done: sys.exit(f"{p}: this exact file was already evaluated on sealed (one look per registered model)")
-    preds = {}
+    preds = dict(BASELINES)  # the fixed baseline set is always scored alongside, so paired comparisons use identical resamples
     for p in mods:
         spec = importlib.util.spec_from_file_location("pred", p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
         for k, f in (getattr(m, "PREDICTORS", None) or {p: m.predict}).items(): preds[k] = f
-    if not mods: preds = dict(BASELINES)
     n_looks = sealed_looks(hashes) if sealed else 1
     scored = {k: score_predictor(f, cutoffs, k, indep_n, null, WINDOWS[win]) for k, f in preds.items()}
     if sealed:  # log every sealed evaluation (file hash included) so overuse is visible and multiplicity is counted
@@ -138,6 +170,10 @@ def main(argv):
     tabs = summarize(scored, nboot, refs=refs if mods else (), n_looks=n_looks)
     for k, t in tabs.items():
         print(f"\n== {k}"); print(t.to_string(index=k in ("fold_auc_tried", "fold_auc_lower_bound", "independence")))
+    if mods:
+        print("\n" + BAR)
+        for m in [k for k in preds if k not in BASELINES]:
+            print(f"\n-- gates for {m} (the N gate needs a separate --null-control run: compare tried sAUC)"); print(gates(tabs, m).to_string())
     return scored, tabs
 
 if __name__ == "__main__": main(sys.argv[1:])

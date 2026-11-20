@@ -1,13 +1,10 @@
-"""A-gbm-history: supervised 'as-of' model. Train examples = songs the user first tried before cutoff-90d (label = love, computed
-inside train only); features of each example are computed from streams strictly before that song's first play, so the model learns
-P(love | what I knew about the user when the song first appeared). The same feature function is applied to candidates at t0=cutoff.
-Features: multi-scale artist/album history, artist exploration and love-rate history, metadata, title/album-name cues, a hashed
-char-ngram text model (out-of-fold stacked)."""
-import numpy as np, pandas as pd, re, pickle, os
-BETA = float(os.environ.get('XB', 0.3))
-GAMMA = float(os.environ.get('XG', 0.3))
-WREG = float(os.environ.get('XR', 0.0))
-WLR = float(os.environ.get('XL', 0.0))
+"""A-audio-gbm: as-of LightGBM (artist/album history + metadata) + CLAP-preview audio features (kernel density, love-vs-nonlove
+similarity, within-artist similarity, kNN) + log-plays regression head + PCA logistic audio head + prominence/typicality prior for the open pool.
+Audio embeddings: .cache/shared/clap-preview-emb/emb.pkl (previewUrl -> 768d CLAP, built by predictors/B-audio); missing -> NaN/neutral."""
+BETA = 0.3
+GAMMA = 0.6
+WREG = 1.0
+WLR = 0.5
 import lightgbm as lgb
 from evalkit.data import song_table
 
@@ -163,7 +160,8 @@ def _fit(train, meta, cutoff):
     w = 0.5 ** (age / 500.0) + 0.1
     params = dict(objective="binary", learning_rate=0.03, num_leaves=7, min_data_in_leaf=60, feature_fraction=0.7, bagging_fraction=0.8,
                   bagging_freq=1, lambda_l2=10.0, num_threads=1, verbose=-1, seed=1)
-    models = [lgb.train({**params, "seed": s}, lgb.Dataset(X, y, weight=w), num_boost_round=250) for s in range(3)]
+    if True:
+        models = [lgb.train({**params, "seed": s}, lgb.Dataset(X, y, weight=w), num_boost_round=250) for s in range(3)]
     yr = np.log1p(ex.plays90.values.astype(float))
     reg = [lgb.train({**params, "objective": "regression", "seed": s}, lgb.Dataset(X, yr, weight=w), num_boost_round=250) for s in range(2)]
     pr = np.mean([m.predict(X) for m in reg], axis=0); rstat = (pr.mean(), pr.std() + 1e-6)

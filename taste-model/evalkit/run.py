@@ -13,11 +13,13 @@ REGISTRY = data.ROOT / "evalkit" / "registry.json"
 def _null_control(train, rng):
     """Break the link between song identity and play history: every train song takes another train song's identity
     (ids, title, artist) while keeping its own timestamps. A model that really learns from the user's history must fall to chance."""
-    cols = ["trackId", "albumId", "artistIds", "artist", "trackName", "song"]
+    cols = ["trackId", "albumId", "artistIds", "artist", "trackName"]
     ident = train.drop_duplicates("song").set_index("song")[cols]
-    shuffled = pd.DataFrame(ident.values[rng.permutation(len(ident))], index=ident.index, columns=cols).reindex(train.song.values)
+    perm = rng.permutation(len(ident))
+    shuffled = pd.DataFrame({c: ident[c].values[perm] for c in cols}, index=ident.index).reindex(train.song.values)
     out = train.copy()
     for c in cols: out[c] = shuffled[c].values
+    out["song"] = pd.Series(ident.index.values[perm], index=ident.index).reindex(train.song.values).values
     return out
 
 def score_predictor(fn, cutoffs, name="", indep_n=8, null=False, window=None):

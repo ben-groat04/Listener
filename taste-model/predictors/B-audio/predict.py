@@ -9,7 +9,7 @@ import os, pickle, numpy as np, pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 
-EMB_PATH = "/home/user/Listener/taste-model/.cache/shared/clap-preview-emb/emb.pkl"
+EMB_PATH = os.environ.get("B_EMB", "/home/user/Listener/taste-model/.cache/shared/clap-preview-emb/emb.pkl")
 _E = {}
 def _emb():
     if "e" not in _E:
@@ -62,6 +62,11 @@ def _fit(train, meta, cutoff):
             w = 0.5 ** (mat.age.values / 730.0)
             lr = LogisticRegression(C=0.02, max_iter=500).fit(X, mat.love.values, sample_weight=w)
             M["lr"] = lr; sc = lr.decision_function(X); M["lr_mu"], M["lr_sd"] = sc.mean(), sc.std() + 1e-9
+        if M["ok"]:
+            M["mV"] = np.array([vec[s] for s in mat.index]); M["mY"] = mat.love.values.astype(float)
+            M["mW"] = 0.5 ** (mat.age.values / 730.0); M["prior"] = float(np.average(M["mY"], weights=M["mW"]))
+        al = S[S.has]
+        M["dV"] = np.array([vec[s] for s in al.index]); M["dW"] = np.log1p(al.plays.values)
         rs = S[(S.rot > 0) & S.has]
         M["rotS"] = rs
         if len(rs):
@@ -93,6 +98,14 @@ def _components(train, cands, meta, cutoff):
         k = np.exp(8 * (sim - 1)) * M["rotW"][None, :]   # sharp kernel
         rot[has] = np.log(k.sum(1) + 1e-6)
     out["rot"] = rot
+    knn = np.zeros(n); den = np.zeros(n)
+    if has.any() and "dV" in M:
+        sim = V[has] @ M["dV"].T
+        den[has] = np.log((np.exp(10 * (sim - 1)) * M["dW"][None, :]).sum(1) + 1e-6)
+        if "mV" in M:
+            k = np.exp(10 * (V[has] @ M["mV"].T - 1)) * M["mW"][None, :]
+            knn[has] = (k @ M["mY"] + 0.5 * M["prior"]) / (k.sum(1) + 0.5)
+    out["knn"] = knn; out["den"] = den
     art = np.array([max([M["art"].get(a, 0.0) for a in ids], default=0.0) for ids in cands.artistIds])
     out["art"] = np.log1p(art)
     out["has"] = has.astype(float)
@@ -109,4 +122,7 @@ def blend(train, cands, meta, cutoff):
     c = _components(train, cands, meta, cutoff)
     return W["lr"] * c["lr"] + W["rot"] * c["rot"] / 3 + W["art"] * c["art"] + _tie(cands)
 
-PREDICTORS = dict(B_lr=lr_only, B_rot=rot_only, B_art=art_only, B_blend=blend)
+def knn_only(train, cands, meta, cutoff): return _components(train, cands, meta, cutoff)["knn"] + _tie(cands)
+def den_only(train, cands, meta, cutoff): return _components(train, cands, meta, cutoff)["den"] + _tie(cands)
+
+PREDICTORS = dict(B_knn=knn_only, B_den=den_only, B_lr=lr_only, B_rot=rot_only, B_art=art_only, B_blend=blend)

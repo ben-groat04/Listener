@@ -30,9 +30,9 @@ def _emb_for(track_ids, meta):
     return E
 
 BETA_K = 10.0
-def aud_feats(Eq, tq, Ej, fj, lovej, p90j):
+def aud_feats(Eq, tq, Ej, fj, lovej, p90j, aq=None, aj=None):
     """Audio features of queries (time tq, days) vs train songs j (first day fj, love, plays90); strictly as-of tq."""
-    m = len(Eq); out = np.full((m, 12), np.nan, dtype=np.float32)
+    m = len(Eq); out = np.full((m, 16), np.nan, dtype=np.float32)
     okq = ~np.isnan(Eq[:, 0]); okj = ~np.isnan(Ej[:, 0])
     if not okq.any(): return out
     S = Eq[okq] @ Ej[okj].T
@@ -43,7 +43,7 @@ def aud_feats(Eq, tq, Ej, fj, lovej, p90j):
     def ks(mask): return (K * mask).sum(1)
     dall = ks(prior); dl = ks(mat & lv); dn = ks(mat & ~lv); drec = ks(rec)
     nl = (mat & lv).sum(1); nn = (mat & ~lv).sum(1)
-    r = np.zeros((okq.sum(), 12), dtype=np.float32)
+    r = np.zeros((okq.sum(), 16), dtype=np.float32)
     r[:, 0] = np.log(dall + 1e-3); r[:, 1] = np.log(drec + 1e-3)
     r[:, 2] = np.log((dl + 0.05) / (nl + 1)) - np.log((dn + 0.05) / (nn + 1))
     r[:, 3] = np.log(dl + 1e-3); r[:, 4] = np.log(dn + 1e-3)
@@ -55,9 +55,17 @@ def aud_feats(Eq, tq, Ej, fj, lovej, p90j):
     r[:, 9] = (K * mat * np.log1p(p90)).sum(1) / ((K * mat).sum(1) + 1e-3)   # kernel-regressed log plays
     r[:, 10] = r[:, 5] - r[:, 8]
     r[:, 11] = (K * mat * lv).sum(1) / ((K * mat).sum(1) + 1e-3)
+    if aq is not None:
+        same = (np.asarray(aq)[okq][:, None] == np.asarray(aj)[okj][None, :]) & prior
+        sl = same & mat & lv; sn = same & mat & ~lv
+        def mx(mask):
+            X = np.where(mask, S, -2.0).max(1); return np.where(X < -1.5, np.nan, X)
+        r[:, 12] = mx(sl); r[:, 13] = mx(sn); r[:, 14] = mx(same)
+        r[:, 15] = np.where(same.sum(1) > 0, (S * same).sum(1) / np.maximum(same.sum(1), 1), np.nan)
+    else: r[:, 12:] = np.nan
     out[okq] = r
     return out
-AUD_COLS = [f"au{i}" for i in range(12)]
+AUD_COLS = [f"au{i}" for i in range(16)]
 DAY = np.timedelta64(1, "D")
 
 def _days(t): return t.values.astype("datetime64[s]").astype(np.int64) / 86400.0
@@ -146,9 +154,9 @@ def _fit(train, meta, cutoff):
     ex = ex[ex["first"] > train.t.min() + pd.Timedelta(days=45)].copy()
     ex["trackName"] = ex.trackName.fillna("")
     rows = [H.row(a, al, d) for a, al, d in zip(ex.artistIds, ex.albumId, _days(ex["first"]))]
-    Ej = _emb_for(st.trackId.values, meta); fj = _days(st["first"]); lj = st.love.values; pj = st.plays90.values
+    aj = [a[0] for a in st.artistIds]; Ej = _emb_for(st.trackId.values, meta); fj = _days(st["first"]); lj = st.love.values; pj = st.plays90.values
     Ee = _emb_for(ex.trackId.values, meta)
-    A = aud_feats(Ee, _days(ex["first"]), Ej, fj, lj, pj)
+    A = aud_feats(Ee, _days(ex["first"]), Ej, fj, lj, pj, [a[0] for a in ex.artistIds], aj)
     X = pd.concat([pd.DataFrame(rows).reset_index(drop=True), _static(ex.reset_index(), meta), pd.DataFrame(A, columns=AUD_COLS)], axis=1)
     y = ex.love.values
     age = (cutoff - ex["first"]).dt.days.values
@@ -169,7 +177,7 @@ def _fit(train, meta, cutoff):
         ag = (_days(pd.Series([cutoff]))[0] - fj[matj]); sw = 0.5 ** (ag / 730.0)
         clf = LogisticRegression(C=0.05, max_iter=300).fit(pca.transform(Ej[matj]), lj[matj], sample_weight=sw)
         zt = clf.decision_function(pca.transform(Ej[matj])); lrm = (pca, clf, zt.mean(), zt.std() + 1e-6)
-    return H, models, list(X.columns), (reg, rstat, lstat, lrm), (Ej, fj, lj, pj), (np.nanmean(X["au0"]), np.nanstd(X["au0"]) + 1e-6)
+    return H, models, list(X.columns), (reg, rstat, lstat, lrm), (Ej, fj, lj, pj, None, aj), (np.nanmean(X["au0"]), np.nanstd(X["au0"]) + 1e-6)
 
 def predict(train, cands, meta, cutoff):
     key = (str(cutoff), len(train))
@@ -178,7 +186,7 @@ def predict(train, cands, meta, cutoff):
     t = _days(pd.Series([cutoff]))[0]
     rows = [H.row(a, al, t) for a, al in zip(cands.artistIds, cands.albumId)]
     Eq = _emb_for(cands.trackId.values, meta)
-    A = aud_feats(Eq, np.full(len(cands), t), *J)
+    A = aud_feats(Eq, np.full(len(cands), t), J[0], J[1], J[2], J[3], [a[0] for a in cands.artistIds], J[5])
     X = pd.concat([pd.DataFrame(rows).reset_index(drop=True), _static(cands.reset_index(drop=True), meta), pd.DataFrame(A, columns=AUD_COLS)], axis=1)
     X = X[cols]
     p = np.mean([m.predict(X) for m in models], axis=0)

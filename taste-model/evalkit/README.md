@@ -1,17 +1,59 @@
-# evalkit: does a method predict which NEW songs the user comes to love?
+# evalkit v2: does a method predict which NEW songs the user comes to love?
 
-Protocol (code in data.py): a *song* (normalised title + primary artist, merging re-releases) is a candidate for
-cutoff C if it was never played before C and is first played in [C, C+3 months). The predictor sees only streams
-< C (`train`), plus the candidate list (ids/names, no labels, no timing) and static metadata, and must rank the pool.
-Label `love` = >=6 plays on >=3 distinct days within 90 days of first play (`strong` = >=15 plays on >=5 days).
-Dev folds: 8 quarterly cutoffs 2023-01..2024-10 (open; tune freely). Sealed: 5 cutoffs 2025-04..2026-04
-(1617 songs); never look at streams >= 2025-04-01 or tune on it (`load_streams` refuses; `run --sealed` is logged
-to .sealed/runs.log). Metrics (metrics.py): fold AUC, AP (+lift), precision in top 10%, recall in top 20%,
-macro-averaged over folds, bootstrap 95% CIs over songs, paired AUC-difference CI vs `artist_love_rate`;
-reported for all songs and for new-artist / known-artist subsets.
+## Protocol (code: data.py)
+* Song = connected component of (normalised title + primary artist) and trackId links, so remasters/live/deluxe versions,
+  one trackId under several artist ids, and 'unknown track name' plays are the same song (v1 had these wrong).
+* Cutoff C: a song is a candidate if it was never played before C and is first played in [C, C+3 months) ("tried" songs).
+* Label `love` = >=6 plays on >=3 distinct days in 90 days after first play. `strong` = >=15 plays / 5 days. Sensitivity labels
+  `love_4_2`, `love_10_4` and the continuous `days90` (Spearman) are reported next to it.
+* Dev folds: 8 cutoffs 2023-01..2024-10 (open). Sealed folds: 5 cutoffs 2025-04..2026-04 (1664 tried songs). Streams >= 2025-04-01
+  are refused by `load_streams`; dev label horizons end exactly there.
+* Two pools per fold, scored in ONE predictor call:
+  * tried pool (primary): loved vs tried-but-not-loved. Measures "which of the songs I try do I love".
+  * open pool (end-goal proxy): tried songs + 5x as many decoys (~20x the loved songs): real songs by the user's top-300 artists or
+    related artists that the user NEVER played (checked over the full history), already released by the end of the fold window
+    (stats.fm album dates), from `decoy_universe.csv.gz` (built once by `make_decoys.py`, 59k tracks, max 200 tracks/artist).
+    Decoys are matched to the tried songs on (new-artist flag x Spotify-popularity decile), so popularity does not separate them
+    (popularity baseline = chance). Decoy = "not tried", NOT "would hate": this is a weaker, separate metric.
+* What a predictor sees: `train` (streams < C), `cands` (song, trackId, albumId, artistIds, artist, trackName), `meta` indexed by
+  trackId (name, durationMs, explicit, popularity, spotifyId, previewUrl, albumName, artistNames). Rows are shuffled, all ids are opaque
+  hashes (equality joins only; names/meta give the real identity), no labels/flags/timing. meta covers only tracks in train or the pool
+  (decoy meta comes from the same stats.fm source, so meta presence carries no signal).
+* Independence: the score of a candidate must not depend on the other candidates. The harness re-scores random candidates alone
+  and reports the median relative change (gate I). Fix random seeds; cache fitted models by cutoff. `pool_*` baselines are labelled DIAGNOSTIC.
 
-    python -m evalkit.selftest            # leakage + sanity checks
-    python -m evalkit.run [pred.py ...]   # dev scores (no args = baselines); pred.py exposes predict(train,cands,meta,cutoff)
-    python -m evalkit.run --sealed pred.py   # final, once per candidate method
-    python -m evalkit.make_sealed         # regenerate .sealed/labels.csv, verify vs sealed_manifest.json
-Note: AP-lift of a random ranking is slightly >1 in small pools; judge by AUC and the CIs.
+## Metrics
+Stratified AUC `sauc` (all within-fold pos/neg pairs pooled; the headline), macro AUC, AP/lift, p10, p20 (precision in the top 20
+songs), r20, pooled top-10% lift `plift` (hits / hits expected at each fold's base rate). Everything for all / new-artist / known-artist.
+CIs: bootstrap over whole artists (songs of one artist are correlated). Paired dSAUC vs every baseline (shared resamples).
+Level 95%, Bonferroni-widened to 1-0.05/K for K sealed looks (K = distinct predictor files evaluated on sealed).
+
+## Baselines (always scored together with your predictor)
+random, popularity, artist_plays, artist_recent, artist_love_rate, pool_artist_siblings, pool_album_siblings (the last two use pool
+structure: diagnostics that any method must beat).
+
+## Commands (run from /home/user/Listener/taste-model)
+    python3 -m evalkit.selftest                      # leakage/sanity checks (~25 s)
+    python3 -W ignore -m evalkit.run [pred.py ...]   # dev; baselines are always included; prints tables + gate table (~2 min)
+        --nboot N  --indep-n N  --null-control  --window all|730|365|sub365
+    python3 -m evalkit.register pred.py name         # MAIN SESSION ONLY: pre-register final model(s)
+    python3 -W ignore -m evalkit.run --sealed pred.py   # MAIN SESSION ONLY: one look per registered file, logged with its hash
+    python3 -m evalkit.make_sealed [--write-manifest]   # regenerate .sealed/labels.csv, verify against sealed_manifest.json
+Predictor: `predict(train, cands, meta, cutoff) -> one finite score per candidate row` or a dict `PREDICTORS = {name: fn}`.
+Builders: never run `--sealed`, never read `.sealed/`, never import `decoy_universe`/`make_decoys` (the file lists decoys AND
+non-decoys by seed artists; using it is cheating). Registration + hash logging is an audit trail, not a cryptographic lock.
+
+## History-length / drift ablation (ablate.py)
+`--window 730|365|sub365` trains on the last 2y / 1y / a random subsample of ALL history with the same number of streams as the
+last year. Compare 365 vs sub365 per fold to separate "recent is better" from sample size. Dev only; pick the window on dev.
+
+## Success bar
+Printed by `run.py` (constant `BAR`) with an automatic pass/fail table. Summary: tried pool sAUC lower CI >= 0.65 (new-artist >= 0.60),
+beats every baseline in a paired test, pooled top-10% lift >= 1.8, label-variant consistency; open pool sAUC lower CI >= 0.75
+(new-artist >= 0.65), beats every baseline, precision@20 >= 0.40 (~10x base) and >= 1.3x the best baseline; independence; null control.
+
+## Known limitations
+* Pools are shaped by the user's choices; decoys are an approximation of an open catalogue (artist-biased seeds: top-300 artists by
+  lifetime plays incl. future plays, and related artists; <=200 tracks per artist; spotifyPopularity measured in 2026).
+* Pretrained audio models may have seen sealed-era songs (unavoidable). Preview availability may correlate with taste (untested).
+* The sealed labels were regenerated after the song-identity fix (v1 -> v2: 1617 -> 1664 songs); nothing was tuned on them.

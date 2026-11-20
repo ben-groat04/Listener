@@ -11,3 +11,6 @@
 - The main session ONLY orchestrates: it launches and briefs agents and relays results. Agents do all the work, including folder cleanup. The main session never steers methods or makes project decisions itself.
 - Messages to the user: concise. Status = what + why only; no timestamps, no filler. Commit acknowledgements: one word ("Committed.").
 - Workflow briefs must require the harness fast mode for all iteration; full (slow) evaluation runs only for final reported scores.
+- During every workflow: status updates every ~5 min (CronCreate, what + why + progress/ETA + new scores, no filler) plus a Monitor on journal.jsonl for agent start/finish events. Recreate both each session.
+- Sealed test runs only after the user has seen the dev results and explicitly approved; only the main session registers and runs them.
+- No candidate-song search until it is proven to work VERY WELL (user's words; there is no fixed numeric bar — keep pushing), the devil's advocate signs off, and the user explicitly approves.

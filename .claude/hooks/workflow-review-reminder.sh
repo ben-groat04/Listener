@@ -18,5 +18,5 @@ for d in "$wfdir"/wf_*/; do
   fi
 done
 [ ${#pending[@]} -eq 0 ] && exit 0
-jq -n --arg r "Finished workflow run(s) not yet reviewed: ${pending[*]} (in $wfdir). Per project rules, spawn a background Sonnet agent to review the logs (how to improve future workflows, how steered it was); it must create .reviewed in each run dir when done." \
+jq -n --arg r "Finished workflow run(s) not yet reviewed: ${pending[*]} (in $wfdir). Per project rules, spawn a background Sonnet agent to review the logs (how to improve future workflows, how steered it was) and clean the project folders; it must create .reviewed in each run dir when done." \
   '{decision: "block", reason: $r}'

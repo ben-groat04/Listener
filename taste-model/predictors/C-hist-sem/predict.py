@@ -143,12 +143,11 @@ def _pseudo(train, meta, anm, cutoff, step_days=30):
     while c <= last_c:
         hist = tr[tr.t < c]
         f = sp_all[(sp_all["first"] >= c) & (sp_all["first"] < c + pd.DateOffset(months=3))]
-        f = f[f.index.isin(set(tr.loc[tr.t < c + pd.DateOffset(months=3), "song"]))]
         if len(f) >= 5:
             cand = f.reset_index()[["song", "trackId", "albumId", "artist", "artistIds", "trackName"]]
             X = _features(hist, meta, cand, c, anm, None)
             cemb = np.stack([E[s] for s in cand.song])
-            Xs = _sem_features(hist, cand, cemb, anm, c, sp_all, {k: v for k, v in E.items() if k in set(hist.song)})
+            Xs = _sem_features(hist, cand, cemb, anm, c, sp_all, E)
             X = pd.concat([X, Xs], axis=1); X["y"] = f.love.values; X["cut"] = c; X["age"] = (pd.Timestamp(cutoff) - c).days
             X["song"] = f.index.values
             rows.append(X)

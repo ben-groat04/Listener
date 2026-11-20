@@ -3,7 +3,8 @@ Sealed (final, gated, logged):     python -m evalkit.run --sealed [pred.py ...]
 A predictor module exposes `predict(train, cands, meta, cutoff) -> np.ndarray` (or a dict `PREDICTORS = {name: fn}`).
 The score of a candidate must depend only on (train, that candidate, its meta): the harness checks this (see score_predictor).
 Options: --nboot N  --indep-n N (singleton re-scores per fold, 0 = skip)  --null-control  --window all|730|365|sub365 (see ablate.py)."""
-import sys, json, hashlib, importlib.util, datetime
+import sys, os, json, hashlib, importlib.util, datetime, pickle
+from pathlib import Path
 import numpy as np, pandas as pd
 from . import data, metrics
 from .baselines import BASELINES, DIAGNOSTIC
@@ -22,26 +23,61 @@ def _null_control(train, rng):
     out["song"] = pd.Series(ident.index.values[perm], index=ident.index).reindex(train.song.values).values
     return out
 
-def score_predictor(fn, cutoffs, name="", indep_n=8, null=False, window=None):
+_PREP = {}
+def prepare_folds(cutoffs):
+    """Everything about the folds that does not depend on the predictor (streams, pools, public views); built once per process."""
+    key = tuple(map(str, cutoffs))
+    if key not in _PREP:
+        d = data._load_all(); pub = data.anon_streams(d); meta_all = data.load_meta_all(); out = []
+        for c, pool in data.make_open_folds(cutoffs, d):
+            mask = (d.t < c).values
+            cands, meta, order = data.public_view(pool, meta_all, d[mask], seed=int(c.strftime("%Y%m%d")))
+            out.append(dict(c=c, pool=pool, train=pub[mask], cands=cands, meta=meta, order=order))
+        _PREP[key] = out
+    return _PREP[key]
+
+def _code_hash():
+    import glob
+    h = hashlib.sha256()
+    for p in sorted(glob.glob(str(data.ROOT / "evalkit" / "*.py"))) + [str(data.DECOYS), str(data.TOP_TRACKS), str(data.STREAMS)]:
+        if not p.endswith(("run.py", "selftest.py", "register.py")): h.update(Path(p).read_bytes() if p.endswith(".py") else f"{p}{os.stat(p).st_size}".encode())
+    return h.hexdigest()[:16]
+
+def _cache_path():
+    return data.ROOT / ".cache" / "shared" / f"evalkit-baseline-scores-{_code_hash()}.pkl"
+
+def score_predictor(fn, cutoffs, name="", indep_n=8, null=False, window=None, cache=None, wname=""):
     """Run fn on the open pool (tried songs + decoys) of every fold. Returns the scored pool (shuffled public order) with
-    attrs['indep'] = median |score(pool) - score(candidate alone)| / std(score) over `indep_n` random candidates per fold."""
-    d = data._load_all(); pub = data.anon_streams(d); meta_all = data.load_meta_all()
+    attrs['indep'] = median and attrs['indep_p90'] of |score(pool) - score(candidate alone)| / std(score) over `indep_n` random candidates
+    per fold. The singleton call gets `meta` restricted to train tracks + that candidate (the full meta lists every pool track, which would
+    otherwise let a predictor read the pool composition and still pass this check).
+    cache: optional dict {(name, cutoff, window?, null): (scores, dev)} used for deterministic baselines."""
     rows, dev = [], []
-    for c, pool in data.make_open_folds(cutoffs, d):
-        mask = (d.t < c).values
-        train = pub[mask]
-        if window: train = window(train, c)
-        if null: train = _null_control(train, np.random.default_rng(int(c.strftime("%Y%m%d"))))
-        cands, meta, order = data.public_view(pool, meta_all, d[mask], seed=int(c.strftime("%Y%m%d")))
-        sc = np.asarray(fn(train.copy(), cands, meta, c), float)
-        assert sc.shape == (len(cands),) and np.isfinite(sc).all(), "need one finite score per candidate"
-        if indep_n and name not in DIAGNOSTIC:
-            rng = np.random.default_rng(7); idx = rng.choice(len(cands), min(indep_n, len(cands)), replace=False)
-            one = np.array([np.asarray(fn(train.copy(), cands.iloc[[i]].reset_index(drop=True), meta, c), float)[0] for i in idx])
-            dev.append(np.abs(one - sc[idx]) / (sc.std() + 1e-12))
+    for F in prepare_folds(cutoffs):
+        c, pool, train, cands, meta, order = F["c"], F["pool"], F["train"], F["cands"], F["meta"], F["order"]
+        ck = (name, str(c.date()), wname, null, indep_n)
+        if cache is not None and ck in cache: sc, dv = cache[ck]
+        else:
+            tr = train
+            if window: tr = window(tr, c)
+            if null: tr = _null_control(tr, np.random.default_rng(int(c.strftime("%Y%m%d"))))
+            sc = np.asarray(fn(tr.copy(), cands, meta, c), float); dv = []
+            assert sc.shape == (len(cands),) and np.isfinite(sc).all(), "need one finite score per candidate"
+            if indep_n and name not in DIAGNOSTIC:
+                rng = np.random.default_rng(7); idx = rng.choice(len(cands), min(indep_n, len(cands)), replace=False)
+                known = set(tr.trackId)
+                one = []
+                for i in idx:
+                    ci = cands.iloc[[i]].reset_index(drop=True)
+                    mi = meta[meta.index.isin(known) | (meta.index == ci.trackId[0])]
+                    one.append(np.asarray(fn(tr.copy(), ci, mi, c), float)[0])
+                dv = list(np.abs(np.array(one) - sc[idx]) / (sc.std() + 1e-12))
+            if cache is not None: cache[ck] = (sc, dv)
+        dev += dv
         rows.append(pool.iloc[order].assign(fold=str(c.date()), score=sc))
     out = pd.concat(rows, ignore_index=True)
-    out.attrs["indep"] = float(np.median(np.concatenate(dev))) if dev else np.nan
+    out.attrs["indep"] = float(np.median(dev)) if dev else np.nan
+    out.attrs["indep_p90"] = float(np.percentile(dev, 90)) if dev else np.nan
     return out
 
 def _q(x, alpha): return tuple(np.nanpercentile(x, [100 * alpha / 2, 100 * (1 - alpha / 2)]).round(3))
@@ -92,7 +128,8 @@ def summarize(preds, nboot=300, refs=(), n_looks=1):
             y, s, cl = g.love.values, g.score.values, g.artist.values
             lo.setdefault(n, {})[f] = np.nanpercentile([metrics.auc(y[i], s[i]) for i in (metrics.cluster_idx(cl, rng) for _ in range(200))], 100 * alpha / 2).round(3)
     tabs["fold_auc_lower_bound"] = pd.DataFrame(lo)
-    tabs["independence"] = pd.Series({n: df.attrs.get("indep", np.nan) for n, df in preds.items()}, name="median_rel_score_change_alone_vs_pool").round(4)
+    tabs["independence"] = pd.DataFrame({"median": {n: df.attrs.get("indep", np.nan) for n, df in preds.items()},
+                                         "p90": {n: df.attrs.get("indep_p90", np.nan) for n, df in preds.items()}}).round(4)  # rel. score change, candidate alone vs in pool
     return tabs
 
 BAR = """SUCCESS BAR ('works VERY WELL'); every line must pass on SEALED (and first on dev). CI = cluster bootstrap over artists,
@@ -107,7 +144,7 @@ Bonferroni-widened by the number of sealed looks. Fixed baseline set = all of ba
  O2 open pool: paired dSAUC lower bound > 0 against EVERY baseline
  O3 open pool, new-artist subset: sAUC lower CI bound >= 0.65
  O4 open pool: precision in top 20 songs (macro) >= 0.40, >= 1.3 x best baseline, lower CI bound >= 0.30
- I  independence: median relative score change (alone vs pool) < 0.01
+ I  independence: 90th-percentile relative score change (alone vs pool, restricted meta) < 0.01 (NaN = not checked, e.g. --indep-n 0 / --fast: then NOT passed)
  N  null control (--null-control run): tried sAUC <= 0.56, i.e. the signal comes from the user's history, not from a static prior"""
 
 def gates(tabs, model, null_tabs=None):
@@ -122,7 +159,7 @@ def gates(tabs, model, null_tabs=None):
      "T6": (s.spearman_days90, all(s[k] >= s["love"] - .03 for k in ("love_4_2", "love_10_4", "strong")) and s.spearman_days90 >= .15),
      "O1": (oa.sauc_ci[0], oa.sauc_ci[0] >= .75), "O2": (oa.get("dSAUC_lo", np.nan), oa.get("dSAUC_lo", -1) > 0),
      "O3": (on.sauc_ci[0], on.sauc_ci[0] >= .65), "O4": (oa.p20, oa.p20 >= .40 and oa.p20 >= 1.3 * base_p20 and oa.p20_ci[0] >= .30),
-     "I": (tabs["independence"][model], tabs["independence"][model] < .01)}
+     "I": (tabs["independence"]["p90"][model], tabs["independence"]["p90"][model] < .01)}
     if null_tabs is not None:
         nv = g(null_tabs["tried_love"], "all").sauc; res["N"] = (nv, nv <= .56)
     return pd.DataFrame(res, index=["value", "pass"]).T
@@ -143,11 +180,13 @@ def sealed_looks(extra=()):
 def main(argv):
     sealed = "--sealed" in argv
     opt = lambda k, dflt: type(dflt)(argv[argv.index(k) + 1]) if k in argv else dflt
-    nboot, indep_n, null, win = opt("--nboot", 300), opt("--indep-n", 8), "--null-control" in argv, opt("--window", "all")
+    fast = "--fast" in argv   # dev only: every 2nd dev cutoff (4 folds), nboot 100, no independence check unless asked; baselines cached
+    nboot, indep_n, null, win = opt("--nboot", 100 if fast else 300), opt("--indep-n", 0 if fast else 8), "--null-control" in argv, opt("--window", "all")
     skip = {argv[i + 1] for i, a in enumerate(argv) if a in ("--nboot", "--indep-n", "--window")}
     mods = [a for a in argv if not a.startswith("--") and a not in skip]
     from .ablate import WINDOWS
-    cutoffs = data.SEALED_CUTOFFS if sealed else data.DEV_CUTOFFS
+    assert not (fast and sealed), "--fast is dev only"
+    cutoffs = data.SEALED_CUTOFFS if sealed else data.DEV_CUTOFFS[::2] if fast else data.DEV_CUTOFFS
     hashes = [_sha(p) for p in mods]
     if sealed:
         from . import make_sealed; assert make_sealed.main(), "sealed labels do not match manifest (data changed?)"
@@ -161,14 +200,21 @@ def main(argv):
         spec = importlib.util.spec_from_file_location("pred", p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
         for k, f in (getattr(m, "PREDICTORS", None) or {p: m.predict}).items(): preds[k] = f
     n_looks = max(1, sealed_looks(hashes)) if sealed else 1
-    scored = {k: score_predictor(f, cutoffs, k, indep_n, null, WINDOWS[win]) for k, f in preds.items()}
+    cp = _cache_path(); cache = None
+    if not sealed:   # baselines are deterministic functions of (code, data, cutoff, window, null): reuse across runs (keyed on a hash of evalkit code + data files)
+        try: cache = pickle.load(open(cp, "rb")) if cp.exists() else {}
+        except Exception: cache = {}
+    n0 = len(cache) if cache is not None else 0
+    scored = {k: score_predictor(f, cutoffs, k, indep_n, null, WINDOWS[win], cache if k in BASELINES else None, win) for k, f in preds.items()}
+    if cache is not None and len(cache) > n0:
+        cp.parent.mkdir(parents=True, exist_ok=True); tmp = cp.with_suffix(f".tmp{os.getpid()}"); pickle.dump(cache, open(tmp, "wb")); os.replace(tmp, cp)
     if sealed:  # log every sealed evaluation (file hash included) so overuse is visible and multiplicity is counted
         data.SEALED_DIR.mkdir(exist_ok=True)
         with open(data.SEALED_DIR / "runs.log", "a") as fh:
             fh.write(json.dumps(dict(ts=datetime.datetime.utcnow().isoformat(), models=list(preds), files=hashes, looks_after=n_looks)) + "\n")
     pd.set_option("display.width", 260, "display.max_columns", 40, "display.max_colwidth", 40)
     refs = [b for b in BASELINES if b in scored]
-    print(f"window={win} null_control={null} n_looks={n_looks} (CI level {100 * (1 - 0.05 / n_looks):.2f}%)")
+    print(f"fast={fast} folds={len(cutoffs)} window={win} null_control={null} n_looks={n_looks} (CI level {100 * (1 - 0.05 / n_looks):.2f}%)")
     tabs = summarize(scored, nboot, refs=refs if mods else (), n_looks=n_looks)
     for k, t in tabs.items():
         print(f"\n== {k}"); print(t.to_string(index=k in ("fold_auc_tried", "fold_auc_lower_bound", "independence")))

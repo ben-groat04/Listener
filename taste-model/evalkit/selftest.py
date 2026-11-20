@@ -45,6 +45,24 @@ def main():
     dep = score_predictor(lambda tr, cs, me, k: cs.groupby("artist").artist.transform("size").values.astype(float), cuts[:2], "x", indep_n=5)
     print(f"random AUC {a:.3f} (expect ~0.5), leaky 7-day oracle AUC {ao:.3f} (expect >0.85), pool-dependent predictor indep stat {dep.attrs['indep']:.2f} (expect >0.1)")
     assert abs(a - .5) < .05 and ao > .85 and dep.attrs["indep"] > .1
+    # a predictor that reads the pool composition through `meta` (which lists every pool track) must be caught by the independence check
+    def meta_leaker(tr, cs, me, k):
+        nm = me.artistNames.map(lambda l: l[0] if isinstance(l, list) and len(l) else "").reindex(cs.trackId).values
+        vc = pd.Series(me.artistNames.map(lambda l: l[0] if isinstance(l, list) and len(l) else "").values).value_counts()
+        return np.array([vc.get(x, 0) for x in nm], float)
+    ml = score_predictor(meta_leaker, cuts[:2], "y", indep_n=6)
+    print(f"meta-composition leaker indep p90 {ml.attrs['indep_p90']:.2f} (expect >0.1)"); assert ml.attrs["indep_p90"] > .1
+    # shortcut check: can tried be told from decoys using only public metadata shape (no music, no history)? v2.0 reached 0.73.
+    from sklearn.ensemble import HistGradientBoostingClassifier
+    from sklearn.model_selection import GroupKFold, cross_val_predict
+    rows = []
+    for c, pool in data.make_open_folds(cuts, d):
+        cands, meta, order = data.public_view(pool, meta_all, d[d.t < c], seed=1); p = pool.iloc[order].reset_index(drop=True); m = meta.loc[cands.trackId]
+        rows.append(pd.DataFrame(dict(dec=p.is_decoy.values, g=cands.artist.values, dur=m.durationMs.values, ex=m.explicit.astype(float).values, pop=m.popularity.values,
+                  pv=m.previewUrl.notna().values, sid=m.spotifyId.notna().values, alb=m.albumName.isna().values, nm=(m.name.values == cands.trackName.values),
+                  ae=(m.albumName.values == cands.trackName.values), ln=cands.trackName.str.len().values, na=[len(x) for x in cands.artistIds])).astype(float))
+    F = pd.concat(rows); pr = cross_val_predict(HistGradientBoostingClassifier(max_iter=100), F.drop(columns=["dec", "g"]).values, F.dec.values, groups=F.g.values, cv=GroupKFold(5), method="predict_proba")[:, 1]
+    sa = metrics.auc(F.dec.values, pr); print(f"metadata-shape-only tried-vs-decoy AUC {sa:.3f} (expect <0.62; v2.0 was 0.73)"); assert sa < .62
     print("selftest OK")
 
 if __name__ == "__main__": main()

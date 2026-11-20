@@ -16,6 +16,9 @@ TOP_F = CACHE / "top_tracks.json"
 CSV_F = HERE / "listening_stats.csv"
 BY_ID_F = CACHE / "by_spotify_id.json"
 TZ = ZoneInfo("Europe/London")
+WINDOW_DAYS = 730
+CUTOFF = datetime.now(timezone.utc) - timedelta(days=WINDOW_DAYS)
+PL_F = CACHE / "playlist_names.json"
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 anomalies = []
 
@@ -85,6 +88,8 @@ def fetch_streams(session):
         if new == 0:
             anomalies.append(f"page {pages}: no new streams at before={before}; stepped back")
         before = nb
+        if oldest < CUTOFF.timestamp() * 1000:
+            break
         print(f"streams page {pages}: +{new} (total {len(out)}), oldest {page[-1]['endTime']}")
     return out
 
@@ -102,6 +107,7 @@ def load(refresh):
                 f.write(json.dumps(s) + "\n")
     top = json.loads(TOP_F.read_text())
     streams = [json.loads(l) for l in STREAMS_F.read_text().splitlines() if l.strip()]
+    streams = [x for x in streams if parse_ts(x["endTime"]) >= CUTOFF]
     return top, streams
 
 
@@ -117,7 +123,38 @@ def mode(counter, fmt):
     return fmt(min(k for k, v in counter.items() if v == best))
 
 
-def build(top, streams):
+def ctx_of(s):
+    c = (s.get("contextId") or "").split("?")[0]
+    if c.startswith("spotify:playlist:"):
+        return "playlist", c.split(":")[-1]
+    if c.startswith("spotify:album:"):
+        return "album", c.split(":")[-1]
+    return "other", ""
+
+
+def resolve_playlists(ids):
+    try:
+        names = json.loads(PL_F.read_text())
+    except Exception:
+        names = {}
+    session = requests.Session()
+    for i in sorted(ids):
+        if i in names:
+            continue
+        try:
+            r = session.get("https://open.spotify.com/oembed", params={"url": f"https://open.spotify.com/playlist/{i}"}, timeout=30)
+            names[i] = r.json()["title"] if r.status_code == 200 else i
+            if r.status_code != 200:
+                anomalies.append(f"oembed {r.status_code} for playlist {i}")
+        except Exception as e:
+            names[i] = i
+            anomalies.append(f"oembed failed for playlist {i}: {e}")
+        time.sleep(0.2)
+    PL_F.write_text(json.dumps(names, ensure_ascii=False))
+    return names
+
+
+def build(top, streams, plnames):
     now = datetime.now(TZ)
     d30, d365 = now - timedelta(days=30), now - timedelta(days=365)
     meta = {}
@@ -144,7 +181,7 @@ def build(top, streams):
             "explicit": ("yes" if t.get("explicit") else "no") if t else "",
             "spotify_popularity": (t or {}).get("spotifyPopularity", "") if t else "",
             "play_count": len(plays),
-            "lifetime_rank": it["position"] if it else "",
+            "LR_REMOVED": it["position"] if it else "",
         }
         if plays:
             tot = sum(p for _, p in plays)
@@ -178,7 +215,7 @@ def build(top, streams):
         row["spotify_track_id"] = spot[0] if spot else ""
         row["statsfm_track_id"] = tid
         rows.append(row)
-    rows.sort(key=lambda r: (-r["play_count"], r["lifetime_rank"] if r["lifetime_rank"] != "" else 10**9))
+    rows.sort(key=lambda r: (-r["play_count"], r["LR_REMOVED"] if r["LR_REMOVED"] != "" else 10**9))
     return rows, years
 
 
@@ -196,7 +233,7 @@ def main():
     top, streams = load(args.refresh)
     rows, years = build(top, streams)
     cols = ["track", "artists", "album", "duration", "explicit", "spotify_popularity", "play_count",
-            "lifetime_rank", "minutes_listened", "avg_listen_pct", "first_played", "last_played",
+            "LR_REMOVED", "minutes_listened", "avg_listen_pct", "first_played", "last_played",
             "plays_last_30_days", "plays_last_12_months", *[f"plays_{y}" for y in years],
             "favourite_hour", "favourite_weekday", "time_of_day_mix", "peak_month", "peak_month_plays",
             "spotify_url", "spotify_track_id", "statsfm_track_id"]

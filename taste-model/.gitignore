@@ -1,0 +1,3 @@
+.cache/
+.sealed/
+__pycache__/

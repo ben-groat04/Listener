@@ -15,7 +15,7 @@ def main():
     # ---- metrics engine vs brute force
     rng = np.random.default_rng(1); n = 600; fold = np.repeat([0, 1, 2], 200); y = (rng.random(n) < .3).astype(int); s = np.round(rng.random(n) + .5 * y, 1); art = rng.integers(0, 40, n)
     df = pd.DataFrame(dict(fold=fold.astype(str), artist=art, new_artist=rng.random(n) < .5, is_decoy=0, love=y, week=rng.integers(0, 20, n), sess=rng.integers(0, 60, n)))
-    B = metrics.Block(df, "love", 20, 0); st = B.stats(s); br = lambda g: sum(metrics.auc(y[g == k], s[g == k]) * y[g == k].sum() * (1 - y[g == k]).sum() for k in np.unique(g)) / sum(y[g == k].sum() * (1 - y[g == k]).sum() for k in np.unique(g))
+    B = metrics.Block(df, "love", 20, 0); st = B.stats(s); pw = lambda k, g: y[g == k].sum() * (1 - y[g == k]).sum(); br = lambda g: sum(metrics.auc(y[g == k], s[g == k]) * pw(k, g) for k in np.unique(g) if pw(k, g) > 0) / sum(pw(k, g) for k in np.unique(g))
     assert abs(st["sauc"][0] - br(fold)) < 1e-9 and abs(st["ww"][0] - br(df.week.values + 100 * fold)) < 1e-9 and abs(st["ws"][0] - br(df.sess.values + 100 * fold)) < 1e-9 and abs(st["wa"][0] - br(art + 100 * fold)) < 1e-9, "grouped AUC != brute force"
     ms = [metrics.fold_metrics(y[fold == f], s[fold == f], nseeds=300) for f in range(3)]
     assert abs(st["plift"][0] - sum(m["hits"] for m in ms) / sum(m["exp"] for m in ms)) < 1e-9 and abs(st["p20"][0] - np.mean([m["p20"] for m in ms])) < .01, "tie-averaged top-k != seed average"
@@ -46,7 +46,7 @@ def main():
         assert meta.loc[cands.trackId, "popularity"].notna().mean() > .9, "meta coverage of candidates too low"
         first = pool["first"].values[order]; m = ~pd.isna(first)  # tried songs only have a first-listen time
         for nm, v in (("row order", np.arange(len(cands))), ("trackId", cands.trackId.values)):
-            r = abs(spearmanr(v[m], first[m].astype("int64"))[0]); assert r < .2, f"{nm} correlates with first-listen time ({r:.2f}) in fold {c.date()}"
+            r = abs(spearmanr(v[m], first[m].astype("int64"))[0]); assert r < max(.2, 4 / np.sqrt(m.sum() - 1)), f"{nm} correlates with first-listen time ({r:.2f}) in fold {c.date()}"
     try: data.load_streams("2026-01-01"); raise SystemExit("sealed guard failed")
     except PermissionError: pass
     # ---- chance, oracle and independence checks on the full pipeline

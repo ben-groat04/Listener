@@ -12,8 +12,7 @@ CFG = dict(feat="emb", nc=64, model="attn", h=32, ep=60, lr=3e-3, wd=1e-2, drop=
 _S = {}
 
 def _store():
-    if not _S:
-        import os
+    if "idx" not in _S:
         if not os.path.exists(D + "md5.npy"):
             import subprocess, sys; subprocess.run([sys.executable, "-W", "ignore", ROOT + "predictors/w4r2-learned-representations/build_patches.py"], check=True, cwd=ROOT)
         md = np.load(D + "md5.npy"); _S["idx"] = {k: i for i, k in enumerate(md)}
@@ -155,7 +154,7 @@ def ens(*fns):
     def predict(train, cands, meta, cutoff):
         o = 0
         for f in fns:
-            x = f(train, cands, meta, cutoff); o = o + (x - x.mean()) / (x.std() + 1e-9) if False else o + x
+            x = f(train, cands, meta, cutoff); o = o + x   # members are already standardised by their own train-song score mean/std
         return o / len(fns)
     return predict
 

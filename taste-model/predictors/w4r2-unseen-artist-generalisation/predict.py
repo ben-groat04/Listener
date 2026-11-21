@@ -242,4 +242,8 @@ V2 = {
 }
 _only = os.environ.get("W4R2_ONLY")
 PREDICTORS = {k: make(**v) for k, v in V.items() if not _only or any(t in k for t in _only.split(","))}
+for _b in ("mert_lo", "mert_mid", "mert_hi", "clap", "eact", "eemb", "lyr"):   # analysis variants: which input families act as artist fingerprints (full vs own-artist rows removed)
+    for _na in (False, True): V["a_%s%s" % (_b, "_noart" if _na else "_full")] = dict(signal="both", hl=90.0, blocks=(_b,), noart=_na)
+PREDICTORS.update({k: make(**v) for k, v in V.items() if k.startswith("a_") and (not _only or any(t in k for t in _only.split(",")))})
 PREDICTORS.update({k: v for k, v in V2.items() if not _only or any(t in k for t in _only.split(","))})
+WALKFORWARD_FAMILY = [k for k in PREDICTORS if k.startswith("v") or k in ("f1_ens_ridge", "f2_ens_ridge_noart", "f3_ens_ridge_krr")]

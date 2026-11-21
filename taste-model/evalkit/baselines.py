@@ -178,7 +178,7 @@ def preview_source_itunes(train, cands, meta, cutoff):
     return np.array([float(str(man.get(hashlib.md5(x.encode()).hexdigest(), "")).startswith("itunes")) if isinstance(x, str) else 0.0 for x in u])
 
 SHORTCUTS = dict(has_preview=has_preview, preview_source_itunes=preview_source_itunes)   # scored next to the baselines, exempt from the null control / independence / constant-score warning
-REFERENCES = ("nonaudio_gbm", "artist_recent", "duration", "meta_gbm", "ref_audio_final")   # v4: the references of the VERDICT (best_ref is the one with the highest TUNE point sauc)
+REFERENCES = ("nonaudio_gbm", "artist_recent", "duration", "meta_gbm", "ref_audio_final", "ref_w4r1_listening", "ref_w4r1_music")   # the references of the VERDICT (best_ref is the one with the highest TUNE point sauc); v4.1 adds the two Workflow 4 round-1 finals
 DIAGNOSTIC = ("pool_artist_siblings", "pool_album_siblings", "exposure_before", "exposure_after", "exposure_session", "replays_first_session", "oracle_day1", "oracle_7d")   # harness-computed references, not predictors
 BASELINES = dict(popularity=popularity, artist_plays=artist_plays, artist_recent=artist_recent, artist_love_rate=artist_love_rate,
                  duration=duration, meta_gbm=meta_gbm, nonaudio_gbm=nonaudio_gbm)

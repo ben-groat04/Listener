@@ -213,3 +213,43 @@ def permutation_band(df, label="love", nperm=200, seed=0, nmean=1):
                 v.append((((d > 0) == (si > 0)) & m).sum() / m.sum())
             res[k] = tuple(np.nanpercentile(v, [2.5, 97.5]).round(3))
     return res
+
+# ---------------------------------------------------------------- cluster-aware (artist-block) label permutations (null control v4)
+def artist_blocks(fold, art):
+    """Permutation blocks of the tried rows. Within each fold, artists with the SAME number of tried rows form a block in which whole artists' label vectors are swapped ("swap": R is an
+    (artists x rows) index matrix). An artist whose count is unique in the fold is pooled with the nearest count (smaller count on a tie; chains of merges allowed) and the labels of the merged
+    block are shuffled at row level ("shuffle": R is the vector of the rows of the block)."""
+    fold = np.asarray(fold); art = np.asarray(art); blocks = []
+    for f in np.unique(fold):
+        rows = np.flatnonzero(fold == f); _, inv = np.unique(art[rows], return_inverse=True); cnt = np.bincount(inv); st = np.r_[0, np.cumsum(cnt)]; o = np.argsort(inv, kind="stable")
+        idx = [rows[o[st[i]:st[i + 1]]] for i in range(len(cnt))]; counts = sorted(set(cnt.tolist())); n_by = {c: int((cnt == c).sum()) for c in counts}; parent = {c: c for c in counts}
+        def find(x):
+            while parent[x] != x: parent[x] = parent[parent[x]]; x = parent[x]
+            return x
+        merged = set()
+        for u in counts:
+            if n_by[u] == 1 and len(counts) > 1:
+                t = min((c for c in counts if c != u), key=lambda c: (abs(c - u), c)); parent[find(u)] = find(t); merged.add(u)
+        for root in sorted({find(c) for c in counts}):
+            cs = [c for c in counts if find(c) == root]; arts = [i for i in range(len(cnt)) if find(int(cnt[i])) == root]
+            if len(cs) == 1 and n_by[cs[0]] >= 2: blocks.append(("swap", np.array([idx[i] for i in arts])))
+            else: blocks.append(("shuffle", np.concatenate([idx[i] for i in arts])))
+    return blocks
+
+def permute_artist_blocks(y, blocks, rng):
+    out = y.copy()
+    for kind, R in blocks:
+        out[R] = y[R[rng.permutation(len(R))]]   # swap: whole artists' label vectors (R is artists x rows); shuffle: the labels of the rows of the merged block
+    return out
+
+def cluster_band(df, s, label="love", nperm=300, seed=0):
+    """Null band of sauc, wa and new-artist sauc of the FIXED score vector s (tried rows df, same order) when the labels are permuted in artist blocks (see artist_blocks): the 2.5-97.5%
+    interval of `nperm` permutations. Keeps the artist-level clustering of the labels, which the song-level band (permutation_band) ignores. Returns {key: (lo, hi)}."""
+    fk = df.fold.astype(str).values; fold = pd.factorize(fk)[0]; art = df.artist.values; y0 = df[label].values.astype(int); s = np.asarray(s, float)
+    g_wa = pd.factorize(pd.Series(fk) + "|" + pd.Series(art).astype(str))[0]; new = df.new_artist.values.astype(bool); blocks = artist_blocks(fold, art); rng = np.random.default_rng(seed)
+    one = lambda n: np.ones((1, n)); out = {"sauc": [], "wa": [], "new": []}
+    for _ in range(nperm):
+        y = permute_artist_blocks(y0, blocks, rng)
+        out["sauc"].append(pooled_auc(y, s, fold, one(len(y)))[0]); out["wa"].append(pooled_auc(y, s, g_wa, one(len(y)))[0])
+        out["new"].append(pooled_auc(y[new], s[new], fold[new], one(int(new.sum())))[0])
+    return {k: tuple(np.nanpercentile(v, [2.5, 97.5]).round(3)) for k, v in out.items()}

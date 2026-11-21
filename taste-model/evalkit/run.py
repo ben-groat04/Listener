@@ -1,26 +1,31 @@
-"""Score predictors (evalkit v4).   Dev:  python -m evalkit.run [pred.py ...]      (no args = the baselines + references)      Sealed (final, gated, logged): python -m evalkit.run --sealed [pred.py ...]
+"""Score predictors (evalkit v4.1).   Dev:  python -m evalkit.run [pred.py ...]      (no args = the baselines + references)      Sealed (final, gated, logged): python -m evalkit.run --sealed [pred.py ...]
 A predictor module exposes `predict(train, cands, meta, cutoff) -> np.ndarray` (or a dict `PREDICTORS = {name: fn}`).
 The score of a candidate must depend only on (train, that candidate, its meta): the harness checks this (see score_predictor).
 Slices: TUNE = 10 folds 2021-07..2023-10 minus HOLDOUT (all iteration); LATE = 4 folds 2024-01..2024-10 minus HOLDOUT (`--late`, capped at 2 runs per predictor hash, logged in
 .cache/late_runs.log, tables in .cache/late_tables/); ALL = both. HOLDOUT = tried songs + decoys of 25% of the artists (salted hash, see data.is_holdout) in all 14 dev folds: removed from every
 non-holdout run BEFORE predictors are called, scored only by `--holdout` (one run per predictor hash, .cache/holdout_runs.log).
-Options: --fast (TUNE, nboot 100, no independence check, no LATE)  --late  --holdout  --nboot N  --indep-n N  --null-control  --null-seeds N  --window all|730|365|sub365  --sealed."""
+Options: --fast (TUNE, nboot 100, no independence check, no LATE)  --late  --holdout  --walkforward (with --fast)  --nboot N  --indep-n N  --null-control  --null-seeds N (default 5)  --window all|730|365|sub365  --sealed
+         --log-dir DIR (tests only: cap logs, fingerprints, holdout budget and late tables of --late / --holdout go to DIR instead of .cache/)."""
 import sys, os, json, hashlib, importlib.util, datetime, pickle, glob, subprocess, tempfile, io, time
 from pathlib import Path
 import numpy as np, pandas as pd
-from . import data, metrics
+from . import data, metrics, refs, bundle
 from .baselines import BASELINES, DIAGNOSTIC, SHORTCUTS, REFERENCES, _manifest_source
 
-VERSION = "v4"
+VERSION = "v4.1"
 REGISTRY = data.ROOT / "evalkit" / "registry.json"
 LATE_LOG = data.ROOT / ".cache" / "late_runs.log"
 LATE_TABLES = data.ROOT / ".cache" / "late_tables"
 HOLDOUT_LOG = data.ROOT / ".cache" / "holdout_runs.log"
 LATE_CAP = 2
-REF = "ref_audio_final"                                   # harness reference row: Workflow 3's audio_final (MERT cache only), scored once per (code hash, cutoff, slice part) and cached
-REF_FILE = data.ROOT / "predictors" / "w3r2-audio-taste" / "predict.py"
-REF_NAME = "audio_final"
+HOLDOUT_BUDGET = data.ROOT / ".cache" / "holdout_budget.json"
+CACHE_DIR = data.ROOT / ".cache" / "evalkit-cache"        # v4.1: the harness' own caches (baseline / reference scores, null bands) live here; .cache/shared/ is frozen (only the pools are READ from there)
+REF = "ref_audio_final"                                   # harness reference rows (evalkit.refs.REFS): ref_audio_final = Workflow 3's audio_final, ref_w4r1_listening, ref_w4r1_music; each scored once per (code hash, cutoff, slice part) and cached
+REF_NAMES = tuple(refs.REFS)
 POOL_REFERENCE = data.ROOT / "evalkit" / "pool_reference.json"
+GRADED_KEYS = ("sauc", "wx", "new", "wa", "gc"); KEY_NAME = {"new": "new_artist"}   # metrics graded STRONG / SUGGESTIVE / NONE vs best_ref ('new' = new-artist sauc)
+DEVHOLD = "DEV+HOLDOUT"
+LABEL_VARIANTS = ("love", "strong", "love_4_2", "love_10_4", "keep")
 RB_LABEL = {0: "<3m", 1: "3-12m", 2: "1-3y", 3: ">3y", 4: "unknown"}
 XB_LABEL = {0: "0", 1: "1-2", 2: "3-8", 3: "9+"}
 
@@ -79,7 +84,8 @@ def _pool_hash():   # pools depend on data.py, make_decoys.py and the data files
 def _manifest_file(): return data.ROOT / ".cache" / "shared" / "previews" / "manifest.csv"
 def _code_hash():   # v4: run.py is included (a change of the harness' own logic changes the cache key of baseline / reference scores)
     return _hash(sorted(p for p in glob.glob(str(data.ROOT / "evalkit" / "*.py")) if not p.endswith(("selftest.py", "register.py", "fetch_previews.py", "fetch_itunes.py"))) + _data_files() + [_manifest_file()])
-def _pool_path(): return data.ROOT / ".cache" / "shared" / f"evalkit-pools-{_pool_hash()}.pkl"
+def _pool_path():   # the dev pools are READ from the frozen shared folder; if absent they are built into the evalkit cache folder
+    p = data.ROOT / ".cache" / "shared" / f"evalkit-pools-{_pool_hash()}.pkl"; return p if p.exists() else CACHE_DIR / p.name
 
 def _pool_digest(df):
     """Order-independent digest of the rows of a pool (identity, label, release bucket, exposure, first-play time); recorded in pool_reference.json before v4."""
@@ -99,6 +105,21 @@ def dev_edges():
         _EDGES.append(np.quantile((t.plays90 / t.share90).values, [1 / 3, 2 / 3]))
     return _EDGES[0]
 
+KEEP_PLAYS, KEEP_FROM, KEEP_TO = 6, 90, 365   # label variant `keep` (never shown to predictors): >= 6 plays in days [90, 365) after the first play
+
+def keep_qualifies(c):
+    """`keep` is computed only for folds whose first-play window [c, c + 3 months) plus 365 days ends strictly before DEV_END (all TUNE folds; the LATE folds are n/a)."""
+    return pd.Timestamp(c) + pd.DateOffset(months=3) + pd.Timedelta(days=KEEP_TO) < data.DEV_END
+
+def keep_label(pool, c, ds):
+    """`keep` for the tried rows of `pool` (decoys: 0); NaN column when the fold does not qualify. ds = dev-era streams (columns song, t; strictly before DEV_END)."""
+    if not keep_qualifies(c): return np.full(len(pool), np.nan)
+    tried = pool[pool.is_decoy == 0]; f = tried.set_index("song")["first"]; sub = ds[ds.song.isin(set(tried.song))]
+    dl = sub.t.values - sub.song.map(f).values.astype("datetime64[ns]")
+    m = (dl >= np.timedelta64(KEEP_FROM, "D")) & (dl < np.timedelta64(KEEP_TO, "D"))
+    cnt = sub[m].groupby("song").size().reindex(tried.song).fillna(0).values
+    out = np.zeros(len(pool)); out[(pool.is_decoy == 0).values] = (cnt >= KEEP_PLAYS).astype(float); return out
+
 _PREP = {}
 def prepare_folds(cutoffs, part="main"):
     """Everything about the folds that does not depend on the predictor (streams, pools, public views); built once per process.
@@ -115,12 +136,12 @@ def prepare_folds(cutoffs, part="main"):
             for c, pool in data.make_open_folds(miss, d): pools[str(c.date())] = pool
             if not sealed_run:
                 pp.parent.mkdir(parents=True, exist_ok=True); tmp = pp.with_suffix(f".tmp{os.getpid()}"); pickle.dump(pools, open(tmp, "wb")); os.replace(tmp, pp)
-        man = _manifest_source(); edges = dev_edges()
+        man = _manifest_source(); edges = dev_edges(); ds = d[d.t < data.DEV_END][["song", "t"]]   # dev-era streams only (for the `keep` label)
         for c in cutoffs:
             c = pd.Timestamp(c); pool = pools[str(c.date())]; hold = data.is_holdout(pool.artist.values)
             if part == "main": pool = pool[~hold]
             elif part == "holdout": pool = pool[hold]
-            pool = pool.reset_index(drop=True)
+            pool = pool.reset_index(drop=True); pool["keep"] = keep_label(pool, c, ds)   # harness-only column (not in the pool digest, never in cands / meta)
             u = meta_all.previewUrl.reindex(pool.trackId).values
             pool["pv"] = [isinstance(x, str) for x in u]
             pool["psrc"] = ["none" if not isinstance(x, str) else ("spotify" if man.get(hashlib.md5(x.encode()).hexdigest()) == "spotify" else "itunes") for x in u]
@@ -131,21 +152,21 @@ def prepare_folds(cutoffs, part="main"):
         _PREP[key] = out
     return _PREP[key]
 
-def _cache_path(): return data.ROOT / ".cache" / "shared" / f"evalkit-baseline-scores-{_code_hash()}.pkl"
-def _ref_cache_path():
-    return data.ROOT / ".cache" / "shared" / f"evalkit-ref-{REF_NAME}-{hashlib.sha256(REF_FILE.read_bytes()).hexdigest()[:12]}-{_code_hash()}.pkl"
+def _cache_path(): return CACHE_DIR / f"evalkit-baseline-scores-{_code_hash()}.pkl"
+_BH = {}
+def _ref_cache_path(name):   # keyed on the code hash and on the bundle (entry file + project code it uses) of the reference
+    if name not in _BH: _BH[name] = bundle.bundle_sha256([refs.REFS[name][0]])[:12]
+    return CACHE_DIR / f"evalkit-ref-{name}-{_BH[name]}-{_code_hash()}.pkl"
 def _load_pk(p):
     try: return pickle.load(open(p, "rb")) if p.exists() else {}
     except Exception: return {}
 def _save_pk(p, obj):
     p.parent.mkdir(parents=True, exist_ok=True); tmp = p.with_suffix(f".tmp{os.getpid()}"); pickle.dump(obj, open(tmp, "wb")); os.replace(tmp, p)
 
-_REFFN = []
-def ref_fn():
-    """Workflow 3's audio_final (predictors/w3r2-audio-taste/predict.py, MERT cache only). Its fit cache is keyed on (cutoff, train size, hashes of the train timestamps and of the train trackId + song identities, config), so it is identity-safe."""
-    if not _REFFN:
-        spec = importlib.util.spec_from_file_location("evalkit_ref_audio", str(REF_FILE)); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); _REFFN.append(m.PREDICTORS[REF_NAME])
-    return _REFFN[0]
+def ref_fn(name=REF):
+    """Reference `name` (evalkit.refs): ref_audio_final = Workflow 3's audio_final; ref_w4r1_listening = w4r1_final (predictors/w4r1-taste-from-all-listening); ref_w4r1_music = final_content
+    (predictors/w4r1-what-in-the-music). Fit caches are identity-keyed (see evalkit.refs); compact feature stores are rebuilt from the builders' scripts if absent."""
+    return refs.fn(name)
 
 def score_predictor(fn, cutoffs, name="", indep_n=8, null=None, window=None, cache=None, wname="", part="main"):
     """Run fn on the open pool (tried songs + decoys) of every fold. Returns the scored pool (shuffled public order) with
@@ -212,7 +233,7 @@ def _f(x): return float(np.asarray(x).ravel()[0])
 
 def _band(df_tried, folds, label="love", nmean=1, part="main"):
     """Permutation null band (cached; predictor independent). Keyed on the tried songs of the slice."""
-    p = data.ROOT / ".cache" / "shared" / f"evalkit-nullband-{_pool_hash()}.pkl"
+    p = CACHE_DIR / f"evalkit-nullband-{_pool_hash()}.pkl"
     cache = _load_pk(p)
     k = (tuple(folds), label, "v4", part) + (("mean", nmean) if nmean > 1 else ())   # v4: rows without HOLDOUT, adds wx / macro
     if k not in cache:
@@ -232,10 +253,11 @@ def _tied_warnings(scored):
 
 def _fmt(a, lo, hi): return "-" if not np.isfinite(a) else f"{a:.3f} [{lo:.2f},{hi:.2f}]"
 
-def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True):
+def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True, part="main"):
     """Tables for ONE slice (list of fold names). Bootstrap CIs resample whole primary artists GLOBALLY (all rows of an artist in every fold of the slice are drawn together; pair weights =
     products of the two rows' draw counts; resamples shared by all models => paired differences). CI level 95% (Bonferroni-widened to 1-0.05/n_looks for several sealed looks).
-    best_ref: the reference (REFERENCES) with the highest TUNE point sauc, fixed outside this function; the evidence grade is based on it. graded=False (HOLDOUT): deltas and P only."""
+    best_ref: the reference (REFERENCES) with the highest TUNE point sauc, fixed outside this function; the evidence grade is based on it. graded=False (HOLDOUT): deltas and P only.
+    part: which rows the slice holds ('main', 'holdout', 'devhold' = main + holdout), only used to key the cached permutation band."""
     alpha = 0.05 / max(1, n_looks); valid = [m for m in preds if m in (valid or BASELINES)]
     P = {n: df[df.fold.isin(folds)].reset_index(drop=True) for n, df in preds.items()}
     for n, df in preds.items(): P[n].attrs.update(df.attrs)
@@ -256,7 +278,7 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
             so = s[OB[v][1]]
             SO[v][n] = {k: subs[v][k][1].stats(so, True, ("sauc",) if k != "all" else ("sauc", "plift", "p20")) for k in ("all", "new", "known")}
             SO[v][n]["wa"] = Owa[v].stats(so, True, ("wa",))
-    band = _band(ft, folds)
+    band = _band(ft, folds, part=part)
     # ---- tables
     rows = []
     for n in P:
@@ -285,6 +307,7 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
         tabs[name + "_80ci"] = pd.DataFrame({r: {n: tuple(np.nanpercentile(d(n, r), [10, 90]).round(3)) if n != r else "" for n in P} for r in refs})
         for t in ("_lower_bound", "_P_gt0", "_80ci"): tabs[name + t].columns.name = "vs ->"
     for key, nm in (("sauc", "dSAUC"), ("macro", "dMACRO"), ("wa", "dWA"), ("wx", "dWX"), ("gc", "dGC"), ("gc_wa", "dGCWA")): dtabs(nm, lambda n, key=key: S[n]["all"][key + "_b"])
+    dtabs("dNEWSAUC", lambda n: S[n]["new"]["sauc_b"])
     # open pool: primary (Spotify-sourced previews for tried songs AND decoys), secondary (full pool)
     cnt = []
     for v, nm in (("sp", "open_love"), ("full", "open_love_full")):
@@ -312,6 +335,19 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
         r["sp_days90"] = round(metrics.spearman_cont(P[n], "days90"), 3); r["sp_log_plays90"] = round(metrics.spearman_cont(P[n], "plays90", np.log1p), 3)
         r["sp_share90"] = round(metrics.spearman_cont(P[n], "share90"), 3); sens.append(r)
     tabs["label_variants_sauc_and_spearman"] = pd.DataFrame(sens)
+    if part == "main" and list(folds) == list(data.TUNE_CUTOFFS):   # LABEL VARIANTS (TUNE only): sauc [95% CI] of every model against each label definition; `keep` needs a year of follow-up (n/a where it is not computed)
+        lb = {}
+        for lab in LABEL_VARIANTS:
+            ok = ft[lab].notna().values
+            lb[lab] = (metrics.Block(ft[ok].reset_index(drop=True), lab, nboot, seed), ok) if ok.any() else None
+        lt = {"n (loved/tried)": {lab: (f"{int(ft[lab][ft[lab].notna()].sum())}/{int(ft[lab].notna().sum())}" if lb[lab] else "n/a") for lab in LABEL_VARIANTS}}
+        for n in P:
+            if n in DIAGNOSTIC: continue
+            lt[n] = {}
+            for lab in LABEL_VARIANTS:
+                if lb[lab] is None: lt[n][lab] = "n/a"; continue
+                B_, ok = lb[lab]; b = B_.stats(P[n].score.values[tried_m][ok], True, ("sauc",)); lo_, hi_ = _ci(b["sauc_b"], alpha); lt[n][lab] = _fmt(_f(b["sauc"]), lo_, hi_)
+        tabs["LABEL VARIANTS (sauc [95% CI]; TUNE only; keep = >= 6 plays in days [90, 365) after the first play, never a training or prediction label)"] = pd.DataFrame(lt).T
     fa, fci, flags, fci_raw = {}, {}, [], {}
     for n in P:
         for f, (a, lo, hi) in T.fold_auc_ci(P[n].score.values[tried_m]).items():
@@ -343,14 +379,15 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
     for n in bmodels: fold_tab[n] = {f: _fmt(*fci_raw[n][f]) for f in T.fold_names}
     tabs["BREAKDOWN by fold"] = pd.DataFrame(fold_tab).T
     # ---- verdict (no fixed thresholds: graded evidence vs best_ref; deltas vs every reference)
-    models = [n for n in P if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n != REF]; V = []; EV = {}; VD = []; LOG = {}
-    if not models: models = [n for n in P if n in BASELINES or n in SHORTCUTS or n == REF]   # baseline-only run: VERDICT rows for the baselines / references themselves
+    models = [n for n in P if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]; V = []; EV = {}; VD = []; LOG = {}
+    if not models: models = [n for n in P if n in BASELINES or n in SHORTCUTS or n in REF_NAMES]   # baseline-only run: VERDICT rows for the baselines / references themselves
     sa = lambda n: _f(S[n]["all"]["sauc"]); so = lambda n: _f(SO["sp"][n]["all"]["sauc"])
-    def dstat(a, b):   # a, b: stats dicts, key = metric -> point delta, 95% lower bound, P(delta > 0), 80% interval (shared resamples)
+    def dstat(na, nb):   # na, nb: model names; key = metric -> point delta, 95% lower bound, P(delta > 0), 80% interval (shared resamples). 'new' = new-artist sauc, the others are the all-songs metrics
         out = {}
-        for key in ("sauc", "wa", "gc", "macro"):
-            d = a[key + "_b"] - b[key + "_b"]; f = d[np.isfinite(d)]
-            out[key] = dict(d=_f(a[key]) - _f(b[key]), lo95=float(np.nanpercentile(d, 100 * alpha / 2)), P=float(np.mean(f > 0)), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)))
+        for key in ("sauc", "wa", "gc", "macro", "wx", "new"):
+            a, b = (S[na]["new"], S[nb]["new"]) if key == "new" else (S[na]["all"], S[nb]["all"]); k = "sauc" if key == "new" else key
+            d = a[k + "_b"] - b[k + "_b"]; f = d[np.isfinite(d)]
+            out[key] = dict(d=_f(a[k]) - _f(b[k]), lo95=float(np.nanpercentile(d, 100 * alpha / 2)), P=float(np.mean(f > 0)), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)))
         return out
     metas = [m for m in ("duration", "meta_gbm", "nonaudio_gbm") if m in S]
     best_meta = max(metas, key=lambda m: _f(S[m]["all"]["wa"])) if metas else None   # chosen by the slice's point wa_sauc
@@ -360,7 +397,7 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
         lo = lambda a, b, key="sauc": float(np.nanpercentile(a[key + "_b"] - b[key + "_b"], 100 * alpha / 2)) if b is not None else np.nan
         st = S[n]["all"]; sv = tabs["label_variants_sauc_and_spearman"].set_index("model").loc[n]
         br_ok = best_ref in S and n != best_ref
-        ev = dstat(st, S[best_ref]["all"]) if br_ok else None; EV[n] = ev
+        ev = dstat(n, best_ref) if br_ok else None; EV[n] = ev
         r = dict(model=n, best_ref=best_ref, sauc=round(sa(n), 3), sauc_ci=_ci(st["sauc_b"], alpha), perm_band=band["sauc"], macro_sauc=round(_f(st["macro"]), 3), macro_ci=_ci(st["macro_b"], alpha), macro_band=band.get("macro"),
                  dSAUC_lo_vs_best_ref=round(lo(st, S[best_ref]["all"]), 3) if br_ok else np.nan,
                  dSAUC_lo_vs_best=round(lo(st, S[bt]["all"]), 3) if bt else np.nan, best_valid=bt,
@@ -368,56 +405,57 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
                  gc=round(_f(st["gc"]), 3), gc_ci=_ci(st["gc_b"], alpha), gc_band=band.get("gc"), gc_wa=round(_f(st["gc_wa"]), 3), gc_wa_ci=_ci(st["gc_wa_b"], alpha), gc_wa_band=band.get("gc_wa"),
                  dGC_lo_vs_best_ref=round(lo(st, S[best_ref]["all"], "gc"), 3) if br_ok else np.nan,
                  ww_ci=_ci(st["ww_b"], alpha), ws_ci=_ci(st["ws_b"], alpha), ws_band=band.get("ws"), wx=round(_f(st["wx"]), 3), wx_ci=_ci(st["wx_b"], alpha), wx_band=band.get("wx"),
-                 new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha), plift=round(_f(st["plift"]), 3),
+                 dWX_lo_vs_best_ref=round(ev["wx"]["lo95"], 3) if ev else np.nan,
+                 new_artist_sauc=round(_f(S[n]["new"]["sauc"]), 3), new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha), dNEWSAUC_lo_vs_best_ref=round(ev["new"]["lo95"], 3) if ev else np.nan, plift=round(_f(st["plift"]), 3),
                  sp_share90=sv.sp_share90, open_sauc_ci=_ci(SO["sp"][n]["all"]["sauc_b"], alpha),
                  open_dSAUC_lo_vs_best=round(float(np.nanpercentile(SO["sp"][n]["all"]["sauc_b"] - SO["sp"][bo]["all"]["sauc_b"], 100 * alpha / 2)), 3) if bo else np.nan,
                  open_wa_ci=_ci(SO["sp"][n]["wa"]["wa_b"], alpha), open_p20=round(_f(SO["sp"][n]["all"]["p20"]), 3), best_open_p20=round(max([_f(SO["sp"][b]["all"]["p20"]) for b in vb]), 3) if vb else np.nan,
                  indep_p90=tabs["independence"]["p90"][n], label_consistency="ok" if all(sv[k] >= sv["love"] - .03 for k in ("love_4_2", "love_10_4", "strong")) else "below")
         if ev:   # evidence columns vs best_ref (the grade itself is set in finish_verdicts: it needs the TUNE and LATE slices)
-            for key in ("sauc", "wa", "gc"):
-                e = ev[key]; r.update({f"d_{key}_vs_best_ref": round(e["d"], 3), f"P_{key}_gt0": round(e["P"], 3), f"ci80_{key}": (round(e["lo80"], 3), round(e["hi80"], 3)), f"evidence_{key}": "not graded (HOLDOUT)" if not graded else ""})
+            for key in GRADED_KEYS:
+                e = ev[key]; kn = KEY_NAME.get(key, key); r.update({f"d_{kn}_vs_best_ref": round(e["d"], 3), f"P_{kn}_gt0": round(e["P"], 3), f"ci80_{kn}": (round(e["lo80"], 3), round(e["hi80"], 3)), f"evidence_{kn}": "not graded (HOLDOUT)" if not graded else ""})
         if best_meta and n not in metas:
-            e = dstat(st, S[best_meta]["all"])["wa"]; r.update({"dWA vs best meta": best_meta, "dWA vs best meta lo95": round(e["lo95"], 3), "dWA vs best meta P(d>0)": round(e["P"], 3)})
+            e = dstat(n, best_meta)["wa"]; r.update({"dWA vs best meta": best_meta, "dWA vs best meta lo95": round(e["lo95"], 3), "dWA vs best meta P(d>0)": round(e["P"], 3)})
         V.append(r)
         for rf in rlist:   # deltas vs EACH reference: point, 95% lower bound, P(d>0), 80% interval for sauc, wa, gc, macro_sauc
             if rf == n: continue
-            e = dstat(st, S[rf]["all"]); row = dict(model=n, vs=rf)
-            for key in ("sauc", "wa", "gc", "macro"): x = e[key]; row[key if key != "macro" else "macro_sauc"] = f"d={x['d']:+.3f} lo95={x['lo95']:+.3f} P={x['P']:.2f} 80%[{x['lo80']:+.3f},{x['hi80']:+.3f}]"
+            e = dstat(n, rf); row = dict(model=n, vs=rf)
+            for key in ("sauc", "wa", "gc", "macro", "wx", "new"): x = e[key]; row[{"macro": "macro_sauc", "new": "new_artist_sauc"}.get(key, key)] = f"d={x['d']:+.3f} lo95={x['lo95']:+.3f} P={x['P']:.2f} 80%[{x['lo80']:+.3f},{x['hi80']:+.3f}]"
             row["best_ref"] = "*" if rf == best_ref else ""; VD.append(row)
-        LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
+        LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wx=round(_f(st["wx"]), 4), wx_ci=_ci(st["wx_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
                       new_artist_sauc=round(_f(S[n]["new"]["sauc"]), 4), new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha))
     for n in P:
         if n not in LOG:
-            st = S[n]["all"]; LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
+            st = S[n]["all"]; LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wx=round(_f(st["wx"]), 4), wx_ci=_ci(st["wx_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
                                            new_artist_sauc=round(_f(S[n]["new"]["sauc"]), 4), new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha))
-    tabs["VERDICT"] = pd.DataFrame(V); tabs["VERDICT_DELTAS"] = pd.DataFrame(VD); tabs["_evidence"] = EV; tabs["_log"] = LOG
+    tabs["VERDICT"] = pd.DataFrame(V); tabs["VERDICT_DELTAS"] = pd.DataFrame(VD); tabs["_evidence"] = EV; tabs["_log"] = LOG; tabs["_S"] = S; tabs["_P"] = P
     diag = tabs["tried_within_group"][tabs["tried_within_group"].model.isin(DIAGNOSTIC)].merge(
         tabs["open_love"][["model", "open_sauc_all", "ci_all", "open_wa", "open_p20"]], on="model", how="left")
     tabs["DIAGNOSTIC_REFERENCES"] = diag
     return tabs, flags
 
 def finish_verdicts(out, late):
-    """Fill the VERDICT 'evidence_<metric>' columns (vs best_ref; metrics sauc, wa, gc) with the graded scale (HOLDOUT is never graded):
+    """Fill the VERDICT 'evidence_<metric>' columns (vs best_ref; metrics sauc, wx, new-artist sauc, wa, gc) with the graded scale (HOLDOUT and DEV+HOLDOUT are never graded):
       STRONG      ALL-slice 95% lower bound > 0 and point delta > 0 on both TUNE and LATE;
       SUGGESTIVE  P(delta > 0) >= 0.8 on both TUNE and LATE;
       NONE        otherwise.
     Without --late only TUNE exists: the column then reads 'TUNE only (P=..)'. With --late the grade is written into the ALL-slice VERDICT (14 folds minus HOLDOUT), which also
     carries TUNE / LATE point deltas and P(delta > 0); the TUNE and LATE VERDICTs say 'see ALL'."""
     for nm, tabs in out.items():
-        if nm.startswith("HOLDOUT"): continue
+        if nm.startswith("HOLDOUT") or nm == DEVHOLD: continue
         V = tabs["VERDICT"]
         for i, r in V.iterrows():
             ev = tabs["_evidence"].get(r["model"])
             if not ev: continue
-            for key in ("sauc", "wa", "gc"):
-                col = f"evidence_{key}"
+            for key in GRADED_KEYS:
+                kn = KEY_NAME.get(key, key); col = f"evidence_{kn}"
                 if not late: V.at[i, col] = f"TUNE only (P={ev[key]['P']:.2f})"
                 elif nm != "ALL": V.at[i, col] = "see ALL"
                 else:
                     t, l, a = out["TUNE"]["_evidence"][r["model"]][key], out["LATE"]["_evidence"][r["model"]][key], ev[key]
                     V.at[i, col] = "STRONG" if a["lo95"] > 0 and t["d"] > 0 and l["d"] > 0 else "SUGGESTIVE" if t["P"] >= .8 and l["P"] >= .8 else "NONE"
                     for sl, e in (("TUNE", t), ("LATE", l)):
-                        V.at[i, f"{sl}_d_{key}"] = round(e["d"], 3); V.at[i, f"{sl}_P_{key}"] = round(e["P"], 3)
+                        V.at[i, f"{sl}_d_{kn}"] = round(e["d"], 3); V.at[i, f"{sl}_P_{kn}"] = round(e["P"], 3)
 
 # ---------------------------------------------------------------- scoring sets, best_ref
 def _load_mods(mods):
@@ -427,13 +465,16 @@ def _load_mods(mods):
         for k, f in (getattr(m, "PREDICTORS", None) or {Path(p).stem: m.predict}).items(): preds[k] = f
     return preds
 
-def _score_set(preds, cutoffs, part, indep_n, window, wname, bcache, rcache):
-    """Score every predictor: baselines / shortcuts through the baseline-score cache, the reference through its own cache (indep never checked), others uncached."""
+def _score_set(preds, cutoffs, part, indep_n, window, wname, bcache, rcaches):
+    """Score every predictor: baselines / shortcuts through the baseline-score cache, each reference through its own cache (indep never checked), others uncached.
+    attrs['runtime'] of every scored frame = seconds spent on it in this call (about 0 when it came from a cache)."""
     out = {}
     for k, f in preds.items():
-        if k == REF: out[k] = score_predictor(f, cutoffs, k, 0, None, window, rcache, wname, part)
+        t0 = time.time()
+        if k in REF_NAMES: out[k] = score_predictor(f, cutoffs, k, 0, None, window, (rcaches or {}).get(k), wname, part)
         elif k in BASELINES or k in SHORTCUTS: out[k] = score_predictor(f, cutoffs, k, 0 if k in SHORTCUTS else indep_n, None, window, bcache, wname, part)
         else: out[k] = score_predictor(f, cutoffs, k, indep_n, None, window, None, wname, part)
+        out[k].attrs["runtime"] = time.time() - t0
     return out
 
 def best_ref_from(scored, folds):
@@ -446,23 +487,69 @@ def best_ref_from(scored, folds):
     return max(res, key=res.get), res
 
 # ---------------------------------------------------------------- caps and logs
-def _log_count(log, h):
-    n = 0
+def _log_lines_of(log):
+    out = []
     if Path(log).exists():
         for l in Path(log).read_text().splitlines():
-            if l.strip().startswith("{") and h in json.loads(l).get("sha256", []): n += 1
-    return n
+            if l.strip().startswith("{"): out.append(json.loads(l))
+    return out
 
-def late_cap_check(hashes, log=LATE_LOG, cap=LATE_CAP):
-    """Refuse a --late run of a predictor file whose sha256 already has `cap` logged --late runs."""
+def _log_count(log, h, keys=("sha256",)):
+    """Number of logged runs whose lists `keys` (default: entry-file sha256 list) contain hash h."""
+    return sum(1 for j in _log_lines_of(log) if any(h in j.get(k, []) for k in keys))
+
+def _cap_check(log, cap, hashes, bundles, members, what, where):
+    """Refuse when the entry-file sha256 of any file (`hashes`) or its bundle hash (`bundles`) has already `cap` logged runs, or when a project file the predictor imports / loads
+    (`members`) was itself logged as a predictor file `cap` times (a thin wrapper around a predictor that already used up its runs). Existing log lines count by their entry sha256;
+    lines written by v4.1 also carry `bundle_sha256`."""
     for h in hashes:
         n = _log_count(log, h)
-        if n >= cap: sys.exit(f"REFUSED: --late already ran {n} time(s) for the predictor file with sha256 {h[:16]}.. (cap {cap} per predictor hash). The full table of each earlier run is in {LATE_TABLES}/{h}*.txt (read-only); read it instead of re-running.")
+        if n >= cap: sys.exit(f"REFUSED: {what} already ran {n} time(s) for the predictor file with sha256 {h[:16]}.. (cap {cap} per predictor hash). {where}")
+    for h in bundles:
+        n = _log_count(log, h, ("bundle_sha256",))
+        if n >= cap: sys.exit(f"REFUSED: {what} already ran {n} time(s) for a predictor with the same bundle hash {h[:16]}.. (entry file + the project code it imports; cap {cap} per bundle hash). {where}")
+    for h in members:
+        n = _log_count(log, h)
+        if n >= cap: sys.exit(f"REFUSED: the predictor imports / loads a project file (sha256 {h[:16]}..) that was itself submitted as a predictor and has used up {what} ({n} run(s), cap {cap}): a wrapper around it is the same predictor. "
+                              f"Use evalkit.refs.score for the references, or put your own code in the file you submit. {where}")
 
-def holdout_cap_check(hashes, log=HOLDOUT_LOG):
-    """Refuse a second --holdout run of the same predictor file hash."""
-    for h in hashes:
-        if _log_count(log, h) >= 1: sys.exit(f"REFUSED: --holdout already ran for the predictor file with sha256 {h[:16]}.. (one run per predictor hash; results are in {log}).")
+def late_cap_check(hashes, log=LATE_LOG, cap=LATE_CAP, bundles=(), members=(), tables=LATE_TABLES):
+    """Refuse a --late run of a predictor whose entry-file sha256 or bundle hash already has `cap` logged --late runs (or that wraps a predictor file with that many)."""
+    _cap_check(log, cap, hashes, bundles, members, "--late", f"The full table of each earlier run is in {tables}/<sha256>*.txt (read-only); read it instead of re-running.")
+
+def holdout_cap_check(hashes, log=HOLDOUT_LOG, bundles=(), members=()):
+    """Refuse a second --holdout run of the same entry-file sha256 / bundle hash (or of a wrapper around a predictor file already run)."""
+    _cap_check(log, 1, hashes, bundles, members, "--holdout", f"One run per predictor hash; results are in {log}.")
+
+def holdout_budget_check(path=HOLDOUT_BUDGET):
+    if not Path(path).exists(): sys.exit(f"REFUSED: holdout budget file {path} is missing (the harness refuses --holdout without it).")
+    b = json.loads(Path(path).read_text())
+    if b.get("remaining", 0) <= 0: sys.exit(f"REFUSED: the --holdout budget of round {b.get('round')} is used up (remaining 0 in {path}): one run per round-2 builder, on its pre-declared final file; devil's advocates never run it.")
+    return b
+
+def holdout_budget_use(path=HOLDOUT_BUDGET):
+    b = json.loads(Path(path).read_text()); b["remaining"] = int(b["remaining"]) - 1; tmp = Path(str(path) + ".tmp"); tmp.write_text(json.dumps(b)); os.replace(tmp, path); return b
+
+def first_fold_vectors(fns, slice_name):
+    """First-fold score vector of every model in fns ({name: predict}) on the first fold of the slice: 'late' = first LATE fold (main rows), 'holdout' = first dev fold (HOLDOUT rows)."""
+    cut, part = (data.LATE_CUTOFFS[:1], "main") if slice_name == "late" else (data.DEV_CUTOFFS[:1], "holdout")
+    return {n: score_predictor(f, cut, n, 0, None, None, None, "all", part).score.values.astype(np.float64) for n, f in fns.items()}
+
+def fingerprint_check(path, entry_sha, vecs, thr=0.999, label=""):
+    """Refuse when a model of the submitted file scores the first fold of the slice with Spearman >= thr to a model already logged for the slice by a DIFFERENT file (a renamed or lightly edited copy).
+    `path` = .cache/<late|holdout>_fingerprints.pkl; vecs = {model: first-fold score vector}. Runs of the same file (same entry sha256) are not compared with themselves."""
+    from scipy.stats import spearmanr
+    store = _load_pk(Path(path))
+    for model, v in vecs.items():
+        for key, e in store.items():
+            if e["sha"] == entry_sha or len(e["vec"]) != len(v) or np.ptp(v) == 0 or np.ptp(e["vec"]) == 0: continue
+            r = float(spearmanr(v, e["vec"])[0])
+            if r >= thr: sys.exit(f"REFUSED: model {model!r} {label}scores the first fold of this slice with Spearman {r:.4f} >= {thr} to model {e['model']!r} (file sha256 {e['sha'][:16]}..) already logged for the slice: a renamed or lightly edited copy is the same predictor.")
+
+def fingerprint_record(path, entry_sha, vecs):
+    store = _load_pk(Path(path))
+    for model, v in vecs.items(): store.setdefault(f"{entry_sha}|{model}", dict(sha=entry_sha, model=model, vec=np.asarray(v, np.float32)))
+    _save_pk(Path(path), store)
 
 def late_write_tables(hashes, text, folder=LATE_TABLES):
     folder.mkdir(parents=True, exist_ok=True); paths = []

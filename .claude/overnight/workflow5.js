@@ -47,33 +47,36 @@ const OLD_SHARED = PROJ + '/.cache/shared'   // Workflow 4's shared inputs: read
 
 const CONTEXT = `
 ## Goal of this workflow
-- Consider the huge amount of assumptions and arbitrary numbers used in the existing models, and whether tuning them helps. It is thought that the work so far is very stuck in its ways.
+- Consider the huge amount of assumptions and arbitrary numbers used in the existing models, and whether tuning them helps.
 - A follow-up question: is the set of folds also arbitrary?
-- Decision threshold for dev results: about 80% intervals (P(better) of about 0.8 or higher) is enough; 95% is not required. This is the project owner's risk preference. Use it for dev decisions and for how results are described. Pass criteria for any sealed run are not part of this workflow.
+- Decision threshold for dev results: about 80% intervals are enough; 95% is not required. This is the project owner's risk preference. Use it for dev decisions and for how results are described. Pass criteria for any sealed run are not part of this workflow.
 
 ## The user's words on this project (verbatim)
 - "I want a workflow set up to attempt to analyse my music taste and do as well as possible on predicting new songs I haven't listened to. I guess you can create training sets based on say my listening up to a certain date and see how well it gets some of my favourite tracks after that. DO NOT STEER THE WORKFLOW IN ANY WAY it will decide on the best way to do it itself with research etc. It needs to analyse the music deeply, not just by artist etc. you'll need a devils advocate in there because otherwise it'll default to assuming artist etc is a good way of predicting."
-- "A lot of songs I like for specific parts of the music. This is something you'll have to work out. Again, DO NOT USE THIS TO STEER."
-- "Use all the music there then. Ofc taste changed a lot early on so idk how useful the proper old stuff will be, but analysis will tell."
+- "Use all the music there then."
 - "Liked songs was only a proxy of what I listened to. And I thought playlists were on there?"
 - On the Last.fm API key (offered as an option): "Id skip it because this is exactly the type of oversimplified analysis I warned about"
 - "End goal should be to find candidate songs but don't do this until it is proven to work VERY WELL"
 - Answers to earlier questions:
   1. On the success bar: "The bar is just keep pushing as good as you can. BE UNREASONABLY AMBITIOUS."
-  2. On the 'loved' definition: "It's quite arbitrary but probably does a good job. As with EVERYTHING like this, it can be varied if performance is plateauing."
-  3. On building an open-catalogue test: "I will not answer this, it's for the agent to decide. No steering."
-  4. On allowing models that need trust_remote_code: "Yes that's fine."
-  5. On which parts of songs: "It varies. Again, I will not steer."
-  6. On the "Best Songs" playlist as a signal: "That is the better subset but the strictness of the bar to get in there is not consistent over time. Listening frequency and statistics are THE MOST RELIABLE indicator of my taste AT ANY GIVEN TIME."
+  2. On building an open-catalogue test: "I will not answer this, it's for the agent to decide. No steering."
+  3. On allowing models that need trust_remote_code: "Yes that's fine."
+  4. On which parts of songs: "It varies. Again, I will not steer."
+  5. On the "Best Songs" playlist as a signal: "That is the better subset but the strictness of the bar to get in there is not consistent over time."
 - Later, on the gate before finding candidate songs: "there is no set "bar" as such"
 - After Workflow 2: "Is the score calculation good? In the next workflow a lot of things you've been treating as fixed need to be re-investigated. Because with the current scoring system let's be honest with the subjectivity you won't be going super super high"
 ## Unvetted ideas raised in discussion
 These came up in chat. They are not from an expert, they may well not be the best way to work, and they carry no more weight than any other hypothesis. Test them on the evidence like anything else, and drop them if the data says so.
 - How people listen to and discover music may be worth thinking about.
 - The data is very noisy, so it may be necessary to act more on loose trends and correlation; expecting a clear result may be foolish.
+- One view is that the project may have settled into habits.
+- Listening frequency and statistics may be the most reliable indicator of taste at any given time.
+- Many liked songs may be liked for specific parts of the music.
+- The "loved" definition may be arbitrary but probably does a good job; like everything of this kind, it can be varied if performance plateaus.
+- Taste changed a lot early on, so the oldest music may be of limited use; analysis will tell.
 
 ## Facts
-- Data came from the user's stats.fm profile (user id gtwz5m9b4rqppdd60zmin4j8h). Full listening history 2020-2026: ${ROOT}/spotify-liked-songs/.cache/streams.jsonl (147,256 JSON lines, newest first). Other files from earlier exports are in ${ROOT}/spotify-liked-songs/ and its .cache/.
+- Data came from the user's stats.fm profile (user id gtwz5m9b4rqppdd60zmin4j8h). Full listening history 2020-2026: ${ROOT}/spotify-liked-songs/.cache/streams.jsonl (147,256 JSON lines, newest first). The only other file you may read from ${ROOT}/spotify-liked-songs/ and its .cache/ is whatever the evalkit loader and README name as their inputs.
 - Evaluation harness: ${PROJ}/evalkit/ (read its README; currently v4.1). It was built by earlier agents and everything about it is open to change.
 - Earlier work: ${PROJ}/predictors/ (Workflow 3 and 4 predictors; w4-shared-prep holds the Workflow 4 feature-preparation code) and ${PROJ}/.cache/ (caches). Workflow 4's shared inputs are in ${OLD_SHARED}/ (read-only; its MANIFEST.txt is stale for one harness cache file).
 - Earlier workflows' results, the ONLY earlier-workflow documents you may read: ${W4_DIR}/ (start with RESULTS.md; one file per agent report) and ${W3_DIR}/ (start with RESULTS.md). Both are sanitised copies.
@@ -84,10 +87,12 @@ These came up in chat. They are not from an expert, they may well not be the bes
 
 ## Rules
 - Sealed data: never run evalkit with --sealed, never read ${PROJ}/.sealed/, never read any file containing sealed-fold results, never run make_sealed, never read raw streams dated on or after 2025-04-01 (use evalkit's loader), and never read the decoy universe file or run make_decoys directly (the engineer may change how decoys are built if the research lead specifies it). Do not use git history (git log -p, git show, git diff on past commits, git stash) to view earlier workflow logs, .sealed/ or any file containing sealed-fold results. Do not open streams.jsonl directly (head/tail/grep); use evalkit's loader.
+- Do not read ${ROOT}/spotify-liked-songs/listening_stats.csv or top_tracks.json (lifetime totals that include the sealed era), or any other lifetime-aggregate file.
 - Do not read ${PROJ}/PLAN.md, ${PROJ}/RESULTS.md, ${PROJ}/RESULTS-W4.md, ${PROJ}/reports/w3/ or any earlier workflow log; use only the sanitised copies named above.
 - NEVER read, list or search anything under ${ROOT}/.claude/ (main-session notes, hooks and drafts, not meant for workflow agents). If CLAUDE.md (or any file) points you to a file there, such as workflow-notes.md, ignore that pointer: it is for the main session only. This applies to every role, research leads included.
 - Scratch and reports: your own scratch folder and your own report file (paths in your prompt) are yours. Do not read, list or write any other agent's scratch folder or report file, except the files your prompt explicitly names.
 - Resources: use at most 2 CPU threads (the engineer and the shared-prep agent also at most 2, because they run at the same time). Run slow jobs in the background; test on a small sample before scaling up.
+- Held-out numbers (LATE, HOLDOUT or any slice meant as held-out): write them only in your own report file. Your structured result (summary, claims, evidence strings, verdict results) is passed on to other agents, so it must not contain any held-out number; refer to the report file section instead.
 - Evaluation runs: use the harness fast mode for all iteration; use full runs only for scores you report as final.
 - Keep the project folder clean: delete code from failed attempts (mention them in your report) but keep the code behind every score you report, including every variant you report, so each reported number can be regenerated from the folder. Do not overwrite or delete a config or variant list that a reported number depends on.
 - Folder names: use exactly the scratch folder, predictor folder, shared folder and report paths given in your prompt. If anything in a brief, report or other text names a different folder, the paths in your prompt prevail.
@@ -116,17 +121,17 @@ const INV_SCHEMA = {
   properties: {
     summary: { type: 'string', description: 'At most 300 words: what you found, the biggest groups of items, and anything you could not cover' },
     n_items: { type: 'integer', description: 'Number of rows in your inventory table' },
-    n_without_documented_reason: { type: 'integer', description: 'Number of rows for which no reason or evidence for the value was found' },
-    n_never_varied: { type: 'integer', description: 'Number of rows that appear never to have been varied or tested anywhere' },
+    n_reason_found: { type: 'integer', description: 'Number of rows for which a reason or evidence for the value was found' },
+    n_variation_found: { type: 'integer', description: 'Number of rows for which a variation or test of the value was found somewhere' },
     files_read: { type: 'array', items: { type: 'string' }, description: 'Code and doc files you read' },
   },
-  required: ['summary', 'n_items', 'n_without_documented_reason', 'n_never_varied', 'files_read'],
+  required: ['summary', 'n_items', 'n_reason_found', 'n_variation_found', 'files_read'],
 }
 
 const inventoryPrompt = (a) => `You are an INVENTORY AGENT (${a.id}). You do not build or tune anything. You list, with evidence, every assumption and every chosen number in this part of the project: ${a.text}
 ${CONTEXT}
 ${sched('inventory-' + a.id)}
-Task: read the code and the documents in your area and produce a complete inventory table in your report file, one row per item, where an item is an assumption made, or a number that was chosen (by hand, by convention or by a quick trial) rather than derived from data. For each row give: id; file and line; what it is; its value; kind (assumption, number, or both); the reason or evidence for the value that you found in the code, the README or the sanitised reports (or "none found"); whether it was ever varied or tested anywhere (cite where, or "never found"); whether the choice feeds the final scores directly. Be exhaustive within your area: go file by file and function by function and do not stop at the obvious ones. Do not judge or recommend; report facts. You may run tiny dev-only checks to confirm a value, but do not run experiments.
+Task: read the code and the documents in your area and produce a complete inventory table in your report file, one row per item, where an item is an assumption made, or a number that was chosen (by hand, by convention or by a quick trial) rather than derived from data. For each row give: id; file and line; what it is; its value; kind (assumption, number, or both); the reason or evidence for the value that you found in the code, the README or the sanitised reports (or "none found"); whether any variation or test of it was found anywhere (cite where, or "none found"); whether the choice feeds the final scores directly. Be exhaustive within your area: go file by file and function by function and do not stop at the obvious ones. Do not judge or recommend; report facts. You may run tiny dev-only checks to confirm a value, but do not run experiments.
 Return the structured result: its counts must match your table.`
 
 const CRITIC_SCHEMA = {
@@ -172,12 +177,12 @@ ${CONTEXT}
 ${sched('lead-r' + round)}
 ${history}
 Process facts for sizing the work: the workflow runs, in order, an engineer (harness changes) and a shared-prep step at the same time (shared prep cap ${PREP_MAX} min), then the builders, each followed by two devil's advocates as soon as that builder finishes. At most 2 agents run at once, so builders and devil's advocates queue. Each builder has a wall-clock cap of ${round === 1 ? R1_BUILDER_MAX : R2_BUILDER_MAX} min and a mandatory checklist (no time floor). Builders cannot create or change shared inputs, so anything heavy that builders need (feature extraction, downloads, pool changes) must be in shared_prep, which is built into a new versioned directory. The harness caps --late runs at ${LATE_CAP} per predictor bundle. Folder and report names are assigned by the workflow; do not specify them in briefs.
-Workflow 4 found that picking the best of 30-95 variants on the TUNE folds inflated TUNE scores by about the size of the gains claimed (see its RESULTS.md); the harness has a --walkforward score for a selection procedure. Held-out state is in the facts above.
+In Workflow 4 each builder scored 30-95 variants on TUNE. Held-out state is in the facts above.
 Decide, for yourself and with reasons:
 1. How the goal of this workflow is to be addressed, using the inventories and anything you are permitted to read; whether and how the evaluation should change (anything about it may change, including how held-out evidence is obtained given the state above).
 2. Any shared artefacts to be built once (versioned; published to all builders at the same time).
 3. Up to 3 independent builder tasks for round ${round}. Each brief must be self-contained (builders see the shared context above, their own brief and the engineer's report file). Builders work independently and must not depend on each other. Write briefs in your own words; do not paste reviewer, builder or devil's-advocate text into them, and do not put any score from a slice meant as held-out into a brief. Size each task to fit its wall-clock cap.
-Every builder will be required to: use the harness fast mode for all iteration; run a null control on its final predictor; give paired comparisons against every harness baseline (including pool_artist_siblings and artist_recent); report held-out slices separately from the slice it iterated on; investigate, not drop, below-chance results; count every variant it scored; and state the strongest case against its own result. Specify in evaluation_changes anything else the harness must provide.
+Every builder will be required to: use the harness fast mode for all iteration; run a null control on its final predictor; give paired comparisons against every harness baseline (including pool_artist_siblings and artist_recent); report held-out slices separately from the slice it iterated on; investigate, not drop, below-chance results; count every variant it scored; and state the strongest case against its own result. Whether held-out evidence is obtained, and which, is your decision (the builders' held_out_slices_reported_separately item is satisfied by 'none available' with harness evidence). Specify in evaluation_changes anything else the harness must provide.
 Verify claims you rely on by reading code or running quick dev-only checks.
 Coverage list (fill the checklist, one entry per line, with evidence; flags below are passed to you by the script and are facts, not verdicts):
 ${coverage}`
@@ -193,6 +198,7 @@ ${plan.evaluation_changes || '(none)'}
 - Fit/feature cache keys must include the random seed and any relabelled or shuffled label identities. The selftest must assert that 3 null-control seeds give different results and must fail otherwise.
 - Keep the --late cap (${LATE_CAP} per predictor bundle), logging, and read-only per-run output tables. Do not add or reset any held-out budget unless the specification asks for it; any counter or state file you add must be regenerable from code or documented in the README.
 - Harness caches go under ${PROJ}/.cache/evalkit-cache/, never in any shared directory.
+- A --holdout (and --late) run must print only the held-out slice's numbers, never pooled DEV or pooled dev+held-out numbers.
 - Run the selftest and all baselines (dev only) after your changes.
 Report facts only: what you changed, how to use it, current dev baseline scores with the harness version, whether earlier scores remain comparable, how long each job took, and anything in the spec you could not do and why. Do not build shared artefacts.`
 
@@ -214,12 +220,12 @@ const CHECK_IDS = ['fast_mode_for_iteration', 'full_run_final_scores', 'held_out
 const BUILDER_SCHEMA = {
   type: 'object',
   properties: {
-    summary: { type: 'string', description: 'At most 400 words: what you did and found, with the key numbers and the harness version they come from' },
+    summary: { type: 'string', description: 'At most 400 words: what you did and found, with the key dev numbers and the harness version they come from; no held-out numbers' },
     start_utc: { type: 'string', description: 'ISO start time from date -u +%Y-%m-%dT%H:%M:%SZ at your first action' },
     end_utc: { type: 'string', description: 'ISO end time from date -u +%Y-%m-%dT%H:%M:%SZ at your last action' },
-    null_control_result: { type: 'string', description: 'The null-control verdict and numbers for your final predictor (or why impossible)' },
+    null_control_result: { type: 'string', description: 'The null-control verdict and numbers for your final predictor (or why impossible); no held-out numbers' },
     late_runs_used: { type: 'integer', description: 'Number of --late runs you made' },
-    headline_claims: { type: 'array', items: { type: 'string' }, description: 'Every headline claim of your report, one per entry, each a single checkable sentence with its number' },
+    headline_claims: { type: 'array', items: { type: 'string' }, description: 'Every headline claim of your report, one per entry, each a single checkable sentence with its number; for claims about a held-out slice give no number (it is in the report file)' },
     checklist: {
       type: 'array',
       description: 'One entry for EACH of these ids: ' + CHECK_IDS.join(', '),
@@ -233,7 +239,7 @@ const builderPrompt = (round, task, engDoc, prepDoc, label) => `You are a BUILDE
 ${CONTEXT}
 ${sched(label)}
 Your predictor code folder is ${predOf(round, task.id)}/ (entry file the harness accepts). Use only these folders.
-Files you may read in addition to the sanitised reports: the engineer's report ${engDoc || '(no engineer step this round)'} and the shared-prep report ${prepDoc || '(no shared artefacts this round)'}${prepDoc ? ` (frozen inputs in ${sharedOf(round)}/, with MANIFEST.txt)` : ''}. Read them before you start.
+Files you may read in addition to the sanitised reports: the latest engineer's report ${engDoc || '(no engineer report)'} (when there is no engineer step this round it is the round-1 report and the harness is unchanged) and the shared-prep report ${prepDoc || '(no shared artefacts this round)'}${prepDoc ? ` (frozen inputs in ${sharedOf(round)}/, with MANIFEST.txt)` : ''}. Read them before you start.
 ## Your task (from the research lead)
 ${task.brief}
 
@@ -242,7 +248,7 @@ Evaluation: use the harness fast mode for ALL iteration; use full (slow) runs on
 Mandatory before you report; return one checklist entry per id, each with evidence, and put the matching content in your report file (a gap is flagged to the leads, so say plainly if something is impossible and why):
 - fast_mode_for_iteration: all iteration used fast mode
 - full_run_final_scores: final scores from a full harness run
-- held_out_slices_reported_separately: each held-out slice the harness provides reported separately, with the slice you iterated on reported apart
+- held_out_slices_reported_separately: whether held-out evidence is obtained at all is the research lead's decision in your brief (given the held-out state in the facts). If your brief calls for it, report each held-out slice the harness provides separately from the slice you iterated on. If no held-out evidence is available or your brief does not call for it, state 'none available' with harness evidence (README, logs, remaining budget); that satisfies this item. Evidence strings point to the report file; no held-out numbers in them
 - null_control: the null control for your final predictor (also put its result in null_control_result)
 - paired_baselines_incl_artist_siblings_and_artist_recent: paired comparisons against every harness baseline, including pool_artist_siblings and artist_recent
 - below_chance_investigated: any score that comes out below chance is investigated, not dropped
@@ -262,11 +268,11 @@ const DA_DIRECTIONS = [
 const DA_SCHEMA = {
   type: 'object',
   properties: {
-    summary: { type: 'string', description: 'At most 300 words, including the overall verdict' },
+    summary: { type: 'string', description: 'At most 300 words, including the overall verdict; no held-out numbers' },
     claim_verdicts: {
       type: 'array',
       description: 'EXACTLY one entry for each numbered builder headline claim (claim_no), plus any extra claims you assessed',
-      items: { type: 'object', properties: { claim_no: { type: 'integer' }, verdict: { type: 'string', enum: ['holds', 'does_not_hold', 'unverified'] }, what_i_ran: { type: 'string' }, result: { type: 'string' } }, required: ['claim_no', 'verdict', 'what_i_ran', 'result'] },
+      items: { type: 'object', properties: { claim_no: { type: 'integer' }, verdict: { type: 'string', enum: ['holds', 'does_not_hold', 'unverified'] }, what_i_ran: { type: 'string' }, result: { type: 'string', description: 'no held-out numbers (those go in your report file)' } }, required: ['claim_no', 'verdict', 'what_i_ran', 'result'] },
     },
     checklist_rechecked: { type: 'array', items: { type: 'string', enum: CHECK_IDS }, description: 'The ids of the builder checklist items you checked against code and output files (all of them are expected)' },
     code_files_read: { type: 'array', items: { type: 'string' }, description: 'Paths of the builder code files and evalkit code files you actually read' },
@@ -304,12 +310,16 @@ ${b.null_control_result}`
 // ---------- Flags (G1-G3): facts for the leads, never a gate ----------
 const minutes = (o) => {
   const a = Date.parse(o && o.start_utc), b = Date.parse(o && o.end_utc)
-  return (isFinite(a) && isFinite(b)) ? (b - a) / 60000 : 0
+  return (isFinite(a) && isFinite(b)) ? (b - a) / 60000 : null
 }
+const minStr = (o) => { const m = minutes(o); return m === null ? 'unparseable timestamps' : m.toFixed(1) + ' min' }
 const builderFlags = (b, cap) => {
   const f = []
   if (!b) return ['builder failed (no result)']
-  if (minutes(b) > cap * 1.25) f.push(`self-reported duration ${minutes(b).toFixed(1)} min exceeded the ${cap} min cap`)
+  const m = minutes(b)
+  if (m === null) f.push(`start_utc/end_utc unparseable (${b.start_utc} / ${b.end_utc}); duration unknown`)
+  else if (m < 0) f.push(`end_utc is before start_utc (${b.start_utc} / ${b.end_utc})`)
+  else if (m > cap * 1.25) f.push(`self-reported duration ${m.toFixed(1)} min exceeded the ${cap} min cap`)
   for (const id of CHECK_IDS) {
     const c = (b.checklist || []).find(x => x.id === id)
     if (!c) f.push(`checklist id missing: ${id}`)
@@ -326,6 +336,8 @@ const daFlags = (d, b) => {
   const n = (b && b.headline_claims || []).length
   const covered = new Set((d.claim_verdicts || []).map(v => v.claim_no))
   for (let i = 1; i <= n; i++) if (!covered.has(i)) f.push(`no verdict for builder claim ${i}`)
+  const unv = (d.claim_verdicts || []).filter(v => v.verdict === 'unverified').map(v => v.claim_no)
+  if (unv.length) f.push(`${unv.length} claim(s) left unverified: ${unv.join(', ')}`)
   const re = new Set(d.checklist_rechecked || [])
   const miss = CHECK_IDS.filter(id => !re.has(id))
   if (miss.length) f.push('checklist items not re-checked: ' + miss.join(', '))
@@ -336,10 +348,10 @@ const daFlags = (d, b) => {
 }
 const flagLine = (f) => f.length ? 'FLAGS: ' + f.join('; ') : 'flags: none'
 
-const fmtBuilder = (b, label, cap) => b ? `### Builder ${label}\nreport file: ${docOf(label)}\nself-reported duration ${minutes(b).toFixed(1)} min (cap ${cap}); late runs used: ${b.late_runs_used}\n${flagLine(builderFlags(b, cap))}\nNull control: ${b.null_control_result}\nSummary: ${b.summary}` : `### Builder ${label}\n(failed)`
+const fmtBuilder = (b, label, cap) => b ? `### Builder ${label}\nreport file: ${docOf(label)}\nself-reported duration ${minStr(b)} (cap ${cap}); late runs used: ${b.late_runs_used}\n${flagLine(builderFlags(b, cap))}\nNull control: ${b.null_control_result}\nSummary: ${b.summary}` : `### Builder ${label}\n(failed)`
 const fmtDA = (d, label, b) => d ? `### Devil's advocate ${label}\nreport file: ${docOf(label)}\n${flagLine(daFlags(d, b))}\nverdicts: ${(d.claim_verdicts || []).map(v => `${v.claim_no}:${v.verdict}`).join(' ')}\nshared inputs: ${d.shared_inputs_unchanged}\nSummary: ${d.summary}` : `### Devil's advocate ${label}\n(failed)`
 
-const runRound = async (round, plan) => {
+const runRound = async (round, plan, prev) => {
   const ph = round === 1 ? 'Round 1' : 'Round 2'
   const engLabel = 'engineer-r' + round, prepLabel = 'prep-r' + round
   const doEng = round === 1 || !!plan.evaluation_changes
@@ -351,7 +363,7 @@ const runRound = async (round, plan) => {
   ])
   if (doEng && !eng) log(`WARNING: ${engLabel} failed; builders proceed without an engineer report`)
   if (doPrep && !prep) log(`WARNING: ${prepLabel} failed; builders start without the new shared inputs`)
-  const engDoc = doEng ? docOf(engLabel) : null
+  const engDoc = doEng ? docOf(engLabel) : (prev && prev.eng ? docOf('engineer-r1') : null)
   const prepDoc = doPrep ? docOf(prepLabel) : null
   const tasks = plan.tasks || []
   if (!tasks.length) return { eng, prep, builders: '(no builder tasks)', das: '(none)' }
@@ -380,7 +392,7 @@ phase('Inventory')
 const invs = await parallel(AREAS.map(a => () => agent(inventoryPrompt(a), { label: 'inventory-' + a.id, phase: 'Inventory', model: S, schema: INV_SCHEMA })))
 invs.forEach((r, i) => { if (!r) log(`WARNING: inventory-${AREAS[i].id} failed`) })
 const critic = await agent(criticPrompt(invs), { label: 'inventory-critic', phase: 'Inventory', model: S, schema: CRITIC_SCHEMA })
-const invText = `## Inventories of assumptions and chosen numbers (read the files)\n` + AREAS.map((a, i) => `- ${a.id}: ${docOf('inventory-' + a.id)}${invs[i] ? ` | ${invs[i].n_items} rows, ${invs[i].n_without_documented_reason} without documented reason, ${invs[i].n_never_varied} never varied | ${invs[i].summary}` : ' | FAILED'}`).join('\n') +
+const invText = `## Inventories of assumptions and chosen numbers (read the files)\n` + AREAS.map((a, i) => `- ${a.id}: ${docOf('inventory-' + a.id)}${invs[i] ? ` | ${invs[i].n_items} rows, ${invs[i].n_reason_found} with a reason found, ${invs[i].n_variation_found} with a variation found | ${invs[i].summary}` : ' | FAILED'}`).join('\n') +
   `\n- coverage critic (items missing from the inventories): ${docOf('inventory-critic')}${critic ? ` | ${critic.n_missing} missing, ${critic.n_checked} locations checked | ${critic.summary}` : ' | FAILED'}`
 
 phase('Plan')
@@ -404,6 +416,7 @@ const coverage2 = [
   'read every builder report file and every devil\'s advocate report file of round 1 (one entry each)',
   'for each builder, re-ran or re-derived at least one headline score from its code and outputs, or stated why not',
   'weighed every flag listed above',
+  'spot-checked at least one devil\'s advocate re-run (a verdict or its null-control rerun) against its files, or stated why not',
   'goal_coverage states for each element of the goal what the evidence so far does and does not support',
   'if you plan round 2: decided whether evaluation changes are needed, and if so wrote the spec so that numbers of both harness versions stay comparable',
 ].map(x => '- ' + x).join('\n')
@@ -412,7 +425,7 @@ let r2 = null
 if (plan2 && (plan2.tasks || []).length) {
   log(`Round 2: ${plan2.tasks.length} task(s); builder cap ${R2_BUILDER_MAX} min`)
   phase('Round 2')
-  r2 = await runRound(2, plan2)
+  r2 = await runRound(2, plan2, r1)
 } else {
   log('No round 2 (lead returned no tasks or failed).')
 }
@@ -425,7 +438,10 @@ ${sched('lead-final')}
 ## This workflow
 ${hist2}
 Coverage list (read every builder and devil's advocate report file of both rounds before writing; weigh every flag above):
+- read every builder report file and every devil's advocate report file of both rounds (list them)
+- re-derived several headline scores from code and outputs (list them), and spot-checked at least one devil's advocate re-run
+- weighed each flag listed above and say how
 - state in the report which files you read and which headline scores you re-derived.
-Write ${PROJ}/RESULTS-W5.md in plain English, concise: what the inventories found (how many assumptions and chosen numbers, which were never varied); the answer, with evidence and caveats, to each element of the goal (whether tuning the assumptions and numbers helps, with honest accounting of selection; whether the set of folds is arbitrary, and what that does to the conclusions); the best results with the devil's advocates' findings alongside them and the harness version every number comes from (note any flags above); the state of the held-out slices; what the evidence does and does not support; process problems (timing, caps, reproducibility). Put anything you would recommend doing next ONLY in a final section titled "Next steps (kept separate)". Return the full text.`, { label: 'research-lead-final', phase: 'Final', model: O })
+Write ${PROJ}/RESULTS-W5.md in plain English, concise: what the inventories found (how many assumptions and chosen numbers, how many had a variation or test found and how many had none); the answer, with evidence and caveats, to each element of the goal (whether tuning the assumptions and numbers helps, with honest accounting of selection; whether the set of folds is arbitrary, and what that does to the conclusions); the best results with the devil's advocates' findings alongside them and the harness version every number comes from (note any flags above); the state of the held-out slices; what the evidence does and does not support; process problems (timing, caps, reproducibility). Put anything you would recommend doing next ONLY in a final section titled "Next steps (kept separate)". Return the full text.`, { label: 'research-lead-final', phase: 'Final', model: O })
 
 return { invText, plan1, round1: r1, plan2, round2: r2, final }

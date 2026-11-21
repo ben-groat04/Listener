@@ -16,7 +16,7 @@ scored.update({k: run.score_predictor(f, cut, k, 0) for k, f in models.items()})
 idx, _ = P._store(); has = []
 for F in run.prepare_folds(cut):
     u = F["meta"].previewUrl.reindex(F["cands"].trackId).values
-    ok = np.array([isinstance(x, str) and hashlib.md5(x.encode()).hexdigest() in idx for x in u]); has.append(ok[np.argsort(F["order"])] if False else ok)
+    ok = np.array([isinstance(x, str) and hashlib.md5(x.encode()).hexdigest() in idx for x in u]); has.append(ok)
 # score_predictor returns rows in public order (pool.iloc[order]) == cands order, so `has` aligns row by row
 has = np.concatenate(has); first = next(iter(scored.values()))
 print("rows", len(first), "with audio", has.mean().round(3))

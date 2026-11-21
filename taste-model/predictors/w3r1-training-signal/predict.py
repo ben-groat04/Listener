@@ -15,5 +15,6 @@ AR = dict(fn="artist_recent")
 PREDICTORS = {
     "w3r1_final": make_blend([G, Ga, AR], [1, 1, 2]),
     "w3r1_noaudio": make_blend([G, AR], [1, 1]),
+    "w3r1_learned_only": make_blend([G, Ga], [1, 1]),   # final without the artist_recent member: isolates the learned part (for the null control)
     "w3r1_final_lovetarget": make_blend([dict(G, target="love"), dict(Ga, target="love"), AR], [1, 1, 2]),   # ablation: binary love 6/3 target, same everything else
 }

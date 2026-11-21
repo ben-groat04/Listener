@@ -14,7 +14,7 @@ import numpy as np, pandas as pd
 
 ROOT = "/home/user/Listener/taste-model/"
 FEATDIR = ROOT + ".cache/shared/w3r1-mert-v1/"
-CFG = dict(layers=(4, 8), ncomp=64, C=0.05, hl=None, balance=False, agg="mean", miss="neutral", meta=False, windows=(0, 1, 2, 3), mature=90, mode="whole")
+CFG = dict(layers=(4, 8), ncomp=64, C=0.05, hl=180, balance=False, agg="mean", miss="neutral", meta=False, windows=(0, 1, 2, 3), mature=90, mode="whole", target="love", alpha=300.0)
 _F = {}
 
 def _store():
@@ -75,7 +75,12 @@ def _fit(train, meta, cutoff, cfg):
         if cfg["mode"] == "whole": Ptr = build(Zm, M if cfg["meta"] else None); ytr, wtr = y, w
         else: Ptr = build(Zm, M if cfg["meta"] else None); ytr, wtr = np.repeat(y, len(cfg["windows"])), np.repeat(w, len(cfg["windows"]))
         lr = None
-        if 0 < y.sum() < len(y): lr = LogisticRegression(C=cfg["C"], max_iter=500).fit(Ptr, ytr, sample_weight=wtr)
+        if cfg["target"] == "rank":   # continuous target: percentile of share90 among the songs discovered in the same quarter (removes calendar drift), ridge
+            from sklearn.linear_model import Ridge
+            qq = st["first"][mat].dt.to_period("Q").astype(str).values
+            yr = pd.Series(st.share90.values[mat]).groupby(qq).rank(pct=True).values
+            lr = Ridge(alpha=cfg["alpha"]).fit(Ptr, np.repeat(yr, 1 if cfg["mode"] == "whole" else len(cfg["windows"])), sample_weight=wtr); lr.decision_function = lr.predict
+        elif 0 < y.sum() < len(y): lr = LogisticRegression(C=cfg["C"], max_iter=500).fit(Ptr, ytr, sample_weight=wtr)
         # train-derived neutral value for songs without audio: median score of the train songs
         res = dict(mu=mu, sd=sd, pca=pca, lr=lr, extra=extra, build=build)
         sc_tr = _raw(res, X[ok], meta, st.trackId.values[ok], cfg) if lr is not None else np.zeros(ok.sum())
@@ -108,4 +113,4 @@ def make(**over):
         return s
     return predict
 
-PREDICTORS = {"ca_whole": make(), "ca_local": make(mode="local")}
+PREDICTORS = {"ca_whole": make(), "ca_local": make(mode="local"), "ca_whole_meta": make(meta=True), "ca_local_meta": make(mode="local", meta=True)}

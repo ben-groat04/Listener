@@ -120,18 +120,10 @@ def blend(cfgs, wm=1.0, wts=None):
 
 G = dict(genre=list(range(0, 400)), mood=list(range(400, 456)), inst=list(range(456, 496)), mtg=list(range(496, 583)), misc=list(range(583, 605)))
 PREDICTORS = {
-    "e_act": make_ens([dict()]),
-    "e_act_a100": make_ens([dict(alpha=100.0)]), "e_act_a1000": make_ens([dict(alpha=1000.0)]), "e_act_a3000": make_ens([dict(alpha=3000.0)]),
-    "e_act_raw": make_ens([dict(tf="none")]),
-    "e_act_love": make_ens([dict(target="love", alpha=300.0)]),
-    "e_act_share": make_ens([dict(target="rank_share")]),
-    "e_act_pca64": make_ens([dict(ncomp=64, alpha=300.0)]),
-    "e_act_gbm": make_ens([dict(ncomp=40, learner="gbm")]),
-    "e_actmax": make_ens([dict(feat="actmax")]),
-    "e_embstd": make_ens([dict(feat="embstd", ncomp=64)]),
-    "e_emb_a3000": make_ens([dict(feat="emb", alpha=3000.0)]),
-    "e_emb_a10000": make_ens([dict(feat="emb", alpha=10000.0)]),
-    "g_genre": make_ens([dict(cols=G["genre"])]), "g_mood": make_ens([dict(cols=G["mood"])]), "g_inst": make_ens([dict(cols=G["inst"])]),
-    "g_mtg": make_ens([dict(cols=G["mtg"])]), "g_misc": make_ens([dict(cols=G["misc"], alpha=30.0)]),
-    "b_act_mert": blend([dict()], 1.0), "b_act_emb_mert": blend([dict(), dict(feat="emb", ncomp=64)], 1.0, [1, 1]),
+    "e_act_a10000": make_ens([dict(alpha=10000.0)]), "e_act_a30000": make_ens([dict(alpha=30000.0)]),
+    "e_emb_a30000": make_ens([dict(feat="emb", alpha=30000.0)]),
+    "g_mtg_a300": make_ens([dict(cols=G["mtg"], alpha=300.0)]), "g_mtg_a1000": make_ens([dict(cols=G["mtg"], alpha=1000.0)]), "g_mtg_a3000": make_ens([dict(cols=G["mtg"], alpha=3000.0)]),
+    "g_mtgmood_a1000": make_ens([dict(cols=G["mtg"] + G["mood"] + G["inst"], alpha=1000.0)]),
+    "e_seg_a6000": make_ens([dict(feat="seg", alpha=6000.0)]), "e_seg_a20000": make_ens([dict(feat="seg", alpha=20000.0)]),
+    "e_act_gbm2": make_ens([dict(ncomp=20, learner="gbm")]),
 }

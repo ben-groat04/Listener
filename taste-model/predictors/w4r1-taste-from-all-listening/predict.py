@@ -148,4 +148,16 @@ def make(*members, **kw):
     return predict
 
 E = dict(mode="local", alpha=1200.0); W32 = dict(ncomp=32, alpha=150.0)
-PREDICTORS = {"w3like_new": make(E, W32, signal="new", newhl=None), "p_panel_E_W": make(E, W32), "p_both_E_W": make(E, W32, signal="both")}
+N0 = dict(signal="new", newhl=None)
+PREDICTORS = {
+ "w3like_new": make(E, W32, **N0),
+ "b_pan03": make(E, W32, signal="both", newhl=None, w_panel=0.3),
+ "b_pan01": make(E, W32, signal="both", newhl=None, w_panel=0.1),
+ "pan_K2": make(E, W32, K=2),
+ "new_valid30": make(E, W32, valid_ms=30000, **N0),
+ "new_hl365": make(E, W32, signal="new", newhl=365.0),
+ "new_mert_ess": make(dict(E, blocks=("mert", "ess"), ncomp=48), dict(W32, blocks=("mert", "ess"), ncomp=24), **N0),
+ "new_mert_clap": make(dict(E, blocks=("mert", "clap"), ncomp=48), dict(W32, blocks=("mert", "clap"), ncomp=24), **N0),
+ "new_mert_lyr": make(dict(E, blocks=("mert", "lyr"), ncomp=48), dict(W32, blocks=("mert", "lyr"), ncomp=24), **N0),
+ "new_ess_only": make(dict(E, blocks=("ess",), ncomp=48), dict(W32, blocks=("ess",), ncomp=24), **N0),
+}

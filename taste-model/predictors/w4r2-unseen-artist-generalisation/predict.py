@@ -32,7 +32,10 @@ def feat(block, tids, meta):
         return X, has
     u = meta.previewUrl.reindex(tids).values
     ii = np.array([S["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); has = ii >= 0
-    if block.startswith("mert"): g = {"mert_lo": 0, "mert_mid": 1, "mert_hi": 2}[block]; arr = C["mert3"][:, g]
+    if block in ("mstd", "mdelta", "eactmax", "estd"):
+        if "c2" not in S: z = np.load(ROOT + ".cache/w4r2-unseen/compact2.npz"); S["c2"] = {k: z[k] for k in ("mstd", "mdelta", "eactmax", "estd")}
+        arr = S["c2"][block]
+    elif block.startswith("mert"): g = {"mert_lo": 0, "mert_mid": 1, "mert_hi": 2}[block]; arr = C["mert3"][:, g]
     else: arr = C[{"clap": "clap", "eact": "eact", "eemb": "eemb"}[block]]
     X = np.zeros((n, arr.shape[1]), np.float32); X[has] = arr[ii[has]].astype(np.float32)
     has &= np.isfinite(X).all(1); X[~has] = 0
@@ -211,6 +214,12 @@ V = {   # every variant scored on TUNE is listed here (counted)
     "v31_both_krr": dict(signal="both", learner="krr"),
     "v32_both_krr_mert3": dict(signal="both", learner="krr", blocks=MERT3, ncomp=32),
     "v33_both_hl90_nc64": dict(signal="both", hl=90.0, ncomp=64),
+    "v34_h_mstd": dict(signal="both", hl=90.0, blocks=("mstd",)),
+    "v35_h_mdelta": dict(signal="both", hl=90.0, blocks=("mdelta",)),
+    "v36_h_eactmax": dict(signal="both", hl=90.0, blocks=("eactmax",)),
+    "v37_h_estd": dict(signal="both", hl=90.0, blocks=("estd",)),
+    "v38_h_mid_mstd_nc32": dict(signal="both", hl=90.0, blocks=("mert_mid", "mstd"), ncomp=32),
+    "v39_h_trust_time": dict(signal="both", hl=90.0, blocks=("mert_mid", "mstd", "eactmax", "estd"), combine="trust"),
 }
 
 def make_ens(members, noart=False, refs=()):
@@ -231,13 +240,29 @@ def make_ens(members, noart=False, refs=()):
         return out
     return predict
 
+def make_auto(grid, topk=1, noart=False):
+    """configuration chosen INSIDE train by artist-grouped 5-fold CV (correlation of held-out-artist predictions with the common training target; every config in
+    the grid shares the same targets/weights, only blocks / ncomp differ); the top-k configs are averaged. No TUNE information enters the choice."""
+    cfgs = [{**CFG, **g, **({"noart": True} if noart else {})} for g in grid]
+    def predict(train, cands, meta, cutoff):
+        rs = [_fit(train, meta, cutoff, c) for c in cfgs]
+        cv = []
+        for r in rs:
+            m = r["members"]; cv.append(sum(x["wt"] * (x["cv"] if np.isfinite(x["cv"]) else 0) for x in m) if m else -1)
+        top = np.argsort(cv)[::-1][:topk]
+        return np.mean([_score(rs[i], cands, meta, cfgs[i]) if rs[i]["members"] else np.zeros(len(cands)) for i in top], 0)
+    return predict
+
 H = dict(signal="both", hl=90.0)
+GRID = [dict(H, blocks=b, ncomp=nc, **kw) for b, kw in ((("mert_mid",), {}), (MERT3, {}), (MERT3 + ("eact", "eemb"), dict(combine="trust")), (("mert_mid", "eact"), {})) for nc in (16, 32, 64, 128)]
 E_RIDGE = [dict(H, ncomp=64), dict(H, blocks=MERT3, ncomp=32), dict(H, blocks=MERT3 + ("eact", "eemb"), combine="trust"), dict(signal="both", P=60, K=3, hl=120.0, ncomp=64)]
 E_KRR = E_RIDGE + [dict(H, learner="krr", ncomp=64)]
 V2 = {
     "f1_ens_ridge": make_ens(E_RIDGE),
     "f2_ens_ridge_noart": make_ens(E_RIDGE, noart=True),
     "f3_ens_ridge_krr": make_ens(E_KRR),
+    "g1_auto_top1": make_auto(GRID, 1),
+    "g2_auto_top3": make_auto(GRID, 3),
     "f4_stack_refs": make_ens(E_RIDGE, refs=("ref_audio_final", "ref_w4r1_music")),
 }
 _only = os.environ.get("W4R2_ONLY")

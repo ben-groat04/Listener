@@ -8,7 +8,7 @@ train-stream songs only; fit cache keyed on train identities (or off with EVALKI
 import hashlib, os
 import numpy as np, pandas as pd
 ROOT = "/home/user/Listener/taste-model/"; D = ROOT + ".cache/w4r2-lr/"
-CFG = dict(feat="emb", nc=64, model="attn", h=32, ep=60, lr=3e-3, wd=1e-2, drop=0.3, pdrop=0.3, loss="mse", seeds=5, alpha=300.0, target="rank_plays", mert=False, ncm=32, excl_artist=False)
+CFG = dict(feat="emb", nc=64, model="attn", h=32, ep=60, lr=3e-3, wd=1e-2, drop=0.3, pdrop=0.3, loss="mse", seeds=5, alpha=300.0, target="rank_plays", mert=False, ncm=32, excl_artist=False, panel=0.0)
 _S = {}
 
 def _store():
@@ -76,11 +76,11 @@ def _mk_net(d, cfg):
             return s.out(z).squeeze(-1)
     return Net()
 
-def _train_net(Y, M, y, cfg, seed):
+def _train_net(Y, M, y, cfg, seed, w=None):
     import torch
     torch.manual_seed(seed); g = torch.Generator().manual_seed(seed)
     net = _mk_net(Y.shape[-1], cfg); opt = torch.optim.AdamW(net.parameters(), lr=cfg["lr"], weight_decay=cfg["wd"])
-    Yt, Mt, yt = torch.tensor(Y), torch.tensor(M), torch.tensor(y, dtype=torch.float32); n = len(yt); bs = 64
+    Yt, Mt, yt = torch.tensor(Y), torch.tensor(M), torch.tensor(y, dtype=torch.float32); n = len(yt); bs = 64; wt = torch.tensor(np.ones(n) if w is None else w, dtype=torch.float32)
     for ep in range(cfg["ep"]):
         net.train(); perm = torch.randperm(n, generator=g)
         for i in range(0, n, bs):
@@ -88,7 +88,7 @@ def _train_net(Y, M, y, cfg, seed):
             if cfg["pdrop"] and cfg["model"] != "mean0":   # random patch dropout (augmentation): keep >=1 patch
                 keep = torch.rand(m.shape, generator=g) > cfg["pdrop"]; m2 = m & keep; m2[:, 0] |= ~m2.any(1) & m[:, 0]; m = m2
             s = net(Yt[b], m)
-            if cfg["loss"] == "mse": loss = ((s - yt[b]) ** 2).mean()
+            if cfg["loss"] == "mse": loss = (wt[b] * (s - yt[b]) ** 2).sum() / wt[b].sum()
             else:
                 dy = yt[b][:, None] - yt[b][None]; ds = s[:, None] - s[None]; w = (dy.abs() > 0.05).float(); loss = (w * torch.nn.functional.softplus(-torch.sign(dy) * ds)).sum() / w.sum().clamp(min=1)
             opt.zero_grad(); loss.backward(); opt.step()
@@ -123,8 +123,16 @@ def _fit(train, meta, cutoff, cfg):
         else: yr = st.love.values[ok][mat].astype(float)
         yr = yr - yr.mean(); arts = st.artist.values[ok][mat]
         res["m"] = None; res["nets"] = None; res["ridge"] = None
+        Ym, Mm, wrow = Y[mat], M[mat], np.ones(mat.sum())
+        if cfg["panel"] > 0:   # extra rows: songs with >=2 plays in each of the last two 91-day periods; target = pct rank of plays in the last period (listening record used for TARGET only)
+            c = pd.Timestamp(cutoff); tt = train[["song", "t"]]
+            a = tt[(tt.t >= c - pd.Timedelta(days=91)) & (tt.t < c)].groupby("song").size(); b = tt[(tt.t >= c - pd.Timedelta(days=182)) & (tt.t < c - pd.Timedelta(days=91))].groupby("song").size()
+            pan = pd.concat([a, b], axis=1, keys=["a", "b"]).dropna(); pan = pan[(pan.a >= 2) & (pan.b >= 2)]
+            pr = pan.a.rank(pct=True) - 0.5; sg = st.song.values[ok]; pm = np.isin(sg, pan.index.values)
+            if pm.sum() > 20:
+                pt = pr.reindex(sg[pm]).values; Ym = np.concatenate([Ym, Y[pm]]); Mm = np.concatenate([Mm, M[pm]]); yr = np.concatenate([yr, pt]); wrow = np.concatenate([wrow, np.full(pm.sum(), cfg["panel"])])
+        res["npan"] = len(yr) - mat.sum()
         if mat.sum() > 40:
-            Ym, Mm = Y[mat], M[mat]
             if cfg["model"] == "ridge":   # clip-mean linear control
                 cm = Ym.sum(1) / Mm.sum(1, keepdims=True); res["ridge"] = Ridge(alpha=cfg["alpha"]).fit(cm, yr)
             elif cfg["model"] == "patchridge":   # every patch a row (time-local linear control)
@@ -158,16 +166,17 @@ def ens(*fns):
         return o / len(fns)
     return predict
 
-M_PR = make(model="patchridge", feat="mert", alpha=1200.0, nc=64)
-A_RM = make(model="ridge", feat="act")
-E_PR = make(model="patchridge", feat="emb")
-M_MLP = make(model="mean", feat="mert", nc=32)
-M_ATT = make(model="attn", feat="mert", nc=32, pdrop=0.25)
+PRM = make(model="patchridge", feat="mert", alpha=1200.0, nc=64, panel=0.5)
+MLP = make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, panel=0.5)
+ATT = make(model="attn", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5)
+ARP = make(model="ridge", feat="act", panel=0.5)
+EPR = make(model="patchridge", feat="emb", panel=0.5)
 PREDICTORS = {
-    "mlp_mert_reg": make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1),
-    "attn_mert_rank": make(model="attn", feat="mert", nc=32, loss="rank", pdrop=0.25),
-    "attn_mertL": make(model="attn", feat="mertL", nc=32, pdrop=0.25),
-    "ens_lin3": ens(M_PR, A_RM, E_PR),
-    "ens_lin2": ens(M_PR, A_RM),
-    "ens_lin3_nets": ens(M_PR, A_RM, E_PR, M_MLP, M_ATT),
+    "mlp_mert_panel1": make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, panel=1.0),
+    "attn_mert_panel": ATT,
+    "ridge_act_panel": ARP,
+    "patchridge_emb_panel": EPR,
+    "ens_mert3_panel": ens(PRM, MLP, ATT),
+    "ens_mert_act_panel": ens(PRM, MLP, ATT, ARP),
+    "ens_lin_panel": ens(PRM, ARP),
 }

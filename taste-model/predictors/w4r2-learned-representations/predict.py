@@ -168,9 +168,38 @@ def ens(*fns):
         return o / len(fns)
     return predict
 
+def excl(fn, K=5):
+    """DIAGNOSTIC: candidate artists are hashed into K groups; for each group the model is refit on train with every stream of those artists removed, so no training song
+    (nor panel/target signal) of the candidate's own primary artist is used (the group-mates are removed too: slightly conservative). Scores of the K fits are each
+    standardised by their own train-song score mean/std."""
+    def predict(train, cands, meta, cutoff):
+        h = lambda a: pd.util.hash_array(np.asarray(a).astype(str).astype(object)) % K
+        gt, gc = h(train.artist.values), h(cands.artist.values); out = np.zeros(len(cands))
+        for g in range(K):
+            m = gc == g
+            if m.any(): out[m] = fn(train[gt != g], cands[m], meta, cutoff)
+        return out
+    return predict
+
+# ---- members (all content-only; panel = extra training rows, target only) ----
+P = 0.5
+PRM = make(model="patchridge", feat="mert", alpha=1200.0, nc=64, panel=P)                                                  # linear, every MERT window a row
+MLP = make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, panel=P)                                       # nonlinear on the MERT window mean
+ATT = make(model="attn", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=P)                          # attention pooling over the 4 MERT windows
+ARP = make(model="ridge", feat="act", panel=P)                                                                             # linear on essentia head-activation clip mean
+PRM0 = make(model="patchridge", feat="mert", alpha=1200.0, nc=64)
+MLP0 = make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1)
+ATT0 = make(model="attn", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25)
+ARP0 = make(model="ridge", feat="act")
+FINAL = ens(PRM, MLP, ATT, ARP)   # DECLARED FINAL (before any --late): standardised mean of the 4 members, panel rows 0.5
 PREDICTORS = {
-    "conv_emb_panel": make(model="conv", feat="emb", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
-    "conv_act_panel": make(model="conv", feat="act", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
-    "attn_act_panel": make(model="attn", feat="act", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
-    "attn_emb_panel": make(model="attn", feat="emb", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
+    "final_ens": FINAL,
+    "abl_linear_only": ens(PRM, ARP),                  # drop the nets
+    "abl_nets_only": ens(MLP, ATT),                    # only learned nonlinear members
+    "abl_no_panel": ens(PRM0, MLP0, ATT0, ARP0),       # same members, no panel rows
+    "ctl_clipmean_mert": make(model="ridge", feat="mert", alpha=150.0, nc=32),          # clip-mean linear control (MERT)
+    "ctl_clipmean_act": make(model="ridge", feat="act"),                                 # clip-mean linear control (essentia heads)
+    "m_patchridge_mert_panel": PRM, "m_mlp_mert_panel": MLP, "m_attn_mert_panel": ATT,
+    "m_ridge_act_panel": ARP,
 }
+WALKFORWARD_FAMILY = ["final_ens", "abl_linear_only", "abl_nets_only", "abl_no_panel", "ctl_clipmean_mert", "ctl_clipmean_act", "m_patchridge_mert_panel", "m_mlp_mert_panel", "m_attn_mert_panel", "m_ridge_act_panel"]

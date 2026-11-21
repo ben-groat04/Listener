@@ -2,6 +2,8 @@
 compared with the real-label statistics from grid_table.csv.  Needs $W5R2_OUT/null_*.pkl (probe.py nullprobe) and grid_table.csv."""
 import os, sys, glob, pickle
 import numpy as np, pandas as pd
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import grid
+HASFILL = lambda n: ("fill" in n) or (n.startswith("joint_") and ("fill" in grid.JOINT[n] or "mfill" in grid.JOINT[n]))
 from scipy.stats import rankdata
 sys.path.insert(0, "/home/user/Listener/taste-model")
 from evalkit import data, run
@@ -29,7 +31,7 @@ dl = tab.sub(tab.loc["default"], axis=1).drop("default")
 # exclude fill variants from the comparison class (fill matters through the missing-audio indicator, which a random target does not reproduce)
 real = pd.read_csv(f"{OUT}/grid_table.csv").set_index("name").delta
 def stat(x): return dict(sd=x.std(), max=x.max(), min=x.min(), q90abs=np.quantile(np.abs(x), 0.9), mean=x.mean())
-for grp, sel in (("OAT", [n for n in dl.index if n.startswith("oat_")]), ("JOINT", [n for n in dl.index if n.startswith("joint_")]), ("OAT-without-fill", [n for n in dl.index if n.startswith("oat_") and "fill" not in n])):
+for grp, sel in (("OAT", [n for n in dl.index if n.startswith("oat_")]), ("JOINT", [n for n in dl.index if n.startswith("joint_")]), ("OAT-without-fill", [n for n in dl.index if n.startswith("oat_") and not HASFILL(n)]), ("ALL-without-fill (OAT+JOINT)", [n for n in dl.index if not HASFILL(n)])):
     rs = pd.DataFrame([stat(dl.loc[sel, r]) for r in R]); rr = stat(real.loc[sel])
     print(f"{grp} n={len(sel)}: real-label spread sd {rr['sd']:.4f} max {rr['max']:+.4f} min {rr['min']:+.4f} q90|d| {rr['q90abs']:.4f} mean {rr['mean']:+.4f}")
     print(f"      null (random target) mean over refits: sd {rs.sd.mean():.4f} max {rs['max'].mean():+.4f} (refit range {rs['max'].min():+.4f}..{rs['max'].max():+.4f}) min {rs['min'].mean():+.4f} q90|d| {rs.q90abs.mean():.4f}")

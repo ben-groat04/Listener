@@ -18,5 +18,6 @@
 ## Overnight run (user-approved, 2026-11-21)
 - User asleep ~9h; wants ~4 workflows total overnight, including one full review of the project so far ("full up to now project research to keep it moving in the right direction"), run back to back without waiting on the user ("I will be very unhappy if I wake up to you waiting on me for something").
 - Waived for tonight: showing the brief to the user before launch; Opus allowed where the design needs it; hook approval prompt off via .claude/hooks/.overnight-until (expires automatically ~11:10 UTC).
-- Still NOT allowed until the user is awake: sealed test runs, candidate-song search.
+- Still NOT allowed until the user is awake: candidate-song search.
+- Sealed test run: user approved ONE, VERY CAREFULLY executed, near the end of the night, only if a dev result survives the devil's advocates and beats baselines (else skip). Pre-registered predictor(s)+baselines, no tuning after. Prep (labels/manifest/sealed-era features) by an isolated agent writing only to git-ignored .sealed/, never seeing scores. Only the main session registers/runs; results go to the user only, never to workflow agents.
 - Still required: post-workflow Sonnet review + cleanup, pre-launch Sonnet audit with fixes, neutral launch (the latest user message is forwarded to all agents).

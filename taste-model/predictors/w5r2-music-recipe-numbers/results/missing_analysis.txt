@@ -1,0 +1,65 @@
+N 1074 missing_any 0.243 ess 261 mert 240 no_url 240
+                   n   love     pop   pop0  ...   expl    new  exp_before  plays90
+cause                                       ...                                   
+audio            813  0.298  38.723  0.250  ...  0.026  0.360       3.311   17.584
+no_url           240  0.375  13.579  0.383  ...  0.012  0.329       2.117   27.138
+url_but_no_clip   21  0.476  43.905  0.238  ...  0.000  0.238       3.429   26.048
+
+[3 rows x 9 columns]
+cause
+audio              {'p.scdn.co': 664, 'audio-ssl.itunes.apple.com...
+no_url                                                     {'': 240}
+url_but_no_clip    {'p.scdn.co': 15, 'audio-ssl.itunes.apple.com'...
+Name: dom, dtype: object
+by year (missing_any share, love | missing, love | audio):
+          n   miss  love_miss  love_aud
+year                                   
+2021   74.0  0.351      0.615     0.667
+2022  234.0  0.265      0.468     0.477
+2023  766.0  0.226      0.318     0.216
+by new_artist:
+                n   miss  love_miss  love_aud
+new_artist                                   
+False       697.0  0.254      0.429     0.340
+True        377.0  0.223      0.286     0.222
+by exposure_before bucket:
+          n   miss  love_miss  love_aud
+expb                                   
+0     408.0  0.248      0.436     0.433
+1-2   322.0  0.304      0.378     0.299
+3-5   189.0  0.217      0.268     0.182
+6+    155.0  0.135      0.381     0.112
+distinct songs missing 261 artists 93 top artists share [0.192, 0.115, 0.084, 0.042, 0.038]
+statsmodels unavailable No module named 'statsmodels'
+oat_fill_2
+  sauc delta 0.0192 80% [0.0011, 0.0381] P>0 0.92
+  wa delta -0.0020 80% [-0.0394, 0.0281] P>0 0.55
+  wx delta 0.0090 80% [-0.0085, 0.0289] P>0 0.74
+oat_mfill_2
+  sauc delta 0.0062 80% [-0.0091, 0.0248] P>0 0.71
+  wa delta -0.0102 80% [-0.0403, 0.0202] P>0 0.43
+  wx delta 0.0004 80% [-0.0162, 0.0180] P>0 0.54
+oat_fill_0
+  sauc delta -0.0011 80% [-0.0021, -0.0004] P>0 0.02
+  wa delta -0.0003 80% [-0.0007, 0.0000] P>0 0.00
+  wx delta -0.0004 80% [-0.0012, 0.0007] P>0 0.35
+audio rows only    n=813 default sauc 0.6530 fill_high sauc 0.6530 delta 0.0000 80% [0.0000, 0.0000]
+new-artist rows    n=377 default sauc 0.6130 fill_high sauc 0.6510 delta 0.0380 80% [0.0071, 0.0740]
+known-artist rows  n=697 default sauc 0.6505 fill_high sauc 0.6638 delta 0.0133 80% [-0.0101, 0.0305]
+indicator alone: sauc 0.5445 wa 0.5453 wx 0.5320
+oat_fill_2 fold_meta mean 0.0146 80% [-0.0026, 0.0318] Q 8.1/8 p 0.42 I2 0.01 trend/yr 0.0170 [-0.0112, 0.0453]
+         fold     cutoff    n  n_pos   delta      se          w
+0  2021-07-01 2021-07-01   35     26 -0.0855  0.1034    93.4940
+1  2021-10-01 2021-10-01   39     22  0.1096  0.0690   209.9737
+2  2022-01-01 2022-01-01   45     27 -0.0823  0.0551   328.8705
+3  2022-07-01 2022-07-01   81     35  0.0217  0.0443   510.0343
+4  2022-10-01 2022-10-01   77     37 -0.0081  0.0361   766.7700
+5  2023-01-01 2023-01-01  283     64  0.0339  0.0309  1048.0464
+6  2023-04-01 2023-04-01  110     29  0.0255  0.0390   656.5538
+7  2023-07-01 2023-07-01  138     37 -0.0439  0.0598   279.3930
+8  2023-10-01 2023-10-01  235     53  0.0290  0.0245  1667.5764
+excluding the 3 artists with most missing songs (322 rows removed): default 0.6302 fill_high 0.6618 delta 0.0316 80% [0.0098, 0.0565]
+indicator alone sauc 0.5445 80% [0.5193, 0.5704]
+indicator alone wa 0.5453 80% [0.5257, 0.5699]
+indicator alone wx 0.5320 80% [0.5090, 0.5541]
+missing songs per artist (n artists with >=1 missing, with also >=1 audio song): 93 205

@@ -40,3 +40,4 @@
 6. LATE hygiene: 16 late runs logged; cap per predictor hash in run.py; DAs get read-only LATE tables; LATE is no longer clean after W3 — consider a new held-out slice.
 7. Round 2 was shallow (~19 min/builder); give round 2 a time floor/checklist.
 8. One source of truth for folder names (lead brief vs template conflicted).
+- User declined the sealed test after W3: "No it's not good enough". No sealed run before W4.

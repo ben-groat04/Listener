@@ -75,6 +75,8 @@ def main(argv):
         if len(buf) >= 5: flush()
         if i % 10 == 0: print(i, len(todo), "delay", round(delay, 1), "n403", n403, "elapsed", int(time.time() - t0), flush=True)
         time.sleep(delay); delay = max(2.2, delay - 0.02)
-    flush(); print("done")
+    flush()
+    if not [x for x in tg if x[0] not in set(pd.read_csv(data.FALLBACK).trackId)]: data.FALLBACK_DONE.write_text("complete"); print("ALL targets resolved: fill active")
+    print("done")
 
 if __name__ == "__main__": main(sys.argv[1:])

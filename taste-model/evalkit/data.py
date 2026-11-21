@@ -176,7 +176,8 @@ def anon_song(song: pd.Series) -> pd.Series:
 # ---------------------------------------------------------------- open-universe (decoy) pool
 RAW = ROOT / ".cache" / "decoy_raw"                 # per-artist stats.fm fetch cache (tracks/albums/related), shared with make_decoys
 ALBUM_REL = ROOT / ".cache" / "album_release.json"  # albumId -> release date (ms) or null, for the tried songs' albums
-FALLBACK = ROOT / ".cache" / "itunes_fallback.csv"  # iTunes Search preview lookup (built by evalkit/fetch_itunes.py)
+FALLBACK = ROOT / ".cache" / "itunes_fallback.csv"
+FALLBACK_DONE = ROOT / ".cache" / "itunes_fallback.complete"   # marker written by fetch_itunes when ALL targets are resolved; the fill is only active then (a partial fill would make preview presence mean different things for tried songs and decoys)  # iTunes Search preview lookup (built by evalkit/fetch_itunes.py)
 N_SEED, N_REL_SEEDS, N_REL = 300, 150, 6            # per fold: top-300 pre-cutoff artists + up to 6 related artists of each of the top 150
 PRESAMPLE = 8                                       # stage 1 draws PRESAMPLE x |tried| decoys (limits the iTunes lookups); stage 2 draws DECOY_RATIO x |tried| from them
 API = "https://api.stats.fm/api/v1"
@@ -285,14 +286,14 @@ def _open_parts(cutoffs, d):
     Release age of tried songs comes from stats.fm album dates (tracks with no date: bucket 4 'unknown'; decoys always have a date)."""
     u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId)
     u = u[~u.song.isin(played_songs) & ~u.trackId.isin(played_tracks)].drop_duplicates("song")
-    resolved = set(fallback_table().trackId)
+    resolved = set(fallback_table().trackId); active = FALLBACK_DONE.exists()
     mraw = load_meta_all(fill=False)   # stage 1 does not depend on the (slow, rate-limited) iTunes preview lookups
     for c, f in make_folds(cutoffs, d):
         end = c + pd.DateOffset(months=3)
         seeds, rel = fold_seed_artists(d, c); S = set(seeds) | set(rel)
         seen = set(d.loc[d.t < c, "artist"])
         elig = u[(u.release < end) & u.src.map(lambda s: not s.isdisjoint(S))].copy(); elig["new_artist"] = ~elig.artist.isin(seen)
-        elig = elig[elig.previewUrl.notna() | elig.trackId.isin(resolved)]   # iTunes lookups are rate limited: a decoy without preview is eligible only if it was looked up
+        if active: elig = elig[elig.previewUrl.notna() | elig.trackId.isin(resolved)]   # iTunes lookups are rate limited: a decoy without preview is eligible only if it was looked up
         elig["rb"] = release_bucket(elig.release, c); f = f.assign(rb=release_bucket(tried_release(f), c))
         pre = _draw(f, elig, mraw, PRESAMPLE * len(f), int(c.strftime("%Y%m%d")))
         yield c, f, pre
@@ -331,7 +332,7 @@ def load_meta_all(fill=True) -> pd.DataFrame:
     m = load_meta(); u = _decoys().drop_duplicates("trackId").set_index("trackId")
     u = u.assign(name=u.trackName)[["name", "durationMs", "explicit", "popularity", "spotifyId", "previewUrl", "albumName", "artistNames"]]
     out = pd.concat([m, u[~u.index.isin(m.index)]])
-    if fill:
+    if fill and FALLBACK_DONE.exists():
         fb = fallback_table(); fb = fb[fb.status == "match"].drop_duplicates("trackId").set_index("trackId").previewUrl
         need = out.previewUrl.isna() & out.index.isin(fb.index)
         out.loc[need, "previewUrl"] = fb.reindex(out.index[need]).values

@@ -113,12 +113,18 @@ def _sessions(d: pd.DataFrame) -> np.ndarray:
 def song_diag(d: pd.DataFrame) -> pd.DataFrame:
     """HARNESS-ONLY diagnostics per song (use post-cutoff information; never shown to predictors):
     sess = session id of the first play, week = ISO year*100+week of the first play, nnew_sess = number of distinct songs whose first play is in
-    that same session, day1 = plays on the first-listen calendar day, d7 = plays in the first 7 days."""
+    that same session (= exp_before + exp_after + 1), exp_before / exp_after = number of distinct songs whose first play is in the same session
+    EARLIER / LATER than this song's first play, replays_s1 = plays of the song inside its first session, day1 = plays on the first-listen calendar
+    day, d7 = plays in the first 7 days. NOTE: exp_after and replays_s1 can be consequences of liking the song (a liked song is replayed and
+    followed by other new songs); exp_before cannot."""
     dd = d.assign(sess=_sessions(d)); f = dd.drop_duplicates("song")   # chronological => earliest stream of each song
     fs = f.set_index("song")
     out = pd.DataFrame(dict(sess=fs.sess, week=(fs.t.dt.isocalendar().year.astype(int) * 100 + fs.t.dt.isocalendar().week.astype(int)).values), index=fs.index)
     out["nnew_sess"] = out.sess.map(f.groupby("sess").song.nunique())
+    out["exp_before"] = f.groupby("sess").cumcount().values.astype(int)   # f is chronological: position of the song among the new songs of its session
+    out["exp_after"] = (out.nnew_sess.values - 1 - out.exp_before.values).astype(int)
     t0 = dd.song.map(fs.t)
+    out["replays_s1"] = (dd.sess == dd.song.map(fs.sess)).groupby(dd.song).sum()
     out["day1"] = (dd.t.dt.normalize() == t0.dt.normalize()).groupby(dd.song).sum()
     out["d7"] = (dd.t < t0 + pd.Timedelta(days=7)).groupby(dd.song).sum()
     return out
@@ -303,20 +309,20 @@ def decoy_presample(cutoffs):
     return {str(c.date()): list(pre.trackId) for c, f, pre in _open_parts(cutoffs, _load_all())}
 
 POOL_COLS = ["song", "trackId", "albumId", "artistIds", "artist", "trackName", "first", "cutoff", "new_artist", "is_decoy", "love", "strong", "plays90", "days90",
-             "love_4_2", "love_10_4", "share90", "sess", "week", "nnew_sess", "day1", "d7", "rb"]
+             "love_4_2", "love_10_4", "share90", "sess", "week", "nnew_sess", "exp_before", "exp_after", "replays_s1", "day1", "d7", "rb"]
 
 def make_open_folds(cutoffs, all_streams=None):
     """Yield (cutoff, pool). pool = the tried songs of make_folds (is_decoy=0) plus DECOY_RATIO x as many decoys (is_decoy=1): real songs by the fold's
     seed artists (see fold_seed_artists) that the user NEVER played (checked against the whole history incl. sealed era) and that were already released
     by the end of the fold window. Decoys get love=0 and are labelled 'not tried' (not 'would hate'). Two-stage covariate-matched draw (see _draw);
-    sampling is seeded by the cutoff and independent of any label. Pool also carries HARNESS-ONLY diagnostics columns (sess, week, nnew_sess, day1, d7)
+    sampling is seeded by the cutoff and independent of any label. Pool also carries HARNESS-ONLY diagnostics columns (sess, week, nnew_sess, exp_before, exp_after, replays_s1, day1, d7)
     that public_view never exposes."""
     d = _load_all() if all_streams is None else all_streams
     mm = load_meta_all()
     for c, f, pre in _open_parts(cutoffs, d):
         dec = _draw(f, pre, mm, DECOY_RATIO * len(f), int(c.strftime("%Y%m%d")) + 1)
         dec = dec.assign(first=pd.NaT, love=0, strong=0, plays90=0, days90=0, love_4_2=0, love_10_4=0, share90=np.nan, sess=np.nan, week=np.nan,
-                         nnew_sess=np.nan, day1=0, d7=0, cutoff=c, is_decoy=1)
+                         nnew_sess=np.nan, exp_before=np.nan, exp_after=np.nan, replays_s1=0, day1=0, d7=0, cutoff=c, is_decoy=1)
         tried = f.assign(is_decoy=0)
         yield c, pd.concat([tried[POOL_COLS], dec[POOL_COLS]], ignore_index=True)
 

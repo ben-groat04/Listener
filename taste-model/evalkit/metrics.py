@@ -87,6 +87,7 @@ class Block:
     def __init__(self, df, label="love", nboot=300, seed=0, pos_negs=None):
         self.y = df[label].values.astype(int); self.n = len(df)
         fk = df.fold.astype(str).values; self.fold = pd.factorize(fk)[0]; self.fold_names = list(pd.unique(fk))
+        self.p = df.plays90.values.astype(float) if "plays90" in df else None
         self.art = df.artist.values; self.new = df.new_artist.values.astype(bool); self.decoy = df.is_decoy.values.astype(bool)
         key = pd.Series(fk) + "|" + pd.Series(self.art).astype(str); self.cl = pd.factorize(key)[0]; ncl = self.cl.max() + 1
         self.week = pd.factorize(pd.Series(fk) + "|" + df.week.astype(str).values)[0] if "week" in df and (~self.decoy).all() else None
@@ -95,12 +96,13 @@ class Block:
         for f in range(self.fold.max() + 1):   # resample whole artists within each fold
             cl_f = np.unique(self.cl[self.fold == f]); m = len(cl_f)
             self.C[:, cl_f] = rng.multinomial(m, np.full(m, 1.0 / m), size=nboot)
-        self.W = self.C[:, self.cl]; self.W1 = np.ones((1, self.n))
+        self.W = self.C[:, self.cl]; self.W1 = np.ones((1, self.n)); self._pairs = {}
 
     def sub(self, mask):
         """A view restricted to rows `mask` (same weights)."""
         o = object.__new__(Block); o.__dict__.update(self.__dict__)
         for k in ("y", "fold", "art", "new", "decoy", "cl"): setattr(o, k, getattr(self, k)[mask])
+        o.p = None if self.p is None else self.p[mask]; o._pairs = {}
         for k in ("week", "sess"): setattr(o, k, None if getattr(self, k) is None else getattr(self, k)[mask])
         o.W = self.W[:, mask]; o.W1 = self.W1[:, mask]; o.n = int(mask.sum()); o._mask = mask; return o   # stats() then takes the PARENT's score vector
 
@@ -114,6 +116,14 @@ class Block:
             if "ws" in which and self.sess is not None: out["ws" + tag] = pooled_auc(self.y, s, self.sess, W)
             if "plift" in which or "p20" in which:
                 t = topk(self.y, s, self.fold, W); out["plift" + tag] = t["plift"]; out["p20" + tag] = t["p20"]; out["p10" + tag] = t["p10"]
+        for gk, grp in (("gc", self.fold), ("gc_wa", self.cl)):
+            if gk in which and self.p is not None:
+                I, J = self._graded_pairs(gk, grp)
+                m = (s[I] > s[J]) + .5 * (s[I] == s[J])
+                out[gk] = np.array([m.sum() / len(I)]) if len(I) else np.array([np.nan])
+                if boot:
+                    num = self._wsum(I, J, m); den = self._wsum(I, J, np.ones(len(I)))
+                    with np.errstate(invalid="ignore", divide="ignore"): out[gk + "_b"] = np.where(den > 0, num / den, np.nan)
         if "wa" in which:
             gval, num, den = group_auc(self.y, s, self.cl, self.W1)
             d = den.sum()
@@ -122,6 +132,23 @@ class Block:
                 Cg = self.C[:, gval]; db = (Cg * den[0]).sum(1)
                 with np.errstate(invalid="ignore", divide="ignore"): out["wa_b"] = np.where(db > 0, (Cg * num[0]).sum(1) / db, np.nan)
         return out
+
+    def _graded_pairs(self, key, grp):
+        """All ordered pairs (i, j) inside one group (fold / fold x primary artist) with plays90_i > plays90_j (ties in plays90 are excluded)."""
+        if key not in self._pairs:
+            order = np.argsort(grp, kind="stable"); gs = grp[order]; cuts = np.flatnonzero(np.r_[True, gs[1:] != gs[:-1], True]); I, J = [], []
+            for a, b in zip(cuts[:-1], cuts[1:]):
+                if b - a < 2: continue
+                r = order[a:b]; ii, jj = np.meshgrid(r, r, indexing="ij"); m = self.p[ii] > self.p[jj]; I.append(ii[m]); J.append(jj[m])
+            I = np.concatenate(I) if I else np.zeros(0, int); J = np.concatenate(J) if J else np.zeros(0, int)
+            self._pairs[key] = (I, J)
+        return self._pairs[key]
+
+    def _wsum(self, I, J, v):
+        """Bootstrap replicates (B,) of sum over pairs of v_ij * W_i * W_j (pair weight = product of the artist-cluster draw counts)."""
+        from scipy.sparse import csr_matrix
+        A = csr_matrix((v, (I, J)), shape=(self.n, self.n)); AW = A @ self.W.T      # (n, B)
+        return (AW * self.W.T).sum(0)
 
     def fold_auc_ci(self, s, alpha=.05):
         """Per-fold AUC with artist-cluster bootstrap CI: dict fold -> (auc, lo, hi)."""
@@ -134,19 +161,39 @@ class Block:
         return res
 
 # ---------------------------------------------------------------- permutation null (predictor independent)
-def permutation_band(df, label="love", nperm=200, seed=0):
-    """95% band of sauc, wa_sauc, ww_sauc, ws_sauc and new-artist sauc when the score carries NO information: a fixed random score, labels permuted
-    within fold (sauc, new-artist sauc) or within group (fold x artist / ISO week / session). Tried songs only."""
+def _perm_graded(s, p, g, rng):
+    """Concordance of score s with plays p permuted inside groups g (all within-group pairs with differing permuted p; score ties half)."""
+    n = len(s); o = np.lexsort((rng.random(n), g)); gs = np.argsort(g, kind="stable"); pp = np.empty(n); pp[gs] = p[o]
+    return pp
+
+def permutation_band(df, label="love", nperm=200, seed=0, nmean=1):
+    """95% band of sauc, wa_sauc, ww_sauc, ws_sauc, new-artist sauc, gc and gc_wa when the score carries NO information: a fixed random score, labels permuted
+    within fold (sauc, new-artist sauc, gc: plays90 permuted) or within group (fold x artist / ISO week / session). Tried songs only.
+    nmean > 1: the band of the MEAN of `nmean` independent permutations (used for the null-control mean over seeds; keys sauc, wa, new only)."""
     rng = np.random.default_rng(seed); n = len(df); s = rng.random(n); y0 = df[label].values.astype(int)
     fk = df.fold.astype(str).values; fold = pd.factorize(fk)[0]
     grp = dict(sauc=fold, wa=pd.factorize(pd.Series(fk) + "|" + df.artist.astype(str).values)[0], ww=pd.factorize(pd.Series(fk) + "|" + df.week.astype(str).values)[0],
                ws=pd.factorize(pd.Series(fk) + "|" + df.sess.astype(str).values)[0], new=fold)
+    if nmean > 1: grp = {k: grp[k] for k in ("sauc", "wa", "new")}
     new = df.new_artist.values.astype(bool); one = np.ones((1, n)); out = {k: [] for k in grp}
     def perm(g):
         o = np.lexsort((rng.random(n), g)); gs = np.argsort(g, kind="stable"); y = np.empty(n, int); y[gs] = y0[o]; return y
+    def one_auc(k, g):
+        y = perm(g)
+        return pooled_auc(y[new], s[new], fold[new], one[:, new])[0] if k == "new" else pooled_auc(y, s, g, one)[0]
     for _ in range(nperm):
-        for k, g in grp.items():
-            y = perm(g)
-            if k == "new": out[k].append(pooled_auc(y[new], s[new], fold[new], one[:, new])[0])
-            else: out[k].append(pooled_auc(y, s, g, one)[0])
-    return {k: tuple(np.nanpercentile(v, [2.5, 97.5]).round(3)) for k, v in out.items()}
+        for k, g in grp.items(): out[k].append(np.mean([one_auc(k, g) for _ in range(nmean)]))
+    res = {k: tuple(np.nanpercentile(v, [2.5, 97.5]).round(3)) for k, v in out.items()}
+    if nmean == 1 and "plays90" in df:   # graded concordance (needs pair structure: all within-group pairs, orientation by the permuted plays90)
+        p0 = df.plays90.values.astype(float); cl = grp["wa"]
+        for k, g in (("gc", fold), ("gc_wa", cl)):
+            order = np.argsort(g, kind="stable"); gs = g[order]; cuts = np.flatnonzero(np.r_[True, gs[1:] != gs[:-1], True]); I, J = [], []
+            for a, b in zip(cuts[:-1], cuts[1:]):
+                if b - a < 2: continue
+                r = order[a:b]; ii, jj = np.triu_indices(len(r), 1); I.append(r[ii]); J.append(r[jj])
+            I = np.concatenate(I); J = np.concatenate(J); si = s[I] - s[J]; v = []
+            for _ in range(nperm):
+                pp = _perm_graded(s, p0, g, rng); d = pp[I] - pp[J]; m = d != 0
+                v.append((((d > 0) == (si > 0)) & m).sum() / m.sum())
+            res[k] = tuple(np.nanpercentile(v, [2.5, 97.5]).round(3))
+    return res

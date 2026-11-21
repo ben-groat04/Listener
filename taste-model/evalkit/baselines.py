@@ -152,6 +152,6 @@ nonaudio_gbm.__doc__ = ("meta_gbm features + point-in-time artist-history featur
                         "#earlier songs, days since last played, featured artist known, new-artist flag; training rows use streams before the song's own first play, candidates all train streams). "
                         "THE reference that any music/content claim must beat.")
 
-DIAGNOSTIC = ("pool_artist_siblings", "pool_album_siblings", "exposure_session", "oracle_day1", "oracle_7d")   # harness-computed references, not predictors
+DIAGNOSTIC = ("pool_artist_siblings", "pool_album_siblings", "exposure_before", "exposure_after", "exposure_session", "replays_first_session", "oracle_day1", "oracle_7d")   # harness-computed references, not predictors
 BASELINES = dict(popularity=popularity, artist_plays=artist_plays, artist_recent=artist_recent, artist_love_rate=artist_love_rate,
                  duration=duration, meta_gbm=meta_gbm, nonaudio_gbm=nonaudio_gbm)

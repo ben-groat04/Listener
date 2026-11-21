@@ -76,6 +76,7 @@ def main():
         assert len(FM["cands"]) == len(pm) and len(FH["cands"]) == len(ph)
         mt = set(FM["train"].trackId); assert not (set(FH["cands"].trackId) & set(FM["cands"].trackId))
     shr = th / tt; print(f"  OVERALL: tried {th}/{tt} = {shr:.3f}   loved {lh}/{lt} = {lh / lt:.3f}   (salt '{data.HOLDOUT_SALT}')"); assert .18 <= shr <= .32, "HOLDOUT share of tried songs outside 18-32%: change the salt suffix once (w4-holdout-2) and document it"
+    PAd = {F["c"]: F["pool"] for F in PA}
     for F in P:
         c, pool = F["c"], F["pool"]
         tr = d[d.t < c]; tried = pool[pool.is_decoy == 0]; dec = pool[pool.is_decoy == 1]
@@ -85,7 +86,7 @@ def main():
         assert (tried["first"] + pd.Timedelta(days=data.HORIZON_DAYS) <= data.DEV_END).all(), "dev label horizon crosses DEV_END"
         assert not set(dec.song) & set(d.song) and not set(dec.trackId) & set(d.trackId), "decoy was played by the user at some point"
         assert (u.loc[dec.trackId, "release"] < c + pd.DateOffset(months=3)).all(), "decoy not yet released in the window"
-        assert dec.love.sum() == 0 and len(dec) <= data.DECOY_RATIO * len(tried)
+        pa_ = PAd[c]; assert dec.love.sum() == 0 and (pa_.is_decoy == 1).sum() <= data.DECOY_RATIO * (pa_.is_decoy == 0).sum(), "decoy ratio (full pool)"
         # per-fold seeds use pre-cutoff streams only: truncating the history at the cutoff must not change them
         assert data.fold_seed_artists(d[d.t < c], c) == data.fold_seed_artists(d, c), "fold seeds depend on post-cutoff plays"
         sd, rl = data.fold_seed_artists(d, c); src = set(sd) | set(rl); assert all(not s_.isdisjoint(src) for s_ in u.loc[dec.trackId, "src"]), "decoy not from a fold seed artist"

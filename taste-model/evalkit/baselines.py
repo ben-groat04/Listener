@@ -113,7 +113,8 @@ _FIT = {}
 def _train_key(name, train, cutoff):
     """Fit-cache key: cutoff, null seed (EVALKIT_NULL_SEED), and hashes of the train identities (trackId, song, artist) and timestamps, so a cached fit can never be reused
     for a different seed or a relabelled / shuffled train. With EVALKIT_NO_FIT_CACHE set the cache is bypassed altogether."""
-    hid = lambda a: int(pd.util.hash_array(np.asarray(a).astype(str).astype(object)).sum() % (1 << 60))
+    def hid(a):   # position-weighted hash of the values (a plain sum of row hashes would be blind to a permutation of the rows)
+        v = pd.util.hash_array(np.asarray(a).astype(str).astype(object)); return int((v * (np.arange(len(v), dtype=np.uint64) * 2 + 1)).sum() % (1 << 60))
     return (name, str(cutoff), os.environ.get("EVALKIT_NULL_SEED", ""), len(train), hid(train.trackId.values), hid(train.song.values), hid(train.artist.values), int(train.t.values.astype("int64").sum() % (1 << 60)))
 
 def _features(use_meta, rows, tsec, meta, hist=None, prior=None):

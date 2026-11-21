@@ -1,6 +1,7 @@
 """Metrics. Point estimates and bootstrap replicates share ONE implementation: every quantity is computed with row weights W (B x n), where a point
-estimate is W = 1 and a bootstrap replicate is the number of times a row's artist cluster was drawn (clusters = (fold, primary artist); whole artists are
-resampled because songs of one artist are correlated). Ties: AUC counts ties half; top-k quantities average over random tie-breaks (exactly, as an expectation)."""
+estimate is W = 1 and a bootstrap replicate is the number of times a row's artist cluster was drawn (v4: a cluster is the primary artist GLOBALLY, i.e. all rows of an
+artist in every fold of the slice are drawn together; whole artists are resampled because songs of one artist are correlated). Pair weights are products of the two rows'
+draw counts. Ties: AUC counts ties half; top-k quantities average over random tie-breaks (exactly, as an expectation)."""
 import numpy as np, pandas as pd
 from scipy.stats import rankdata, spearmanr
 
@@ -53,9 +54,22 @@ def group_auc(y, s, g, W):
     num = np.add.reduceat(row, gidx, axis=1); den = np.add.reduceat(pos, gidx, axis=1) * np.add.reduceat(neg, gidx, axis=1)
     return gval, num, den
 
+def exp_bucket(e):
+    """exposure_before bucket: 0 -> 0, 1-2 -> 1, 3-8 -> 2, 9+ -> 3 (NaN stays NaN)."""
+    e = np.asarray(e, float); return np.where(np.isnan(e), np.nan, np.select([e <= 0, e <= 2, e <= 8], [0, 1, 2], 3))
+
 def pooled_auc(y, s, g, W):
     _, num, den = group_auc(y, s, g, W); d = den.sum(1)
     with np.errstate(invalid="ignore", divide="ignore"): return np.where(d > 0, num.sum(1) / d, np.nan)
+
+def macro_auc(y, s, g, W, min_each=10):
+    """Mean over groups (folds) of the per-group AUC, over groups that have >= min_each positives and >= min_each negatives (unweighted counts, so the set of folds is the same
+    for every resample); per-group AUC under weights W (B, n); a group without pairs in a resample is skipped (nanmean). Returns (B,)."""
+    gval, num, den = group_auc(y, s, g, W)
+    n1 = np.array([(y[g == v] == 1).sum() for v in gval]); n0 = np.array([(y[g == v] == 0).sum() for v in gval]); ok = (n1 >= min_each) & (n0 >= min_each)
+    if not ok.any(): return np.full(W.shape[0], np.nan)
+    with np.errstate(invalid="ignore", divide="ignore"): a = np.where(den[:, ok] > 0, num[:, ok] / den[:, ok], np.nan)
+    with np.errstate(all="ignore"): return np.nanmean(a, axis=1)
 
 def topk(y, s, fold, W, ks=(20,), frac=.1):
     """Per fold, weighted top-k hits with exact expectation over random tie-breaks. Returns dict: p20 (macro mean over valid folds, B), plift (pooled), p10 (macro)."""
@@ -89,34 +103,38 @@ class Block:
         fk = df.fold.astype(str).values; self.fold = pd.factorize(fk)[0]; self.fold_names = list(pd.unique(fk))
         self.p = df.plays90.values.astype(float) if "plays90" in df else None
         self.art = df.artist.values; self.new = df.new_artist.values.astype(bool); self.decoy = df.is_decoy.values.astype(bool)
-        key = pd.Series(fk) + "|" + pd.Series(self.art).astype(str); self.cl = pd.factorize(key)[0]; ncl = self.cl.max() + 1
+        self.cl = pd.factorize(self.art)[0]; ncl = self.cl.max() + 1                      # bootstrap cluster = primary artist, GLOBALLY (all folds of the slice)
+        self.fa = pd.factorize(pd.Series(fk) + "|" + pd.Series(self.art).astype(str))[0]   # fold x primary artist: the group of the within-artist metrics (wa, gc_wa)
         self.week = pd.factorize(pd.Series(fk) + "|" + df.week.astype(str).values)[0] if "week" in df and (~self.decoy).all() else None
         self.sess = pd.factorize(pd.Series(fk) + "|" + df.sess.astype(str).values)[0] if "sess" in df and (~self.decoy).all() else None
-        rng = np.random.default_rng(seed); self.C = np.zeros((nboot, ncl))
-        for f in range(self.fold.max() + 1):   # resample whole artists within each fold
-            cl_f = np.unique(self.cl[self.fold == f]); m = len(cl_f)
-            self.C[:, cl_f] = rng.multinomial(m, np.full(m, 1.0 / m), size=nboot)
+        self.wx = pd.factorize(pd.Series(fk) + "|" + pd.Series(exp_bucket(df.exp_before.values)).astype(str).values)[0] if "exp_before" in df and (~self.decoy).all() else None
+        rng = np.random.default_rng(seed); self.C = rng.multinomial(ncl, np.full(ncl, 1.0 / ncl), size=nboot).astype(float)
         self.W = self.C[:, self.cl]; self.W1 = np.ones((1, self.n)); self._pairs = {}
 
     def sub(self, mask):
         """A view restricted to rows `mask` (same weights)."""
         o = object.__new__(Block); o.__dict__.update(self.__dict__)
-        for k in ("y", "fold", "art", "new", "decoy", "cl"): setattr(o, k, getattr(self, k)[mask])
+        for k in ("y", "fold", "art", "new", "decoy", "cl", "fa"): setattr(o, k, getattr(self, k)[mask])
         o.p = None if self.p is None else self.p[mask]; o._pairs = {}
-        for k in ("week", "sess"): setattr(o, k, None if getattr(self, k) is None else getattr(self, k)[mask])
+        for k in ("week", "sess", "wx"): setattr(o, k, None if getattr(self, k) is None else getattr(self, k)[mask])
         o.W = self.W[:, mask]; o.W1 = self.W1[:, mask]; o.n = int(mask.sum()); o._mask = mask; return o   # stats() then takes the PARENT's score vector
 
-    def stats(self, s, boot=True, which=("sauc", "wa", "ww", "ws", "plift", "p20")):
+    def stats(self, s, boot=True, which=("sauc", "macro", "wa", "ww", "ws", "wx", "plift", "p20")):
         """dict of arrays: point estimate under key (name) -> shape (1,), bootstrap under (name+'_b') -> shape (B,)."""
         out = {}; s = np.asarray(s, float)
         if getattr(self, "_mask", None) is not None: s = s[self._mask]
         for tag, W in (("", self.W1),) + ((("_b", self.W),) if boot else ()):
-            if "sauc" in which: out["sauc" + tag] = pooled_auc(self.y, s, self.fold, W)
+            if "sauc" in which or "macro" in which:
+                _, num, den = group_auc(self.y, s, self.fold, W); d = den.sum(1)
+                if "sauc" in which: out["sauc" + tag] = np.where(d > 0, num.sum(1) / np.where(d > 0, d, 1), np.nan)
+                if "macro" in which: out["macro" + tag] = macro_auc(self.y, s, self.fold, W)
             if "ww" in which and self.week is not None: out["ww" + tag] = pooled_auc(self.y, s, self.week, W)
             if "ws" in which and self.sess is not None: out["ws" + tag] = pooled_auc(self.y, s, self.sess, W)
+            if "wx" in which and self.wx is not None: out["wx" + tag] = pooled_auc(self.y, s, self.wx, W)
+            if "wa" in which: out["wa" + tag] = pooled_auc(self.y, s, self.fa, W)
             if "plift" in which or "p20" in which:
                 t = topk(self.y, s, self.fold, W); out["plift" + tag] = t["plift"]; out["p20" + tag] = t["p20"]; out["p10" + tag] = t["p10"]
-        for gk, grp in (("gc", self.fold), ("gc_wa", self.cl)):
+        for gk, grp in (("gc", self.fold), ("gc_wa", self.fa)):
             if gk in which and self.p is not None:
                 I, J = self._graded_pairs(gk, grp)
                 m = (s[I] > s[J]) + .5 * (s[I] == s[J])
@@ -124,13 +142,6 @@ class Block:
                 if boot:
                     num = self._wsum(I, J, m); den = self._wsum(I, J, np.ones(len(I)))
                     with np.errstate(invalid="ignore", divide="ignore"): out[gk + "_b"] = np.where(den > 0, num / den, np.nan)
-        if "wa" in which:
-            gval, num, den = group_auc(self.y, s, self.cl, self.W1)
-            d = den.sum()
-            out["wa"] = np.array([num.sum() / d if d > 0 else np.nan])
-            if boot:
-                Cg = self.C[:, gval]; db = (Cg * den[0]).sum(1)
-                with np.errstate(invalid="ignore", divide="ignore"): out["wa_b"] = np.where(db > 0, (Cg * num[0]).sum(1) / db, np.nan)
         return out
 
     def _graded_pairs(self, key, grp):
@@ -167,22 +178,27 @@ def _perm_graded(s, p, g, rng):
     return pp
 
 def permutation_band(df, label="love", nperm=200, seed=0, nmean=1):
-    """95% band of sauc, wa_sauc, ww_sauc, ws_sauc, new-artist sauc, gc and gc_wa when the score carries NO information: a fixed random score, labels permuted
+    """95% band of sauc, macro_sauc, wa_sauc, ww_sauc, ws_sauc, wx_sauc, new-artist sauc, gc and gc_wa when the score carries NO information: a fixed random score, labels permuted
     within fold (sauc, new-artist sauc, gc: plays90 permuted) or within group (fold x artist / ISO week / session). Tried songs only.
     nmean > 1: the band of the MEAN of `nmean` independent permutations (used for the null-control mean over seeds; keys sauc, wa, new only)."""
     rng = np.random.default_rng(seed); n = len(df); s = rng.random(n); y0 = df[label].values.astype(int)
     fk = df.fold.astype(str).values; fold = pd.factorize(fk)[0]
+    xb = pd.Series(exp_bucket(df.exp_before.values)).astype(str).values
     grp = dict(sauc=fold, wa=pd.factorize(pd.Series(fk) + "|" + df.artist.astype(str).values)[0], ww=pd.factorize(pd.Series(fk) + "|" + df.week.astype(str).values)[0],
-               ws=pd.factorize(pd.Series(fk) + "|" + df.sess.astype(str).values)[0], new=fold)
+               ws=pd.factorize(pd.Series(fk) + "|" + df.sess.astype(str).values)[0], wx=pd.factorize(pd.Series(fk) + "|" + xb)[0], new=fold)
     if nmean > 1: grp = {k: grp[k] for k in ("sauc", "wa", "new")}
     new = df.new_artist.values.astype(bool); one = np.ones((1, n)); out = {k: [] for k in grp}
+    if nmean == 1: out["macro"] = []
     def perm(g):
         o = np.lexsort((rng.random(n), g)); gs = np.argsort(g, kind="stable"); y = np.empty(n, int); y[gs] = y0[o]; return y
     def one_auc(k, g):
         y = perm(g)
         return pooled_auc(y[new], s[new], fold[new], one[:, new])[0] if k == "new" else pooled_auc(y, s, g, one)[0]
     for _ in range(nperm):
-        for k, g in grp.items(): out[k].append(np.mean([one_auc(k, g) for _ in range(nmean)]))
+        for k, g in grp.items():
+            if k == "sauc" and nmean == 1:   # the same permutation gives the pooled and the macro AUC
+                y = perm(g); out[k].append(pooled_auc(y, s, g, one)[0]); out["macro"].append(macro_auc(y, s, g, one)[0])
+            else: out[k].append(np.mean([one_auc(k, g) for _ in range(nmean)]))
     res = {k: tuple(np.nanpercentile(v, [2.5, 97.5]).round(3)) for k, v in out.items()}
     if nmean == 1 and "plays90" in df:   # graded concordance (needs pair structure: all within-group pairs, orientation by the permuted plays90)
         p0 = df.plays90.values.astype(float); cl = grp["wa"]

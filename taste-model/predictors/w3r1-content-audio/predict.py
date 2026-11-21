@@ -41,7 +41,7 @@ def _meta_cols(tids, meta):
 
 _CACHE = {}
 def _fit(train, meta, cutoff, cfg):
-    key = (str(cutoff), len(train), int(train.t.values.astype("int64").sum() % (1 << 60)), repr(sorted(cfg.items())))
+    key = (str(cutoff), len(train), int(train.t.values.astype("int64").sum() % (1 << 60)), int(pd.util.hash_pandas_object(train[["trackId", "song"]].astype(str), index=False).sum() % (1 << 60)), repr(sorted(cfg.items())))   # identity hash: the null control keeps timestamps but changes identities
     if key in _CACHE: return _CACHE[key]
     from sklearn.decomposition import PCA
     from sklearn.linear_model import LogisticRegression

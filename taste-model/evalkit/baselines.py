@@ -1,7 +1,8 @@
 """Valid reference predictors (pool-independent, pass the independence gate). Signature: predict(train, cands, meta, cutoff) -> scores (higher = more
 likely loved). No noise is added: tied scores stay tied (metrics average over tie-breaks). DIAGNOSTICS (use post-cutoff pool information, not valid
 predictors) are computed inside the harness from raw pool data (run.score_diagnostics), not here."""
-import re
+import re, os, hashlib
+from pathlib import Path
 import numpy as np, pandas as pd
 
 HL = 180.0          # days, recency half-life
@@ -110,7 +111,10 @@ WEIGHT_HL = 180.0   # days: exponential recency weight of training songs (half-l
 _FIT = {}
 
 def _train_key(name, train, cutoff):
-    return (name, str(cutoff), len(train), int(pd.util.hash_array(train.trackId.values).sum() % (1 << 60)), int(train.t.values.astype("int64").sum() % (1 << 60)))
+    """Fit-cache key: cutoff, null seed (EVALKIT_NULL_SEED), and hashes of the train identities (trackId, song, artist) and timestamps, so a cached fit can never be reused
+    for a different seed or a relabelled / shuffled train. With EVALKIT_NO_FIT_CACHE set the cache is bypassed altogether."""
+    hid = lambda a: int(pd.util.hash_array(np.asarray(a).astype(str).astype(object)).sum() % (1 << 60))
+    return (name, str(cutoff), os.environ.get("EVALKIT_NULL_SEED", ""), len(train), hid(train.trackId.values), hid(train.song.values), hid(train.artist.values), int(train.t.values.astype("int64").sum() % (1 << 60)))
 
 def _features(use_meta, rows, tsec, meta, hist=None, prior=None):
     parts = []
@@ -126,7 +130,8 @@ def _make(name, use_meta, use_artist):
         from threadpoolctl import threadpool_limits
         from .data import song_table, HORIZON_DAYS
         key = _train_key(name, train, cutoff); csec = int(_sec(np.array([np.datetime64(cutoff)]))[0])
-        if key not in _FIT:
+        _nofit = bool(os.environ.get("EVALKIT_NO_FIT_CACHE")); fit = {} if _nofit else _FIT
+        if key not in fit:
             st = song_table(train).reset_index(); mt = st[st["first"] < cutoff - pd.Timedelta(days=HORIZON_DAYS)]
             hist, prior = (_Hist(train, st), float(mt.love.mean()) if len(mt) else .25) if use_artist else (None, None)
             rows = mt[mt.trackId.isin(meta.index)].reset_index(drop=True); y = rows.love.values
@@ -135,8 +140,8 @@ def _make(name, use_meta, use_artist):
                 w = None if WEIGHT_HL is None else 0.5 ** ((cutoff - rows["first"]).dt.days.values / WEIGHT_HL)
                 with threadpool_limits(2):
                     mdl = HistGradientBoostingClassifier(monotonic_cst=[MONO.get(c, 0) for c in X.columns], **GBM_KW).fit(X, y, sample_weight=w)
-            _FIT[key] = (mdl, float(y.mean()) if len(y) else .5, list(X.columns), hist, prior)
-        mdl, base, cols, hist, prior = _FIT[key]
+            fit[key] = (mdl, float(y.mean()) if len(y) else .5, list(X.columns), hist, prior)
+        mdl, base, cols, hist, prior = fit[key]
         if mdl is None: return np.full(len(cands), base)
         X = _features(use_meta, cands, np.full(len(cands), csec), meta, hist, prior)[cols]
         with threadpool_limits(2): return mdl.predict_proba(X)[:, 1]
@@ -152,6 +157,27 @@ nonaudio_gbm.__doc__ = ("meta_gbm features + point-in-time artist-history featur
                         "#earlier songs, days since last played, featured artist known, new-artist flag; training rows use streams before the song's own first play, candidates all train streams). "
                         "THE reference that any music/content claim must beat.")
 
+# ---------------------------------------------------------------- open-pool shortcut references (v4): preview presence / source carry no taste information
+_MAN = {}
+def _manifest_source():
+    """md5(previewUrl) -> source (spotify / itunes_meta / itunes_fallback) from the shared preview manifest (harness-side reference only)."""
+    if not _MAN:
+        f = Path(__file__).resolve().parents[1] / ".cache" / "shared" / "previews" / "manifest.csv"
+        m = pd.read_csv(f, usecols=["md5", "source"]) if f.exists() else pd.DataFrame(columns=["md5", "source"])
+        _MAN.update(dict(zip(m.md5, m.source)))
+    return _MAN
+
+def has_preview(train, cands, meta, cutoff):
+    """Shortcut reference: 1 if the candidate has a previewUrl (Spotify, Apple or iTunes fallback)."""
+    return meta.previewUrl.reindex(cands.trackId).notna().values.astype(float)
+
+def preview_source_itunes(train, cands, meta, cutoff):
+    """Shortcut reference: 1 if the candidate's preview is iTunes-sourced (manifest source itunes_meta / itunes_fallback), 0 if Spotify-sourced or absent."""
+    man = _manifest_source(); u = meta.previewUrl.reindex(cands.trackId).values
+    return np.array([float(str(man.get(hashlib.md5(x.encode()).hexdigest(), "")).startswith("itunes")) if isinstance(x, str) else 0.0 for x in u])
+
+SHORTCUTS = dict(has_preview=has_preview, preview_source_itunes=preview_source_itunes)   # scored next to the baselines, exempt from the null control / independence / constant-score warning
+REFERENCES = ("nonaudio_gbm", "artist_recent", "duration", "meta_gbm", "ref_audio_final")   # v4: the references of the VERDICT (best_ref is the one with the highest TUNE point sauc)
 DIAGNOSTIC = ("pool_artist_siblings", "pool_album_siblings", "exposure_before", "exposure_after", "exposure_session", "replays_first_session", "oracle_day1", "oracle_7d")   # harness-computed references, not predictors
 BASELINES = dict(popularity=popularity, artist_plays=artist_plays, artist_recent=artist_recent, artist_love_rate=artist_love_rate,
                  duration=duration, meta_gbm=meta_gbm, nonaudio_gbm=nonaudio_gbm)

@@ -19,9 +19,23 @@ STRONG_PLAYS, STRONG_DAYS = 15, 5  # "strong": a clear favourite
 DEV_CUTOFFS = [str(c.date()) for c in pd.date_range("2021-07-01", "2024-10-01", freq="QS")]   # 14 quarterly folds
 TUNE_CUTOFFS = DEV_CUTOFFS[:10]   # 2021-07 .. 2023-10: used for all iteration
 LATE_CUTOFFS = DEV_CUTOFFS[10:]   # 2024-01 .. 2024-10: held-out dev slice; every `run --late` is logged (.cache/late_runs.log)
+HOLDOUT_SALT = "w4-holdout|"   # v4: artist-disjoint HOLDOUT slice (see is_holdout). Changed once at most (-> "w4-holdout-2|") if the tried-song share left 18-32%.
+HOLDOUT_PCT = 25
 DEV_END = pd.Timestamp("2025-04-01")  # builders/researchers may not look at any stream at/after this
 SEALED_CUTOFFS = ["2025-04-01", "2025-07-01", "2025-10-01", "2026-01-01", "2026-04-01"]
 
+
+def is_holdout(artist_raw) -> np.ndarray:
+    """v4 HOLDOUT membership from the RAW stats.fm primary artist id (before anonymisation): holdout iff int(sha256(salt + str(id)).hexdigest(), 16) % 100 < 25.
+    Songs with artist -1 (no artist id) are never holdout. Accepts a scalar or an array-like; returns a bool array (or bool)."""
+    one = np.ndim(artist_raw) == 0; a = np.atleast_1d(np.asarray(artist_raw)).astype(np.int64)
+    memo = {}
+    def f(x):
+        if x == -1: return False
+        if x not in memo: memo[x] = int(hashlib.sha256((HOLDOUT_SALT + str(int(x))).encode()).hexdigest(), 16) % 100 < HOLDOUT_PCT
+        return memo[x]
+    out = np.array([f(int(x)) for x in a], bool)
+    return bool(out[0]) if one else out
 
 def song_key(name: str) -> str:
     """Normalised title: merges re-releases/remasters/live/deluxe versions of the same song."""
@@ -303,10 +317,6 @@ def _open_parts(cutoffs, d):
         elig["rb"] = release_bucket(elig.release, c); f = f.assign(rb=release_bucket(tried_release(f), c))
         pre = _draw(f, elig, mraw, PRESAMPLE * len(f), int(c.strftime("%Y%m%d")))
         yield c, f, pre
-
-def decoy_presample(cutoffs):
-    """Raw trackIds of the stage-1 decoy pre-sample (for the iTunes lookups). Internal build-time helper."""
-    return {str(c.date()): list(pre.trackId) for c, f, pre in _open_parts(cutoffs, _load_all())}
 
 POOL_COLS = ["song", "trackId", "albumId", "artistIds", "artist", "trackName", "first", "cutoff", "new_artist", "is_decoy", "love", "strong", "plays90", "days90",
              "love_4_2", "love_10_4", "share90", "sess", "week", "nnew_sess", "exp_before", "exp_after", "replays_s1", "day1", "d7", "rb"]

@@ -1,0 +1,67 @@
+{
+ "pool_rows": {
+  "2021-07-01": {
+   "n": 264,
+   "digest": "f2b2be23764f6caa386ca477d12c3e1e7b1a7c8d7346bf5e5835a745f38d97e0"
+  },
+  "2021-10-01": {
+   "n": 294,
+   "digest": "4cfac10d93f7974f40de810f8ba1e12d81a79fe43f897c82f34f460ebd20b611"
+  },
+  "2022-01-01": {
+   "n": 330,
+   "digest": "35ede895a33521daebe35d3be51d24c0884d45729acf52d95fb673741bc418d2"
+  },
+  "2022-04-01": {
+   "n": 240,
+   "digest": "c5d18436c6fa26302d66d9c606ffc0209b561f1ce19581cc4716d21d267c4a56"
+  },
+  "2022-07-01": {
+   "n": 720,
+   "digest": "cb6fbbce015c391903c91f06ab4051e9a6a28a622e263afc4da81df25e2c3670"
+  },
+  "2022-10-01": {
+   "n": 534,
+   "digest": "2323fdaf40c8b91ca79afddbdf244b312b7966ae678fac5ec4340d9e1d506b43"
+  },
+  "2023-01-01": {
+   "n": 2232,
+   "digest": "7f5685928031ef6d2886ad505804eb7a949bd955d75c20c3d73a9b6126fd60d3"
+  },
+  "2023-04-01": {
+   "n": 1020,
+   "digest": "3818da0dba5529c34ef9670dad4cb67f3d145651e7574fd1154cd6ed91daf1c3"
+  },
+  "2023-07-01": {
+   "n": 1104,
+   "digest": "8da091a3d5484ba3fc5dc6039b2ae1e09be17614c0f0195f9db985ba49f89201"
+  },
+  "2023-10-01": {
+   "n": 2202,
+   "digest": "27ecee58bf72fc5a9019238d49423141059ed042f1cee89e8db92f543e5802c8"
+  },
+  "2024-01-01": {
+   "n": 1434,
+   "digest": "8e7ca74666bf18451cc3661bee45edc921a6cd8131100198e6554743bc635b76"
+  },
+  "2024-04-01": {
+   "n": 1206,
+   "digest": "b17a6003cdc2e92439725d96dc4ab542a8e646fba45a3967930dbd79e7007174"
+  },
+  "2024-07-01": {
+   "n": 1668,
+   "digest": "0a0323c30ee453fe2b5e5875c723130821eeaaafa8ce93bbe04953f821e495ae"
+  },
+  "2024-10-01": {
+   "n": 1452,
+   "digest": "efd5854a83f12ea857c73ed3acb9679a3869c428614e2c768111afea84bded0e"
+  }
+ },
+ "content_hashes": {
+  "itunes_fallback_csv": "3f6e5950c9144afd02c6296ca2d5b91e947bfbe32ff04b9017785bd6d79b5313",
+  "album_release_json": "5928caef221909131a9673c5f7e12a5eb670362e37293a12ccc8ab659c220302",
+  "decoy_raw": "f0981e6344a3e61240839b83f09c8c2efcfa05d69ec9d4b5e830f9e4146f9b21",
+  "n_decoy_raw": 1598
+ },
+ "note": "Recorded by evalkit v4 engineer BEFORE any v4 change, from .cache/shared/evalkit-pools-d4147e4b5cf5972f.pkl (v3.1 pools). Selftest asserts the current pools reproduce these digests."
+}

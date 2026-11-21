@@ -29,7 +29,7 @@ are NOT comparable (different folds, different decoys, different baselines, diff
   selftest). Release age is a matching covariate only; it is not given to predictors.
 * What a predictor sees: `train` (streams < C), `cands` (song, trackId, albumId, artistIds, artist, trackName), `meta` indexed by trackId (name, durationMs, explicit,
   popularity, spotifyId, previewUrl, albumName, artistNames). Rows are shuffled, all ids are opaque hashes (equality joins only), no labels/flags/timing. meta covers only tracks
-  in train or the pool. **previewUrl**: where Spotify/Apple (stats.fm) has none, the iTunes Search fallback (`.cache/itunes_fallback.csv`, built by `python3 -m evalkit.fetch_itunes`:
+  in train or the pool. **previewUrl**: where Spotify/Apple (stats.fm) has none, the iTunes Search fallback (CURRENTLY NOT ACTIVE: the API allows only ~6-15 lookups/min from this container, 2355 were needed; `fetch_itunes` is resumable, scoped down to tried songs + 250 sampled decoys, and the fill switches on only when it writes `.cache/itunes_fallback.complete`; until then previewUrl is exactly what stats.fm gives: ~82% of tried songs, ~87% of decoys, and the selftest shortcut AUC is 0.59)  (`.cache/itunes_fallback.csv`, built by `python3 -m evalkit.fetch_itunes`:
   lookup by primary artist + title, accepted only if normalised title and primary artist match and |duration difference| <= 5 s) fills it, for user tracks and decoys alike, so
   presence carries the same meaning in both. Tracks still without preview have previewUrl NaN: handle this explicitly and report it.
 * Independence: the score of a candidate must not depend on the other candidates. The harness re-scores random candidates alone (meta restricted to train + that candidate) and

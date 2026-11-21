@@ -17,3 +17,4 @@ Hook override: .claude/hooks/.overnight-until (git-ignored; if missing after a c
 - Journal gone (container replaced) -> relaunch the script from .claude/overnight/ fresh; mention it in the log.
 - Recreate the 5-min status CronCreate and the journal Monitor (both session-only).
 - Commit and push agent work-in-progress (code only; caches/.sealed stay ignored).
+- Engineer r1 finished but its report went to the main session (SendMessage to a workflow agent detaches it). Stopped wf_88069ba8-60d, injected the report verbatim as ENG_R1, resumed. Lesson: never SendMessage a running workflow agent.

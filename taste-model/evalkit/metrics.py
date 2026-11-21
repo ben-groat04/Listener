@@ -253,3 +253,32 @@ def cluster_band(df, s, label="love", nperm=300, seed=0):
         out["sauc"].append(pooled_auc(y, s, fold, one(len(y)))[0]); out["wa"].append(pooled_auc(y, s, g_wa, one(len(y)))[0])
         out["new"].append(pooled_auc(y[new], s[new], fold[new], one(int(new.sum())))[0])
     return {k: tuple(np.nanpercentile(v, [2.5, 97.5]).round(3)) for k, v in out.items()}
+
+# ---------------------------------------------------------------- v5.0: pooled metrics on a score dump (`run --dump-scores PATH`)
+def dump_frame(dump, fold_set, group="fold"):
+    """Rows of ONE fold set of a score dump (columns: see README 'Score dumps'), reshaped for `Block`: fold = the fold name (group='fold') or the calendar quarter of the first play
+    (group='quarter', the same pairing as `run --pair-group quarter`), artist = the opaque primary-artist id (the bootstrap cluster), exp_before = exposure_before, is_decoy = 0."""
+    g = dump[dump.fold_set == fold_set].reset_index(drop=True)
+    if group == "fold": fold = g.fold.astype(str).values
+    elif group == "quarter": fold = (g.month.str[:4] + "Q" + ((g.month.str[5:7].astype(int) - 1) // 3 + 1).astype(str)).values
+    else: raise ValueError("group must be 'fold' or 'quarter'")
+    return g.assign(fold=fold, is_decoy=0, exp_before=g.exposure_before.astype(float))
+
+def dump_block(dump, fold_set, group="fold", label="love", nboot=300, seed=0):
+    """metrics.Block (artist-cluster bootstrap resamples shared by every score column) on the rows of one fold set of a dump. Use with `score_col(model)` and Block.stats."""
+    return Block(dump_frame(dump, fold_set, group), label, nboot, seed)
+
+def score_col(model): return "score__" + model
+
+def dump_sauc(dump, fold_set, model, group="fold", label="love", nboot=300, seed=0, alpha=.05):
+    """Pooled within-group AUC (sauc: every loved / not-loved pair inside one fold (or calendar quarter), ties half) of dump column score__<model> with the artist-cluster bootstrap CI.
+    Returns (sauc, lo, hi) = point value and the two-sided (1-alpha) interval over `nboot` shared resamples of whole primary artists. Same engine as the harness' sauc."""
+    B = dump_block(dump, fold_set, group, label, nboot, seed); g = dump[dump.fold_set == fold_set]
+    st = B.stats(g[score_col(model)].values, True, ("sauc",)); b = st["sauc_b"]
+    return float(st["sauc"][0]), float(np.nanpercentile(b, 100 * alpha / 2)), float(np.nanpercentile(b, 100 * (1 - alpha / 2)))
+
+def dump_sauc_delta(dump, fold_set, model_a, model_b, group="fold", label="love", nboot=300, seed=0):
+    """Paired sauc difference a - b on one fold set of a dump (shared artist-cluster resamples): dict(d, lo80, hi80, lo95, P) with lo80 = 10th percentile, P = P(d > 0)."""
+    B = dump_block(dump, fold_set, group, label, nboot, seed); g = dump[dump.fold_set == fold_set]
+    a = B.stats(g[score_col(model_a)].values, True, ("sauc",)); b = B.stats(g[score_col(model_b)].values, True, ("sauc",)); d = a["sauc_b"] - b["sauc_b"]; f = d[np.isfinite(d)]
+    return dict(d=float(a["sauc"][0] - b["sauc"][0]), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)), lo95=float(np.nanpercentile(d, 2.5)), P=float(np.mean(f > 0)))

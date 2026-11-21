@@ -55,3 +55,4 @@
 ## Plan stated by user (after W4 round 1)
 - "Ok after W5 I think w6 needs to be looking through everything to make the best test. Then testing it on sealed"
 - W6 = whole-project review aimed at designing the best evaluation, then a sealed test. Sealed run still needs the user's explicit go after seeing W6's dev results; only the main session registers/runs it (CLAUDE.md). Fix the evaluation and the models to be tested BEFORE any sealed scoring; sealed is single-use.
+- Pre-launch audit requirement (from W4 floor failures): for every gate/check/retry in the script, ask how an agent could satisfy it without doing the intended work (gaming, idling, padding) and walk through edge cases (finished early legitimately, single-use run already spent, near-miss thresholds). Prefer gates on coverage/outputs over gates on time.

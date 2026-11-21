@@ -5,8 +5,9 @@ Every fitted transform (standardiser, PCA, classifier) is fitted on train-stream
 Variants (PREDICTORS):
   ca_whole      audio-only, whole-clip summary (mean of the 4 windows) -> PCA -> logistic regression      [reported headline audio-only whole-clip variant]
   ca_local      audio-only, time-local: each 5 s window is a training instance with the song's label; a song's score = aggregate of its window logits
-  ca_whole_meta whole-clip + metadata (duration, explicit, popularity) in one model (separate-variant, reported with its gain)
-  ca_*_noaudio  see the ablations: missing-audio handling variants (neutral/min/indicator-only)
+  ca_ens        audio-only, time-local, ensemble of three layer groups (0-3, 4-7, 8-11) -- best on TUNE by a hair (differences between variants are within noise)
+  ca_*_meta     the same + metadata (duration, explicit, popularity, popularity-missing flag) as extra inputs: the separate metadata variant
+Ablations (ablations.py): whole vs local, missing-audio handling (neutral / min / max / indicator-only), recency half-life.
 Knobs are module constants (CFG); the ablation variants override them via functools.partial-like dicts.
 """
 import os, glob, hashlib, warnings
@@ -84,7 +85,7 @@ def _fit(train, meta, cutoff, cfg):
         # train-derived neutral value for songs without audio: median score of the train songs
         res = dict(mu=mu, sd=sd, pca=pca, lr=lr, extra=extra, build=build)
         sc_tr = _raw(res, X[ok], meta, st.trackId.values[ok], cfg) if lr is not None else np.zeros(ok.sum())
-        res["neutral"] = float(np.median(sc_tr)); res["lo"] = float(np.percentile(sc_tr, 1)); res["hi"] = float(np.percentile(sc_tr, 99))
+        res["tm"] = float(sc_tr.mean()); res["ts"] = float(sc_tr.std() + 1e-9); res["neutral"] = float(np.median(sc_tr)); res["lo"] = float(np.percentile(sc_tr, 1)); res["hi"] = float(np.percentile(sc_tr, 99))
         # missing-audio indicator model (variant 'indicator'): love rate of mature train songs without / with audio
         mm_ = (st["first"] < cutoff - pd.Timedelta(days=cfg["mature"])).values
         res["rate_missing"] = float(st.love.values[mm_ & ~ok].mean()) if (mm_ & ~ok).any() else np.nan; res["rate_audio"] = float(st.love.values[mm_ & ok].mean())
@@ -113,4 +114,18 @@ def make(**over):
         return s
     return predict
 
-PREDICTORS = {"ca_whole": make(), "ca_local": make(mode="local"), "ca_whole_meta": make(meta=True), "ca_local_meta": make(mode="local", meta=True)}
+def make_ens(*overs, **common):
+    """Ensemble: mean of train-standardised scores of several configurations (each standardised with its own train-song score mean/std, so no dependence on the candidates)."""
+    cfgs = [{**CFG, **common, **o} for o in overs]
+    def predict(train, cands, meta, cutoff):
+        out = np.zeros(len(cands)); 
+        for cfg in cfgs:
+            res = _fit(train, meta, cutoff, cfg); X, ok = _view(cands.trackId.values, meta, cfg); s = np.zeros(len(cands))
+            if ok.any(): s[ok] = (_raw(res, X[ok], meta, cands.trackId.values[ok], cfg) - res["tm"]) / res["ts"]
+            s[~ok] = (res["neutral"] - res["tm"]) / res["ts"]; out += s
+        return out / len(cfgs)
+    return predict
+
+_L3 = (dict(layers=(0, 3)), dict(layers=(4, 7)), dict(layers=(8, 11)))
+PREDICTORS = {"ca_whole": make(), "ca_local": make(mode="local"), "ca_ens": make_ens(*_L3, mode="local"),
+              "ca_whole_meta": make(meta=True), "ca_ens_meta": make_ens(*_L3, mode="local", meta=True)}

@@ -20,3 +20,4 @@ Hook override: .claude/hooks/.overnight-until (git-ignored; if missing after a c
 - Engineer r1 finished but its report went to the main session (SendMessage to a workflow agent detaches it). Stopped wf_88069ba8-60d, injected the report verbatim as ENG_R1, resumed. Lesson: never SendMessage a running workflow agent.
 - Workflow 4 (full project review + rounds) drafted: .claude/overnight/workflow4.js (+ workflow4-notes.md). Needs W3_REPORTS filled after W3 finishes, then Sonnet audit, then launch.
 - RULE (user): never interrupt a running workflow; changes wait for the next one. W3 script edit reverted; stats note lives in W4 brief only.
+- 10:24Z recovery check: W3 healthy (12/13 done; DA-r2-works finished, DA-r2-dismissed running). User back, so override not restored.

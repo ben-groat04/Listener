@@ -14,13 +14,22 @@ def main():
     assert data.TUNE_CUTOFFS + data.LATE_CUTOFFS == cuts and len(cuts) == 14
     # ---- metrics engine vs brute force
     rng = np.random.default_rng(1); n = 600; fold = np.repeat([0, 1, 2], 200); y = (rng.random(n) < .3).astype(int); s = np.round(rng.random(n) + .5 * y, 1); art = rng.integers(0, 40, n)
-    df = pd.DataFrame(dict(fold=fold.astype(str), artist=art, new_artist=rng.random(n) < .5, is_decoy=0, love=y, week=rng.integers(0, 20, n), sess=rng.integers(0, 60, n)))
+    df = pd.DataFrame(dict(fold=fold.astype(str), artist=art, new_artist=rng.random(n) < .5, is_decoy=0, love=y, week=rng.integers(0, 20, n), sess=rng.integers(0, 60, n), plays90=rng.integers(1, 15, n)))
     B = metrics.Block(df, "love", 20, 0); st = B.stats(s); pw = lambda k, g: y[g == k].sum() * (1 - y[g == k]).sum(); br = lambda g: sum(metrics.auc(y[g == k], s[g == k]) * pw(k, g) for k in np.unique(g) if pw(k, g) > 0) / sum(pw(k, g) for k in np.unique(g))
     assert abs(st["sauc"][0] - br(fold)) < 1e-9 and abs(st["ww"][0] - br(df.week.values + 100 * fold)) < 1e-9 and abs(st["ws"][0] - br(df.sess.values + 100 * fold)) < 1e-9 and abs(st["wa"][0] - br(art + 100 * fold)) < 1e-9, "grouped AUC != brute force"
     ms = [metrics.fold_metrics(y[fold == f], s[fold == f], nseeds=300) for f in range(3)]
     assert abs(st["plift"][0] - sum(m["hits"] for m in ms) / sum(m["exp"] for m in ms)) < 1e-9 and abs(st["p20"][0] - np.mean([m["p20"] for m in ms])) < .01, "tie-averaged top-k != seed average"
     idx = np.repeat(np.arange(n), B.W[3].astype(int)); assert abs(st["sauc_b"][3] - sum(metrics.auc(y[idx][fold[idx] == f], s[idx][fold[idx] == f]) * y[idx][fold[idx] == f].sum() * (1 - y[idx][fold[idx] == f]).sum() for f in range(3)) / sum(y[idx][fold[idx] == f].sum() * (1 - y[idx][fold[idx] == f]).sum() for f in range(3))) < 1e-9
-    print("metrics engine matches brute force")
+    # graded concordance gc / gc_wa vs brute force over all ordered pairs (same group, plays90 differ; score ties 0.5), point and one bootstrap replicate
+    sg = B.stats(s, True, ("gc", "gc_wa")); pl = df.plays90.values
+    def gbr(g, w):
+        num = den = 0.0
+        for i in range(n):
+            m = (g == g[i]) & (pl[i] > pl); ww = w[i] * w * m; den += ww.sum(); num += (ww * ((s[i] > s) + .5 * (s[i] == s))).sum()
+        return num / den
+    assert abs(sg["gc"][0] - gbr(fold, np.ones(n))) < 1e-9 and abs(sg["gc_wa"][0] - gbr(art + 100 * fold, np.ones(n))) < 1e-9, "gc != brute force"
+    assert abs(sg["gc_b"][3] - gbr(fold, B.W[3])) < 1e-9 and abs(sg["gc_wa_b"][3] - gbr(art + 100 * fold, B.W[3])) < 1e-9, "gc bootstrap != brute force"
+    print("metrics engine matches brute force (incl. gc, gc_wa)")
     # ---- pools
     P = run.prepare_folds(cuts); u = data._decoys().set_index("trackId")
     for F in P:
@@ -36,10 +45,12 @@ def main():
         # per-fold seeds use pre-cutoff streams only: truncating the history at the cutoff must not change them
         assert data.fold_seed_artists(d[d.t < c], c) == data.fold_seed_artists(d, c), "fold seeds depend on post-cutoff plays"
         sd, rl = data.fold_seed_artists(d, c); src = set(sd) | set(rl); assert all(not s_.isdisjoint(src) for s_ in u.loc[dec.trackId, "src"]), "decoy not from a fold seed artist"
+        assert (tried.exp_before + tried.exp_after + 1 == tried.nnew_sess).all() and (tried.exp_before >= 0).all() and (tried.replays_s1 >= 1).all() and tried.replays_s1.le(tried.plays90).all(), "session diagnostics inconsistent"
+        assert dec.exp_before.isna().all() and (dec.replays_s1 == 0).all()
         assert tried.share90.between(0, 1).all() and tried.share90.gt(0).all() and tried.sess.notna().all() and (dec.day1 == 0).all() and (dec.d7 == 0).all()
         # public view: opaque ids consistent between train and candidates, no order/time information, meta restricted
         cands, meta, order = F["cands"], F["meta"], F["order"]; trp = F["train"]
-        assert not {"sess", "week", "day1", "d7", "nnew_sess", "rb", "share90"} & set(cands.columns) | set(trp.columns) & {"sess", "week"}, "harness columns leaked into the public view"
+        assert not {"sess", "week", "day1", "d7", "nnew_sess", "exp_before", "exp_after", "replays_s1", "rb", "share90"} & set(cands.columns) | set(trp.columns) & {"sess", "week"}, "harness columns leaked into the public view"
         kn = (~pool.new_artist.values[order]); assert set(cands.artist[kn]) <= set(trp.artist), "ids not consistent between train and cands"
         assert not (set(cands.artist[~kn]) & set(trp.artist)), "new-artist candidate shares an id with train"
         assert set(meta.index) <= set(trp.trackId) | set(cands.trackId), "meta leaks tracks outside train+pool"
@@ -95,6 +106,18 @@ def main():
     for nm, cols in (("public metadata only", [c for c in Fm.columns if c not in ("dec", "g", "rb")]), ("public metadata + release-age bucket", [c for c in Fm.columns if c not in ("dec", "g")])):
         pr = cross_val_predict(HistGradientBoostingClassifier(max_iter=100), Fm[cols].values, Fm.dec.values, groups=Fm.g.values, cv=GroupKFold(5), method="predict_proba")[:, 1]
         sa = metrics.auc(Fm.dec.values, pr); print(f"{nm}: tried-vs-decoy AUC {sa:.3f} (expect <0.62; v2.0 was 0.73)"); assert sa < .62
+    # ---- null control v2: structural checks, then the printed (not asserted) result for artist_recent and nonaudio_gbm on 3 TUNE folds
+    F = P[cuts.index("2023-07-01")]; tr0, cd = F["train"], F["cands"]
+    for relabel in (True, False):
+        tn, am, bm = run._null_control(tr0, cd, np.random.default_rng(3), relabel)
+        assert (tn.artist.values == np.array([a[0] if len(a) else tn.artist.values[0] for a in tn.artistIds])).sum() > .9 * len(tn) and (tn.song.str.rsplit("|", n=1).str[1] == tn.artist.astype(str)).all(), "null train: artist / song key inconsistent"
+        assert tn.groupby("song").trackId.nunique().max() == 1 and tn.groupby("song").artist.nunique().max() == 1, "null train: a song has several identities"
+        assert (tn.t.values == tr0.t.values).all(), "null control must keep timestamps"
+        if relabel:
+            assert len(set(am.values())) == len(am) and set(am) == set(am.values()) and len(bm) == len(set(bm.values())), "relabelling is not a bijection"
+            assert len(set(tn.artist) & set(tr0.artist)) < len(set(tr0.artist)), "artists not relabelled"
+    nc = cuts[:3]; res = run.null_report({k: BASELINES[k] for k in ("artist_recent", "nonaudio_gbm")}, nc, [("TUNE[:3]", nc)], "v2", None)
+    print("NULL CONTROL v2 (3 TUNE folds, 3 seeds; printed, not asserted; band = 95% band of the 3-seed mean)"); print(res["TUNE[:3]"]["band"]); print(res["TUNE[:3]"]["table"].drop(columns="slice").to_string(index=False))
     print("selftest OK")
 
 if __name__ == "__main__": main()

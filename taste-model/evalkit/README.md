@@ -1,4 +1,9 @@
-# evalkit v3: does a method predict which NEW songs the user comes to love?
+# evalkit v3.1: does a method predict which NEW songs the user comes to love?
+
+v3.1 (this version) changes, relative to v3: (1) null control v2 (artist/album relabelling, 3 seeds, gated) with the old identity-only shuffle kept as `--null-control-identity` (diagnostic);
+(2) graded metric `gc` / `gc_wa` (concordance with plays90); (3) graded evidence (P(delta>0), 80% intervals, STRONG / SUGGESTIVE / NONE) in the VERDICT; (4) within-artist reference
+'dWA vs best meta'; (5) diagnostics `exposure_before` / `exposure_after` / `replays_first_session` next to `exposure_session`; (6) housekeeping (iTunes fill text, LATE audit note).
+The dev pools, labels and baselines are unchanged (see "Comparability").
 
 v3 replaces the v2.1 success bar and fixed thresholds by an evidence table (VERDICT) and changes folds, baselines, metrics and the open pool. Scores of v2.x
 are NOT comparable (different folds, different decoys, different baselines, different CIs); see "Comparability".
@@ -29,7 +34,7 @@ are NOT comparable (different folds, different decoys, different baselines, diff
   selftest). Release age is a matching covariate only; it is not given to predictors.
 * What a predictor sees: `train` (streams < C), `cands` (song, trackId, albumId, artistIds, artist, trackName), `meta` indexed by trackId (name, durationMs, explicit,
   popularity, spotifyId, previewUrl, albumName, artistNames). Rows are shuffled, all ids are opaque hashes (equality joins only), no labels/flags/timing. meta covers only tracks
-  in train or the pool. **previewUrl**: where Spotify/Apple (stats.fm) has none, the iTunes Search fallback (CURRENTLY NOT ACTIVE: the API allows only ~6-15 lookups/min from this container, 2355 were needed; `fetch_itunes` is resumable, scoped down to tried songs + 250 sampled decoys, and the fill switches on only when it writes `.cache/itunes_fallback.complete`; until then previewUrl is exactly what stats.fm gives: ~82% of tried songs, ~87% of decoys, and the selftest shortcut AUC is 0.59)  (`.cache/itunes_fallback.csv`, built by `python3 -m evalkit.fetch_itunes`:
+  in train or the pool. **previewUrl**: where Spotify/Apple (stats.fm) has none, the iTunes Search fallback (ACTIVE: `.cache/itunes_fallback.complete` exists, so the fill applies to all folds; selftest coverage over the 14 dev folds: preview present for 93.9% of tried songs and 99.1% of decoys, and the tried-vs-decoy shortcut AUC from public metadata is 0.569 (0.585 with the non-public release-age bucket); the API allows only ~6-15 lookups/min from this container, `fetch_itunes` is resumable and scoped to tried songs + sampled decoys)  (`.cache/itunes_fallback.csv`, built by `python3 -m evalkit.fetch_itunes`:
   lookup by primary artist + title, accepted only if normalised title and primary artist match and |duration difference| <= 5 s) fills it, for user tracks and decoys alike, so
   presence carries the same meaning in both. Tracks still without preview have previewUrl NaN: handle this explicitly and report it.
 * Independence: the score of a candidate must not depend on the other candidates. The harness re-scores random candidates alone (meta restricted to train + that candidate) and
@@ -38,18 +43,37 @@ are NOT comparable (different folds, different decoys, different baselines, diff
 ## Metrics (tried pool unless stated; all with artist-cluster bootstrap CIs: whole artists are resampled within each fold, resamples are shared by all models => paired deltas)
 * `sauc` stratified AUC = AUC over all within-fold (loved, not-loved) pairs (all / new-artist / known-artist songs). Macro AUC, AP/lift, p10, p20, r20 and `plift`
   (pooled top-10% hits / hits expected at each fold's base rate) are reported; ties are averaged over random tie-breaks (exact expectation for the bootstrap, 20 seeds for AP/lift/r20/macro).
+* `gc` graded concordance (C-index) of the score with `plays90` over tried songs: all pairs in the same fold whose plays90 differ (ties in plays90 excluded; score ties count 0.5), pooled with pair
+  weights (pair weight = product of the two rows' artist-cluster draw counts in the bootstrap). `gc_wa`: the same over pairs sharing fold AND primary artist. Both have artist-cluster bootstrap CIs, a permutation null band
+  (plays90 permuted within fold / within fold x artist of a fixed random score, 200 permutations), paired deltas vs every model and VERDICT columns. It uses all the information in plays90 (not only the binary love cut), is
+  therefore less sensitive to the arbitrary love threshold, and answers "does the score order songs by how much they were played?". The Spearmans below are kept.
 * `wa_sauc` within-artist: AUC over loved/not-loved pairs sharing fold AND primary artist. `ww_sauc` within-week: pairs sharing fold and ISO week of first play.
   `ws_sauc` within-session (exposure-matched): pairs sharing fold and the listening session (gap > 30 min between plays) of the first play. All pooled with pair weights.
 * Spearman (within fold, tried pool) of the score with `days90`, `log1p(plays90)` and `share90`.
-* Paired deltas (shared resamples) of sauc AND wa_sauc versus every other model; lower bound printed for each baseline (tables `dSAUC_lower_bound`, `dWA_lower_bound`, open variants).
+* Paired deltas (shared resamples) of sauc, wa_sauc, gc, gc_wa and the open-pool variants versus every other model. For EVERY paired delta three tables are printed: `<d>_lower_bound` (95% lower bound, as before),
+  `<d>_P_gt0` (P(delta>0) = share of the shared bootstrap resamples with delta>0) and `<d>_80ci` (80% interval = 10th..90th percentile). Tables: dSAUC, dWA, dGC, dGCWA, open_dSAUC (+ _new, _known), open_dP20, open_dWA.
 * PERMUTATION NULL BAND: 200 label permutations within fold (within group for wa/ww/ws) of a fixed random score give the 95% band of sauc, wa, ww, ws and new-artist sauc under
   no signal. Predictor independent, cached in `.cache/shared/evalkit-nullband-*.pkl`.
 * Per-fold AUC with CI; any model x fold whose CI upper bound is below 0.5 is flagged `BELOW CHANCE - investigate`.
 * Open pool: `open_sauc` (all / new / known), `open_wa_sauc` (pairs of a loved tried song and a decoy sharing fold and primary artist), p20, each with CI and paired deltas.
-* VERDICT table per non-baseline model and slice: sauc + CI + permutation band, dSAUC lower bound vs nonaudio_gbm and vs the best valid baseline, wa CI and dWA lower bound vs nonaudio_gbm,
-  ww/ws/new-artist CIs, plift, Spearman share90, open sauc / open_wa / p20 vs the best valid baseline, independence p90, null control (PASS iff tried sauc and wa_sauc both lie
-  inside the 95% permutation band; needs `--null-control`), label-variant consistency (love_4_2, love_10_4, strong each >= love - 0.03; reported, not gated). There are no fixed thresholds.
-  The DIAGNOSTIC reference rows are printed at the top of each slice.
+* VERDICT table per non-baseline model and slice (for a baseline-only run: the baselines): sauc + CI + permutation band, dSAUC lower bound vs nonaudio_gbm and vs the best valid baseline, wa CI and dWA lower bound vs nonaudio_gbm,
+  gc / gc_wa + CI + band and dGC lower bound, ww/ws/new-artist CIs, plift, Spearman share90, open sauc / open_wa / p20 vs the best valid baseline, independence p90, label-variant consistency (love_4_2, love_10_4, strong each >= love - 0.03; reported, not gated).
+  There are no fixed thresholds. The null control is a separate run (`--null-control`, below). The DIAGNOSTIC reference rows are printed at the top of each slice.
+  **Evidence columns** (vs nonaudio_gbm, per metric sauc / wa / gc): point delta `d_<m>_vs_nonaudio_gbm`, `P_<m>_gt0`, `ci80_<m>` and the grade `evidence_<m>`:
+  STRONG = ALL-slice (14 folds) 95% lower bound > 0 AND point delta > 0 on both TUNE and LATE; SUGGESTIVE = P(delta>0) >= 0.8 on both TUNE and LATE; NONE otherwise. With `--late` the grade is written in the ALL-slice VERDICT
+  (which also carries the ALL-slice deltas, 95% lower bound, P and 80% interval, plus TUNE_/LATE_ point deltas and P); the TUNE and LATE VERDICTs say 'see ALL'. Without `--late` only TUNE exists: the column says 'TUNE only (P=..)'.
+  **Why graded, not "lower bound > 0"**: dev evidence uses this graded scale on purpose, because the sealed run is the strict final test. Reason, in the user's words: "you're being very strict on confidence intervals etc, not sure if this is a good idea given how subjective music is" /
+  "Yes get the harness to think about whether it needs to be less strict based on what's come so far wrt stats." A SUGGESTIVE grade is a reason to keep a direction alive in dev, not a claim.
+  **dWA vs best meta**: columns `dWA vs best meta` (name of the model), `dWA vs best meta lo95` and `dWA vs best meta P(d>0)`: wa_sauc delta of the model vs the best of (duration, meta_gbm, nonaudio_gbm), the best chosen by the slice's POINT wa_sauc. It shows whether
+  within-artist ordering beats what metadata alone gives.
+
+## Null control v2 (`--null-control`, run.py `_null_control`, `null_report`)
+Replaces the v3 identity-only shuffle. Train is modified, candidates are not: (1) song-identity shuffle (every train song takes another train song's ids/title/artist, keeping its own timestamps, as before);
+(2) a random bijection over ALL artist ids appearing in train U cands is applied to train only (`artistIds`, `artist`, and the artist part of the song key, consistently per song), and one over all album ids of train U cands to `albumId`; meta of the
+train tracks (`artistNames`, `albumName`) follows the relabelling. A candidate's artist therefore maps to a random OTHER artist's (or no) history, and per-artist song counts no longer line up with candidate artists.
+Three seeds per fold (seed = cutoff yyyymmdd + k, k = 0, 1, 2). The run prints per-seed and 3-seed-mean sauc, wa_sauc and new-artist sauc per model (baselines included) and slice. **PASS** iff the 3-seed mean of sauc, of wa_sauc and of new-artist sauc each lie inside the
+95% permutation band of a 3-seed mean (mean of 3 independent label permutations of a fixed random score, 200 times; cached with the other bands). `--null-control-identity` keeps the old identity-only shuffle (one seed = cutoff) as a DIAGNOSTIC (not gated): it preserves
+per-artist song counts, which is real history information, so a model using artist counts can stay above chance under it. A null run replaces the normal tables (no VERDICT, no independence check); it is slow (3 seeds x folds x models).
 
 ## Baselines (always scored together with your predictor; all pool independent and gate-checked)
 `popularity`, `artist_plays`, `artist_recent` (180-d half-life), `artist_love_rate`, and the HistGradientBoosting baselines (fixed params, random_state=0, 2 threads; training rows = train songs first played
@@ -59,8 +83,10 @@ history: artist plays all-time and 180-d half-life, smoothed love rate of mature
 streams before their own first play). **nonaudio_gbm is the reference any music/content claim must beat.** No noise is added to baseline scores (ties stay ties). `random` is no longer a scored model: chance = 0.5
 (plus the permutation band). 
 DIAGNOSTICS (computed inside the harness from raw pool data; they use post-cutoff information, are not valid predictors, are exempt from independence checks, reported as references):
-`pool_artist_siblings`, `pool_album_siblings`, `exposure_session` (minus the number of distinct new songs first played in the same session as the candidate's first play; decoys: below every tried song),
+`pool_artist_siblings`, `pool_album_siblings`, `exposure_before` (minus the number of distinct songs first played EARLIER in the same session than the candidate's first play), `exposure_after` (minus the number first played LATER in that session),
+`exposure_session` (minus the total = before + after + 1; unchanged from v3), `replays_first_session` (plays of the candidate within its first session), all with decoys below every tried song (replays: 0),
 `oracle_day1` (plays on the first-listen day), `oracle_7d` (plays in the first 7 days; decoys 0). The oracles show how much of the label is behavioural, not musical.
+PLAINLY: `exposure_after` and `replays_first_session` can be CONSEQUENCES of liking the song (a liked song is replayed and the listener keeps going, so more new songs follow it in the session), whereas `exposure_before` cannot be: it is fixed before the song is first heard.
 
 ## Rules for builders
 * Never run `--sealed`, never read `.sealed/`, never import `decoy_universe` / `make_decoys`, never read raw streams (use `evalkit.data` loaders).
@@ -69,7 +95,7 @@ DIAGNOSTICS (computed inside the harness from raw pool data; they use post-cutof
 * Any fitted transform (scaler, PCA, clustering, vocabulary, normaliser, embedding post-processing, model) must be fit only on tracks that appear in the train streams for that cutoff,
   never on pool, decoy or later tracks. A cache of per-track features is fine only if each track's features are computed independently of other tracks.
 * Missing-preview handling must be explicit and reported.
-* `--null-control` (identity-shuffle of train: song identities permuted, timestamps kept; TUNE slice) must be run on the final predictor and must PASS.
+* `--null-control` (null v2, below; TUNE slice) must be run on the final predictor and must PASS.
 * Registration + hash logging (`register.py`, `late_runs.log`, sealed `runs.log`) is an audit trail, not a cryptographic lock.
 
 ## Commands (run from /home/user/Listener/taste-model)
@@ -77,7 +103,9 @@ DIAGNOSTICS (computed inside the harness from raw pool data; they use post-cutof
     python3 -W ignore -m evalkit.run --fast [pred.py ...]  # iteration: TUNE slice, nboot 100, no independence check, no LATE output
     python3 -W ignore -m evalkit.run [pred.py ...]         # TUNE slice, nboot 300, independence check on  (baselines are always included)
         --late          also score the LATE slice; tables printed separately for TUNE, LATE and ALL (logged in .cache/late_runs.log)
-        --null-control  --nboot N  --indep-n N  --window all|730|365|sub365
+        --null-control            null control v2 (3 seeds, gated); with --late also scores LATE and ALL
+        --null-control-identity   old identity-only shuffle, diagnostic only (can be combined with --null-control)
+        --nboot N  --indep-n N  --window all|730|365|sub365
     python3 -m evalkit.register pred.py name             # MAIN SESSION ONLY: pre-register final model(s)
     python3 -W ignore -m evalkit.run --sealed pred.py    # MAIN SESSION ONLY: one look per registered file, logged with its hash
     python3 -m evalkit.make_sealed [--write-manifest]    # MAIN SESSION: regenerate .sealed/labels.csv, verify against sealed_manifest.json
@@ -85,7 +113,7 @@ DIAGNOSTICS (computed inside the harness from raw pool data; they use post-cutof
     python3 -m evalkit.fetch_itunes                      # build-time, rate limited (~20 requests/min): iTunes preview fallback lookups (resumable)
     python3 -m evalkit.fetch_previews [--report]         # shared preview-audio cache, see below
 Predictor: `predict(train, cands, meta, cutoff) -> one finite score per candidate row` or a dict `PREDICTORS = {name: fn}`.
-Caches (all git-ignored, regenerable from code): pools `.cache/shared/evalkit-pools-<hash>.pkl`, baseline scores `evalkit-baseline-scores-<hash>.pkl`, permutation bands, `.cache/album_release.json`,
+Caches (all git-ignored, regenerable from code; changing data.py / metrics.py / baselines.py changes the hashes and rebuilds them): pools `.cache/shared/evalkit-pools-<hash>.pkl`, baseline scores `evalkit-baseline-scores-<hash>.pkl`, permutation bands, `.cache/album_release.json`,
 `.cache/itunes_fallback.csv`, `.cache/decoy_raw`, `.cache/decoy_universe.csv.gz`. The Workflow-2 feature caches in `.cache/shared/` (`clap-preview-emb`, `hand-audio-feat-v1`, `C-textemb-v1`) cover the OLD pools only
 (old preview coverage, old tracks); they are untouched and are not valid for the new pools.
 
@@ -97,7 +125,13 @@ by the RAW url; look a track's file up through `meta.previewUrl` (md5 of the url
 ## History-length / drift ablation (ablate.py)
 `--window 730|365|sub365` trains on the last 2y / 1y / a random subsample of ALL history with the same number of streams as the last year. Compare 365 vs sub365 per fold. Dev only.
 
+## Late slice (seen-once-per-design) and the sealed folds
+`.cache/late_runs.log` holds one line per `--late` run. Its lines timestamped 09:00-09:05 UTC on 2026-11-21 are devil's-advocate audit looks at the round-1 predictors (the lead's brief counts 3 looks; the log has 4 lines in that window, 2 for the same file), and the round-1 LATE results are public. LATE is therefore a 'seen-once-per-design' slice, not an untouched one;
+the sealed folds are the only untouched test.
+
 ## Comparability
+v3.1 vs v3: folds, labels, decoy draws (for 8 of the 10 TUNE folds bit-identical; the 2021-07 and 2021-10 pools were rebuilt and ~20-27% of their decoys differ from the cached pools of round 1, see the report) and the baselines' scores are unchanged, so v3 sauc / wa / p20 are comparable
+(except those two small folds). New in v3.1: gc, gc_wa, evidence grades, null v2 (v3 null-control results are NOT comparable: use `--null-control-identity` for the old shuffle), exposure_before / exposure_after / replays_first_session.
 v2.x scores (8 dev folds 2023-01..2024-10, old decoys seeded by lifetime artist plays, old baselines with noise, thresholded bar) are not comparable to v3 numbers. For a like-for-like check use
 the per-fold AUC table: folds 2023-01..2024-10 exist in both, but the decoy pools, preview fill and (for baselines) tie handling changed.
 

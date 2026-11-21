@@ -54,7 +54,7 @@ def member(train, cands, meta, cutoff, cfg):
     st = songs(train, meta, key); X, ok = feats(st.trackId.values, meta, cfg); local = cfg["mode"] == "local"
     with threadpool_limits(2):
         Xo = X[ok]; mu = Xo.mean((0, 1)); sd = Xo.std((0, 1)) + 1e-6
-        pca = PCA(cfg["ncomp"], whiten=cfg["whiten"], random_state=0).fit(_pool((Xo - mu) / sd, cfg, local)) if cfg["ncomp"] else None
+        pca = PCA(min(cfg["ncomp"], _pool((Xo - mu) / sd, cfg, local).shape[0] - 1, 768), whiten=cfg["whiten"], random_state=0).fit(_pool((Xo - mu) / sd, cfg, local)) if cfg["ncomp"] else None
         def design(Xb):
             Z = (Xb - mu) / sd; P = _pool(Z, cfg, local) if local else _pool(Z, cfg, False)
             return pca.transform(P) if pca is not None else P

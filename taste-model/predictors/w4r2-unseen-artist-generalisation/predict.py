@@ -39,7 +39,7 @@ def feat(block, tids, meta):
     return X, has
 
 CFG = dict(blocks=("mert_mid",), ncomp=48, signal="panel", K=2, P=91, hl=180.0, adem=0.0, apow=0.0, combine="concat", noart=False,
-           alphas=(30., 100., 300., 1000., 3000.), alpha=None, minplays=2)
+           alphas=(30., 100., 300., 1000., 3000.), alpha=None, minplays=2, learner="ridge", kalphas=(0.3, 1.0, 3.0), gam=0.25)
 
 def _pct(v): return pd.Series(v).rank(pct=True).values
 
@@ -124,6 +124,19 @@ def _fit(train, meta, cutoff, cfg):
             if cfg["apow"]:
                 ct = pd.Series(ar).groupby(ar).transform("size").values; w = w / ct ** cfg["apow"]
             w = w / w.mean()
+            if cfg["learner"] == "krr":
+                from sklearn.kernel_ridge import KernelRidge
+                gm = cfg["gam"] / P.shape[1]; ua, inv = np.unique(ar, return_inverse=True); fo = np.random.RandomState(0).randint(0, 5, len(ua))[inv]; best = None
+                for ka in cfg["kalphas"]:
+                    pr = np.zeros(len(y))
+                    for f in range(5):
+                        mm = fo == f
+                        if mm.sum() == 0 or (~mm).sum() < 10: continue
+                        k = KernelRidge(alpha=ka, kernel="rbf", gamma=gm).fit(P[r][~mm], y[~mm] - np.average(y[~mm], weights=w[~mm]), sample_weight=w[~mm]); pr[mm] = k.predict(P[r][mm])
+                    c = _wpear(pr, y, w)
+                    if best is None or c > best[0]: best = (c, ka)
+                ym = np.average(y, weights=w); k = KernelRidge(alpha=best[1], kernel="rbf", gamma=gm).fit(P[r], y - ym, sample_weight=w)
+                sc = k.predict(P[r]); res["members"].append(dict(g=g, tf=tf, krr=k, ym=ym, cv=best[0], al=best[1], mu=float(sc.mean()), sd=float(sc.std() + 1e-9), ar=ar)); continue
             if cfg["alpha"]: al, cvs = cfg["alpha"], np.nan
             else: al, cvs = _cv_alpha(P[r], y, w, ar, cfg["alphas"])
             G, bb, A = _stats(P[r], y, w); beta = _solve(G, bb, al)
@@ -143,8 +156,8 @@ def _score(res, cands, meta, cfg):
         for b, (mu, sd, pca) in zip(m["g"], m["tf"]):
             X, has = feat(b, tids, meta); ok &= has; Ps.append(pca.transform((X - mu) / sd))
         A = np.c_[np.concatenate(Ps, 1), np.ones(n)]
-        s = A @ m["beta"]
-        if cfg["noart"]:
+        s = m["krr"].predict(A[:, :-1]) if "krr" in m else A @ m["beta"]
+        if cfg["noart"] and "krr" not in m:
             ar = m["ar"]; ua = set(ar.tolist())
             for a in np.unique(carts[ok]):
                 if a in ua:
@@ -181,5 +194,23 @@ V = {   # every variant scored on TUNE is listed here (counted)
     "v14_trust_all": dict(blocks=MERT3 + ("clap", "eact", "eemb", "lyr"), combine="trust"),
     "v15_trust_all_adem1": dict(blocks=MERT3 + ("clap", "eact", "eemb", "lyr"), combine="trust", adem=1.0),
     "v16_concat_mert3_clap": dict(blocks=MERT3 + ("clap",), ncomp=32),
+    "v17_both_trust_all": dict(signal="both", blocks=MERT3 + ("clap", "eact", "eemb", "lyr"), combine="trust"),
+    "v18_both_mid_eact": dict(signal="both", blocks=("mert_mid", "eact"), ncomp=32),
+    "v19_both_nc96": dict(signal="both", ncomp=96),
+    "v20_both_nc24": dict(signal="both", ncomp=24),
+    "v21_both_K3": dict(signal="both", K=3),
+    "v22_both_hl90": dict(signal="both", hl=90.0),
+    "v23_both_hi": dict(signal="both", blocks=("mert_hi",)),
+    "v24_both_mert3_nc32": dict(signal="both", blocks=MERT3, ncomp=32),
+    "v25_both_trust_mert3_eact_eemb": dict(signal="both", blocks=MERT3 + ("eact", "eemb"), combine="trust"),
+    "v26_both_apow025": dict(signal="both", apow=0.25),
+    "v27_both_noart": dict(signal="both", noart=True),
+    "v28_both_P182": dict(signal="both", P=182, hl=360.0),
+    "v29_both_P60_K3": dict(signal="both", P=60, K=3, hl=120.0),
+    "v30_both_nc128": dict(signal="both", ncomp=128, alphas=(100., 300., 1000., 3000., 10000.)),
+    "v31_both_krr": dict(signal="both", learner="krr"),
+    "v32_both_krr_mert3": dict(signal="both", learner="krr", blocks=MERT3, ncomp=32),
+    "v33_both_hl90_nc64": dict(signal="both", hl=90.0, ncomp=64),
 }
-PREDICTORS = {k: make(**v) for k, v in V.items()}
+_only = os.environ.get("W4R2_ONLY")
+PREDICTORS = {k: make(**v) for k, v in V.items() if not _only or any(t in k for t in _only.split(","))}

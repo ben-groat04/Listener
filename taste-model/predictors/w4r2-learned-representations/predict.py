@@ -24,6 +24,12 @@ def _rows(tids, meta):
     S = _store(); u = meta.previewUrl.reindex(tids).values
     ii = np.array([S["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); return ii
 
+def _gather_t(tids, meta, feat):
+    """[n,P,d] float32, mask [n,P], ok [n] for the song set tids. feat: emb, act, both (essentia patches) | mert (4 window tokens, layers 4-8 mean) | mertL (4 windows x layers 4,6,8 as 12 tokens)"""
+    if feat.startswith("mert"):
+        X, ok = _mertw(tids, meta, feat); return X[ok], np.ones(X[ok].shape[:2], bool), ok
+    ii = _rows(tids, meta); ok = ii >= 0; X, M = _gather(ii[ok], feat); return X, M, ok
+
 def _gather(ii, feat):
     """[n,29,d] float32 and mask [n,29] for rows ii>=0"""
     S = _store(); o = np.argsort(ii); inv = np.argsort(o); sel = ii[o]
@@ -33,17 +39,20 @@ def _gather(ii, feat):
     X = np.concatenate(parts, -1)[inv]; n = S["n"][ii]; M = np.arange(X.shape[1])[None] < n[:, None]
     return X, M
 
-def _mertw(tids, meta):
+def _mertw(tids, meta, feat="mert"):
     import glob
     if "mert" not in _S:
         keys, arrs = [], []
         for f in sorted(glob.glob(ROOT + ".cache/shared/w3r1-mert-v1/shard_*.npz")):
-            z = np.load(f); keys += list(z["md5"]); arrs.append(z["feat"][:, :, 4:9].astype(np.float16).mean(2).astype(np.float16))
-        _S["mert"] = ({k: i for i, k in enumerate(keys)}, np.concatenate(arrs))
+            z = np.load(f); keys += list(z["md5"]); arrs.append(z["feat"][:, :, [4, 5, 6, 7, 8]].astype(np.float16))
+        _S["mert"] = ({k: i for i, k in enumerate(keys)}, np.concatenate(arrs))   # [n,4,5,768]
     idx, arr = _S["mert"]; u = meta.previewUrl.reindex(tids).values
     ii = np.array([idx.get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); ok = ii >= 0
-    X = np.zeros((len(tids), 4, 768), np.float32)
-    if ok.any(): X[ok] = arr[ii[ok]].astype(np.float32)
+    if feat == "mertL": X = np.zeros((len(tids), 12, 768), np.float32); sel = [0, 2, 4]
+    else: X = np.zeros((len(tids), 4, 768), np.float32)
+    if ok.any():
+        a = arr[ii[ok]].astype(np.float32)
+        X[ok] = a[:, :, [0, 2, 4]].reshape(a.shape[0], 12, 768) if feat == "mertL" else a.mean(2)
     return X, ok
 
 def _pca(Z, nc, seed=0):
@@ -103,9 +112,8 @@ def _fit(train, meta, cutoff, cfg):
     import torch; torch.set_num_threads(2)
     from evalkit.data import song_table
     st = song_table(train).reset_index(); st = st[st.trackId.isin(meta.index)].reset_index(drop=True)
-    ii = _rows(st.trackId.values, meta); ok = ii >= 0
     with threadpool_limits(2):
-        X, M = _gather(ii[ok], cfg["feat"]); rng = np.random.RandomState(0)
+        X, M, ok = _gather_t(st.trackId.values, meta, cfg["feat"]); rng = np.random.RandomState(0)
         flat = X[M]; mu = flat.mean(0); sd = flat.std(0) + 1e-6
         sub = flat[rng.choice(len(flat), min(len(flat), 30000), replace=False)]
         p = _pca((sub - mu) / sd, cfg["nc"]); res = dict(tf=(mu, sd, p)); Y = _tf(res, X, M)
@@ -115,9 +123,6 @@ def _fit(train, meta, cutoff, cfg):
         if cfg["target"] == "rank_plays": yr = pd.Series(col[mat]).groupby(qa[mat]).rank(pct=True).values
         else: yr = st.love.values[ok][mat].astype(float)
         yr = yr - yr.mean(); arts = st.artist.values[ok][mat]
-        if cfg["mert"]:
-            Xm, okm = _mertw(st.trackId.values[ok], meta); mm = Xm[okm].mean((0, 1)); ms = Xm[okm].std((0, 1)) + 1e-6
-            pm = _pca(((Xm[okm] - mm) / ms).mean(1), cfg["ncm"]); res["mert"] = (mm, ms, pm)
         res["m"] = None; res["nets"] = None; res["ridge"] = None
         if mat.sum() > 40:
             Ym, Mm = Y[mat], M[mat]
@@ -141,15 +146,16 @@ def make(**kw):
     def predict(train, cands, meta, cutoff):
         if cfg["excl_artist"]:   # diagnostic: for each candidate artist, refit without that artist's train songs (slow; used on a subsample only)
             raise NotImplementedError
-        res = _fit(train, meta, cutoff, cfg); ii = _rows(cands.trackId.values, meta); ok = ii >= 0; s = np.full(len(cands), res["neutral"])
-        if ok.any():
-            X, M = _gather(ii[ok], cfg["feat"]); s[ok] = _raw(res, _tf(res, X, M), M, cfg)
+        res = _fit(train, meta, cutoff, cfg); X, M, ok = _gather_t(cands.trackId.values, meta, cfg["feat"]); s = np.full(len(cands), res["neutral"])
+        if ok.any(): s[ok] = _raw(res, _tf(res, X, M), M, cfg)
         return (s - res["tm"]) / res["ts"]
     return predict
 
 PREDICTORS = {
-    "ridge_mean_emb": make(model="ridge", feat="emb"),
-    "patchridge_emb": make(model="patchridge", feat="emb"),
-    "mlp_mean_emb": make(model="mean", feat="emb"),
-    "attn_emb": make(model="attn", feat="emb"),
+    "ridge_mean_act": make(model="ridge", feat="act"),
+    "attn_act": make(model="attn", feat="act"),
+    "ridge_mean_mert": make(model="ridge", feat="mert", alpha=150.0, nc=32),
+    "patchridge_mert": make(model="patchridge", feat="mert", alpha=1200.0, nc=64),
+    "mlp_mert": make(model="mean", feat="mert", nc=32),
+    "attn_mert": make(model="attn", feat="mert", nc=32, pdrop=0.25),
 }

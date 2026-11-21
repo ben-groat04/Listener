@@ -102,11 +102,12 @@ class Block:
         o = object.__new__(Block); o.__dict__.update(self.__dict__)
         for k in ("y", "fold", "art", "new", "decoy", "cl"): setattr(o, k, getattr(self, k)[mask])
         for k in ("week", "sess"): setattr(o, k, None if getattr(self, k) is None else getattr(self, k)[mask])
-        o.W = self.W[:, mask]; o.W1 = self.W1[:, mask]; o.n = int(mask.sum()); return o
+        o.W = self.W[:, mask]; o.W1 = self.W1[:, mask]; o.n = int(mask.sum()); o._mask = mask; return o   # stats() then takes the PARENT's score vector
 
     def stats(self, s, boot=True, which=("sauc", "wa", "ww", "ws", "plift", "p20")):
         """dict of arrays: point estimate under key (name) -> shape (1,), bootstrap under (name+'_b') -> shape (B,)."""
-        out = {}
+        out = {}; s = np.asarray(s, float)
+        if getattr(self, "_mask", None) is not None: s = s[self._mask]
         for tag, W in (("", self.W1),) + ((("_b", self.W),) if boot else ()):
             if "sauc" in which: out["sauc" + tag] = pooled_auc(self.y, s, self.fold, W)
             if "ww" in which and self.week is not None: out["ww" + tag] = pooled_auc(self.y, s, self.week, W)

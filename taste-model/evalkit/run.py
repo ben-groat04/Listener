@@ -146,7 +146,7 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, null_control=False, va
         s = df.score.values; st = s[tried_m]
         S[n] = {k: subs[k][0].stats(st, True, ("sauc",) if k != "all" else ("sauc", "wa", "ww", "ws", "plift", "p20")) for k in subs}
         SO[n] = {k: subs[k][1].stats(s, True, ("sauc",) if k != "all" else ("sauc", "plift", "p20")) for k in subs}
-        SO[n]["wa"] = Owa.stats(s[wa_mask], True, ("wa",))
+        SO[n]["wa"] = Owa.stats(s, True, ("wa",))
     band = _band(first[tried_m].reset_index(drop=True), folds)
     # ---- tables
     rows = []

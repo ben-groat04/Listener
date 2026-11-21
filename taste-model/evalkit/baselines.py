@@ -101,62 +101,53 @@ def _meta_feats(trackId, title, artistIds, meta):
     return X
 
 # ---------------------------------------------------------------- GBM baselines (fit once per cutoff/train, cached)
+GBM_KW = dict(max_iter=150, learning_rate=0.05, max_leaf_nodes=8, min_samples_leaf=40, l2_regularization=1.0, early_stopping=False, random_state=0)
+# Artist-history features are confounded with calendar time in the training rows (counts grow with the history length while the love rate of newly discovered
+# songs falls from ~65% to ~20%), and an unconstrained GBM learned the REVERSED direction (TUNE sauc 0.46, below chance). So: familiarity features are monotone
+# (more familiar artist => not less likely loved) and training songs are weighted by recency (half-life 180 d, as artist_recent).
+MONO = dict(ap_all=1, ap_hl=1, love_rate=1, n_songs=1, days_since=-1, feat_known=1, new_artist=-1)
+WEIGHT_HL = 180.0   # days: exponential recency weight of training songs (half-life), None = uniform
 _FIT = {}
-def _gbm():
-    from sklearn.ensemble import HistGradientBoostingClassifier
-    return HistGradientBoostingClassifier(max_iter=150, learning_rate=0.05, max_leaf_nodes=8, min_samples_leaf=40, l2_regularization=1.0, early_stopping=False, random_state=0)
 
 def _train_key(name, train, cutoff):
     return (name, str(cutoff), len(train), int(pd.util.hash_array(train.trackId.values).sum() % (1 << 60)), int(train.t.values.astype("int64").sum() % (1 << 60)))
 
-def _fit_predict(name, train, cands, meta, cutoff, feats):
-    """feats(rows, kind) -> DataFrame of features for training songs (kind='train', with `first`) or candidates (kind='cand').
-    Training rows: train songs whose first play is before cutoff-90d (label horizon complete), labels from song_table(train), meta available."""
-    from .data import song_table, HORIZON_DAYS
-    key = _train_key(name, train, cutoff)
-    if key not in _FIT:
-        s = song_table(train).reset_index()
-        s = s[(s["first"] < cutoff - pd.Timedelta(days=HORIZON_DAYS)) & s.trackId.isin(meta.index)].reset_index(drop=True)
-        with _threads():
-            X = feats(s, "train", train, s, cutoff); y = s.love.values
-            mdl = _gbm().fit(X, y) if 0 < y.sum() < len(y) else None
-        _FIT[key] = (mdl, float(y.mean()) if len(y) else 0.5, list(X.columns))
-    mdl, prior, cols = _FIT[key]
-    if mdl is None: return np.full(len(cands), prior)
-    with _threads(): X = feats(cands, "cand", train, None, cutoff, meta)[cols]; return mdl.predict_proba(X)[:, 1]
+def _features(use_meta, rows, tsec, meta, hist=None, prior=None):
+    parts = []
+    if use_meta == "dur": parts.append(_meta_feats(rows.trackId.values, rows.trackName.values, rows.artistIds.values, meta)[["dur"]])
+    elif use_meta: parts.append(_meta_feats(rows.trackId.values, rows.trackName.values, rows.artistIds.values, meta))
+    if hist is not None: parts.append(_artist_feats(hist, list(rows.artistIds.values), tsec, prior))
+    return pd.concat([p.reset_index(drop=True) for p in parts], axis=1)
 
-def _mk(name, use_meta, use_artist):
-    def feats(rows, kind, train, songs=None, cutoff=None, meta=None):
-        meta = meta if meta is not None else feats.meta
-        parts = []
-        if use_meta is True: parts.append(_meta_feats(rows.trackId.values, rows.trackName.values, rows.artistIds.values, meta))
-        elif use_meta == "dur": parts.append(_meta_feats(rows.trackId.values, rows.trackName.values, rows.artistIds.values, meta)[["dur"]])
-        if use_artist:
-            allsongs = songs if songs is not None else feats.songs
-            tsec = _sec(rows["first"].values) if kind == "train" else np.full(len(rows), _sec(np.array([np.datetime64(cutoff)]))[0])
-            mat = allsongs  # love labels of matured songs: see _Hist
-            parts.append(_artist_feats(feats.hist, list(rows.artistIds.values), tsec, feats.prior).reset_index(drop=True))
-        X = pd.concat([p.reset_index(drop=True) for p in parts], axis=1); X.index = range(len(X)); return X
+def _make(name, use_meta, use_artist):
     def predict(train, cands, meta, cutoff):
+        """Training rows: train songs first played before cutoff-90d (label horizon complete) with meta available, labels from song_table(train)."""
+        from sklearn.ensemble import HistGradientBoostingClassifier
+        from threadpoolctl import threadpool_limits
         from .data import song_table, HORIZON_DAYS
-        if use_artist:
-            key = _train_key("hist", train, cutoff)
-            if key not in _FIT:
-                st = song_table(train).reset_index(); mt = st[st["first"] < cutoff - pd.Timedelta(days=HORIZON_DAYS)]
-                _FIT[key] = (_Hist(train, st), float(mt.love.mean()) if len(mt) else 0.25, st)
-            feats.hist, feats.prior, feats.songs = _FIT[key]
-        feats.meta = meta
-        f2 = lambda rows, kind, tr, songs, c, m=None: feats(rows, kind, tr, songs, c, m if m is not None else meta)
-        return _fit_predict(name, train, cands, meta, cutoff, f2)
-    predict.__doc__ = f"GBM baseline {name}"
+        key = _train_key(name, train, cutoff); csec = int(_sec(np.array([np.datetime64(cutoff)]))[0])
+        if key not in _FIT:
+            st = song_table(train).reset_index(); mt = st[st["first"] < cutoff - pd.Timedelta(days=HORIZON_DAYS)]
+            hist, prior = (_Hist(train, st), float(mt.love.mean()) if len(mt) else .25) if use_artist else (None, None)
+            rows = mt[mt.trackId.isin(meta.index)].reset_index(drop=True); y = rows.love.values
+            X = _features(use_meta, rows, _sec(rows["first"].values), meta, hist, prior); mdl = None
+            if 0 < y.sum() < len(y):
+                w = None if WEIGHT_HL is None else 0.5 ** ((cutoff - rows["first"]).dt.days.values / WEIGHT_HL)
+                with threadpool_limits(2):
+                    mdl = HistGradientBoostingClassifier(monotonic_cst=[MONO.get(c, 0) for c in X.columns], **GBM_KW).fit(X, y, sample_weight=w)
+            _FIT[key] = (mdl, float(y.mean()) if len(y) else .5, list(X.columns), hist, prior)
+        mdl, base, cols, hist, prior = _FIT[key]
+        if mdl is None: return np.full(len(cands), base)
+        X = _features(use_meta, cands, np.full(len(cands), csec), meta, hist, prior)[cols]
+        with threadpool_limits(2): return mdl.predict_proba(X)[:, 1]
     return predict
 
-duration = _mk("duration", "dur", False)
+duration = _make("duration", "dur", False)
 duration.__doc__ = "HistGradientBoosting on track duration (meta.durationMs) alone: learns the direction/shape of any duration effect from train songs."
-meta_gbm = _mk("meta_gbm", True, False)
+meta_gbm = _make("meta_gbm", True, False)
 meta_gbm.__doc__ = ("HistGradientBoosting on metadata only (duration, explicit, popularity, preview present, #artists, title length, album==title, title keyword flags). "
                     "Training rows: train songs first played before cutoff-90d, labels from song_table(train).")
-nonaudio_gbm = _mk("nonaudio_gbm", True, True)
+nonaudio_gbm = _make("nonaudio_gbm", True, True)
 nonaudio_gbm.__doc__ = ("meta_gbm features + point-in-time artist-history features (artist plays all-time and 180-day half-life, smoothed love rate of matured songs, "
                         "#earlier songs, days since last played, featured artist known, new-artist flag; training rows use streams before the song's own first play, candidates all train streams). "
                         "THE reference that any music/content claim must beat.")

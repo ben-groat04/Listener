@@ -282,3 +282,43 @@ def dump_sauc_delta(dump, fold_set, model_a, model_b, group="fold", label="love"
     B = dump_block(dump, fold_set, group, label, nboot, seed); g = dump[dump.fold_set == fold_set]
     a = B.stats(g[score_col(model_a)].values, True, ("sauc",)); b = B.stats(g[score_col(model_b)].values, True, ("sauc",)); d = a["sauc_b"] - b["sauc_b"]; f = d[np.isfinite(d)]
     return dict(d=float(a["sauc"][0] - b["sauc"][0]), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)), lo95=float(np.nanpercentile(d, 2.5)), P=float(np.mean(f > 0)))
+
+# ---------------------------------------------------------------- v5.1: per-fold meta-analysis of a paired within-fold AUC difference
+Z80 = 1.2815515655446004   # normal quantile of the 80% two-sided interval (0.9)
+
+def iv_meta(d, se, x=None):
+    """Inverse-variance (fixed-effect) meta-analysis of per-fold deltas `d` with standard errors `se` (numpy arrays, equal length k >= 1). Returns dict: mean, se, lo80, hi80 (normal, IV SE),
+    Q (Cochran), df = k - 1, p (chi-square upper tail), I2 = max(0, (Q - df) / Q), tau (DerSimonian-Laird; tau2 = max(0, (Q - df) / (sum w - sum w^2 / sum w))) and, when x is given (cutoff in years), the
+    IV-weighted linear trend of the delta per unit of x: trend, trend_se (sqrt(1 / sum w (x - xbar)^2), fixed-effect), trend_lo80, trend_hi80 (needs k >= 3, else NaN)."""
+    from scipy.stats import chi2
+    d = np.asarray(d, float); se = np.asarray(se, float); w = 1.0 / se ** 2; sw = w.sum(); k = len(d); m = float((w * d).sum() / sw); ses = float(1.0 / np.sqrt(sw))
+    Q = float((w * (d - m) ** 2).sum()); df = k - 1; p = float(chi2.sf(Q, df)) if df > 0 else np.nan; I2 = float(max(0.0, (Q - df) / Q)) if Q > 0 and df > 0 else 0.0
+    c = sw - (w ** 2).sum() / sw; tau2 = float(max(0.0, (Q - df) / c)) if (df > 0 and c > 0) else 0.0
+    out = dict(k=k, mean=m, se=ses, lo80=m - Z80 * ses, hi80=m + Z80 * ses, Q=Q, df=df, p=p, I2=I2, tau=float(np.sqrt(tau2)), trend=np.nan, trend_se=np.nan, trend_lo80=np.nan, trend_hi80=np.nan)
+    if x is not None and k >= 3:
+        x = np.asarray(x, float); xb = (w * x).sum() / sw; sxx = float((w * (x - xb) ** 2).sum())
+        if sxx > 0:
+            b = float((w * (x - xb) * d).sum() / sxx); sb = float(1.0 / np.sqrt(sxx)); out.update(trend=b, trend_se=sb, trend_lo80=b - Z80 * sb, trend_hi80=b + Z80 * sb)
+    return out
+
+def fold_meta(dump, fold_set, model_a, model_b, label="love", nboot=400, seed=0):
+    """Per-fold meta-analysis of the paired AUC difference a - b (models = dump columns score__<model>). For every fold of `fold_set`: the within-fold AUC delta (ties half), its artist-cluster
+    bootstrap SE (artists resampled WITHIN the fold, `nboot` resamples shared by both models; resamples with only one class are skipped) and n. Folds with < 5 positives or < 5 negatives are
+    excluded (counted in `n_excluded`). Returns dict: the iv_meta fields (IV mean delta with an 80% interval, Q, df, p, I2, tau, trend per year of cutoff with SE and 80% interval), `n_excluded`
+    and `table` (DataFrame: fold, cutoff, n, n_pos, delta, se, w). The fold name is the fold start date (the cutoff of the fold)."""
+    g = dump[dump.fold_set == fold_set]; ca, cb = score_col(model_a), score_col(model_b); rows = []; excl = 0
+    names = list(pd.unique(g.fold.astype(str).values))
+    for fi, f in enumerate(names):
+        h = g[g.fold.astype(str) == f]; y = h[label].values.astype(int); n1 = int(y.sum()); n0 = len(y) - n1
+        if n1 < 5 or n0 < 5: excl += 1; continue
+        sa, sb = h[ca].values.astype(float), h[cb].values.astype(float); d = auc(y, sa) - auc(y, sb)
+        cl, ncl = pd.factorize(h.artist.values)[0], len(pd.unique(h.artist.values)); rng = np.random.default_rng(seed + 1000 * fi)
+        W = rng.multinomial(ncl, np.full(ncl, 1.0 / ncl), size=nboot).astype(float)[:, cl]; z = np.zeros(len(y), int)
+        bd = pooled_auc(y, sa, z, W) - pooled_auc(y, sb, z, W); bd = bd[np.isfinite(bd)]   # one-class resamples give NaN and are skipped
+        se = float(np.std(bd, ddof=1)) if len(bd) > 2 else np.nan
+        if not np.isfinite(se) or se <= 0: excl += 1; continue
+        rows.append(dict(fold=f, cutoff=pd.Timestamp(f), n=len(y), n_pos=n1, delta=d, se=se))
+    tab = pd.DataFrame(rows, columns=["fold", "cutoff", "n", "n_pos", "delta", "se"])
+    if len(tab) == 0: return dict(k=0, n_excluded=excl, table=tab, mean=np.nan, se=np.nan, lo80=np.nan, hi80=np.nan, Q=np.nan, df=0, p=np.nan, I2=np.nan, tau=np.nan, trend=np.nan, trend_se=np.nan, trend_lo80=np.nan, trend_hi80=np.nan)
+    yrs = ((tab.cutoff - tab.cutoff.min()).dt.days / 365.25).values; r = iv_meta(tab.delta.values, tab.se.values, yrs); tab = tab.assign(w=1.0 / tab.se.values ** 2)
+    r.update(n_excluded=excl, table=tab); return r

@@ -19,6 +19,7 @@ def br_idx(yy, ss, g):
 
 def main():
     from threadpoolctl import threadpool_limits; threadpool_limits(2)
+    if "--v41" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v41_checks(data._load_all(), P_, _tune_tried(P_)); return
     d = data._load_all(); cuts = data.DEV_CUTOFFS; pub = data.anon_streams(d); meta_all = data.load_meta_all()
     assert data.TUNE_CUTOFFS + data.LATE_CUTOFFS == cuts and len(cuts) == 14
     # ---- metrics engine vs brute force
@@ -175,7 +176,7 @@ def main():
     assert os.environ.get("EVALKIT_NO_FIT_CACHE") is None and run._null_env(2)["EVALKIT_NULL_SEED"] == "2" and run._null_env(2)["EVALKIT_NO_FIT_CACHE"] == "1"
     # the harness' own baselines (fit caches keyed on seed / identities) and the null-report table on 3 TUNE folds, 3 seeds
     res = run.null_report([], {k: BASELINES[k] for k in ("artist_recent", "nonaudio_gbm")}, "tune3", [("TUNE[:3]", nc)], "v2", 3, None)
-    tb = res["TUNE[:3]"]["table"]; print("NULL CONTROL v3 (3 TUNE folds, 3 seeds; printed; band = 95% band of the 3-seed mean)"); print(res["TUNE[:3]"]["band"]); print(tb.drop(columns="slice").to_string(index=False))
+    tb = res["TUNE[:3]"]["table"]; print("NULL CONTROL v4 (3 TUNE folds, 3 seeds; printed; song-level band of the 3-seed mean)"); print(res["TUNE[:3]"]["band"]); print(tb.drop(columns="slice").to_string(index=False))
     for _, r in tb.iterrows(): assert len({r["sauc_s1"], r["sauc_s2"], r["sauc_s3"], r["wa_sauc_s1"], r["wa_sauc_s2"], r["wa_sauc_s3"]}) > 1 or r["model"] == "artist_recent", f"{r['model']}: the 3 null seeds gave identical results"
     assert tb[tb.model == "nonaudio_gbm"].iloc[0][["sauc_s1", "sauc_s2", "sauc_s3"]].nunique() == 3, "nonaudio_gbm null seeds must differ"
     # the reference row (audio_final) must be identity-safe: different null seeds in one process give different scores
@@ -198,6 +199,100 @@ def main():
     from . import baselines as bl
     k1 = bl._train_key("x", F["train"], F["c"]); os.environ["EVALKIT_NULL_SEED"] = "1"; k2 = bl._train_key("x", F["train"], F["c"]); del os.environ["EVALKIT_NULL_SEED"]
     tr_sh = F["train"].copy(); tr_sh["artist"] = tr_sh.artist.values[::-1]; assert k1 != k2 and k1 != bl._train_key("x", tr_sh, F["c"]), "fit-cache key ignores the seed / artist identities"
+    v41_checks(d, P, T)
     print("selftest OK")
+
+def _tune_tried(P):
+    T = pd.concat([F["pool"].iloc[F["order"]].assign(fold=str(F["c"].date())) for F in P if F["c"] in pd.to_datetime(data.TUNE_CUTOFFS)]); return T[T.is_decoy == 0].reset_index(drop=True)
+
+def v41_checks(d, P, T):
+    """v4.1 checks (python3 -m evalkit.selftest --v41 runs only these)."""
+    from threadpoolctl import threadpool_limits; threadpool_limits(2)
+    import importlib.util as _iu, subprocess, shutil, pathlib
+    from . import bundle, refs
+    tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v41_"))
+    # ---- `keep` label (>= 6 plays in days [90, 365) after the first play): brute force vs raw streams on 40 tried songs of the first TUNE fold; LATE folds are n/a; never public
+    Pk = P[8]["pool"]; tr_ = Pk[Pk.is_decoy == 0]; assert tr_.keep.notna().all() and set(tr_.keep.unique()) <= {0.0, 1.0} and Pk[Pk.is_decoy == 1].keep.eq(0).all(), "keep missing for a TUNE fold"
+    for _, r_ in tr_.sample(40, random_state=1).iterrows():
+        dd = d[d.song == r_.song]; cnt = ((dd.t >= r_["first"] + pd.Timedelta(days=90)) & (dd.t < r_["first"] + pd.Timedelta(days=365))).sum(); assert float(cnt >= 6) == r_.keep, f"keep != brute force for {r_.song}"
+    assert all(run.keep_qualifies(c_) for c_ in data.TUNE_CUTOFFS) and not any(run.keep_qualifies(c_) for c_ in data.LATE_CUTOFFS), "keep must be computed for all TUNE folds and n/a for LATE folds"
+    assert all(F_["pool"].keep.isna().all() for F_ in P if str(F_["c"].date()) in data.LATE_CUTOFFS), "keep must be NaN on LATE folds"
+    assert not ({"keep"} & set(P[0]["cands"].columns)) and "keep" not in P[0]["meta"].columns and "keep" not in P[0]["train"].columns, "keep leaked into the public view"
+    print(f"keep label: matches brute force on 40 songs; {int(tr_.keep.sum())}/{len(tr_)} kept in TUNE fold 2023-07; LATE folds n/a; not public")
+    # ---- bundle hash: an importing wrapper is refused (temp logs), also when the predictor is loaded lazily at call time; a docstring mention is not a dependency
+    real = "/home/user/Listener/taste-model/predictors/w4r1-taste-from-all-listening/predict.py"; real_sha = run._sha(real)
+    w1 = tmp / "wrapper_import.py"; w1.write_text(f"import importlib.util\n_s = importlib.util.spec_from_file_location('inner', '{real}'); _m = importlib.util.module_from_spec(_s); _s.loader.exec_module(_m)\nPREDICTORS = {{'wrapped': _m.PREDICTORS['w4r1_final']}}\n")
+    w2 = tmp / "wrapper_lazy.py"; w2.write_text(f"import importlib.util\ndef predict(train, cands, meta, cutoff):\n    s = importlib.util.spec_from_file_location('inner', ROOT + 'predictors/w4r1-taste-from-all-listening/predict.py'); m = importlib.util.module_from_spec(s); s.loader.exec_module(m)\n    return m.PREDICTORS['w4r1_final'](train, cands, meta, cutoff)\nROOT = '/home/user/Listener/taste-model/'\n")
+    w3 = tmp / "doc_only.py"; w3.write_text(f'"""see predictors/w4r1-taste-from-all-listening/predict.py for the idea"""\nimport numpy as np\ndef predict(train, cands, meta, cutoff): return np.zeros(len(cands))\n')
+    lg2 = tmp / "late2.log"; hg2 = tmp / "holdout2.log"; lg2.write_text("".join(json.dumps(dict(sha256=[real_sha])) + "\n" for _ in range(2))); hg2.write_text(json.dumps(dict(sha256=[real_sha])) + "\n")
+    for w, expect in ((w1, True), (w2, True), (w3, False)):
+        bi = bundle.describe(str(w)); mem = sorted(bi["members"].values()); assert (real_sha in mem) == expect, f"bundle members of {w.name}: {list(bi['members'])}"
+        for fn_, kw_ in ((run.late_cap_check, dict(log=lg2)), (run.holdout_cap_check, dict(log=hg2))):
+            try: fn_([run._sha(w)], bundles=[bi["bundle_sha256"]], members=mem, **kw_); assert not expect, f"importing wrapper {w.name} was not refused"
+            except SystemExit as e: assert expect and "REFUSED" in str(e) and "wrapper" in str(e), str(e)
+    assert bundle.bundle_sha256([str(w1)]) != bundle.bundle_sha256([str(w3)]) and bundle.bundle_sha256([real]) == bundle.bundle_sha256([real])
+    # the cap also applies to the bundle hash itself (v4.1 log lines carry it) and to the entry sha; old lines (entry sha only) keep counting
+    lg3 = tmp / "late3.log"; bh = "cd" * 32; lg3.write_text(json.dumps(dict(sha256=["01" * 32], bundle_sha256=[bh])) + "\n" + json.dumps(dict(sha256=["02" * 32], bundle_sha256=[bh])) + "\n")
+    try: run.late_cap_check(["03" * 32], lg3, bundles=[bh]); raise AssertionError("bundle-hash cap not enforced")
+    except SystemExit as e: assert "bundle hash" in str(e)
+    run.late_cap_check(["03" * 32], lg3, bundles=["ee" * 32])
+    print("bundle hash: importing / lazily loading wrapper of a predictor that used up its runs is refused for --late and --holdout (temp logs); a docstring mention is not a dependency; bundle-hash cap enforced")
+    # ---- fingerprints: a renamed / lightly edited copy of a logged model is refused (Spearman >= 0.999 on the first fold of the slice); a different scorer and a re-run of the same file are not
+    for sl_ in ("late", "holdout"):
+        fp = tmp / f"{sl_}_fp.pkl"; v1 = run.first_fold_vectors({"orig": _random}, sl_); run.fingerprint_check(fp, "aa" * 32, v1); run.fingerprint_record(fp, "aa" * 32, v1)
+        run.fingerprint_check(fp, "aa" * 32, {"orig": v1["orig"]})   # same file again: not compared with itself
+        run.fingerprint_check(fp, "bb" * 32, run.first_fold_vectors({"other": lambda tr, cs, me, k: ((cs.trackId.values * 7919) % 1000003) / 1000003.0}, sl_))
+        try: run.fingerprint_check(fp, "cc" * 32, {"renamed_copy": v1["orig"] * 3 + 1}); raise AssertionError("renamed copy was not refused")
+        except SystemExit as e: assert "REFUSED" in str(e) and "renamed" in str(e)
+    print("fingerprints: a renamed copy of a logged model is refused on the first fold of the late / holdout slice (temp files); a different scorer and a re-run of the same file pass")
+    # ---- holdout budget
+    bj = tmp / "budget.json"
+    try: run.holdout_budget_check(bj); raise AssertionError("missing budget file accepted")
+    except SystemExit as e: assert "REFUSED" in str(e)
+    bj.write_text(json.dumps(dict(round="t", remaining=1))); run.holdout_budget_check(bj); assert run.holdout_budget_use(bj)["remaining"] == 0
+    try: run.holdout_budget_check(bj); raise AssertionError("budget 0 accepted")
+    except SystemExit as e: assert "REFUSED" in str(e)
+    assert json.load(open(run.HOLDOUT_BUDGET))["round"] == "w4r2" and json.load(open(run.HOLDOUT_BUDGET))["remaining"] >= 0
+    print("holdout budget: refused when the file is missing or remaining is 0; each use decrements")
+    # ---- walk-forward vs brute force on 3 dummy members (7 folds, two folds too small to count)
+    rngw = np.random.default_rng(11); fn_ = ["f%d" % i for i in range(7)]; rows_ = []
+    for i, (nf, nl) in enumerate([(30, 8), (200, 60), (200, 8), (22, 11), (200, 60), (200, 60), (200, 60)]):   # folds 0 and 2 have < 10 loved rows: never eligible
+        rows_.append(pd.DataFrame(dict(fold=fn_[i], trackId=np.arange(nf) + 1000 * i, is_decoy=0, love=rngw.permutation(np.r_[np.ones(nl, int), np.zeros(nf - nl, int)]))))
+    base = pd.concat(rows_, ignore_index=True); yb = base.love.values
+    mem_ = {}
+    for j, nm in enumerate(("m_a", "m_b", "m_c")): mem_[nm] = base.assign(score=np.round(rngw.random(len(base)) + (.2 * (j + 1) * yb if j != 1 else 0) * (base.fold.isin(fn_[:3])), 1))   # rounded: ties
+    comp_, ch_ = run.walkforward_composite(mem_, fn_)
+    exp_sc = np.zeros(len(base)); exp_ch = []
+    for k, f_ in enumerate(fn_):
+        elig = [g for g in fn_[:k] if (yb[(base.fold == g).values].sum() >= 10 and (1 - yb[(base.fold == g).values]).sum() >= 10)]; pick = "m_a"
+        if elig:
+            m_ = base.fold.isin(elig).values; vals = {n: br_idx(yb[m_], mem_[n].score.values[m_], pd.factorize(base.fold.values[m_])[0]) for n in mem_}; pick = max(vals, key=lambda n: (vals[n], -list(mem_).index(n)))
+        exp_ch.append(pick); mk = (base.fold == f_).values; exp_sc[mk] = mem_[pick].score.values[mk]
+    assert [c["member"] for c in ch_] == exp_ch and np.array_equal(comp_.score.values, exp_sc), "walk-forward != brute force"
+    assert [c["eligible_folds"] for c in ch_] == [0, 0, 1, 1, 2, 3, 4] and ch_[0]["member"] == "m_a" and len(set(exp_ch)) > 1, "walk-forward dummy does not exercise the rule"
+    print("walk-forward: chosen members", exp_ch, "- composite and choices equal the brute-force recomputation on 3 dummy members")
+    # ---- null control v4: an ARTIST-CONSTANT random scorer must PASS under the cluster-aware band in >= 9 of 10 dummy runs (the song-level band is printed for comparison)
+    Tn_rows = T.reset_index(drop=True); BT = metrics.Block(Tn_rows, "love", 2, 0); BTn = BT.sub(BT.new); au = pd.factorize(Tn_rows.artist.values)[0]; npass = 0; nsong = 0
+    for rep_ in range(10):
+        r_ = np.random.default_rng(100 + rep_); seeds_ = [r_.random(au.max() + 1)[au] for _ in range(5)]   # 5 'null seeds' of an artist-constant scorer (a constant per artist in every fold)
+        vals_, cb_, inside_, avg_ = run.null_avg_stats(BT, BTn, Tn_rows, seeds_); npass += all(inside_)
+        sb_ = metrics.permutation_band(Tn_rows, nperm=40, nmean=5, seed=rep_); nsong += all(sb_[k][0] <= v <= sb_[k][1] for k, v in zip(("sauc", "wa", "new"), vals_))
+    print(f"artist-constant random scorer: PASS under the cluster-aware band in {npass}/10 dummy runs (song-level band for comparison: {nsong}/10)")
+    assert npass >= 9, "artist-constant scorer FLAGs under the cluster-aware band"
+    blocks_ = metrics.artist_blocks(BT.fold, Tn_rows.artist.values); yp_ = metrics.permute_artist_blocks(BT.y, blocks_, np.random.default_rng(0))
+    assert yp_.sum() == BT.y.sum() and all(yp_[BT.fold == f_].sum() == BT.y[BT.fold == f_].sum() for f_ in np.unique(BT.fold)), "block permutation must keep the number of loved rows per fold"
+    # ---- evalkit.refs: identity guard (strong key sees a row permutation that the references' own sum-keys do not), regeneration of missing caches from a build script
+    Fk = P[3]; trk = Fk["train"]; t2_ = trk.copy(); perm_ = np.random.default_rng(0).permutation(len(t2_))
+    for col in ("trackId", "song", "artist"): t2_[col] = t2_[col].values[perm_]
+    assert refs.train_key(trk, Fk["c"]) != refs.train_key(t2_, Fk["c"]), "refs key is blind to a permutation of identities among rows"
+    os.environ["EVALKIT_NULL_SEED"] = "1"; k_seed = refs.train_key(trk, Fk["c"]); del os.environ["EVALKIT_NULL_SEED"]; assert k_seed != refs.train_key(trk, Fk["c"]), "refs key ignores the null seed"
+    out_ = tmp / "gen" / "out.npz"; scr_ = tmp / "build.py"; scr_.write_text(f"import numpy as np\nnp.savez('{out_}', a=np.arange(3))\n"); refs.REFS["tmp_ref"] = (scr_, "x", [(out_, scr_)]); refs.ensure("tmp_ref"); assert out_.exists(); del refs.REFS["tmp_ref"]
+    for nm in refs.REFS:
+        for outp, scr in refs.REFS[nm][2]: assert pathlib.Path(outp).exists() and pathlib.Path(scr).exists(), f"{nm}: cache or its build script missing"
+    ra1 = refs.score("ref_audio_final", trk, Fk["cands"], Fk["meta"], Fk["c"]); ra2 = refs.score("ref_audio_final", trk, Fk["cands"], Fk["meta"])   # cutoff inferred from the train
+    assert refs.infer_cutoff(trk) == Fk["c"] and np.array_equal(ra1, ra2) and len(ra1) == len(Fk["cands"]), "refs.score / cutoff inference"
+    ra3 = refs.score("ref_audio_final", t2_, Fk["cands"], Fk["meta"], Fk["c"]); assert not np.array_equal(ra1, ra3), "refs reused a fit for a train with permuted identities"
+    print("refs: strong identity key sees row permutations and the null seed; missing compact caches are rebuilt from their build scripts; refs.score fits on the given train (permuted identities give other scores)")
+    print("v4.1 checks OK")
 
 if __name__ == "__main__": main()

@@ -1,14 +1,17 @@
 """w4r1-taste-from-all-listening: content-only taste model trained on the WHOLE pre-cutoff listening record.  Harness entry file.
-Usage (from /home/user/Listener/taste-model):  python3 -W ignore -m evalkit.run --fast predictors/w4r1-taste-from-all-listening/predict.py
+Usage (from /home/user/Listener/taste-model; needs .cache/w4r1/compact.npz from build_compact.py):
+    python3 -W ignore -m evalkit.run --fast predictors/w4r1-taste-from-all-listening/predict.py
 
-Inputs per candidate: ONLY cached per-clip content (MERT / CLAP / essentia heads+embedding of the preview; lyrics embedding).  No artist id, no artist history.
-The listening record (streams < cutoff) is used ONLY to build per-song training targets and weights ("signal"):
-  panel signal : for each of K consecutive periods of P days before the cutoff, every song played in that period gets target = percentile rank of its
-                 (valid) plays in that period among the songs played then (old or new songs alike); rows weighted by recency 0.5**(age/hl).
-  new signal   : W3-style target for songs first played >=90 d before cutoff: percentile of plays90 within the quarter of first play.
-Both signals are accumulated per song as sufficient statistics of one weighted ridge (normal equations), so a candidate's own artist can be
-removed from the training signal exactly (variants named *_noart: score of candidate c uses the ridge refit without every training song of c's primary artist).
-Transforms (standardiser, PCA) are fit on train-stream songs only.  No audio -> block contributes zeros (train mean); no block at all -> neutral score.
+Candidate input: ONLY the per-clip MERT-v1-95M features of the candidate's preview (4 windows, layers 4-8 averaged).  No artist id, no artist history,
+no pool structure.  The listening record (streams < cutoff) is used ONLY to build per-song training targets and weights ("signal"):
+  new   : W3-style: songs first played >= 90 d before the cutoff, target = percentile of plays in the first 90 days within the quarter of first play.
+  panel : each of the last K=2 periods of P=91 days before the cutoff: every song (old or new) with >= 2 plays in that period gets target = percentile
+          rank of its plays in that period among such songs; rows weighted by recency 0.5**(age_days/180).
+Each member is a weighted ridge on whitened PCA of MERT (fit on train-stream songs with audio only), solved by normal equations; the score is the mean over
+members of the standardised member scores (standardised with the member's own scores on its training rows).
+Variants *_noart: for every candidate, its own primary artist's training songs are removed from the member's training signal (exact leave-artist-out ridge:
+the artist's sufficient statistics are subtracted); PCA is not refit.  Depends only on the candidate's own artist id.
+No audio -> neutral score 0 (= mean of the standardised training-row scores).
 """
 import hashlib
 import numpy as np, pandas as pd
@@ -18,85 +21,46 @@ _S = {}
 def _store():
     if "c" not in _S:
         z = np.load(ROOT + ".cache/w4r1/compact.npz")
-        _S["c"] = {k: z[k] for k in z.files}; _S["idx"] = {k: i for i, k in enumerate(_S["c"]["md5"])}
-        import pickle
-        _S["lyr"] = pickle.load(open(ROOT + ".cache/shared/w4-lyrics/emb.pkl", "rb"))
+        _S["c"] = {k: z[k] for k in ("md5", "mert", "has_mert")}; _S["idx"] = {k: i for i, k in enumerate(_S["c"]["md5"])}
     return _S
 
-CFG = dict(blocks=("mert",), ncomp=64, alpha=300.0, signal="panel", K=8, P=91, hl=180.0, newhl=120.0, w_new=1.0, w_panel=1.0, compl=0.0,
-           tgt="rank", minplays=1, prune=0, noart=False, mode="whole", learner="ridge", k=50, tau=0.1, wt=1.0, zw=0.0, oldw=1.0, r0=90, r1=270)
+CFG = dict(ncomp=64, alpha=300.0, signal="panel", K=2, P=91, hl=180.0, newhl=None, minplays=2, noart=False, mode="whole", wt=1.0)
 
-def _raw_block(name, tids, meta):
-    S = _store(); n = len(tids)
-    if name == "lyr":
-        L = S["lyr"]; X = np.zeros((n, 384), np.float32); has = np.zeros(n, bool)
-        for i, t in enumerate(tids):
-            v = L.get(int(t));
-            if v is not None: X[i] = v; has[i] = True
-        return X, has
-    u = meta.previewUrl.reindex(tids).values
-    ii = np.array([S["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); C = S["c"]
-    if name == "mert": has = ii >= 0; X = np.zeros((n, 4, 768), np.float32); X[has] = C["mert"][ii[has]].astype(np.float32); has &= C["has_mert"][np.maximum(ii, 0)]
-    elif name == "clap": has = (ii >= 0) & C["has_clap"][np.maximum(ii, 0)]; X = np.zeros((n, 768), np.float32); X[has] = C["clap"][ii[has]].astype(np.float32)
-    elif name == "ess": has = (ii >= 0) & C["has_ess"][np.maximum(ii, 0)]; X = np.zeros((n, 605), np.float32); X[has] = C["ess_act"][ii[has]].astype(np.float32)
-    elif name == "esse": has = (ii >= 0) & C["has_ess"][np.maximum(ii, 0)]; X = np.zeros((n, 1280), np.float32); X[has] = C["ess_emb"][ii[has]].astype(np.float32)
-    else: raise ValueError(name)
+def _raw(tids, meta):
+    """[n, 4, 768] MERT windows and has-audio mask; per-clip features, independent of other tracks"""
+    S = _store(); n = len(tids); C = S["c"]; u = meta.previewUrl.reindex(tids).values
+    ii = np.array([S["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u])
+    has = ii >= 0; X = np.zeros((n, 4, 768), np.float32); X[has] = C["mert"][ii[has]].astype(np.float32); has &= C["has_mert"][np.maximum(ii, 0)]
     has &= np.isfinite(X).reshape(n, -1).all(1); X[~has] = 0
     return X, has
 
 def _design(res, tids, meta, cfg):
-    """[n*rep, d] design (rep = 4 windows in local mode, else 1), any-block-present mask [n]"""
-    parts, anyhas, n = [], np.zeros(len(tids), bool), len(tids); local = cfg["mode"] == "local"; rep = 4 if local else 1
-    for b, (mu, sd, pca) in zip(cfg["blocks"], res["tf"]):
-        X, has = _raw_block(b, tids, meta)
-        if X.ndim == 3:
-            if local: P = pca.transform(((X - mu) / sd).reshape(n * 4, -1)); P[np.repeat(~has, 4)] = 0
-            else: P = pca.transform(((X.mean(1) - mu) / sd)); P[~has] = 0
-        else:
-            P = pca.transform((X - mu) / sd); P[~has] = 0
-            if local: P = np.repeat(P, 4, 0)
-        parts.append(P); anyhas |= has
-    return np.concatenate(parts, 1), anyhas
+    """[n*rep, d] whitened-PCA design (rep = 4 windows in local mode, else window mean) and has-audio mask [n]"""
+    n = len(tids); mu, sd, pca = res["tf"]; X, has = _raw(tids, meta)
+    if cfg["mode"] == "local": P = pca.transform(((X - mu) / sd).reshape(n * 4, -1)); P[np.repeat(~has, 4)] = 0
+    else: P = pca.transform((X.mean(1) - mu) / sd); P[~has] = 0
+    return P, has
 
-def _pct(vals, groups):
-    return pd.Series(vals).groupby(groups).rank(pct=True).values
+def _pct(vals):
+    return pd.Series(vals).rank(pct=True).values
 
-def _signal(train, st, cutoff, cfg, meta):
-    """per-song sufficient statistics: W (weight sum) and Y (weight*target sum) over rows of the chosen signals."""
+def _signal(train, st, cutoff, cfg):
+    """per-song sufficient statistics of the training signal: W = weight sum, Y = weight * target sum (rows with W == 0 are not used)."""
     idx = {s: i for i, s in enumerate(st.index)}; n = len(st); W = np.zeros(n); Y = np.zeros(n)
-    d = train
-    if cfg["compl"]:   # count only plays that reached `compl` of the track duration (partial listens dropped)
-        dur = meta.durationMs.reindex(d.trackId.values).values; d = d[(d.playedMs.values >= cfg["compl"] * np.where(np.isfinite(dur) & (dur > 0), dur, 0))]
-    si = d.song.map(idx).values; ok = ~pd.isna(si); si = si[ok].astype(int); tt = d.t.values[ok]
-    if cfg["signal"] in ("panel", "both"):
+    if cfg["signal"] == "panel":
+        si = train.song.map(idx).values; ok = ~pd.isna(si); si = si[ok].astype(int); tt = train.t.values[ok]
         for k in range(cfg["K"]):
             e = cutoff - pd.Timedelta(days=cfg["P"] * k); s0 = e - pd.Timedelta(days=cfg["P"])
             m = (tt >= np.datetime64(s0)) & (tt < np.datetime64(e))
             if m.sum() == 0: continue
             cnt = np.bincount(si[m], minlength=n); pl = cnt >= cfg["minplays"]
             if pl.sum() < 20: continue
-            if cfg["zw"] > 0:   # also use active-but-unplayed songs (first play before the period end) as low-rank rows with weight zw
-                act = (st["first"].values < np.datetime64(e)); allr = act & (cnt >= 0); y = np.zeros(n); y[allr] = _pct(cnt[allr], np.zeros(allr.sum()))
-                w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * (pl + cfg["zw"] * (act & ~pl)); W += w; Y += w * y; continue
-            if cfg["tgt"] == "rank": y = np.zeros(n); y[pl] = _pct(cnt[pl], np.zeros(pl.sum()))
-            else: y = np.zeros(n); y[pl] = np.log1p(cnt[pl]); y[pl] = (y[pl] - y[pl].mean()) / (y[pl].std() + 1e-9) * 0.29 + 0.5
-            w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * pl * np.where(st["first"].values >= np.datetime64(s0), 1.0, cfg["oldw"])
+            y = np.zeros(n); y[pl] = _pct(cnt[pl]); w = 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * pl
             W += w; Y += w * y
-    if cfg["signal"] in ("new", "both"):
-        fi = st["first"]; mat = (fi < cutoff - pd.Timedelta(days=90)).values
-        p90 = st.plays90.values
-        if cfg["compl"]:   # complete plays inside 90 days of first play
-            first = st["first"].reindex(d.song).values; dd = d[(d.t.values < first + np.timedelta64(90, "D"))]
-            p90 = dd.groupby("song").size().reindex(st.index).fillna(0).values
-        qa = fi.dt.to_period("Q").astype(str).values
-        y = np.zeros(n); y[mat] = _pct(p90[mat], qa[mat])
-        w = cfg["w_new"] * (0.5 ** ((cutoff - fi).dt.days.values / cfg["newhl"]) if cfg["newhl"] else 1.0) * mat
-        W += w; Y += w * y
-    if cfg["signal"] == "ret":   # retention: plays in days r0..r1 after first play (does the song stay in rotation?), rank within the quarter of first play
-        fi = st["first"]; mat = (fi < cutoff - pd.Timedelta(days=cfg["r1"])).values
-        rel = (d.t.values[ok] - fi.values[si]) / np.timedelta64(1, "D"); m = (rel >= cfg["r0"]) & (rel < cfg["r1"])
-        cnt = np.bincount(si[m], minlength=n); qa = fi.dt.to_period("Q").astype(str).values
-        y = np.zeros(n); y[mat] = _pct(cnt[mat], qa[mat]); w = (0.5 ** ((cutoff - fi).dt.days.values / cfg["newhl"]) if cfg["newhl"] else 1.0) * mat; W += w; Y += w * y
+    else:   # "new"
+        fi = st["first"]; mat = (fi < cutoff - pd.Timedelta(days=90)).values; qa = fi.dt.to_period("Q").astype(str).values
+        y = np.zeros(n); y[mat] = pd.Series(st.plays90.values[mat]).groupby(qa[mat]).rank(pct=True).values
+        w = (0.5 ** ((cutoff - fi).dt.days.values / cfg["newhl"]) if cfg["newhl"] else 1.0) * mat; W += w; Y += w * y
     return W, Y
 
 def _fit(train, meta, cutoff, cfg):
@@ -106,25 +70,15 @@ def _fit(train, meta, cutoff, cfg):
     st = song_table(train); st = st[st.trackId.isin(meta.index)]
     tids = st.trackId.values; art = st.artist.values
     with threadpool_limits(2):
-        tf = []
-        for b in cfg["blocks"]:
-            X, has = _raw_block(b, tids, meta); Xo = X[has]
-            if Xo.ndim == 3 and cfg["mode"] != "local": Xo = Xo.mean(1)
-            else: Xo = Xo.reshape(-1, Xo.shape[-1]) if Xo.ndim == 3 else Xo
-            mu = Xo.mean(0); sd = Xo.std(0) + 1e-6
-            nc = min(cfg["ncomp"], max(2, has.sum() - 1)); pca = PCA(nc, whiten=True, random_state=0).fit((Xo - mu) / sd); tf.append((mu, sd, pca))
-        res = dict(tf=tf); P, has = _design(res, tids, meta, cfg)
-        W, Y = _signal(train, st, cutoff, cfg, meta)
-        keep = has & (W > 0)
-        if cfg["prune"]: keep &= W > np.quantile(W[W > 0], cfg["prune"])
-        rep = 4 if cfg["mode"] == "local" else 1; kr = np.repeat(keep, rep)
+        X, has = _raw(tids, meta); Xo = X[has]; Xo = Xo.reshape(-1, 768) if cfg["mode"] == "local" else Xo.mean(1)
+        mu = Xo.mean(0); sd = Xo.std(0) + 1e-6
+        res = dict(tf=(mu, sd, PCA(min(cfg["ncomp"], has.sum() - 1), whiten=True, random_state=0).fit((Xo - mu) / sd)))
+        P, has = _design(res, tids, meta, cfg); W, Y = _signal(train, st, cutoff, cfg)
+        keep = has & (W > 0); rep = 4 if cfg["mode"] == "local" else 1; kr = np.repeat(keep, rep)
         P = P[kr]; W, Y, art2 = np.repeat(W[keep], rep), np.repeat(Y[keep], rep), np.repeat(art[keep], rep)
-        sc = W.sum(); ws = W * len(W) / sc; Yn = Y / W            # mean weight 1 per row
-        if cfg["learner"] == "knn":
-            Pn = P / (np.linalg.norm(P, axis=1, keepdims=True) + 1e-9); res.update(Pn=Pn.astype(np.float32), ws=ws, Yn=Yn, art=art2)
-            sa = _knn(res, Pn.astype(np.float32), None, cfg, self_excl=True); res["tm"], res["ts"] = float(sa.mean()), float(sa.std() + 1e-9); return res
+        ws = W * len(W) / W.sum(); Yn = Y / W            # mean row weight 1
         Xa = np.c_[P, np.ones(len(P))]; reg = np.eye(Xa.shape[1]) * cfg["alpha"]; reg[-1, -1] = 1e-6
-        A = (Xa * ws[:, None]).T @ Xa; b = (Xa * (ws * Yn)[:, None]).T @ Xa[:, :0] if False else (Xa * (ws * Yn)[:, None]).sum(0)
+        A = (Xa * ws[:, None]).T @ Xa; b = (Xa * (ws * Yn)[:, None]).sum(0)
         res.update(A=A, b=b, reg=reg, beta=np.linalg.solve(A + reg, b))
         if cfg["noart"]:   # per-artist normal-equation blocks for exact leave-artist-out refits
             g = pd.Series(np.arange(len(P))).groupby(art2).apply(lambda s: s.values)
@@ -136,25 +90,11 @@ _CACHE = {}
 def _get(train, meta, cutoff, cfg):
     import os
     key = (str(cutoff), len(train), hashlib.md5(pd.util.hash_pandas_object(train[["trackId", "song", "artist"]].astype(str), index=False).values.tobytes()).hexdigest(),
-           hashlib.md5(train.t.values.tobytes()).hexdigest(), repr(sorted(cfg.items())))
+           hashlib.md5(train.t.values.tobytes()).hexdigest(), repr(sorted(cfg.items())))   # identity-aware key; bypassed with EVALKIT_NO_FIT_CACHE
     if key in _CACHE and not os.environ.get("EVALKIT_NO_FIT_CACHE"): return _CACHE[key]
     r = _fit(train, meta, cutoff, cfg); _CACHE[key] = r; return r
 
-def _knn(res, Q, qart, cfg, self_excl=False):
-    """Nadaraya-Watson over the top-k most similar training songs (cosine in the whitened PCA space); same-artist training songs excluded when qart is given."""
-    out = np.zeros(len(Q), np.float32); T = res["Pn"]; k = cfg["k"]
-    for i0 in range(0, len(Q), 512):
-        S = Q[i0:i0 + 512] @ T.T
-        if self_excl: S[np.arange(S.shape[0]), np.arange(i0, i0 + S.shape[0])] = -9
-        if qart is not None: S[qart[i0:i0 + 512, None] == res["art"][None, :]] = -9
-        idx = np.argpartition(-S, k, axis=1)[:, :k]; sv = np.take_along_axis(S, idx, 1)
-        w = np.exp((sv - sv.max(1, keepdims=True)) / cfg["tau"]) * res["ws"][idx]; out[i0:i0 + 512] = (w * res["Yn"][idx]).sum(1) / (w.sum(1) + 1e-12)
-    return out
-
 def _score(res, cands, meta, cfg):
-    if cfg["learner"] == "knn":
-        P, has = _design(res, cands.trackId.values, meta, cfg); Pn = (P / (np.linalg.norm(P, axis=1, keepdims=True) + 1e-9)).astype(np.float32)
-        s = _knn(res, Pn, cands.artist.values if cfg["noart"] else None, cfg); s = (s - res["tm"]) / res["ts"]; s[~has] = 0.0; return s
     n = len(cands); rep = 4 if cfg["mode"] == "local" else 1
     P, has = _design(res, cands.trackId.values, meta, cfg); Xa = np.c_[P, np.ones(len(P))]; s = Xa @ res["beta"]
     if cfg["noart"]:
@@ -162,29 +102,24 @@ def _score(res, cands, meta, cfg):
         for a in np.unique(art):
             if a not in res["ablocks"]: continue
             Aa, ba = res["ablocks"][a]; beta = np.linalg.solve(res["A"] - Aa + res["reg"], res["b"] - ba); m = art == a; s[m] = Xa[m] @ beta
-    s = s.reshape(n, rep).mean(1)
-    s = (s - res["tm"]) / res["ts"]; s[~has] = 0.0   # train-song mean score as neutral
+    s = (s.reshape(n, rep).mean(1) - res["tm"]) / res["ts"]; s[~has] = 0.0   # no audio: neutral
     return s
 
 def make(*members, **kw):
-    """standardised mean of one or more configs (each member: dict overriding CFG)"""
-    cfgs = [{**CFG, **kw, **m} for m in (members or [{}])]
+    """weighted mean of standardised member scores (each member: dict overriding CFG)"""
+    cfgs = [{**CFG, **kw, **m} for m in members]
     def predict(train, cands, meta, cutoff):
         return np.average([_score(_get(train, meta, cutoff, c), cands, meta, c) for c in cfgs], axis=0, weights=[c["wt"] for c in cfgs])
     return predict
 
 E = dict(mode="local", alpha=1200.0); W32 = dict(ncomp=32, alpha=150.0)
-N0 = dict(signal="new", newhl=None)
-def PM(**kw): return make(dict(E, **kw), dict(W32, **kw))
-PN = [dict(E, **N0), dict(W32, **N0)]
-def PK(extra=None, **kw): return [dict(E, K=2, minplays=2, **kw), dict(W32, K=2, minplays=2, **kw)]
-def blk(ms, bl, nc): return [dict(m, blocks=bl, ncomp=nc if m is E else nc // 2) for m in ms]
-def PB(nc, a, ncw, aw, **kw): return [dict(E, **{"K": 2, "minplays": 2, "ncomp": nc, "alpha": a, **kw}), dict(W32, **{"K": 2, "minplays": 2, "ncomp": ncw, "alpha": aw, **kw})]
-PB0 = PB(128, 2400.0, 64, 300.0)
+NEW = [dict(E, signal="new"), dict(W32, signal="new")]                                   # W3-style members (new songs' within-quarter play rank)
+PAN = [dict(E, ncomp=128, alpha=2400.0), dict(ncomp=64, alpha=300.0)]                     # panel members (last 2 x 91 days, songs with >= 2 plays, old or new)
+def _na(ms): return [dict(m, noart=True) for m in ms]
 PREDICTORS = {
- "pan128_ess_w32only": make(*PN, PB0[0], dict(PB0[1], blocks=("mert", "ess"), ncomp=64)),
- "pan128_base": make(*PN, *PB0),
- "pan128_plus_essmember": make(*PN, *PB0, dict(blocks=("ess",), ncomp=64, alpha=300.0, K=2, minplays=2, wt=0.5)),
- "pan128_plus_clapmember": make(*PN, *PB0, dict(blocks=("clap",), ncomp=64, alpha=300.0, K=2, minplays=2, wt=0.5)),
- "pan128_plus_lyrmember": make(*PN, *PB0, dict(blocks=("lyr",), ncomp=32, alpha=300.0, K=2, minplays=2, wt=0.5)),
+    "w4r1_final": make(*NEW, *PAN),
+    "w4r1_final_noart": make(*_na(NEW), *_na(PAN)),     # own-artist training songs removed from the signal (artist-recognition check)
+    "w4r1_newonly": make(*NEW),                          # ablation: new-song signal only (= Workflow 3 recipe on the same code)
+    "w4r1_panelonly": make(*PAN),                        # ablation: panel signal only
+    "w4r1_panelonly_noart": make(*_na(PAN)),
 }

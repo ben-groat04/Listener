@@ -555,7 +555,7 @@ def holdout_cap_check(hashes, log=HOLDOUT_LOG, bundles=(), members=()):
 def holdout_budget_check(path=HOLDOUT_BUDGET):
     if not Path(path).exists(): sys.exit(f"REFUSED: holdout budget file {path} is missing (the harness refuses --holdout without it).")
     b = json.loads(Path(path).read_text())
-    if b.get("remaining", 0) <= 0: sys.exit(f"REFUSED: the --holdout budget of round {b.get('round')} is used up (remaining 0 in {path}): one run per round-2 builder, on its pre-declared final file; devil's advocates never run it.")
+    if b.get("remaining", 0) <= 0: sys.exit(f"REFUSED: the --holdout budget of round {b.get('round')} is used up (remaining 0 in {path}): one run per builder of the round, on its pre-declared final file; devil's advocates never run it.")
     return b
 
 def holdout_budget_use(path=HOLDOUT_BUDGET):

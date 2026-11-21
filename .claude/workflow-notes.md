@@ -14,3 +14,9 @@
 - Devil's advocate: per-claim verification table, must read builder code, time floor; ~1 min DA runs are too shallow. Check self-reported durations against transcript timestamps.
 - Known evaluation issues for the research lead to weigh (facts, not instructions): duration alone scores ~0.578 on the tried pool (no metadata baselines in harness); preview-missing → NaN audio features is a ~0.025 AUC shortcut; new-artist tie anomaly (identical artist-baseline metrics on zero-history subset) never checked; some feature transforms fitted on all dev embeddings incl. decoys/future tracks (transductive); decoy universe built from lifetime top-300 artists incl. post-cutoff plays (open pool inflated); below-chance results (e.g. 0.37-0.45) were dropped instead of investigated.
 - Sealed runs need sealed-era data/features prepared first and sealed labels/manifest regenerated (candidate sets changed in evalkit v2.1).
+
+## Overnight run (user-approved, 2026-11-21)
+- User asleep ~9h; wants ~4 workflows total overnight, including one full review of the project so far ("full up to now project research to keep it moving in the right direction"), run back to back without waiting on the user ("I will be very unhappy if I wake up to you waiting on me for something").
+- Waived for tonight: showing the brief to the user before launch; Opus allowed where the design needs it; hook approval prompt off via .claude/hooks/.overnight-until (expires automatically ~11:10 UTC).
+- Still NOT allowed until the user is awake: sealed test runs, candidate-song search.
+- Still required: post-workflow Sonnet review + cleanup, pre-launch Sonnet audit with fixes, neutral launch (the latest user message is forwarded to all agents).

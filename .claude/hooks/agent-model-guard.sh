@@ -8,7 +8,19 @@
 input=$(cat)
 tool=$(jq -r '.tool_name // ""' <<<"$input")
 
+# Temporary user-approved override: while .overnight-until holds a future epoch,
+# requests that would "ask" are allowed instead and logged to .overnight.log.
+OVR="$(dirname "$0")/.overnight-until"
 ask() {
+  if [ -f "$OVR" ] && [ "$(date +%s)" -lt "$(cat "$OVR")" ]; then
+    echo "$(date -u +%FT%TZ) allowed (override): $1" >> "$(dirname "$0")/.overnight.log"
+    if [ "$tool" = "Agent" ]; then
+      jq -n --argjson ti "$(jq '.tool_input' <<<"$input")" --arg r "$1" '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "allow", permissionDecisionReason: ("Overnight override: " + $r), updatedInput: ($ti + {run_in_background: true})}}'
+    else
+      jq -n --arg r "$1" '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "allow", permissionDecisionReason: ("Overnight override: " + $r)}}'
+    fi
+    exit 0
+  fi
   jq -n --arg r "$1" '{systemMessage: $r,
     hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "ask", permissionDecisionReason: $r}}'
   exit 0

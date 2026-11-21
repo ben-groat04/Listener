@@ -21,3 +21,4 @@ Hook override: .claude/hooks/.overnight-until (git-ignored; if missing after a c
 - Workflow 4 (full project review + rounds) drafted: .claude/overnight/workflow4.js (+ workflow4-notes.md). Needs W3_REPORTS filled after W3 finishes, then Sonnet audit, then launch.
 - RULE (user): never interrupt a running workflow; changes wait for the next one. W3 script edit reverted; stats note lives in W4 brief only.
 - 10:24Z recovery check: W3 healthy (12/13 done; DA-r2-works finished, DA-r2-dismissed running). User back, so override not restored.
+- 11:23Z final recovery check: W4 healthy (shared-prep-r1 running). User back; overnight plan ended; hourly recovery task deleted.

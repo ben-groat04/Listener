@@ -1,0 +1,14 @@
+S1_sauc 16
+S3_macro 32
+S2_ivlevel 50
+S5_lift_top10pct 60
+S6_recall_top20pct 70
+S7_prec_at10_lift 78
+S8_gc_plays90 95
+S9_gc_share90 111
+S10_auc_keep 127
+S11_auc_love_4_2 142
+S12_auc_love_10_4 159
+S13_auc_strong 174
+S14_auc_love_h180 190
+S15_auc_love_h365 206

@@ -29,3 +29,4 @@
 ## User suggestion after W3 results (to weigh, not an instruction)
 - Verbatim: "I still disagree with one score summarising everything. Surely each test will be different levels of good at different times/listening frequencies/etc. but that's again for an agent to weigh as it's just my idea"
 - Added to W4 CONTEXT with the "my suggestions… might not be the best" caveat; the pre-launch audit must merit-check it.
+- User (after W3): do NOT present their method suggestions as "the user said" — agents over-weight them. Briefs list them unattributed, neutrally paraphrased, under "Unvetted ideas raised in discussion" (may well be wrong, weigh on evidence only). This supersedes the verbatim-quote framing for method suggestions; the audit checks paraphrase fidelity and neutrality instead of quote accuracy.

@@ -51,3 +51,7 @@
   Neutral paraphrase candidate: "The existing setup rests on many assumptions and fixed numbers chosen early (in the models and possibly elsewhere); it is open whether revisiting or tuning them helps. The project may have settled into habits that deserve re-examination." Audit: check fidelity, add no method hints, and weigh the risk that broad tuning overfits dev folds.
   Follow-up from chat (same suggestion, unvetted): "Ok well is the set of folds also arbitrary?" → include evaluation design (fold dates/spacing, start date, TUNE/LATE/HOLDOUT split, label window) within the "assumptions and fixed numbers" idea; paraphrase neutrally. Audit must weigh that changing evaluation design after seeing results risks fitting the evaluation to the models.
 - W4 lesson: DA 20-min floor was gamed — DAs that had finished idled in sleep loops (e.g. until date >= 14:35) to pass the timing check. Drop wall-clock floors entirely in W5; judge DAs on coverage (claims reproduced, code read, checks run), not duration.
+
+## Plan stated by user (after W4 round 1)
+- "Ok after W5 I think w6 needs to be looking through everything to make the best test. Then testing it on sealed"
+- W6 = whole-project review aimed at designing the best evaluation, then a sealed test. Sealed run still needs the user's explicit go after seeing W6's dev results; only the main session registers/runs it (CLAUDE.md). Fix the evaluation and the models to be tested BEFORE any sealed scoring; sealed is single-use.

@@ -43,7 +43,7 @@ class Stream:
         self.st = st
         s = st.sort_values("first")
         self.s_art = {a: g for a, g in s.groupby("artist")}
-        self.lp_mean = float(np.log1p(s.plays90).mean()) if len(s) else 0.5
+        self.gf = s["first"].values; self.gcum = np.r_[0.0, np.cumsum(np.log1p(s.plays90.values))]   # prior of the artist mean: mean over songs matured before tf
         self.tot_t = np.sort(t)
 
 def _row_feats(S, artist, album, tf, ids_other=()):
@@ -66,13 +66,14 @@ def _row_feats(S, artist, album, tf, ids_other=()):
         f["a_days90"] = 0; f["a_first_age"] = np.nan; f["a_recent_frac"] = np.nan
     # earlier songs of the artist: engagement (matured only), relative meta
     g = S.s_art.get(artist)
-    nm = 0; lpm = S.lp_mean; mx = np.nan; fl = np.nan
+    km_g = np.searchsorted(S.gf, tf - H90); prior_lp = S.gcum[km_g] / km_g if km_g >= 10 else 2.0
+    nm = 0; lpm = prior_lp; mx = np.nan; fl = np.nan
     if g is not None:
         fs = g["first"].values; k = np.searchsorted(fs, tf)              # earlier songs (first play before tf)
         km = np.searchsorted(fs, tf - H90)                                # matured songs
         if km > 0:
             lp = np.log1p(g.plays90.values[:km]); w = 0.5 ** (((tf - fs[:km]) / np.timedelta64(1, "D")).astype(float) / 365.0)
-            nm = km; lpm = float((lp * w).sum() + 2 * S.lp_mean) / (w.sum() + 2); mx = float(lp.max()); fl = float(g.love.values[:km].mean())
+            nm = km; lpm = float((lp * w).sum() + 2 * prior_lp) / (w.sum() + 2); mx = float(lp.max()); fl = float(g.love.values[:km].mean())
         if k > 0:
             f["_dur_mean"] = np.nanmean(g.dur.values[:k]) if np.isfinite(g.dur.values[:k]).any() else np.nan
             f["_pop_mean"] = np.nanmean(g["popu"].values[:k]) if np.isfinite(g["popu"].values[:k]).any() else np.nan

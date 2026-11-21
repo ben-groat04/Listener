@@ -8,6 +8,6 @@ for mn, mo in (("gbm", dict(gbm=dict(max_iter=60))), ("ridge", dict(model="ridge
         b = dict(hl=120, window=365, target=t, **mo)
         for ex in ("none", "w0.5", "w1", "drop5", "sole", "resid", "marg"):
             V[f"x_{mn}_{tn}_{ex}"] = dict(b, exposure=ex)
-        for g in ("quarter", "week", "session"):
-            V[f"x_{mn}_{tn}_dm{g}"] = dict(b, group=g, **({"model": "gbm"} if mn == "gbm" else {}))
+        if mn == "gbm":
+            for g in ("quarter", "week", "session"): V[f"x_{mn}_{tn}_dm{g}"] = dict(b, group=g)
 PREDICTORS = {k: make_predictor(v) for k, v in V.items()}

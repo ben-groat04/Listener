@@ -102,8 +102,9 @@ def fit_variant(train, cutoff, meta, o):
     """o: dict of options. Returns scorer(cands)->scores."""
     rows, X, hist, prior, base, Xe, Xa, ctx = build(train, cutoff, meta)
     rep = o.get("rep", "base")
-    if rep in ("plus", "audio"): X = pd.concat([X, Xe], axis=1)
-    if rep == "audio" and Xa is not None: X = pd.concat([X, Xa], axis=1)
+    rep = {"plus": "base+x", "audio": "base+x+a"}.get(rep, rep); useX, useA = "+x" in rep, "+a" in rep
+    if useX: X = pd.concat([X, Xe], axis=1)
+    if useA and Xa is not None: X = pd.concat([X, Xa], axis=1)
     csec = int(B._sec(np.array([np.datetime64(cutoff)]))[0])
     keep = np.ones(len(rows), bool)
     if o.get("window"):   # window in days, but never fewer than min_rows training songs (the window widens in the early folds)
@@ -169,7 +170,7 @@ def fit_variant(train, cutoff, meta, o):
     mu, sd = (float(np.mean(ref)), float(np.std(ref)) + 1e-9) if ref is not None else (0.0, 1.0)
     def scorer(cands, meta, norm=False):
         Z = B._features(True, cands, np.full(len(cands), csec), meta, hist, prior)
-        if rep in ("plus", "audio"): Z = pd.concat([Z, _cand_extra(ctx, cands, meta, cutoff, rep == "audio")], axis=1)
+        if useX or useA: Z = pd.concat([Z, _cand_extra(ctx, cands, meta, cutoff, useA, useX)], axis=1)
         Z = Z[[c for c in cols if c != "lnnew"]]
         with threadpool_limits(NT):
             if marg:   # (no normalisation for marginalised variants)
@@ -181,12 +182,12 @@ def fit_variant(train, cutoff, meta, o):
 
 
 _CX = {}
-def _cand_extra(ctx, cands, meta, cutoff, audio):
-    key = (id(ctx), len(cands), int(pd.util.hash_array(cands.trackId.values).sum() % (1 << 60)), audio)
+def _cand_extra(ctx, cands, meta, cutoff, audio, extra=True):
+    key = (id(ctx), len(cands), int(pd.util.hash_array(cands.trackId.values).sum() % (1 << 60)), audio, extra)
     if key not in _CX:
         tf = np.full(len(cands), np.datetime64(cutoff), dtype="datetime64[ns]")
         Z = FT.extra_features(ctx["S"], cands.artist.values, cands.albumId.values, tf, meta.durationMs.reindex(cands.trackId).values.astype(float),
-                              meta.popularity.reindex(cands.trackId).values.astype(float))
+                              meta.popularity.reindex(cands.trackId).values.astype(float)) if extra else pd.DataFrame(index=range(len(cands)))
         if audio and "E_song" in ctx:
             Er = FT.track_emb(cands.trackId.values, meta)
             Za = FT.audio_features(ctx["S"], Er, tf, ctx["E_song"], ctx["song_first"], ctx["song_grade"], ctx["song_love"], ctx["E_trk"], ctx["trk_codes"], ctx["trk_t"])

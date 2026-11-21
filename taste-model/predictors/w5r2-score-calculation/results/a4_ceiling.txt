@@ -1,0 +1,42 @@
+n 1074 loved 342 base rate 0.318
+plays90 distribution (share):  {1: 0.46, 2: 0.133, 3: 0.036, 4: 0.032, 5: 0.018, 6: 0.008, 7: 0.003, 8: 0.002, 9: 0.005, 10: 0.004, 11: 0.003, 12: 0.297}
+share within plays90 4..8 or days90 2..4: 0.208 ; among loved: 0.041 ; among not loved: 0.286
+loved by play rule only (>=6 plays): 0.321 days rule only: 0.379 both: 0.318
+loved songs with exactly 6-7 plays or exactly 3 days: 0.038011695906432746
+love vs love_4_2: base 0.369 agree 0.950 kappa 0.889 P(other=1|love=1) 1.000 P(other=1|love=0) 0.074
+love vs love_10_4: base 0.302 agree 0.983 kappa 0.961 P(other=1|love=1) 0.947 P(other=1|love=0) 0.000
+love vs strong: base 0.293 agree 0.975 kappa 0.941 P(other=1|love=1) 0.921 P(other=1|love=0) 0.000
+love vs keep: base 0.331 agree 0.889 kappa 0.747 P(other=1|love=1) 0.845 P(other=1|love=0) 0.090
+love vs love_h180: base 0.356 agree 0.963 kappa 0.917 P(other=1|love=1) 1.000 P(other=1|love=0) 0.055
+love vs love_h365: base 0.406 agree 0.912 kappa 0.812 P(other=1|love=1) 1.000 P(other=1|love=0) 0.128
+AUC plays90 -> keep: 0.921
+AUC days90 -> keep: 0.919
+AUC love_4_2 -> love: 0.973
+AUC love_10_4 -> love: 0.977
+AUC plays_h30 -> love: 0.953
+AUC plays_h60 -> love: 0.985
+AUC plays_h30 -> keep: 0.867
+AUC plays_h365 -> love: 0.971
+AUC plays90 -> strong: 1.000
+plays90 mean 19.88 var 1375.4 overdispersion var/mean 69.17
+gamma-Poisson ceiling (true latent variance = 1.00 x overdispersion): AUC(true rate, realised plays>=6 label) = 0.993 (sd 0.002); matching base rate sim 0.485 vs real 0.321
+gamma-Poisson ceiling (true latent variance = 0.75 x overdispersion): AUC(true rate, realised plays>=6 label) = 0.990 (sd 0.002); matching base rate sim 0.557 vs real 0.321
+gamma-Poisson ceiling (true latent variance = 0.50 x overdispersion): AUC(true rate, realised plays>=6 label) = 0.985 (sd 0.004); matching base rate sim 0.636 vs real 0.321
+observed-plays as mu, Poisson replicate label (upper bound): 0.995
+pair_z sauc 0.661 keep-AUC 0.652
+ref_w4r1_listening sauc 0.651 keep-AUC 0.633
+artist_recent sauc 0.619 keep-AUC 0.632
+oracle_day1 sauc 0.759 keep-AUC 0.683
+oracle_7d sauc 0.886 keep-AUC 0.783
+replays_first_session sauc 0.703 keep-AUC 0.655
+pool_artist_siblings sauc 0.651 keep-AUC 0.695
+subset new_artist= 0 artist_plays n 697 sauc 0.577
+subset new_artist= 1 artist_plays n 377 sauc 0.498
+subset new_artist= 0 artist_recent n 697 sauc 0.576
+subset new_artist= 1 artist_recent n 377 sauc 0.498
+subset new_artist= 0 pool_artist_siblings n 697 sauc 0.631
+subset new_artist= 1 pool_artist_siblings n 377 sauc 0.588
+subset new_artist= 0 popularity n 697 sauc 0.459
+subset new_artist= 1 popularity n 377 sauc 0.5
+subset new_artist= 0 has_preview n 697 sauc 0.484
+subset new_artist= 1 has_preview n 377 sauc 0.446

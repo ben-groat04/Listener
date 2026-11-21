@@ -52,6 +52,7 @@ const CONTEXT = `
 ## Rules
 - Sealed data: never run evalkit with --sealed, never read ${PROJ}/.sealed/, never read any file containing sealed-fold results, never run make_sealed, never read raw streams dated on or after 2025-04-01 (use evalkit's loader), and never read the decoy universe file or run make_decoys directly (the engineer may change how decoys are built if the research lead specifies it). Do not use git history (git log -p, git show, git diff on past commits, git stash) to view PLAN.md, earlier workflow logs, .sealed/ or any file containing sealed-fold results. Do not open streams.jsonl directly (head/tail/grep); use evalkit's loader.
 - Scratch: use only your own folder under ${SCRATCH}/; do not read or list anything else outside it.
+- Do not read anything under ${ROOT}/.claude/ (main-session notes and drafts, not meant for workflow agents), even though CLAUDE.md mentions workflow-notes.md: that instruction is for the main session only.
 - Resources: use at most 2 CPU threads while another agent may be running. Run slow jobs in the background; test on a small sample before scaling up.
 - Evaluation runs: use the harness fast mode for all iteration; use full runs only for scores you report as final.
 - Keep the project folder clean: delete code from failed attempts (mention them in your report) but keep the code behind every score you report.

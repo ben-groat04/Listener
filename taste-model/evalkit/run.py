@@ -268,7 +268,7 @@ def _dstat(S, na, nb, alpha=0.05):
         out[key] = dict(d=_f(a[k]) - _f(b[k]), lo95=float(np.nanpercentile(d, 100 * alpha / 2)), P=float(np.mean(f > 0)), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)))
     return out
 
-def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True, part="main", open_pool=True, pair_group="fold", tune_era=False, fixed_cmp=False):
+def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True, part="main", open_pool=True, pair_group="fold", tune_era=False, fixed_cmp=False, fd_ref=None):
     """Tables for ONE slice (list of fold names). Bootstrap CIs resample whole primary artists GLOBALLY (all rows of an artist in every fold of the slice are drawn together; pair weights =
     products of the two rows' draw counts; resamples shared by all models => paired differences). CI level 95% (Bonferroni-widened to 1-0.05/n_looks for several sealed looks).
     best_ref: the reference (REFERENCES) with the highest TUNE point sauc, fixed outside this function; the evidence grade is based on it. graded=False (HOLDOUT): deltas and P only.
@@ -451,9 +451,9 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
             st = S[n]["all"]; LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wx=round(_f(st["wx"]), 4), wx_ci=_ci(st["wx_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
                                            new_artist_sauc=round(_f(S[n]["new"]["sauc"]), 4), new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha))
     bm_ = [n for n in P if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]; FD = []   # FILE_DELTAS80: every pair of the builder's own models, a minus b, with its 80% interval
-    if len(bm_) >= 2:   # v5.1: own bootstrap of FILE_DELTAS80 with FD_NBOOT resamples and a FIXED seed (independent of --nboot / --fast / the slice seed); point values are unchanged
+    if len(bm_) >= 2 or (fd_ref and bm_):   # v5.1: own bootstrap of FILE_DELTAS80 with FD_NBOOT resamples and a FIXED seed (independent of --nboot / --fast / the slice seed); point values are unchanged
         T1 = metrics.Block(ft, "love", FD_NBOOT, FD_SEED); T1n = T1.sub(T1.new)
-        S1 = {n: dict(all=T1.stats(P[n].score.values[tried_m], True, ("sauc", "wa", "wx", "gc")), new=T1n.stats(P[n].score.values[tried_m], True, ("sauc",))) for n in bm_}
+        S1 = {n: dict(all=T1.stats(P[n].score.values[tried_m], True, ("sauc", "wa", "wx", "gc")), new=T1n.stats(P[n].score.values[tried_m], True, ("sauc",))) for n in bm_ + ([fd_ref] if fd_ref and fd_ref in P else [])}
         def d1(a_, b_, key):
             g_, k_ = ("new", "sauc") if key == "new" else ("all", key); x = S1[a_][g_][k_ + "_b"] - S1[b_][g_][k_ + "_b"]; f_ = x[np.isfinite(x)]
             return dict(d=_f(S1[a_][g_][k_]) - _f(S1[b_][g_][k_]), lo80=float(np.nanpercentile(x, 10)), hi80=float(np.nanpercentile(x, 90)), P=float(np.mean(f_ > 0)))
@@ -462,6 +462,10 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
                 row_ = dict(model_a=a_, minus_model_b=b_)
                 for key_, lab_ in (("sauc", "sauc"), ("wx", "wx"), ("new", "new_artist_sauc"), ("wa", "wa"), ("gc", "gc")): x_ = d1(a_, b_, key_); row_[lab_] = f"d={x_['d']:+.3f} 80%[{x_['lo80']:+.3f},{x_['hi80']:+.3f}] P={x_['P']:.2f}"
                 xs_ = d1(a_, b_, "sauc"); row_["decision80"] = decision80(xs_["lo80"], xs_["hi80"]); FD.append(row_)
+        for a_ in (bm_ if fd_ref in S1 else []):   # --best-ref: every builder model vs the fixed reference as well (same resamples, same columns)
+            row_ = dict(model_a=a_, minus_model_b=fd_ref)
+            for key_, lab_ in (("sauc", "sauc"), ("wx", "wx"), ("new", "new_artist_sauc"), ("wa", "wa"), ("gc", "gc")): x_ = d1(a_, fd_ref, key_); row_[lab_] = f"d={x_['d']:+.3f} 80%[{x_['lo80']:+.3f},{x_['hi80']:+.3f}] P={x_['P']:.2f}"
+            xs_ = d1(a_, fd_ref, "sauc"); row_["decision80"] = decision80(xs_["lo80"], xs_["hi80"]); FD.append(row_)
     tabs["FILE_DELTAS80"] = pd.DataFrame(FD)
     if fixed_cmp:   # v5.1 (alternative-set runs): each builder model's paired sauc delta vs the fixed comparator ref_w4r1_listening, whichever reference is best_ref of this fold set
         FC = []
@@ -862,7 +866,7 @@ def _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel,
         print(f"\n{'#' * 20} FOLD SET {sname} [{VERSION}]: {len(fold_names)} folds {fold_names[0]} .. {fold_names[-1]}; windows {', '.join(f'{a.date()}..{b.date()}' for a, b in foldsets.windows(sname)[:3])} ... ; tried songs scored {int((f0.is_decoy == 0).sum())} {'#' * 20}")
         print(f"best_ref ({'FIXED by --best-ref' if fixed_ref else 'among all seven references' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only: ' + ', '.join(r for r in REFERENCES if r in scored)}; point sauc of this fold set): {best_ref}   " + "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items()))
         for w in _tied_warnings(scored): print(w)
-        tabs, flags = summarize(scored, fold_names, nboot, 1, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=True, part=f"alt:{sname}:{pair}:{dg}", open_pool=False, pair_group=pair, tune_era=True, fixed_cmp=True)
+        tabs, flags = summarize(scored, fold_names, nboot, 1, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=True, part=f"alt:{sname}:{pair}:{dg}", open_pool=False, pair_group=pair, tune_era=True, fixed_cmp=True, fd_ref=fixed_ref or None)
         tabs["FOLD_META"] = fold_meta_table(scored, fold_names, sname, _fm_comps(best_ref, fixed_ref)); out[sname] = tabs; flags_of[sname] = flags; scored_all[sname] = scored
         if dump: dump_parts.append(dump_rows(sname, {n: v for n, v in scored.items() if not n.startswith("walkforward[")}, fold_names))
     finish_verdicts(out, False)
@@ -1100,7 +1104,7 @@ def main(argv):
     for w in _tied_warnings({k: v for k, v in scored.items()}): print(w)
     out = {}
     for si, (nm, fl) in enumerate(slices):
-        tabs, flags = summarize(scored, fl, nboot, n_looks, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=not holdout, part=part, pair_group=pair); out[nm] = (tabs, flags)
+        tabs, flags = summarize(scored, fl, nboot, n_looks, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=not holdout, part=part, pair_group=pair, fd_ref=fixed_ref or None); out[nm] = (tabs, flags)
     if holdout:   # one JSON line per --holdout run (and one budget unit) BEFORE anything is printed, so devil's advocates can read the result without re-running and a crash cannot leak an unlogged look
         rec = dict(ts=now_iso(), files=[str(Path(p).resolve()) for p in mods], sha256=hashes, bundle_sha256=bundles, member_sha256=members, models=list(preds), best_ref=best_ref, window=win, nboot=nboot,
                    holdout_all={n: v for n, v in out["HOLDOUT-ALL"][0]["_log"].items() if n not in DIAGNOSTIC})

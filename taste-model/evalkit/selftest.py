@@ -473,7 +473,8 @@ def v51_checks():
     assert "FIXED by --best-ref" in tx2 and set(o2) == {"tune", "tune_h"}
     for sn, t_ in o2.items():
         assert (t_["VERDICT"].best_ref == "artist_recent").all() and "FIXED COMPARATOR" in tx2 and list(t_["FIXED_COMPARATOR"].model) == ["sb_dur", "sb_rand_a", "sb_rand_b"] and (t_["FIXED_COMPARATOR"].vs == "ref_w4r1_listening").all()
-        assert set(t_["FOLD_META"].vs) == {"artist_recent (best_ref, fixed by --best-ref)", "ref_w4r1_listening" if False else "artist_recent"} or set(t_["FOLD_META"].vs) == {"artist_recent (best_ref, fixed by --best-ref)"}, set(t_["FOLD_META"].vs)
+        assert set(t_["FOLD_META"].vs) == {"artist_recent (best_ref, fixed by --best-ref)"}, set(t_["FOLD_META"].vs)   # artist_recent is the fixed reference: the duplicate comparators are dropped
+    for sn, t_ in o2.items(): fdx = t_["FILE_DELTAS80"]; assert len(fdx) == 6 and list(fdx.minus_model_b[3:]) == ["artist_recent"] * 3 and set(fdx.decision80) <= {"POS", "NEG", "UNDECIDED"}, fdx
     (_, o3), tx3 = _quiet_main(["--fast", "--folds", "tune_h", "--best-ref", "ref_w4r1_music", B])
     assert set(o3["tune_h"]["FOLD_META"].vs) == {"ref_w4r1_music (best_ref, fixed by --best-ref)", "artist_recent"} and (o3["tune_h"]["VERDICT"].best_ref == "ref_w4r1_music").all()
     print("--folds with --best-ref: VERDICT / FOLD_META use the fixed reference in every set; the FIXED COMPARATOR table (vs ref_w4r1_listening) is printed for every alternative set")
@@ -498,7 +499,7 @@ def v51_checks():
         n = 400 if k < 12 else 40; y = (rng.random(n) < (.3 if k < 12 else .05)).astype(int); a = rng.integers(0, 80, n); sa = y * .8 + rng.normal(0, 1, n); sb = y * .3 + rng.normal(0, 1, n)
         rows.append(pd.DataFrame(dict(fold_set="syn", fold=f"{2021 + k // 4}-{(k % 4) * 3 + 1:02d}-01", artist=a, love=y, score__a=sa, score__b=sb)))
     syn = pd.concat(rows, ignore_index=True); rs = metrics.fold_meta(syn, "syn", "a", "b", nboot=300); assert rs["n_excluded"] == 2 and rs["k"] == 12 and rs["df"] == 11
-    assert 0.2 < rs["Q"] / rs["df"] < 2.5 and rs["p"] > 0.01, (rs["Q"], rs["df"]); assert abs(rs["mean"] - .5 * 0 - rs["mean"]) == 0 and rs["mean"] > 0.1 and abs(rs["trend"]) < 4 * rs["trend_se"]
+    assert 0.2 < rs["Q"] / rs["df"] < 2.5 and rs["p"] > 0.01, (rs["Q"], rs["df"]); assert rs["mean"] > 0.1 and abs(rs["trend"]) < 4 * rs["trend_se"]
     Qs = [metrics.iv_meta(rng.normal(.02, .03, 12), np.full(12, .03))["Q"] for _ in range(1500)]; assert abs(np.mean(Qs) / 11 - 1) < .06, np.mean(Qs)
     print(f"fold_meta: per-fold deltas equal sklearn AUC differences (< 1e-12) on both dump fold sets, IV mean / SE / 80% interval recomputed by hand; folds with < 5 positives excluded and counted; homogeneous synthetic case Q/df = {rs['Q'] / rs['df']:.2f} "
           f"(mean over 1500 simulated homogeneous sets {np.mean(Qs) / 11:.2f})")

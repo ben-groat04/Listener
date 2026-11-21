@@ -41,3 +41,4 @@
 7. Round 2 was shallow (~19 min/builder); give round 2 a time floor/checklist.
 8. One source of truth for folder names (lead brief vs template conflicted).
 - User declined the sealed test after W3: "No it's not good enough". No sealed run before W4.
+- W4 injects sanitised W3 copies (taste-model/reports/w3-sanitised/): user-attributed method ideas and W3's next-step recommendations removed. Future workflows: inject sanitised copies of prior results the same way.

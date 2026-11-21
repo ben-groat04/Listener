@@ -1,0 +1,46 @@
+DEVIL'S ADVOCATE ROUND 2, direction "dismissed". Files and logs are under /tmp/claude-0/-home-user-Listener/22c975e6-58fa-522d-b17b-f92c7924f862/scratchpad/wf3/da2/ (the folder name may collide with the other advocate; I only touched my own files: int_late.log, aud_late.log, null_fix.py, null_fix.log, combo.py, combo.log, go.sh). No sealed data, raw streams or decoy files were touched. No project files were modified.
+
+## Table: claim | what I ran | result | verdict
+
+| # | Claim | What I ran | Result | Verdict |
+|---|---|---|---|---|
+| 1 | Integrated: full `--late` numbers (final TUNE .667, LATE .535, ALL .616; noaudio .645/.478/.580; nohist .584/.594/.588; independence p90 = 0) | Full `evalkit.run predictors/w3r2-integrated/predict.py --late` at 2 threads, about 3 min | Log is byte-identical to the builder's `integrated/late.log`. The tables match the report. | holds |
+| 2 | Integrated: sauc grade NONE vs nonaudio_gbm because LATE point Δ is negative; wa and gc STRONG | Read ALL VERDICT from my rerun | sauc Δ +.065, lo95 +.018, but LATE Δ is -.005, so NONE. wa Δ +.056 (P .98, STRONG). gc Δ +.046 (P .997, STRONG). | holds |
+| 3 | Integrated: "dWA vs best meta" on ALL is +0.008 (lo95 only in log), P=.81 | Same VERDICT | The best meta is duration. lo95 is -0.020 and P=.807. The +0.008 is `dWA_lo_vs_nonaudio_gbm`, a different column. | partly holds (P right; the +.008 is misquoted and the real lo95 is -.020) |
+| 4 | Integrated: null control v2 PASSES for all 4 entries, including w2i_nohist. Per-seed rows quoted. | Read `null.log`; compared with the round-1 audio cache-key code; rewrote the models in a scratch wrapper that clears the stale cache per seed and re-ran `--null-control` | `null.log` shows w2i_nohist at .505/.505/.505, wa .478 ×3, new .455 ×3. So its "3 seeds" are one draw. Cause: `w3r1-content-audio/predict.py` `_fit` is keyed on a sum of timestamps, which the identity shuffle leaves unchanged. `w2i_final`'s A member has the same flaw (seeds 2 and 3 reuse seed 1's audio fit). The audio builder found and fixed this bug in its own code. The integrated builder did not. Fixed rerun: final .509/.502/.541 -> mean .517 (wa .523, new .498), PASS. nohist .505/.532/.514 -> mean .517 (wa .506, new .508), PASS. | Outcome holds (PASS). The reported per-seed evidence for nohist and for the final's audio member was invalid, because nohist's per-seed values were copies of one fit. The final's sauc mean is close to the band edge (.517 vs .519). |
+| 5 | Integrated: final chosen as "least tuned, not the TUNE maximum" | Read v1-v3 logs for all 11 variants | `w2i_ha_eq_ar` (the final) scores .667 sauc, tied for the top with `w2i_ha_meta_ar` (.667), and has the best wa (.618) among them. The count of 11 variants matches the logs. | doesn't hold as phrased (it is a tied TUNE maximum) |
+| 6 | Integrated: 11 variants + 1 | Counted model names in the v1-v3 logs | 11 distinct integrated variants. Matches. | holds |
+| 7 | Integrated: missingness-only sauc .493 / .516 / .502 | Rerun | Matches. | holds |
+| 8 | Integrated: history GAINS removal on LATE (.535 -> .594) | Rerun | Holds as a point estimate. The CIs overlap heavily: final (.48-.60), nohist (.54-.64). | holds (weak) |
+| 9 | Integrated: the LATE fade was not measured in pre-cutoff windows, so the design's reaction to it is unjustified | Read code and report | Nothing in the code or logs measures the fade. | holds (admitted weakness) |
+| 10 | Integrated: effort ("70 min budget") | File mtimes | Session ran 09:58 to 10:15, about 17 min, against a stated budget of about 70 min. Each batch took about 1-2 min. The variant count is genuine, but the search was shallow. The audio member used (`ca_ens`, TUNE .584) is much weaker than the audio builder's final (.621). | note |
+| 11 | Audio: full `--late` numbers (audio_final .621 / .633 / .626 sauc; ca_local .594 / .622 / .605; nonaudio_gbm .559 / .540 / .551; missing indicator .518 / .509 / .514) | Full `--late` run with `ref_ca_local.py` | Log is byte-identical to `taste/late2.log`. | holds |
+| 12 | Audio: sauc STRONG, wa STRONG, gc NONE vs nonaudio_gbm (ALL) | VERDICT in my rerun | Δ +.074 (P 1.0), +.055 (P 1.0), +.031 (P .957, lo95 -.003). TUNE gc P is .68, so gc is NONE. | holds |
+| 13 | Audio: "new-artist sauc ALL +0.074 vs nonaudio_gbm, P=1.0" | tried_love "new" rows | +0.074 is the overall sauc delta. The actual new-artist values are .621 vs .532 on ALL (+.089). On LATE they are .641 (CI .49-.73) vs nonaudio_gbm .637, and ca_local is .674. So there is no new-artist advantage on LATE. | doesn't hold as labelled (mislabelled number; LATE new-artist advantage absent) |
+| 14 | Audio: pool_artist_siblings paired comparison "P=0.0, unresolved" | Read ALL dSAUC_P_gt0 matrix | Orientation is row beats column. audio_final vs pool_artist_siblings is P=.89. The builder read the wrong cell. | resolved: P(Δ>0)=.89, not 0 |
+| 15 | Audio: duration's within-artist .607 is not beaten; ALL "dWA vs best meta" lo95 -0.037, P=.80 | VERDICT | Matches. TUNE wa: audio .598 vs duration .607. | holds |
+| 16 | Audio: ca_local nearly as good (+.021 sauc, wa P .57) | Rerun | ca_local wa is .637 vs audio_final .627 on LATE. The new model's gain over round 1 is within noise. | holds |
+| 17 | Audio: null control (audio_final FAIL by .003, .522 vs band .519) | Compared `null.log` and `null2.log` | `null.log` has identical values for all 3 seeds (the cache bug, honestly disclosed). `null2.log` has varying seeds, mean .522, FAIL. I did not re-run it. The builder's random-direction calibration was not re-run. | holds (not re-run; FAIL is reported honestly) |
+| 18 | Audio: "second --late run is for a bug fix" and "real-fold scores unchanged" | `cmp late.log late2.log` | The two logs are byte-identical, so the fix did not change LATE. The second LATE run was not needed for that purpose. It is a deviation from the protocol, but harmless. | holds (the second run was unnecessary) |
+| 19 | Audio: 38 TUNE variants | Counted model names in run1-run6 logs | About 39 entries, including the final set. Matches. The whole session took about 17 min. | holds |
+| 20 | Audio: clean excluded-vs-included missing-audio split NOT done | Not possible via the harness without changes | The builder admits this. The indicator alone scores .51. Scoring missing as lowest/highest on TUNE gave .592 / .627 (neutral .621). | unverified (the checklist item stays undone) |
+| 21 | Audio: metadata variant adds nothing | Rerun | audio_final_meta is below audio_final on all three slices. | holds |
+| 22 | Engineer: evidence-grade logic matches the spec | Read `run.finish_verdicts` | STRONG/SUGGESTIVE/NONE match the specification exactly. Engineer's note that the A/B baselines print rows is plausible. | holds |
+| 23 | Engineer: MERT and CLAP now cover every ok manifest row | Python check of the md5 sets | The manifest has 10288 ok rows. 0 are missing from CLAP (13831 keys) and 0 from MERT (12816). | holds |
+| 24 | Engineer: null v2 selftest and baseline table | Not re-run (the builders' null controls reproduced the baseline rows exactly: popularity .471/.447, artist_recent .525, etc.) | Baseline rows match the engineer's table in both builders' null logs. | holds (indirectly) |
+
+## Dismissed or unexplored items I attacked
+
+1. **Integration with the stronger audio member.** Integrated used the weaker `ca_ens` audio (TUNE .584), not the audio builder's .621 model. I wrote a scratch predictor (`da2/combo.py`) that adds the audio builder's `audio_final` to the history members G, Ga and AR. I ran it with `--fast` on TUNE only (no LATE run):
+   - equal weight: sauc .672 (CI .622-.713), wa .611, gc .626
+   - audio weight x3: sauc .672 (CI .625-.711), wa .613, gc .619
+   - the integrated final is .667, wa .615
+   So on TUNE the stronger audio member gives +.005, which is within noise. The dismissal of the integration idea is not overturned, and I did not check LATE.
+2. **The integrated final's LATE weakness.** LATE sauc .535 is at or below the baselines, and below its own audio-only ablation (.594). Both builders' LATE results are on a seen-once slice. The only slice-robust positive result is the history-free audio models.
+3. **Below-chance folds.** Neither builder investigated them (artist_plays 2024-04, popularity 2023-04, missing-only 2022-07 / 2024-07). The builders only note them. I did not either; these remain uninvestigated.
+4. **Open-pool results.** Not independently scrutinised beyond the builder's own caveat that the open pool carries a missing-preview shortcut (audio_missing_indicator alone: open sauc .533 and p20 .195 on ALL). Treat open-pool numbers as inflated for audio models.
+
+## What I ran versus what I believe
+- Ran: both full `--late` reruns (byte-identical to the builders' logs); a scratch null-control rerun of the integrated models with the cache bug fixed; the combination `--fast` TUNE test; the MERT and CLAP coverage check; log-file and code reads; and the variant counting.
+- Not re-run: the audio builder's null control and random-direction calibration; the engineer's selftest.
+- Believed, not shown: the cause of the within-fold below-chance values; that the integration direction cannot be rescued on LATE.

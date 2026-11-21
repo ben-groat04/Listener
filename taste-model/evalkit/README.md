@@ -62,8 +62,7 @@ are NOT comparable (different folds, different decoys, different baselines, diff
   **Evidence columns** (vs nonaudio_gbm, per metric sauc / wa / gc): point delta `d_<m>_vs_nonaudio_gbm`, `P_<m>_gt0`, `ci80_<m>` and the grade `evidence_<m>`:
   STRONG = ALL-slice (14 folds) 95% lower bound > 0 AND point delta > 0 on both TUNE and LATE; SUGGESTIVE = P(delta>0) >= 0.8 on both TUNE and LATE; NONE otherwise. With `--late` the grade is written in the ALL-slice VERDICT
   (which also carries the ALL-slice deltas, 95% lower bound, P and 80% interval, plus TUNE_/LATE_ point deltas and P); the TUNE and LATE VERDICTs say 'see ALL'. Without `--late` only TUNE exists: the column says 'TUNE only (P=..)'.
-  **Why graded, not "lower bound > 0"**: dev evidence uses this graded scale on purpose, because the sealed run is the strict final test. Reason, in the user's words: "you're being very strict on confidence intervals etc, not sure if this is a good idea given how subjective music is" /
-  "Yes get the harness to think about whether it needs to be less strict based on what's come so far wrt stats." A SUGGESTIVE grade is a reason to keep a direction alive in dev, not a claim.
+  **Why graded, not "lower bound > 0"**: dev evidence uses this graded scale on purpose, because the sealed run is the strict final test. Reason: strict lower-bound gating on dev was judged possibly too strong a filter for a subjective target, so the harness reports graded evidence in dev and keeps the strict gate for the sealed run. A SUGGESTIVE grade is a reason to keep a direction alive in dev, not a claim.
   **dWA vs best meta**: columns `dWA vs best meta` (name of the model), `dWA vs best meta lo95` and `dWA vs best meta P(d>0)`: wa_sauc delta of the model vs the best of (duration, meta_gbm, nonaudio_gbm), the best chosen by the slice's POINT wa_sauc. It shows whether
   within-artist ordering beats what metadata alone gives.
 

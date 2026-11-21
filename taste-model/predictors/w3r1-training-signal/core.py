@@ -11,9 +11,13 @@ from pathlib import Path
 import numpy as np, pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from evalkit import data, baselines as B
+import feats as FT
 
 H = 90
+import os
+NT = int(os.environ.get("W3R1_THREADS", "2"))
 _BUILD, _FIT = {}, {}
+MONO2 = dict(B.MONO, a_n7=1, a_n30=1, a_n90=1, a_share90=1, a_days90=1, a_lp_mean=1, a_love_frac=1)
 
 
 def _tkey(train, cutoff):
@@ -39,7 +43,21 @@ def build(train, cutoff, meta):
     rows["qtr"] = rows["first"].dt.to_period("Q").astype(str)
     rows["wk"] = rows["first"].dt.to_period("W").astype(str)
     rows["start_age"] = (rows["first"] - train.t.min()).dt.days.values
-    _BUILD[k] = (rows, X, hist, prior, float(rows.love.mean()) if len(rows) else .5)
+    st["dur"] = meta.durationMs.reindex(st.trackId).values.astype(float); st["popu"] = meta.popularity.reindex(st.trackId).values.astype(float)
+    S = FT.Stream(train, st)
+    tf = rows["first"].values.astype("datetime64[ns]")
+    Xe = FT.extra_features(S, rows.artist.values, rows.albumId.values, tf, meta.durationMs.reindex(rows.trackId).values.astype(float),
+                           meta.popularity.reindex(rows.trackId).values.astype(float))
+    ctx = dict(S=S, st=st, train=train, tf=tf)
+    if FT.emb_table():
+        trk, tc = np.unique(train.trackId.values, return_inverse=True)
+        ctx.update(E_song=FT.track_emb(st.trackId.values, meta), E_trk=FT.track_emb(trk, meta), trk_codes=tc, trk_t=train.t.values.astype("datetime64[ns]"),
+                   song_first=st["first"].values.astype("datetime64[ns]"), song_grade=grade(st), song_love=st.love.values)
+        Er = FT.track_emb(rows.trackId.values, meta)
+        Xa = FT.audio_features(S, Er, tf, ctx["E_song"], ctx["song_first"], ctx["song_grade"], ctx["song_love"], ctx["E_trk"], tc, ctx["trk_t"])
+        Xa["au_missing"] = (~np.isfinite(Er[:, 0])).astype(float)
+    else: Xa = None
+    _BUILD[k] = (rows, X, hist, prior, float(rows.love.mean()) if len(rows) else .5, Xe, Xa, ctx)
     return _BUILD[k]
 
 
@@ -82,7 +100,10 @@ def exposure_adjust(r, y, kind):
 
 def fit_variant(train, cutoff, meta, o):
     """o: dict of options. Returns scorer(cands)->scores."""
-    rows, X, hist, prior, base = build(train, cutoff, meta)
+    rows, X, hist, prior, base, Xe, Xa, ctx = build(train, cutoff, meta)
+    rep = o.get("rep", "base")
+    if rep in ("plus", "audio"): X = pd.concat([X, Xe], axis=1)
+    if rep == "audio" and Xa is not None: X = pd.concat([X, Xa], axis=1)
     csec = int(B._sec(np.array([np.datetime64(cutoff)]))[0])
     keep = np.ones(len(rows), bool)
     if o.get("window"): keep &= rows.age.values <= o["window"]
@@ -109,7 +130,7 @@ def fit_variant(train, cutoff, meta, o):
             y = y - pd.Series(y).groupby(g.values).transform("mean").values; kind = "reg"
             w = w * np.sqrt(pd.Series(1, index=g.values).groupby(level=0).transform("size").values.astype(float) - 1 + 1e-9) / 3
     cols = list(Xk.columns)
-    cst = [B.MONO.get(c, 0) for c in cols]
+    cst = [MONO2.get(c, 0) for c in cols]
     if marg: cst[-1] = -1
     cst = [c * int(not o.get("nomono", False)) for c in cst]
     kw = dict(B.GBM_KW); kw.update({k: v for k, v in o.get("gbm", {}).items()})
@@ -119,30 +140,55 @@ def fit_variant(train, cutoff, meta, o):
         lab = grade(r) if o.get("target", "love") != "love" else r.love.values.astype(int)
         order = np.argsort(r[gcol].values, kind="stable"); gs = r[gcol].values[order]
         _, cnt = np.unique(gs, return_counts=True)
-        with threadpool_limits(2):
+        with threadpool_limits(NT):
             m = lgb.LGBMRanker(objective="lambdarank", n_estimators=kw["max_iter"], learning_rate=kw["learning_rate"], num_leaves=kw["max_leaf_nodes"],
-                               min_child_samples=kw["min_samples_leaf"] // 2, reg_lambda=kw["l2_regularization"], monotone_constraints=cst, n_jobs=2,
+                               min_child_samples=kw["min_samples_leaf"] // 2, reg_lambda=kw["l2_regularization"], monotone_constraints=cst, n_jobs=NT,
                                random_state=0, verbose=-1, deterministic=True, force_row_wise=True)
             m.fit(Xk.values[order], lab[order], group=cnt, sample_weight=None)
         predict_raw = lambda Z: m.predict(Z.values)
+    elif mdl_kind == "ridge":
+        from sklearn.linear_model import Ridge
+        Xr = Xk.copy(); med = Xr.median(); sd = (Xr - med).abs().mean().replace(0, 1)
+        tr = lambda Z: ((Z[Xr.columns].astype(float).fillna(med) - med) / sd).clip(-5, 5).assign(**{c: lambda d, c=c: d[c] for c in []}).values
+        yy = y.astype(float)
+        m = Ridge(alpha=o.get("alpha", 30.0)).fit(tr(Xr), yy, sample_weight=w)
+        predict_raw = lambda Z: m.predict(tr(Z))
     else:
         from sklearn.ensemble import HistGradientBoostingClassifier as C, HistGradientBoostingRegressor as R
         if kind == "clf":
             if not (0 < y.sum() < len(y)): return lambda cands, meta: np.full(len(cands), 0.5)
-            with threadpool_limits(2): m = C(monotonic_cst=cst, **kw).fit(Xk, y, sample_weight=w)
+            with threadpool_limits(NT): m = C(monotonic_cst=cst, **kw).fit(Xk, y, sample_weight=w)
             predict_raw = lambda Z: m.predict_proba(Z)[:, 1]
         else:
-            with threadpool_limits(2): m = R(monotonic_cst=cst, **kw).fit(Xk, y, sample_weight=w)
+            with threadpool_limits(NT): m = R(monotonic_cst=cst, **kw).fit(Xk, y, sample_weight=w)
             predict_raw = lambda Z: m.predict(Z)
 
     def scorer(cands, meta):
-        Z = B._features(True, cands, np.full(len(cands), csec), meta, hist, prior)[[c for c in cols if c != "lnnew"]]
-        with threadpool_limits(2):
+        Z = B._features(True, cands, np.full(len(cands), csec), meta, hist, prior)
+        if rep in ("plus", "audio"): Z = pd.concat([Z, _cand_extra(ctx, cands, meta, cutoff, rep == "audio")], axis=1)
+        Z = Z[[c for c in cols if c != "lnnew"]]
+        with threadpool_limits(NT):
             if marg:
                 qs = np.quantile(np.log(r.nnew_sess.values.astype(float)), np.linspace(.05, .95, 7))
                 return np.mean([predict_raw(Z.assign(lnnew=q)) for q in qs], axis=0)
             return predict_raw(Z)
     return scorer
+
+
+_CX = {}
+def _cand_extra(ctx, cands, meta, cutoff, audio):
+    key = (id(ctx), len(cands), int(pd.util.hash_array(cands.trackId.values).sum() % (1 << 60)), audio)
+    if key not in _CX:
+        tf = np.full(len(cands), np.datetime64(cutoff), dtype="datetime64[ns]")
+        Z = FT.extra_features(ctx["S"], cands.artist.values, cands.albumId.values, tf, meta.durationMs.reindex(cands.trackId).values.astype(float),
+                              meta.popularity.reindex(cands.trackId).values.astype(float))
+        if audio and "E_song" in ctx:
+            Er = FT.track_emb(cands.trackId.values, meta)
+            Za = FT.audio_features(ctx["S"], Er, tf, ctx["E_song"], ctx["song_first"], ctx["song_grade"], ctx["song_love"], ctx["E_trk"], ctx["trk_codes"], ctx["trk_t"])
+            Za["au_missing"] = (~np.isfinite(Er[:, 0])).astype(float); Z = pd.concat([Z, Za], axis=1)
+        if len(_CX) > 40: _CX.clear()
+        _CX[key] = Z
+    return _CX[key]
 
 
 def make_predictor(o):

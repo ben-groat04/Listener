@@ -24,7 +24,7 @@ def _store():
     return _S
 
 CFG = dict(blocks=("mert",), ncomp=64, alpha=300.0, signal="panel", K=8, P=91, hl=180.0, newhl=120.0, w_new=1.0, w_panel=1.0, valid_ms=0,
-           tgt="rank", minplays=1, prune=0, noart=False, mode="whole")
+           tgt="rank", minplays=1, prune=0, noart=False, mode="whole", learner="ridge", k=50, tau=0.1, wt=1.0, zw=0.0)
 
 def _raw_block(name, tids, meta):
     S = _store(); n = len(tids)
@@ -74,6 +74,9 @@ def _signal(train, st, cutoff, cfg):
             if m.sum() == 0: continue
             cnt = np.bincount(si[m], minlength=n); pl = cnt >= cfg["minplays"]
             if pl.sum() < 20: continue
+            if cfg["zw"] > 0:   # also use active-but-unplayed songs (first play before the period end) as low-rank rows with weight zw
+                act = (st["first"].values < np.datetime64(e)); allr = act & (cnt >= 0); y = np.zeros(n); y[allr] = _pct(cnt[allr], np.zeros(allr.sum()))
+                w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * (pl + cfg["zw"] * (act & ~pl)); W += w; Y += w * y; continue
             if cfg["tgt"] == "rank": y = np.zeros(n); y[pl] = _pct(cnt[pl], np.zeros(pl.sum()))
             else: y = np.zeros(n); y[pl] = np.log1p(cnt[pl]); y[pl] = (y[pl] - y[pl].mean()) / (y[pl].std() + 1e-9) * 0.29 + 0.5
             w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * pl
@@ -111,6 +114,9 @@ def _fit(train, meta, cutoff, cfg):
         rep = 4 if cfg["mode"] == "local" else 1; kr = np.repeat(keep, rep)
         P = P[kr]; W, Y, art2 = np.repeat(W[keep], rep), np.repeat(Y[keep], rep), np.repeat(art[keep], rep)
         sc = W.sum(); ws = W * len(W) / sc; Yn = Y / W            # mean weight 1 per row
+        if cfg["learner"] == "knn":
+            Pn = P / (np.linalg.norm(P, axis=1, keepdims=True) + 1e-9); res.update(Pn=Pn.astype(np.float32), ws=ws, Yn=Yn, art=art2)
+            sa = _knn(res, Pn.astype(np.float32), None, cfg, self_excl=True); res["tm"], res["ts"] = float(sa.mean()), float(sa.std() + 1e-9); return res
         Xa = np.c_[P, np.ones(len(P))]; reg = np.eye(Xa.shape[1]) * cfg["alpha"]; reg[-1, -1] = 1e-6
         A = (Xa * ws[:, None]).T @ Xa; b = (Xa * (ws * Yn)[:, None]).T @ Xa[:, :0] if False else (Xa * (ws * Yn)[:, None]).sum(0)
         res.update(A=A, b=b, reg=reg, beta=np.linalg.solve(A + reg, b))
@@ -128,7 +134,21 @@ def _get(train, meta, cutoff, cfg):
     if key in _CACHE and not os.environ.get("EVALKIT_NO_FIT_CACHE"): return _CACHE[key]
     r = _fit(train, meta, cutoff, cfg); _CACHE[key] = r; return r
 
+def _knn(res, Q, qart, cfg, self_excl=False):
+    """Nadaraya-Watson over the top-k most similar training songs (cosine in the whitened PCA space); same-artist training songs excluded when qart is given."""
+    out = np.zeros(len(Q), np.float32); T = res["Pn"]; k = cfg["k"]
+    for i0 in range(0, len(Q), 512):
+        S = Q[i0:i0 + 512] @ T.T
+        if self_excl: S[np.arange(S.shape[0]), np.arange(i0, i0 + S.shape[0])] = -9
+        if qart is not None: S[qart[i0:i0 + 512, None] == res["art"][None, :]] = -9
+        idx = np.argpartition(-S, k, axis=1)[:, :k]; sv = np.take_along_axis(S, idx, 1)
+        w = np.exp((sv - sv.max(1, keepdims=True)) / cfg["tau"]) * res["ws"][idx]; out[i0:i0 + 512] = (w * res["Yn"][idx]).sum(1) / (w.sum(1) + 1e-12)
+    return out
+
 def _score(res, cands, meta, cfg):
+    if cfg["learner"] == "knn":
+        P, has = _design(res, cands.trackId.values, meta, cfg); Pn = (P / (np.linalg.norm(P, axis=1, keepdims=True) + 1e-9)).astype(np.float32)
+        s = _knn(res, Pn, cands.artist.values if cfg["noart"] else None, cfg); s = (s - res["tm"]) / res["ts"]; s[~has] = 0.0; return s
     n = len(cands); rep = 4 if cfg["mode"] == "local" else 1
     P, has = _design(res, cands.trackId.values, meta, cfg); Xa = np.c_[P, np.ones(len(P))]; s = Xa @ res["beta"]
     if cfg["noart"]:
@@ -144,20 +164,22 @@ def make(*members, **kw):
     """standardised mean of one or more configs (each member: dict overriding CFG)"""
     cfgs = [{**CFG, **kw, **m} for m in (members or [{}])]
     def predict(train, cands, meta, cutoff):
-        return np.mean([_score(_get(train, meta, cutoff, c), cands, meta, c) for c in cfgs], 0)
+        return np.average([_score(_get(train, meta, cutoff, c), cands, meta, c) for c in cfgs], axis=0, weights=[c["wt"] for c in cfgs])
     return predict
 
 E = dict(mode="local", alpha=1200.0); W32 = dict(ncomp=32, alpha=150.0)
 N0 = dict(signal="new", newhl=None)
+def PM(**kw): return make(dict(E, **kw), dict(W32, **kw))
+PN = [dict(E, **N0), dict(W32, **N0)]
+def PK(extra=None, **kw): return [dict(E, K=2, minplays=2, **kw), dict(W32, K=2, minplays=2, **kw)]
+def blk(ms, bl, nc): return [dict(m, blocks=bl, ncomp=nc if m is E else nc // 2) for m in ms]
 PREDICTORS = {
- "w3like_new": make(E, W32, **N0),
- "b_pan03": make(E, W32, signal="both", newhl=None, w_panel=0.3),
- "b_pan01": make(E, W32, signal="both", newhl=None, w_panel=0.1),
- "pan_K2": make(E, W32, K=2),
- "new_valid30": make(E, W32, valid_ms=30000, **N0),
- "new_hl365": make(E, W32, signal="new", newhl=365.0),
- "new_mert_ess": make(dict(E, blocks=("mert", "ess"), ncomp=48), dict(W32, blocks=("mert", "ess"), ncomp=24), **N0),
- "new_mert_clap": make(dict(E, blocks=("mert", "clap"), ncomp=48), dict(W32, blocks=("mert", "clap"), ncomp=24), **N0),
- "new_mert_lyr": make(dict(E, blocks=("mert", "lyr"), ncomp=48), dict(W32, blocks=("mert", "lyr"), ncomp=24), **N0),
- "new_ess_only": make(dict(E, blocks=("ess",), ncomp=48), dict(W32, blocks=("ess",), ncomp=24), **N0),
+ "ens3_k1": make(*PN, *PK(), dict(E, K=1, minplays=2), dict(W32, K=1, minplays=2)),
+ "joint_k2m2": make(dict(E, signal="both", newhl=None, K=2, minplays=2), dict(W32, signal="both", newhl=None, K=2, minplays=2)),
+ "ens_pan_ess": make(*PN, *blk(PK(), ("mert", "ess"), 48)),
+ "ens_pan_clap": make(*PN, *blk(PK(), ("mert", "clap"), 48)),
+ "ens_pan_w2": make(*PN, *[dict(m, wt=2.0) for m in PK()]),
+ "ens_pan_hl90": make(*PN, *PK(hl=90.0)),
+ "ens_new_ess": make(*blk(PN, ("mert", "ess"), 48), *PK()),
+ "ens_pan_lyr": make(*PN, *blk(PK(), ("mert", "lyr"), 48)),
 }

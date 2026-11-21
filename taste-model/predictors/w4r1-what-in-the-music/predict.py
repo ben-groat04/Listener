@@ -26,6 +26,7 @@ def _view(tids, meta, cfg):
     F = _store(); u = meta.previewUrl.reindex(tids).values
     ii = np.array([F["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); ok = ii >= 0
     f = cfg["feat"]; ii2 = np.where(ok, ii, 0)
+    if f == "meta": return _meta_cols(tids, meta)[:, None].astype(np.float32), np.ones(len(tids), bool)
     if f == "seg": X = F["seg"][ii2].astype(np.float32); X = X[:, list(cfg["seg"])] if cfg["seg"] is not None else X
     elif f == "act": X = F["act_mean"][ii2].astype(np.float32)[:, None]
     elif f == "actmax": X = F["act_max"][ii2].astype(np.float32)[:, None]
@@ -119,11 +120,14 @@ def blend(cfgs, wm=1.0, wts=None):
     return predict
 
 G = dict(genre=list(range(0, 400)), mood=list(range(400, 456)), inst=list(range(456, 496)), mtg=list(range(496, 583)), misc=list(range(583, 605)))
-PREDICTORS = {
-    "e_act_a10000": make_ens([dict(alpha=10000.0)]), "e_act_a30000": make_ens([dict(alpha=30000.0)]),
-    "e_emb_a30000": make_ens([dict(feat="emb", alpha=30000.0)]),
-    "g_mtg_a300": make_ens([dict(cols=G["mtg"], alpha=300.0)]), "g_mtg_a1000": make_ens([dict(cols=G["mtg"], alpha=1000.0)]), "g_mtg_a3000": make_ens([dict(cols=G["mtg"], alpha=3000.0)]),
-    "g_mtgmood_a1000": make_ens([dict(cols=G["mtg"] + G["mood"] + G["inst"], alpha=1000.0)]),
-    "e_seg_a6000": make_ens([dict(feat="seg", alpha=6000.0)]), "e_seg_a20000": make_ens([dict(feat="seg", alpha=20000.0)]),
-    "e_act_gbm2": make_ens([dict(ncomp=20, learner="gbm")]),
-}
+DUR = dict(feat="meta", learner="gbm")
+A = dict(alpha=10000.0)
+DUR = dict(feat="meta", learner="gbm")
+A = dict(alpha=10000.0)
+PREDICTORS = {f"seg{k}": make_ens([dict(feat="seg", seg=(k,), alpha=3000.0)]) for k in range(6)}
+PREDICTORS.update({
+    "seg_all_mean": make_ens([dict(feat="seg", alpha=20000.0)]),
+    "seg_all_max": make_ens([dict(feat="seg", alpha=20000.0, agg="max")]),
+    "seg_early": make_ens([dict(feat="seg", seg=(0, 1, 2), alpha=10000.0)]), "seg_late": make_ens([dict(feat="seg", seg=(3, 4, 5), alpha=10000.0)]),
+    "seg_mid": make_ens([dict(feat="seg", seg=(1, 2, 3, 4), alpha=15000.0)]),
+})

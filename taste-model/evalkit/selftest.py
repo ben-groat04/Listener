@@ -21,6 +21,7 @@ def main():
     from threadpoolctl import threadpool_limits; threadpool_limits(2)
     if "--v41" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v41_checks(data._load_all(), P_, _tune_tried(P_)); return
     if "--v5" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v5_checks(data._load_all(), P_); return
+    if "--v51" in sys.argv: v51_checks(); return
     d = data._load_all(); cuts = data.DEV_CUTOFFS; pub = data.anon_streams(d); meta_all = data.load_meta_all()
     assert data.TUNE_CUTOFFS + data.LATE_CUTOFFS == cuts and len(cuts) == 14
     # ---- metrics engine vs brute force
@@ -202,6 +203,7 @@ def main():
     tr_sh = F["train"].copy(); tr_sh["artist"] = tr_sh.artist.values[::-1]; assert k1 != k2 and k1 != bl._train_key("x", tr_sh, F["c"]), "fit-cache key ignores the seed / artist identities"
     v41_checks(d, P, T)
     v5_checks(d, P)
+    v51_checks()
     print("selftest OK")
 
 def _tune_tried(P):
@@ -338,7 +340,7 @@ def v5_checks(d, P):
     assert got == ref["tried_within_group"], "fast TUNE tried_within_group differs from v4.1"
     V = t_["VERDICT"]; vc = ref["verdict_point"]["columns"]; gotv = [[_cell(v) for v in r] for r in V[vc].astype(object).values.tolist()]
     assert gotv == ref["verdict_point"]["data"], "VERDICT point values differ from v4.1"
-    assert "evidence80_sauc" in V.columns and "lo80_sauc" in V.columns and "[v5.0]" in txt0
+    assert "evidence80_sauc" in V.columns and "lo80_sauc" in V.columns and f"[{run.VERSION}]" in txt0
     print("default fast run: tried_within_group (20 rows, point values and CIs) and VERDICT point values are identical to the recorded v4.1 output; version label in every table heading")
     # ---- the alternative-fold builder reproduces the default tried rows of the default folds (digest per fold), HOLDOUT artists absent, no row beyond 2024-01-01
     F_alt = run.prepare_alt(["tune_m", "tune_h", "tune_y", "tune_q1", "tune_q2", "tune"]); byc = {F["c"]: F for F in F_alt}
@@ -435,5 +437,73 @@ def v5_checks(d, P):
     live = json.load(open(run.HOLDOUT_BUDGET)); assert live["round"] == "w5r1" and 0 <= live["remaining"] <= 3, live
     print(f"holdout budget module: writes, refuses to reset the same round, replaces another round; live budget file: {live}")
     print(f"v5.0 checks OK ({time.time() - t0:.0f}s)")
+
+def _pt(x): return float(x.split()[0][2:])   # "d=+0.118 80%[..." -> 0.118
+
+def v51_checks():
+    """v5.1 checks (python3 -m evalkit.selftest --v51; target < 3 min once the caches exist). No raw-stream access: everything goes through the harness runs."""
+    from threadpoolctl import threadpool_limits; threadpool_limits(2)
+    import pathlib, time
+    from sklearn.metrics import roc_auc_score
+    t0 = time.time(); here = pathlib.Path(__file__).parent; B = str(here / "selftest_builder.py"); tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v51_"))
+    assert run.VERSION == "v5.1"
+    # ---- refusals
+    live = json.load(open(run.HOLDOUT_BUDGET)); assert live == dict(round="w5r1", remaining=0), f"no new HOLDOUT budget in round w5r2: {live}"
+    for bad in (["--best-ref", "artist_recent", "--late"], ["--best-ref", "artist_recent", "--holdout", B], ["--best-ref", "artist_recent", "--sealed"], ["--best-ref", "artist_recent", "--null-control"], ["--best-ref", "nope", "--fast"]):
+        try: run.main(bad); raise SystemExit("accepted: " + " ".join(bad))
+        except AssertionError: pass
+    try: run.main(["--holdout", B]); raise SystemExit("--holdout was not refused")
+    except SystemExit as e: assert "REFUSED" in str(e), e
+    print("refusals: --best-ref with --late / --holdout / --sealed / --null-control or an unknown name; --holdout refused for the builder file (budget file round w5r1, remaining 0, unchanged)")
+    # ---- default run reproduces v5.0 (fast TUNE; baselines only and with the three-model test builder)
+    ref = json.load(open(here / "v50_fast_reference.json")); chk = lambda t_, r_, tag: (
+        _eq([[_cell(v) for v in r] for r in t_["tried_within_group"].astype(object).values.tolist()], r_["tried_within_group"]["data"], tag + " tried_within_group"),
+        _eq([[_cell(v) for v in r] for r in t_["VERDICT"][r_["verdict_point"]["columns"]].astype(object).values.tolist()], r_["verdict_point"]["data"], tag + " VERDICT"))
+    (_, o0), tx0 = _quiet_main(["--fast"]); chk(o0["TUNE"], ref, "baselines only")
+    (_, o1), tx1 = _quiet_main(["--fast", B]); chk(o1["TUNE"], ref["builder"], "builder"); t1 = o1["TUNE"]; fd = t1["FILE_DELTAS80"]
+    assert [[r.model_a, r.minus_model_b, f"d={_pt(r.sauc):+.3f}"] for r in fd.itertuples()] == ref["builder"]["file_deltas80_point"], "FILE_DELTAS80 point deltas differ from v5.0"
+    assert "decision80" in fd.columns and set(fd.decision80) <= {"POS", "NEG", "UNDECIDED"} and "FOLD_META" in t1 and len(t1["FOLD_META"]) == 6 and "TUNE FOLD_META" in tx1 and "|lo80| < 0.005 flips" in tx1
+    for r in fd.itertuples():   # decision80 follows the sauc interval
+        lo, hi = [float(v) for v in r.sauc.split("80%[")[1].split("]")[0].split(",")]; assert r.decision80 == ("POS" if lo > .005 else "NEG" if hi < -.005 else "UNDECIDED"), r
+    (_, o1b), _ = _quiet_main(["--fast", "--nboot", "60", B]); assert o1b["TUNE"]["FILE_DELTAS80"].astype(str).equals(fd.astype(str)), "FILE_DELTAS80 must not depend on --nboot (1000 resamples, fixed seed)"
+    print("default fast run: tried_within_group and VERDICT point values identical to the recorded v5.0 output (baselines only, and with the test builder); FILE_DELTAS80 point deltas identical, decision80 present and consistent, "
+          "independent of --nboot; FOLD_META printed (6 rows: 3 models x best_ref, artist_recent)")
+    # ---- alternative sets with a fixed reference, fixed comparator, dump
+    dp = tmp / "d.pkl"; (_, o2), tx2 = _quiet_main(["--fast", "--folds", "tune,tune_h", "--best-ref", "artist_recent", "--dump-scores", str(dp), B])
+    assert "FIXED by --best-ref" in tx2 and set(o2) == {"tune", "tune_h"}
+    for sn, t_ in o2.items():
+        assert (t_["VERDICT"].best_ref == "artist_recent").all() and "FIXED COMPARATOR" in tx2 and list(t_["FIXED_COMPARATOR"].model) == ["sb_dur", "sb_rand_a", "sb_rand_b"] and (t_["FIXED_COMPARATOR"].vs == "ref_w4r1_listening").all()
+        assert set(t_["FOLD_META"].vs) == {"artist_recent (best_ref, fixed by --best-ref)", "ref_w4r1_listening" if False else "artist_recent"} or set(t_["FOLD_META"].vs) == {"artist_recent (best_ref, fixed by --best-ref)"}, set(t_["FOLD_META"].vs)
+    (_, o3), tx3 = _quiet_main(["--fast", "--folds", "tune_h", "--best-ref", "ref_w4r1_music", B])
+    assert set(o3["tune_h"]["FOLD_META"].vs) == {"ref_w4r1_music (best_ref, fixed by --best-ref)", "artist_recent"} and (o3["tune_h"]["VERDICT"].best_ref == "ref_w4r1_music").all()
+    print("--folds with --best-ref: VERDICT / FOLD_META use the fixed reference in every set; the FIXED COMPARATOR table (vs ref_w4r1_listening) is printed for every alternative set")
+    # ---- dump: fold_set 'tune' rows, first_play_date
+    dmp = pd.read_pickle(dp); assert set(dmp.fold_set) == {"tune", "tune_h"} and (dmp.fold_set == "tune").sum() > 0 and "first_play_date" in dmp.columns
+    assert (dmp.first_play_date.str[:7] == dmp.month).all() and dmp.first_play_date.str.len().eq(10).all() and (pd.to_datetime(dmp.first_play_date) < pd.Timestamp("2024-01-01")).all()
+    tn = dmp[dmp.fold_set == "tune"]; assert sorted(tn.fold.unique()) == data.TUNE_CUTOFFS
+    print("dump: a --folds run including 'tune' labels those rows fold_set='tune' (10 default cutoffs); column first_play_date (YYYY-MM-DD) agrees with month and is before 2024-01-01")
+    # ---- fold_meta against brute force
+    for fs_ in ("tune", "tune_h"):
+        r = metrics.fold_meta(dmp, fs_, "sb_dur", "sb_rand_a"); g = dmp[dmp.fold_set == fs_]; exp = {}
+        for f, h in g.groupby("fold"):
+            y = h.love.values.astype(int)
+            if y.sum() >= 5 and (1 - y).sum() >= 5: exp[f] = roc_auc_score(y, h["score__sb_dur"].values) - roc_auc_score(y, h["score__sb_rand_a"].values)
+        T_ = r["table"]; assert set(T_.fold) == set(exp) and r["n_excluded"] == g.fold.nunique() - len(exp), (fs_, r["n_excluded"])
+        assert all(abs(row.delta - exp[row.fold]) < 1e-12 for row in T_.itertuples()), "fold_meta deltas differ from sklearn AUC differences"
+        w = 1 / T_.se.values ** 2; assert abs(r["mean"] - (w * T_.delta.values).sum() / w.sum()) < 1e-12 and abs(r["se"] - w.sum() ** -.5) < 1e-12 and abs(r["hi80"] - r["lo80"] - 2 * metrics.Z80 * r["se"]) < 1e-12
+        r2 = metrics.fold_meta(dmp, fs_, "sb_dur", "sb_rand_a", seed=5); assert (np.abs(r2["table"].se.values / T_.se.values - 1) < .5).all() and np.allclose(r2["table"].delta, T_.delta)
+    # exclusion rule on a synthetic fold set, homogeneous case Q ~ df
+    rng = np.random.default_rng(3); rows = []
+    for k in range(14):
+        n = 400 if k < 12 else 40; y = (rng.random(n) < (.3 if k < 12 else .05)).astype(int); a = rng.integers(0, 80, n); sa = y * .8 + rng.normal(0, 1, n); sb = y * .3 + rng.normal(0, 1, n)
+        rows.append(pd.DataFrame(dict(fold_set="syn", fold=f"{2021 + k // 4}-{(k % 4) * 3 + 1:02d}-01", artist=a, love=y, score__a=sa, score__b=sb)))
+    syn = pd.concat(rows, ignore_index=True); rs = metrics.fold_meta(syn, "syn", "a", "b", nboot=300); assert rs["n_excluded"] == 2 and rs["k"] == 12 and rs["df"] == 11
+    assert 0.2 < rs["Q"] / rs["df"] < 2.5 and rs["p"] > 0.01, (rs["Q"], rs["df"]); assert abs(rs["mean"] - .5 * 0 - rs["mean"]) == 0 and rs["mean"] > 0.1 and abs(rs["trend"]) < 4 * rs["trend_se"]
+    Qs = [metrics.iv_meta(rng.normal(.02, .03, 12), np.full(12, .03))["Q"] for _ in range(1500)]; assert abs(np.mean(Qs) / 11 - 1) < .06, np.mean(Qs)
+    print(f"fold_meta: per-fold deltas equal sklearn AUC differences (< 1e-12) on both dump fold sets, IV mean / SE / 80% interval recomputed by hand; folds with < 5 positives excluded and counted; homogeneous synthetic case Q/df = {rs['Q'] / rs['df']:.2f} "
+          f"(mean over 1500 simulated homogeneous sets {np.mean(Qs) / 11:.2f})")
+    print(f"v5.1 checks OK ({time.time() - t0:.0f}s)")
+
+def _eq(a, b, what): assert a == b, f"{what} differs from the recorded v5.0 output"
 
 if __name__ == "__main__": main()

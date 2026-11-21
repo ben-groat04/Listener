@@ -1,7 +1,7 @@
 # Overnight run state (read this first after any restart / usage-limit pause)
 
 Rules for tonight: .claude/workflow-notes.md ("Overnight run" section). CLAUDE.md still applies.
-Hook override: .claude/hooks/.overnight-until (git-ignored; if missing after a container restart, recreate it with epoch for 2026-11-21 11:10 UTC = 1763723433 only if before that time).
+Hook override: .claude/hooks/.overnight-until (git-ignored; if missing after a container restart, recreate it with epoch 1795259433 (2026-11-21 11:10 UTC) only if before that time).
 
 ## Plan
 1. Workflow 3 (scripts: .claude/overnight/workflow3.js) -> post-workflow Sonnet review + cleanup -> apply lessons.

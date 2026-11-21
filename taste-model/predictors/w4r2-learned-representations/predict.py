@@ -66,10 +66,12 @@ def _mk_net(d, cfg):
     import torch, torch.nn as nn
     class Net(nn.Module):
         def __init__(s):
-            super().__init__(); s.enc = nn.Sequential(nn.Dropout(cfg["drop"]), nn.Linear(d, cfg["h"]), nn.GELU()); s.att = nn.Linear(cfg["h"], 1); s.out = nn.Linear(cfg["h"], 1); s.pool = cfg["model"]
+            super().__init__(); s.enc = nn.Sequential(nn.Dropout(cfg["drop"]), nn.Linear(d, cfg["h"]), nn.GELU()); s.att = nn.Linear(cfg["h"], 1); s.out = nn.Linear(cfg["h"], 1); s.pool = cfg["model"]; s.cv = nn.Conv1d(cfg["h"], cfg["h"], 3, padding=1)
         def forward(s, X, M):
             h = s.enc(X); m = M.float().unsqueeze(-1)
-            if s.pool == "attn":
+            if s.pool == "conv":   # local temporal context (k=3 over neighbouring patches), then attention pooling; position-agnostic (previews are excerpts of unknown position)
+                h = torch.nn.functional.gelu(s.cv((h * m).transpose(1, 2)).transpose(1, 2)) + h
+            if s.pool in ("attn", "conv"):
                 a = s.att(h).masked_fill(~M.unsqueeze(-1), -1e9).softmax(1); z = (a * h).sum(1)
             elif s.pool == "max": z = h.masked_fill(~M.unsqueeze(-1), -1e9).max(1).values
             else: z = (h * m).sum(1) / m.sum(1).clamp(min=1)
@@ -166,17 +168,9 @@ def ens(*fns):
         return o / len(fns)
     return predict
 
-PRM = make(model="patchridge", feat="mert", alpha=1200.0, nc=64, panel=0.5)
-MLP = make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, panel=0.5)
-ATT = make(model="attn", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5)
-ARP = make(model="ridge", feat="act", panel=0.5)
-EPR = make(model="patchridge", feat="emb", panel=0.5)
 PREDICTORS = {
-    "mlp_mert_panel1": make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1, panel=1.0),
-    "attn_mert_panel": ATT,
-    "ridge_act_panel": ARP,
-    "patchridge_emb_panel": EPR,
-    "ens_mert3_panel": ens(PRM, MLP, ATT),
-    "ens_mert_act_panel": ens(PRM, MLP, ATT, ARP),
-    "ens_lin_panel": ens(PRM, ARP),
+    "conv_emb_panel": make(model="conv", feat="emb", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
+    "conv_act_panel": make(model="conv", feat="act", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
+    "attn_act_panel": make(model="attn", feat="act", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
+    "attn_emb_panel": make(model="attn", feat="emb", nc=64, h=16, ep=30, drop=0.5, wd=0.1, pdrop=0.25, panel=0.5),
 }

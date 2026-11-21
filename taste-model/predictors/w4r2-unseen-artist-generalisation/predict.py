@@ -253,6 +253,13 @@ def make_auto(grid, topk=1, noart=False):
         return np.mean([_score(rs[i], cands, meta, cfgs[i]) if rs[i]["members"] else np.zeros(len(cands)) for i in top], 0)
     return predict
 
+def make_dur(base, wt=0.25):
+    """secondary: base ensemble z-score + wt * z(log duration), duration standardised with the train songs (track metadata; sign +: +duration scores higher; NOT part of the primary)"""
+    def predict(train, cands, meta, cutoff):
+        tr = np.log(meta.durationMs.reindex(train.trackId.unique()).astype(float).dropna().values + 1.0); c = np.log(meta.durationMs.reindex(cands.trackId.values).astype(float).fillna(np.exp(tr.mean())).values + 1.0)
+        return (1 - wt) * base(train, cands, meta, cutoff) + wt * (c - tr.mean()) / (tr.std() + 1e-9)
+    return predict
+
 H = dict(signal="both", hl=90.0)
 GRID = [dict(H, blocks=b, ncomp=nc, **kw) for b, kw in ((("mert_mid",), {}), (MERT3, {}), (MERT3 + ("eact", "eemb"), dict(combine="trust")), (("mert_mid", "eact"), {})) for nc in (16, 32, 64, 128)]
 E_RIDGE = [dict(H, ncomp=64), dict(H, blocks=MERT3, ncomp=32), dict(H, blocks=MERT3 + ("eact", "eemb"), combine="trust"), dict(signal="both", P=60, K=3, hl=120.0, ncomp=64)]
@@ -261,6 +268,7 @@ V2 = {
     "f1_ens_ridge": make_ens(E_RIDGE),
     "f2_ens_ridge_noart": make_ens(E_RIDGE, noart=True),
     "f3_ens_ridge_krr": make_ens(E_KRR),
+    "f5_ens_plus_dur": make_dur(make_ens(E_RIDGE)),
     "g1_auto_top1": make_auto(GRID, 1),
     "g2_auto_top3": make_auto(GRID, 3),
     "f4_stack_refs": make_ens(E_RIDGE, refs=("ref_audio_final", "ref_w4r1_music")),

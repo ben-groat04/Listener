@@ -209,6 +209,7 @@ def build():
     if "base" in sel: out["w5_default"] = fixed({})
     if "oat" in sel: out.update({"oat_" + k: fixed(v) for k, v in G.OAT.items()})
     if "stale" in sel: out.update({"oat_" + k: fixed(v) for k, v in G.STALE.items()})
+    if "combo" in sel: out.update({k: fixed(v) for k, v in G.COMBO.items()})
     if "rj" in sel: out.update({k: fixed(v) for k, v in G.random_configs().items()})
     if "tuned" in sel:
         out["tunedA"] = tuned("A", SPEC_A); out["tunedA_m02"] = tuned("A", SPEC_A, 0.02)

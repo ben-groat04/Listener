@@ -30,7 +30,7 @@ def _hash(files):
         p = str(p); h.update(Path(p).read_bytes() if p.endswith(".py") else (f"{p}{os.stat(p).st_size}".encode() if os.path.exists(p) else p.encode()))
     return h.hexdigest()[:16]
 
-def _data_files(): return [data.DECOYS, data.TOP_TRACKS, data.STREAMS, data.FALLBACK, data.ALBUM_REL]
+def _data_files(): return [data.DECOYS, data.TOP_TRACKS, data.STREAMS, data.FALLBACK_DONE, data.ALBUM_REL]
 def _pool_hash():   # pools depend on data.py, make_decoys.py and the data files only
     return _hash([data.ROOT / "evalkit" / "data.py", data.ROOT / "evalkit" / "make_decoys.py"] + _data_files())
 def _code_hash():

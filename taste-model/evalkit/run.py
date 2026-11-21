@@ -843,7 +843,7 @@ def _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel)
                 comp, ch = walkforward_composite({n: scored[n] for n in fam}, fold_names); scored[name] = comp; wf.append((sname, name, fam, ch))
         f0 = next(iter(scored.values())); dg = hashlib.md5(pd.util.hash_pandas_object(f0[["fold", "artist", "love"]], index=False).values.tobytes()).hexdigest()[:8]
         print(f"\n{'#' * 20} FOLD SET {sname} [{VERSION}]: {len(fold_names)} folds {fold_names[0]} .. {fold_names[-1]}; windows {', '.join(f'{a.date()}..{b.date()}' for a, b in foldsets.windows(sname)[:3])} ... ; tried songs scored {int((f0.is_decoy == 0).sum())} {'#' * 20}")
-        print(f"best_ref ({'fixed over ALL three references' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only: ' + ', '.join(r for r in REFERENCES if r in scored)}; point sauc of this fold set): {best_ref}   " + "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items()))
+        print(f"best_ref ({'among all seven references' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only: ' + ', '.join(r for r in REFERENCES if r in scored)}; point sauc of this fold set): {best_ref}   " + "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items()))
         for w in _tied_warnings(scored): print(w)
         tabs, flags = summarize(scored, fold_names, nboot, 1, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=True, part=f"alt:{sname}:{pair}:{dg}", open_pool=False, pair_group=pair, tune_era=True)
         out[sname] = tabs; flags_of[sname] = flags; scored_all[sname] = scored
@@ -1046,7 +1046,7 @@ def main(argv):
         with open(data.SEALED_DIR / "runs.log", "a") as fh:
             fh.write(json.dumps(dict(ts=now_iso(), models=list(preds), files=hashes, looks_after=n_looks)) + "\n")
     print(f"evalkit {VERSION}: fast={fast} late={late} holdout={holdout} walkforward={walk} pair_group={pair}{' (no-op on the default folds: fold == calendar quarter)' if pair == 'quarter' else ''} folds={len(cutoffs)} window={win} nboot={nboot} refs_scored={','.join(refs_sel) or 'none'} n_looks={n_looks} (CI level {100 * (1 - 0.05 / n_looks):.2f}%; two-sided: '95% lower bound' = 2.5th percentile)")
-    print(f"best_ref ({'fixed from TUNE point sauc of the references, non-HOLDOUT rows' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only (' + ', '.join(r for r in REFERENCES if r in scored) + '), fixed from TUNE point sauc'}): {best_ref}   " + "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items()))
+    print(f"best_ref ({'fixed from TUNE point sauc of the references, non-HOLDOUT rows' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only (' + ', '.join(r for r in REFERENCES if r in scored) + '), fixed from TUNE point sauc'}): {best_ref}   " + ("(TUNE reference scores not printed in a --holdout run)" if holdout else "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items())))
     for w in _tied_warnings({k: v for k, v in scored.items()}): print(w)
     out = {}
     for si, (nm, fl) in enumerate(slices):

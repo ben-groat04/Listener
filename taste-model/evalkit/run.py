@@ -253,6 +253,16 @@ def _tied_warnings(scored):
 
 def _fmt(a, lo, hi): return "-" if not np.isfinite(a) else f"{a:.3f} [{lo:.2f},{hi:.2f}]"
 
+def _dstat(S, na, nb, alpha=0.05):
+    """Paired difference of model na minus model nb over the shared bootstrap resamples (S: the per-model stats of summarize). key -> dict(d point delta, lo95 = alpha/2 percentile, P = P(d > 0),
+    lo80, hi80); keys sauc, wa, gc, macro, wx and 'new' (new-artist sauc)."""
+    out = {}
+    for key in ("sauc", "wa", "gc", "macro", "wx", "new"):
+        a, b = (S[na]["new"], S[nb]["new"]) if key == "new" else (S[na]["all"], S[nb]["all"]); k = "sauc" if key == "new" else key
+        d = a[k + "_b"] - b[k + "_b"]; f = d[np.isfinite(d)]
+        out[key] = dict(d=_f(a[k]) - _f(b[k]), lo95=float(np.nanpercentile(d, 100 * alpha / 2)), P=float(np.mean(f > 0)), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)))
+    return out
+
 def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True, part="main"):
     """Tables for ONE slice (list of fold names). Bootstrap CIs resample whole primary artists GLOBALLY (all rows of an artist in every fold of the slice are drawn together; pair weights =
     products of the two rows' draw counts; resamples shared by all models => paired differences). CI level 95% (Bonferroni-widened to 1-0.05/n_looks for several sealed looks).
@@ -382,13 +392,7 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
     models = [n for n in P if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]; V = []; EV = {}; VD = []; LOG = {}
     if not models: models = [n for n in P if n in BASELINES or n in SHORTCUTS or n in REF_NAMES]   # baseline-only run: VERDICT rows for the baselines / references themselves
     sa = lambda n: _f(S[n]["all"]["sauc"]); so = lambda n: _f(SO["sp"][n]["all"]["sauc"])
-    def dstat(na, nb):   # na, nb: model names; key = metric -> point delta, 95% lower bound, P(delta > 0), 80% interval (shared resamples). 'new' = new-artist sauc, the others are the all-songs metrics
-        out = {}
-        for key in ("sauc", "wa", "gc", "macro", "wx", "new"):
-            a, b = (S[na]["new"], S[nb]["new"]) if key == "new" else (S[na]["all"], S[nb]["all"]); k = "sauc" if key == "new" else key
-            d = a[k + "_b"] - b[k + "_b"]; f = d[np.isfinite(d)]
-            out[key] = dict(d=_f(a[k]) - _f(b[k]), lo95=float(np.nanpercentile(d, 100 * alpha / 2)), P=float(np.mean(f > 0)), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)))
-        return out
+    dstat = lambda na, nb: _dstat(S, na, nb, alpha)   # model na minus model nb, see _dstat
     metas = [m for m in ("duration", "meta_gbm", "nonaudio_gbm") if m in S]
     best_meta = max(metas, key=lambda m: _f(S[m]["all"]["wa"])) if metas else None   # chosen by the slice's point wa_sauc
     rlist = [r for r in REFERENCES if r in S]
@@ -458,11 +462,14 @@ def finish_verdicts(out, late):
                         V.at[i, f"{sl}_d_{kn}"] = round(e["d"], 3); V.at[i, f"{sl}_P_{kn}"] = round(e["P"], 3)
 
 # ---------------------------------------------------------------- scoring sets, best_ref
+def _load_module(p):
+    spec = importlib.util.spec_from_file_location("pred_" + Path(p).stem + hashlib.md5(str(p).encode()).hexdigest()[:6], p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
+
+def _preds_of(m, p): return dict(getattr(m, "PREDICTORS", None) or {Path(p).stem: m.predict})
+
 def _load_mods(mods):
     preds = {}
-    for p in mods:
-        spec = importlib.util.spec_from_file_location("pred_" + Path(p).stem + hashlib.md5(str(p).encode()).hexdigest()[:6], p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-        for k, f in (getattr(m, "PREDICTORS", None) or {Path(p).stem: m.predict}).items(): preds[k] = f
+    for p in mods: preds.update(_preds_of(_load_module(p), p))
     return preds
 
 def _score_set(preds, cutoffs, part, indep_n, window, wname, bcache, rcaches):
@@ -598,11 +605,30 @@ def _worker_main(argv):
     for n in only: res[n] = score_predictor(preds[n], cuts, n, 0, (mode, k), None, None, "all", part).score.values
     pickle.dump(res, open(opt("--out"), "wb"))
 
+def _rank_norm(s, fold):
+    """Scores -> within-fold rank / fold size in (0, 1] (average ranks for ties)."""
+    from scipy.stats import rankdata
+    out = np.empty(len(s)); fold = np.asarray(fold)
+    for f in np.unique(fold): m = fold == f; out[m] = rankdata(s[m]) / m.sum()
+    return out
+
+def null_avg_stats(T, Tn, ft, null_scores, nperm=300):
+    """Null control v4 statistic. null_scores: list (one per seed) of score vectors over the tried rows `ft` of a slice (same order as T). Each seed's scores are rank-normalised within fold, averaged per
+    candidate across seeds, and sauc / wa / new-artist sauc of that averaged vector are compared with the cluster-aware band: `nperm` artist-block label permutations of the SAME averaged vector
+    (metrics.cluster_band). Returns (values [sauc, wa, new], band {sauc, wa, new}, inside [bool x3], averaged score)."""
+    avg = np.mean([_rank_norm(np.asarray(x, float), ft.fold.astype(str).values) for x in null_scores], axis=0)
+    aa = T.stats(avg, False, ("sauc", "wa")); ab = Tn.stats(avg, False, ("sauc",)); vals = [_f(aa["sauc"]), _f(aa["wa"]), _f(ab["sauc"])]
+    cb = metrics.cluster_band(ft, avg, nperm=nperm, seed=0)
+    return vals, cb, [cb[k][0] <= v <= cb[k][1] for k, v in zip(("sauc", "wa", "new"), vals)], avg
+
 def null_report(mods, preds, cutoff_set, slices, mode, nseeds, cache, nboot=100, part="main"):
-    """Null control v3. Per seed k (seed = cutoff + k, run in a fresh process with EVALKIT_NULL_SEED=k and EVALKIT_NO_FIT_CACHE=1): identity shuffle + artist/album relabelling of the train
+    """Null control v4. Per seed k (seed = cutoff + k, run in a fresh process with EVALKIT_NULL_SEED=k and EVALKIT_NO_FIT_CACHE=1): identity shuffle + artist/album relabelling of the train
     (mode 'v2') or identity shuffle only (mode 'identity', one seed, diagnostic). Per model and slice: real, per-seed and mean sauc / wa_sauc / new-artist sauc, the real-minus-null gap with an
-    artist-cluster bootstrap CI (paired resamples), and PASS / FLAG: FLAG iff the mean of the N seeds is outside the 95% permutation band of an N-seed mean (mean of N independent label
-    permutations of a fixed random score, 200 times; cached per N). A FLAG is not an automatic fail: a content model's FLAG must be explained by the builder or devil's advocate."""
+    artist-cluster bootstrap CI (paired resamples), and PASS / FLAG. GATED label (v4): the seeds' scores are rank-normalised within fold and averaged per candidate; sauc, wa and new-artist sauc of the
+    averaged score must lie inside the 2.5-97.5% band of 300 ARTIST-BLOCK label permutations of that same averaged score (metrics.artist_blocks: whole artists' label vectors are swapped among artists with
+    the same number of tried rows in a fold, unique counts are pooled with the nearest count), which keeps the artist-level clustering of the labels. The old song-level band (mean of N independent
+    song-level label permutations of a fixed random score, cached per N) and its label are printed for comparison only (too narrow for feature models). A FLAG is not an automatic fail:
+    a content model's FLAG must be explained by the builder or devil's advocate."""
     cuts = _cutoffs_of(cutoff_set); ks = list(range(nseeds if mode == "v2" else 1)); names = list(preds)
     real = {n: score_predictor(f, cuts, n, 0, None, None, cache if n in BASELINES else None, "all", part) for n, f in preds.items()}
     folds_n = [(F["c"], len(F["cands"])) for F in prepare_folds(cuts, part)]
@@ -631,6 +657,7 @@ def null_report(mods, preds, cutoff_set, slices, mode, nseeds, cache, nboot=100,
             ar, br = st(real[n].score.values[sel]); sk = [st(nulls[k][n][sel]) for k in ks]
             pt = np.array([[_f(a["sauc"]), _f(a["wa"]), _f(b["sauc"])] for a, b in sk]); mean = pt.mean(0); r0 = [_f(ar["sauc"]), _f(ar["wa"]), _f(br["sauc"])]
             inb = [band[key][0] <= m <= band[key][1] for key, m in zip(("sauc", "wa", "new"), mean)]
+            vals, cb, incl, _ = null_avg_stats(T, Tn, ft, [nulls[k][n][sel] for k in ks])
             r = dict(slice=sn, model=n)
             for j, (key, bk) in enumerate((("sauc", "sauc_b"), ("wa_sauc", "wa_b"), ("new_sauc", "sauc_b"))):
                 r[f"{key}_real"] = round(r0[j], 3)
@@ -638,8 +665,11 @@ def null_report(mods, preds, cutoff_set, slices, mode, nseeds, cache, nboot=100,
                 r[f"{key}_mean"] = round(mean[j], 3)
                 rb = (ar if j < 2 else br)[bk]; nb = np.mean([(a if j < 2 else b)[bk] for a, b in sk], axis=0); gap = rb - nb
                 r[f"{key}_gap"] = round(r0[j] - mean[j], 3); r[f"{key}_gap_ci"] = _ci(gap, 0.05)
-            r["label"] = ("PASS" if all(inb) else "FLAG") if mode == "v2" else "diagnostic (not gated)"
-            if mode == "v2": r["detail"] = "sauc %s wa %s new %s" % tuple("in" if x else "OUT" for x in inb)
+            for j, key in enumerate(("sauc", "wa", "new")): r[f"avg_{key}"] = round(vals[j], 3); r[f"cluster_band_{key}"] = cb[key]
+            r["label"] = ("PASS" if all(incl) else "FLAG") if mode == "v2" else "diagnostic (not gated)"
+            if mode == "v2":
+                r["detail"] = "cluster band: sauc %s wa %s new %s" % tuple("in" if x else "OUT" for x in incl)
+                r["songlevel_label"] = "PASS" if all(inb) else "FLAG"; r["songlevel_detail"] = "song-level band: sauc %s wa %s new %s" % tuple("in" if x else "OUT" for x in inb)
             rows.append(r)
         out[sn] = dict(band=band)
     df = pd.DataFrame(rows)
@@ -657,21 +687,74 @@ def _print_slice(nm, fl, tabs, flags, nfold_total=None):
     print("\n== DIAGNOSTIC_REFERENCES (use post-cutoff information; NOT valid predictors; how much of the label is non-musical)"); print(tabs["DIAGNOSTIC_REFERENCES"].to_string(index=False))
     for k, t in tabs.items():
         if k in ("DIAGNOSTIC_REFERENCES", "VERDICT", "VERDICT_DELTAS") or k.startswith("_") or k.startswith("BREAKDOWN"): continue
+        if k.startswith("LABEL VARIANTS"): print(f"\n== {nm} {k}"); print(t.to_string()); continue
         print(f"\n== {nm} {k}"); print(t.to_string(index=k in ("fold_auc_tried", "fold_auc_ci", "independence", "null_band_95") or k.endswith(("lower_bound", "P_gt0", "80ci"))))
     for k, t in tabs.items():
         if k.startswith("BREAKDOWN"): print(f"\n== {nm} {k} (sauc [95% CI]; pairs within fold inside the group)"); print(t.to_string())
     for f in flags: print(f)
 
+# ---------------------------------------------------------------- walk-forward selection (--walkforward, fast TUNE only)
+WF_MIN_EACH = 10
+
+def walkforward_composite(members, folds, min_each=WF_MIN_EACH):
+    """Walk-forward model selection. members: {name: scored frame} (same rows in the same order, columns fold, love, is_decoy, score); folds: the fold names in time order (TUNE).
+    For fold k the composite uses the member with the highest POOLED sauc (within-fold pairs of the tried songs, ties half) over the folds BEFORE k that have >= min_each loved and >= min_each
+    not-loved tried rows; ties go to the first listed member; fold 1, or a fold without any eligible earlier fold, uses the first listed member. Nothing is cached across runs.
+    Returns (composite frame = a copy of the first member's frame with the chosen member's score per fold, choices = list of dict(fold, member, eligible_folds, pooled_sauc of the chosen member))."""
+    names = list(members); first = members[names[0]]; fo = first.fold.astype(str).values; tried = (first.is_decoy == 0).values; y = first.love.values.astype(int)
+    for n in names: assert (members[n].trackId.values == first.trackId.values).all(), "walk-forward members must have identical rows"
+    comp = first.copy(); sc = first.score.values.astype(float).copy(); choices = []; ok = {}
+    for f in folds:
+        m = (fo == str(f)) & tried; ok[str(f)] = (y[m].sum() >= min_each) and ((1 - y[m]).sum() >= min_each)
+    for k, f in enumerate(folds):
+        elig = [str(g) for g in folds[:k] if ok[str(g)]]; pick, val = names[0], np.nan
+        if elig:
+            m = np.isin(fo, elig) & tried; g = pd.factorize(fo[m])[0]; best = -np.inf
+            for n in names:
+                v = float(metrics.pooled_auc(y[m], members[n].score.values[m].astype(float), g, np.ones((1, int(m.sum()))))[0])
+                if v > best: best, pick = v, n
+            val = best
+        mk = fo == str(f); sc[mk] = members[pick].score.values[mk]; choices.append(dict(fold=str(f), member=pick, eligible_folds=len(elig), pooled_sauc_of_chosen=round(val, 4) if np.isfinite(val) else np.nan))
+    comp["score"] = sc; comp.attrs.update(first.attrs); return comp, choices
+
+def walkforward_family(module, path, scored):
+    """The family: module.WALKFORWARD_FAMILY (a list of PREDICTORS keys) if defined, else all keys of the file's PREDICTORS dict (in listed order)."""
+    fam = getattr(module, "WALKFORWARD_FAMILY", None); preds = _preds_of(module, path); fam = list(fam) if fam is not None else list(preds)
+    for n in fam: assert n in scored, f"walk-forward family member {n!r} is not a model of {path} (WALKFORWARD_FAMILY must list keys of PREDICTORS)"
+    return fam
+
+def print_walkforward(name, family, choices, tabs, nboot_alpha=0.05):
+    """Printed block: chosen member per fold; the composite's pooled sauc, macro, wx, wa, new-artist sauc with CIs; paired deltas vs every reference row and vs the best member chosen with hindsight;
+    optimism = best-hindsight sauc minus composite sauc."""
+    S = tabs["_S"]; alpha = nboot_alpha; sa = lambda n: _f(S[n]["all"]["sauc"]); hind = max(family, key=sa)
+    print(f"\n{'=' * 30} WALK-FORWARD {name} (family: {', '.join(family)}) {'=' * 30}")
+    print("rule: fold k uses the member with the highest pooled sauc over TUNE folds before k with >= %d loved and >= %d not-loved tried rows; fold 1 / no eligible fold: first listed member (%s)" % (WF_MIN_EACH, WF_MIN_EACH, family[0]))
+    print("\n== chosen member per fold"); print(pd.DataFrame(choices).to_string(index=False))
+    st = S[name]; rows = [dict(metric=lab, value=round(_f(st["all"][k]), 3), ci95=_ci(st["all"][k + "_b"], alpha)) for lab, k in (("sauc", "sauc"), ("macro_sauc", "macro"), ("wx_sauc", "wx"), ("wa_sauc", "wa"))]
+    rows.append(dict(metric="new_artist_sauc", value=round(_f(st["new"]["sauc"]), 3), ci95=_ci(st["new"]["sauc_b"], alpha)))
+    print("\n== composite (pooled over TUNE, global artist bootstrap)"); print(pd.DataFrame(rows).to_string(index=False))
+    fmt = lambda x: f"d={x['d']:+.3f} lo95={x['lo95']:+.3f} P={x['P']:.2f}"
+    refl = [r for r in REFERENCES if r in S]; dr = []
+    for r in refl + [hind]:
+        e = _dstat(S, name, r, alpha); dr.append(dict(vs=r + (" (best member with hindsight)" if r == hind else ""), **{lab: fmt(e[k]) for lab, k in (("sauc", "sauc"), ("macro_sauc", "macro"), ("wx", "wx"), ("wa", "wa"), ("new_artist_sauc", "new"))}))
+    print("\n== paired deltas composite minus ... (shared bootstrap resamples)"); print(pd.DataFrame(dr).to_string(index=False))
+    print(f"\noptimism = best-hindsight sauc minus composite sauc = {sa(hind):.3f} ({hind}) - {sa(name):.3f} = {sa(hind) - sa(name):+.3f}")
+
+def _paths(logdir=None):
+    """Locations of the --late / --holdout cap logs, fingerprints, holdout budget and late tables: .cache/ (default) or --log-dir (tests)."""
+    d = Path(logdir) if logdir else data.ROOT / ".cache"
+    return dict(late_log=d / "late_runs.log", holdout_log=d / "holdout_runs.log", late_tables=d / "late_tables", budget=d / "holdout_budget.json", fp_late=d / "late_fingerprints.pkl", fp_holdout=d / "holdout_fingerprints.pkl")
+
 def main(argv):
     from threadpoolctl import threadpool_limits
     threadpool_limits(2)
     if "--_null-worker" in argv: return _worker_main(argv)
-    sealed = "--sealed" in argv; late = "--late" in argv; holdout = "--holdout" in argv
+    sealed = "--sealed" in argv; late = "--late" in argv; holdout = "--holdout" in argv; walk = "--walkforward" in argv
     opt = lambda k, dflt: type(dflt)(argv[argv.index(k) + 1]) if k in argv else dflt
     fast = "--fast" in argv   # TUNE slice only, nboot 100, no independence check, no LATE
     nboot, indep_n, nulls, win = opt("--nboot", 100 if fast else 300), opt("--indep-n", 0 if fast else 8), [md for md, fl in (("v2", "--null-control"), ("identity", "--null-control-identity")) if fl in argv], opt("--window", "all")
-    nseeds = opt("--null-seeds", 3)
-    skip = {argv[i + 1] for i, a in enumerate(argv) if a in ("--nboot", "--indep-n", "--window", "--null-seeds")}
+    nseeds = opt("--null-seeds", 5); logdir = opt("--log-dir", ""); LP = _paths(logdir or None)
+    skip = {argv[i + 1] for i, a in enumerate(argv) if a in ("--nboot", "--indep-n", "--window", "--null-seeds", "--log-dir")}
     mods = [a for a in argv if not a.startswith("--") and a not in skip]
     from .ablate import WINDOWS
     assert not (fast and sealed), "--fast is dev only"
@@ -679,9 +762,12 @@ def main(argv):
     assert not (sealed and late), "--late is a dev option"
     assert not (holdout and (fast or nulls)), "--holdout cannot be combined with --fast or --null-control (one full, scored look per predictor file hash)"
     assert not (holdout and (late or sealed)), "--holdout is a dev option and cannot be combined with --late / --sealed"
+    assert not (walk and not fast), "--walkforward is allowed only with --fast (TUNE only)"
+    assert not (walk and (late or sealed or holdout or nulls)), "--walkforward is a fast TUNE option and cannot be combined with --late / --sealed / --holdout / --null-control"
+    assert not (holdout and not mods), "--holdout needs a predictor file"
     part = "all" if sealed else "holdout" if holdout else "main"
     cutoffs = data.SEALED_CUTOFFS if sealed else data.DEV_CUTOFFS if (late or holdout) else data.TUNE_CUTOFFS
-    slices = ([("SEALED", list(map(str, cutoffs)))] if sealed else [("HOLDOUT-ALL", data.DEV_CUTOFFS), ("HOLDOUT-early", data.TUNE_CUTOFFS), ("HOLDOUT-late", data.LATE_CUTOFFS)] if holdout
+    slices = ([("SEALED", list(map(str, cutoffs)))] if sealed else [("HOLDOUT-ALL", data.DEV_CUTOFFS), ("HOLDOUT-early", data.TUNE_CUTOFFS), ("HOLDOUT-late", data.LATE_CUTOFFS), (DEVHOLD, data.DEV_CUTOFFS)] if holdout
               else [("TUNE", data.TUNE_CUTOFFS)] + ([("LATE", data.LATE_CUTOFFS), ("ALL", data.DEV_CUTOFFS)] if late else []))
     hashes = [_sha(p) for p in mods]
     if sealed:
@@ -691,70 +777,104 @@ def main(argv):
         for p, h in zip(mods, hashes):
             if h not in reg: sys.exit(f"{p}: sha256 {h[:12]} is not registered. Only the main session registers the final model(s): python -m evalkit.register {p} <name>")
             if h in done: sys.exit(f"{p}: this exact file was already evaluated on sealed (one look per registered model)")
-    if holdout: holdout_cap_check(hashes)
+    binfo = [bundle.describe(p) for p in mods] if (late or holdout) else []   # entry sha256, project files the predictor imports / loads, bundle hash (evalkit.bundle)
+    bundles = [i["bundle_sha256"] for i in binfo]; members = sorted({h for i in binfo for h in i["members"].values()} - set(hashes))
+    fps = {}   # per file: first-fold score vector of every model of the file (renamed / lightly edited copies are refused by Spearman >= 0.999 to a model already logged for the slice)
+    if holdout:
+        holdout_cap_check(hashes, LP["holdout_log"], bundles, members); holdout_budget_check(LP["budget"])
+        for p, h in zip(mods, hashes):
+            fps[h] = first_fold_vectors(_preds_of(_load_module(p), p), "holdout"); fingerprint_check(LP["fp_holdout"], h, fps[h], label=f"of {Path(p).name} ")
     tee = _Tee(sys.stdout); sys.stdout = tee; t_start = time.time()
     if late:   # auditable, capped use of the held-out dev slice
-        late_cap_check(hashes)
-        LATE_LOG.parent.mkdir(parents=True, exist_ok=True)
-        with open(LATE_LOG, "a") as fh:
-            fh.write(json.dumps(dict(ts=now_iso(), files=[str(Path(p).resolve()) for p in mods], sha256=hashes, null_control=("v2" in nulls), null_control_identity=("identity" in nulls), window=win)) + "\n")
+        late_cap_check(hashes, LP["late_log"], LATE_CAP, bundles, members, LP["late_tables"])
+        for p, h in zip(mods, hashes):
+            fps[h] = first_fold_vectors(_preds_of(_load_module(p), p), "late"); fingerprint_check(LP["fp_late"], h, fps[h], label=f"of {Path(p).name} ")
+        LP["late_log"].parent.mkdir(parents=True, exist_ok=True)
+        with open(LP["late_log"], "a") as fh:
+            fh.write(json.dumps(dict(ts=now_iso(), files=[str(Path(p).resolve()) for p in mods], sha256=hashes, bundle_sha256=bundles, member_sha256=members, null_control=("v2" in nulls), null_control_identity=("identity" in nulls), window=win)) + "\n")
+        for h in hashes: fingerprint_record(LP["fp_late"], h, fps[h])
     preds = dict(BASELINES); preds.update(SHORTCUTS)  # the fixed valid-baseline set + open-pool shortcuts are always scored alongside, so paired comparisons use identical resamples
-    if not nulls: preds[REF] = ref_fn()
-    cand_preds = _load_mods(mods); preds.update(cand_preds)
+    if not nulls:
+        for r in REF_NAMES: preds[r] = ref_fn(r)
+    mod_objs = [(p, _load_module(p)) for p in mods]; cand_preds = {}
+    for p, m in mod_objs: cand_preds.update(_preds_of(m, p))
+    preds.update(cand_preds)
     n_looks = max(1, sealed_looks(hashes)) if sealed else 1
-    cp, rp = _cache_path(), _ref_cache_path(); bcache = _load_pk(cp) if not sealed else None; rcache = _load_pk(rp) if not sealed else None
-    n0 = (len(bcache) if bcache is not None else 0, len(rcache) if rcache is not None else 0)
+    cp = _cache_path(); rps = {r: _ref_cache_path(r) for r in REF_NAMES}; bcache = _load_pk(cp) if not sealed else None; rcaches = {r: _load_pk(rps[r]) for r in REF_NAMES} if not sealed else None
+    n0 = (len(bcache) if bcache is not None else 0, {r: len(c) for r, c in (rcaches or {}).items()})
     def save_caches():
         if bcache is not None and len(bcache) > n0[0]: _save_pk(cp, {**_load_pk(cp), **bcache})
-        if rcache is not None and len(rcache) > n0[1]: _save_pk(rp, {**_load_pk(rp), **rcache})
+        for r, c in (rcaches or {}).items():
+            if len(c) > n0[1][r]: _save_pk(rps[r], {**_load_pk(rps[r]), **c})
     pd.set_option("display.width", 300, "display.max_columns", 60, "display.max_colwidth", 60, "display.max_rows", 400)
     if nulls:   # null control runs INSTEAD of the normal tables (slow: N seeds x folds x models, one fresh process per seed)
         assert not sealed, "null control is a dev option"
         cset = "dev" if late else "tune"
-        nm_preds = {k: f for k, f in preds.items() if k in BASELINES or k in cand_preds}   # shortcuts and the reference row are exempt from the null control
+        nm_preds = {k: f for k, f in preds.items() if k in BASELINES or k in cand_preds}   # shortcuts and the reference rows are exempt from the null control (a predictor that CALLS evalkit.refs runs them on the null train like any other code)
         for md in nulls:
             res = null_report(mods, nm_preds, cset, slices, md, nseeds, bcache, nboot=min(nboot, 100), part=part)
-            print(f"\n{'=' * 20} NULL CONTROL v3 {'(GATED: identity shuffle + artist/album relabelling, %d seeds, each in a fresh process)' % nseeds if md == 'v2' else 'identity-only shuffle (DIAGNOSTIC, not gated: preserves per-artist song counts)'} {'=' * 20}")
-            print("PASS = the N-seed mean of sauc, wa_sauc and new-artist sauc is inside the 95% permutation band of an N-seed mean. FLAG = outside (not an automatic fail; a FLAG on a content model has to be explained by the builder / devil's advocate).")
+            print(f"\n{'=' * 20} NULL CONTROL v4 {'(GATED: identity shuffle + artist/album relabelling, %d seeds, each in a fresh process)' % nseeds if md == 'v2' else 'identity-only shuffle (DIAGNOSTIC, not gated: preserves per-artist song counts)'} {'=' * 20}")
+            print("PASS = sauc, wa_sauc and new-artist sauc of the seed-averaged null score (each seed rank-normalised within fold, averaged per candidate) are inside the 2.5-97.5% CLUSTER-AWARE band: 300 artist-block label permutations of that same averaged score "
+                  "(whole artists' label vectors swapped among artists with the same number of tried rows in a fold; unique counts pooled with the nearest count). FLAG = outside (not an automatic fail; a FLAG on a content model has to be explained by the builder / devil's advocate).")
+            print("songlevel_label / songlevel_detail = the old v3 label against the N-seed-mean song-level permutation band: song-level (too narrow for feature models; for comparison).")
             for sn, r in res.items():
-                print(f"\n-- slice {sn}: 95% permutation band of the {nseeds if md == 'v2' else 1}-seed mean {r['band']}"); print(r["table"].drop(columns="slice").to_string(index=False))
+                print(f"\n-- slice {sn}: song-level (too narrow for feature models; for comparison) 95% permutation band of the {nseeds if md == 'v2' else 1}-seed mean {r['band']}"); print(r["table"].drop(columns="slice").to_string(index=False))
         save_caches(); sys.stdout = tee.o
         return res
     # best_ref is fixed from TUNE (point sauc of the references, non-HOLDOUT rows)
-    scored = _score_set(preds, cutoffs, part, indep_n, WINDOWS[win], win, bcache, rcache)
-    if part == "main": best_ref, br_scores = best_ref_from(scored, data.TUNE_CUTOFFS if not sealed else data.TUNE_CUTOFFS)
+    scored = _score_set(preds, cutoffs, part, indep_n, WINDOWS[win], win, bcache, rcaches)
+    if part == "main": best_ref, br_scores = best_ref_from(scored, data.TUNE_CUTOFFS)
     else:
-        ref_preds = {k: preds[k] for k in REFERENCES if k in preds}; tune_sc = _score_set(ref_preds, data.TUNE_CUTOFFS, "main", 0, WINDOWS[win], win, bcache, rcache)
+        ref_preds = {k: preds[k] for k in REFERENCES if k in preds}; tune_sc = _score_set(ref_preds, data.TUNE_CUTOFFS, "main", 0, WINDOWS[win], win, bcache, rcaches)
         best_ref, br_scores = best_ref_from(tune_sc, data.TUNE_CUTOFFS)
+    comb = None
+    if holdout:   # v4.1: the same call also scores the main (non-HOLDOUT) 14 folds and pools them with the HOLDOUT rows (DEV+HOLDOUT slice, not graded)
+        main_sc = _score_set(preds, cutoffs, "main", 0, WINDOWS[win], win, bcache, rcaches); main_sc.update(score_diagnostics(cutoffs, "main")); scored.update(score_diagnostics(cutoffs, part))
+        comb = {}
+        for n in scored:
+            comb[n] = pd.concat([main_sc[n], scored[n]], ignore_index=True); comb[n].attrs.update(scored[n].attrs); comb[n].attrs["runtime"] = main_sc[n].attrs.get("runtime", 0) + scored[n].attrs.get("runtime", 0)
+    else: scored.update(score_diagnostics(cutoffs, part))
     save_caches()
-    scored.update(score_diagnostics(cutoffs, part))
+    wf = []   # walk-forward composites (fast TUNE only): one per predictor file
+    if walk:
+        for p, m in mod_objs:
+            fam = walkforward_family(m, p, scored); name = f"walkforward[{Path(p).parent.name}]"
+            comp, ch = walkforward_composite({n: scored[n] for n in fam}, list(data.TUNE_CUTOFFS)); scored[name] = comp; wf.append((name, fam, ch))
     if sealed:  # log every sealed evaluation (file hash included) so overuse is visible and multiplicity is counted
         data.SEALED_DIR.mkdir(exist_ok=True)
         with open(data.SEALED_DIR / "runs.log", "a") as fh:
             fh.write(json.dumps(dict(ts=now_iso(), models=list(preds), files=hashes, looks_after=n_looks)) + "\n")
-    print(f"evalkit {VERSION}: fast={fast} late={late} holdout={holdout} folds={len(cutoffs)} window={win} nboot={nboot} n_looks={n_looks} (CI level {100 * (1 - 0.05 / n_looks):.2f}%; two-sided: '95% lower bound' = 2.5th percentile)")
+    print(f"evalkit {VERSION}: fast={fast} late={late} holdout={holdout} walkforward={walk} folds={len(cutoffs)} window={win} nboot={nboot} n_looks={n_looks} (CI level {100 * (1 - 0.05 / n_looks):.2f}%; two-sided: '95% lower bound' = 2.5th percentile)")
     print(f"best_ref (fixed from TUNE point sauc of the references, non-HOLDOUT rows): {best_ref}   " + "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items()))
     for w in _tied_warnings({k: v for k, v in scored.items()}): print(w)
     out = {}
     for si, (nm, fl) in enumerate(slices):
-        tabs, flags = summarize(scored, fl, nboot, n_looks, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=not holdout); out[nm] = tabs
-        _print_slice(nm, fl, tabs, flags)
+        src, pt = (comb, "devhold") if nm == DEVHOLD else (scored, part)
+        tabs, flags = summarize(src, fl, nboot, n_looks, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=not holdout, part=pt); out[nm] = (tabs, flags)
+    if holdout:   # one JSON line per --holdout run (and one budget unit) BEFORE anything is printed, so devil's advocates can read the result without re-running and a crash cannot leak an unlogged look
+        rec = dict(ts=now_iso(), files=[str(Path(p).resolve()) for p in mods], sha256=hashes, bundle_sha256=bundles, member_sha256=members, models=list(preds), best_ref=best_ref, window=win, nboot=nboot,
+                   holdout_all={n: v for n, v in out["HOLDOUT-ALL"][0]["_log"].items() if n not in DIAGNOSTIC},
+                   dev_plus_holdout={n: dict(sauc=v["sauc"], sauc_ci=v["sauc_ci"], wx=v["wx"], wx_ci=v["wx_ci"], new_artist_sauc=v["new_artist_sauc"], new_artist_sauc_ci=v["new_artist_sauc_ci"]) for n, v in out[DEVHOLD][0]["_log"].items() if n not in DIAGNOSTIC})
+        LP["holdout_log"].parent.mkdir(parents=True, exist_ok=True)
+        with open(LP["holdout_log"], "a") as fh: fh.write(json.dumps(rec, default=str) + "\n")
+        for h in hashes: fingerprint_record(LP["fp_holdout"], h, fps[h])
+        b = holdout_budget_use(LP["budget"]); print(f"holdout budget: {b['remaining']} run(s) remaining in round {b.get('round')}")
+    flags_of = {nm: f for nm, (t, f) in out.items()}; out = {nm: t for nm, (t, f) in out.items()}
+    for si, (nm, fl) in enumerate(slices): _print_slice(nm, fl, out[nm], flags_of[nm])
     finish_verdicts(out, late)
-    if holdout:   # one JSON line per --holdout run so devil's advocates can read the result without re-running
-        rec = dict(ts=now_iso(), files=[str(Path(p).resolve()) for p in mods], sha256=hashes, models=list(preds), best_ref=best_ref, window=win, nboot=nboot,
-                   holdout_all={n: v for n, v in out["HOLDOUT-ALL"]["_log"].items() if n not in DIAGNOSTIC})
-        HOLDOUT_LOG.parent.mkdir(parents=True, exist_ok=True)
-        with open(HOLDOUT_LOG, "a") as fh: fh.write(json.dumps(rec, default=str) + "\n")
     for si, (nm, fl) in enumerate(slices):
         tabs = out[nm]
         if len(tabs["VERDICT"]):
-            print(f"\n== {nm} VERDICT ({'deltas and P only, NOT graded' if holdout else 'graded evidence vs best_ref'}; no fixed thresholds)"); print(tabs["VERDICT"].T.to_string(header=False) if len(tabs["VERDICT"]) == 1 else tabs["VERDICT"].to_string(index=False))
+            print(f"\n== {nm} VERDICT ({'deltas and P only, NOT graded' if holdout else 'graded evidence vs best_ref'}; no fixed thresholds; wx = within-exposure-bucket sauc, new_artist = new-artist sauc)"); print(tabs["VERDICT"].T.to_string(header=False) if len(tabs["VERDICT"]) == 1 else tabs["VERDICT"].to_string(index=False))
             if len(tabs["VERDICT_DELTAS"]):
                 print(f"\n== {nm} VERDICT_DELTAS vs each reference ('*' = best_ref); d = point delta, lo95 = 2.5th percentile, P = P(d>0), 80% interval"); print(tabs["VERDICT_DELTAS"].to_string(index=False))
+    for name, fam, ch in wf: print_walkforward(name, fam, ch, out["TUNE"])
+    rt = {n: df.attrs.get("runtime") for n, df in scored.items() if n not in DIAGNOSTIC}
+    print("\n== runtime per model (seconds spent in this run; ~0 = served from the baseline / reference score cache)"); print(pd.DataFrame({"seconds": {n: round(v, 1) for n, v in rt.items() if v is not None}}).T.to_string())
     print(f"\nruntime {time.time() - t_start:.0f}s")
     sys.stdout = tee.o
     if late and mods:
-        for p in late_write_tables(hashes, f"# evalkit {VERSION} --late run {now_iso()}  files={mods}\n" + tee.buf.getvalue()): print("LATE table written (read-only):", p)
+        for p in late_write_tables(hashes, f"# evalkit {VERSION} --late run {now_iso()}  files={mods}\n" + tee.buf.getvalue(), LP["late_tables"]): print("LATE table written (read-only):", p)
     return scored, out
 
 if __name__ == "__main__": main(sys.argv[1:])

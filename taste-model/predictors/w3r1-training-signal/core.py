@@ -106,13 +106,15 @@ def fit_variant(train, cutoff, meta, o):
     if rep == "audio" and Xa is not None: X = pd.concat([X, Xa], axis=1)
     csec = int(B._sec(np.array([np.datetime64(cutoff)]))[0])
     keep = np.ones(len(rows), bool)
-    if o.get("window"): keep &= rows.age.values <= o["window"]
+    if o.get("window"):   # window in days, but never fewer than min_rows training songs (the window widens in the early folds)
+        mr = o.get("min_rows", 250); ages = np.sort(rows.age.values); win = max(o["window"], ages[min(mr, len(ages)) - 1] if len(ages) else 0)
+        keep &= rows.age.values <= win
     if o.get("skip_start", 0): keep &= rows.start_age.values >= o["skip_start"]
     ex = o.get("exposure", "none")
     if ex.startswith("drop"): keep &= rows.nnew_sess.values <= int(ex[4:])
     if ex == "sole": keep &= rows.nnew_sess.values <= 1
     r = rows[keep].reset_index(drop=True); Xk = X[keep].reset_index(drop=True)
-    if len(r) < 60: return lambda cands, meta: np.full(len(cands), 0.5)
+    if len(r) < 60: return lambda cands, meta, norm=False: np.full(len(cands), 0.5)
     y, kind = make_target(r, o.get("target", "love"), prior)
     w = np.ones(len(r))
     if o.get("hl"): w *= 0.5 ** (r.age.values / o["hl"])
@@ -156,22 +158,25 @@ def fit_variant(train, cutoff, meta, o):
     else:
         from sklearn.ensemble import HistGradientBoostingClassifier as C, HistGradientBoostingRegressor as R
         if kind == "clf":
-            if not (0 < y.sum() < len(y)): return lambda cands, meta: np.full(len(cands), 0.5)
+            if not (0 < y.sum() < len(y)): return lambda cands, meta, norm=False: np.full(len(cands), 0.5)
             with threadpool_limits(NT): m = C(monotonic_cst=cst, **kw).fit(Xk, y, sample_weight=w)
             predict_raw = lambda Z: m.predict_proba(Z)[:, 1]
         else:
             with threadpool_limits(NT): m = R(monotonic_cst=cst, **kw).fit(Xk, y, sample_weight=w)
             predict_raw = lambda Z: m.predict(Z)
 
-    def scorer(cands, meta):
+    ref = predict_raw(Xk) if not marg else None
+    mu, sd = (float(np.mean(ref)), float(np.std(ref)) + 1e-9) if ref is not None else (0.0, 1.0)
+    def scorer(cands, meta, norm=False):
         Z = B._features(True, cands, np.full(len(cands), csec), meta, hist, prior)
         if rep in ("plus", "audio"): Z = pd.concat([Z, _cand_extra(ctx, cands, meta, cutoff, rep == "audio")], axis=1)
         Z = Z[[c for c in cols if c != "lnnew"]]
         with threadpool_limits(NT):
-            if marg:
+            if marg:   # (no normalisation for marginalised variants)
                 qs = np.quantile(np.log(r.nnew_sess.values.astype(float)), np.linspace(.05, .95, 7))
                 return np.mean([predict_raw(Z.assign(lnnew=q)) for q in qs], axis=0)
-            return predict_raw(Z)
+            out = predict_raw(Z)
+            return (out - mu) / sd if norm else out
     return scorer
 
 
@@ -197,4 +202,23 @@ def make_predictor(o):
         k = (_tkey(train, cutoff), repr(sorted(o.items(), key=lambda t: t[0])))
         if k not in _FIT: _FIT[k] = fit_variant(train, cutoff, meta, o)
         return _FIT[k](cands, meta)
+    return predict
+
+
+def make_blend(opts, weights=None):
+    """Average of several variants, each standardised with the mean/std of its own predictions on the TRAINING rows (candidate independent)."""
+    ps = [dict(o) for o in opts]; wts = weights or [1.0] * len(ps)
+    def predict(train, cands, meta, cutoff):
+        tot = 0
+        for o, wt in zip(ps, wts):
+            if o.get("fn") == "artist_recent":   # frequency statistic: log1p(180-d half-life weighted plays of the artist), standardised over the training songs' artists
+                k = (_tkey(train, cutoff), "ar"); 
+                if k not in _FIT:
+                    rows = build(train, cutoff, meta)[0]
+                    ref = B.artist_recent(train, rows[["artistIds"]], meta, cutoff); _FIT[k] = (float(ref.mean()), float(ref.std()) + 1e-9)
+                mu, sd = _FIT[k]; tot = tot + wt * (B.artist_recent(train, cands, meta, cutoff) - mu) / sd; continue
+            k = (_tkey(train, cutoff), repr(sorted(o.items(), key=lambda t: t[0])))
+            if k not in _FIT: _FIT[k] = fit_variant(train, cutoff, meta, o)
+            tot = tot + wt * _FIT[k](cands, meta, norm=True)
+        return tot
     return predict

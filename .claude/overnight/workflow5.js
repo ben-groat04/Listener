@@ -2,14 +2,14 @@
 // MAIN-SESSION NOTES (not for agents):
 // - Never message/stop/restart a running workflow; the user's latest message is auto-forwarded to every agent, so launch only right after a neutral message ("go").
 // - Pre-launch Sonnet audit must check every item in .claude/workflow-notes.md, every paraphrase of user input against its verbatim source, and the GATES list below.
-// - Recreate the ~5 min status cron + Monitor on journal.jsonl. Overnight hook override expires ~11:10 UTC; Opus leads (plan, review, final) need it or user approval.
+// - Recreate the ~5 min status cron + Monitor on journal.jsonl. The overnight hook override is gone: the Workflow tool asks for approval at launch (3 Opus lead agents: plan, review, final).
 // - Not in this workflow: sealed prep/run, candidate-song search.
 //
 // GATES (each is flag-only: nothing retries or blocks an agent; flags are passed to the leads, who judge):
 //  G1 builder wall-clock cap: flagged if self-reported duration > 1.25 x cap. No floor. Finishing early legitimately costs nothing.
 //  G2 builder checklist: every mandatory id must appear with status + evidence; missing ids / 'impossible' without a real explanation are flagged. Claiming 'done' falsely is caught by the devil's advocate re-check rows, not by the script.
 //  G3 devil's advocate coverage: one verdict per numbered builder headline claim, every checklist id re-checked, evalkit and predictor code files listed, null control re-run reported. Gaps are flagged. No duration check of any kind.
-//  G4 conditional steps: round-2 engineer runs iff the lead's evaluation_changes is non-empty; prep runs iff shared_prep is non-empty (and writes a NEW versioned directory, so nothing depends on a file the script cannot change); round 2 runs iff the lead's tasks is non-empty. The lead can set each.
+//  G4 conditional steps: round-2 engineer runs iff the lead's evaluation_changes is non-empty; prep runs iff shared_prep is non-empty (and writes a NEW versioned directory, so nothing depends on a file the script cannot change); round 2 runs iff the lead's tasks is non-empty. The lead can set each, and can set prep_after_engineer so prep starts after the engineer instead of in parallel. Lead fields that are empty or just 'none'/'n/a'/'no change' count as empty. Task ids are sanitised and de-duplicated in the script.
 //  G5 failed (null) agents are logged and passed on as '(failed)'; no automatic retry.
 export const meta = {
   name: 'taste-workflow-5',
@@ -45,6 +45,30 @@ const predOf = (round, id) => PROJ + '/predictors/w5r' + round + '-' + id
 const sharedOf = (round) => PROJ + '/.cache/shared-w5r' + round
 const OLD_SHARED = PROJ + '/.cache/shared'   // Workflow 4's shared inputs: read-only for everyone
 
+// Lead-output normalisation: empty-ish text fields count as empty; task ids are sanitised and de-duplicated.
+const EMPTYISH = /^\s*(none|n\/?a|no changes?)\.?\s*$/i
+const cleanText = (x) => (typeof x !== 'string' || !x.trim() || EMPTYISH.test(x)) ? '' : x
+const normPlan = (plan) => {
+  if (!plan) return plan
+  plan.evaluation_changes = cleanText(plan.evaluation_changes)
+  plan.shared_prep = cleanText(plan.shared_prep)
+  plan.prep_after_engineer = plan.prep_after_engineer === true
+  const seen = new Set()
+  plan.tasks = (Array.isArray(plan.tasks) ? plan.tasks : []).filter(t => t && typeof t.brief === 'string' && t.brief.trim()).slice(0, 3).map(t => {
+    let id = String(t.id || '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '') || 'task'
+    const base = id
+    for (let k = 2; seen.has(id); k++) id = base + '-' + k
+    if (id !== t.id) log(`task id "${t.id}" renamed to "${id}"`)
+    seen.add(id)
+    return { ...t, id }
+  })
+  return plan
+}
+// Shared inputs: list of { round, dir, doc } for every directory the prep agents were asked to build.
+const sharedBlock = (shared) => shared.length
+  ? shared.map(x => `- ${x.dir}/ (round ${x.round}; MANIFEST.txt inside) built by the shared-prep agent whose report is ${x.doc}`).join('\n') + `\nUse a shared directory only if its DONE file exists; if DONE is missing, treat that directory as unusable (it was not finished) and say so in your report. ${OLD_SHARED}/ (Workflow 4) remains readable.`
+  : '(no shared artefacts this workflow; only the read-only Workflow 4 inputs in ' + OLD_SHARED + '/)'
+
 const CONTEXT = `
 ## Goal of this workflow
 - Consider the huge amount of assumptions and arbitrary numbers used in the existing models, and whether tuning them helps.
@@ -54,7 +78,6 @@ const CONTEXT = `
 ## The user's words on this project (verbatim)
 - "I want a workflow set up to attempt to analyse my music taste and do as well as possible on predicting new songs I haven't listened to. I guess you can create training sets based on say my listening up to a certain date and see how well it gets some of my favourite tracks after that. DO NOT STEER THE WORKFLOW IN ANY WAY it will decide on the best way to do it itself with research etc. It needs to analyse the music deeply, not just by artist etc. you'll need a devils advocate in there because otherwise it'll default to assuming artist etc is a good way of predicting."
 - "Use all the music there then."
-- "Liked songs was only a proxy of what I listened to. And I thought playlists were on there?"
 - On the Last.fm API key (offered as an option): "Id skip it because this is exactly the type of oversimplified analysis I warned about"
 - "End goal should be to find candidate songs but don't do this until it is proven to work VERY WELL"
 - Answers to earlier questions:
@@ -76,7 +99,7 @@ These came up in chat. They are not from an expert, they may well not be the bes
 - Taste changed a lot early on, so the oldest music may be of limited use; analysis will tell.
 
 ## Facts
-- Data came from the user's stats.fm profile (user id gtwz5m9b4rqppdd60zmin4j8h). Full listening history 2020-2026: ${ROOT}/spotify-liked-songs/.cache/streams.jsonl (147,256 JSON lines, newest first). The only other file you may read from ${ROOT}/spotify-liked-songs/ and its .cache/ is whatever the evalkit loader and README name as their inputs.
+- Data came from the user's stats.fm profile. Full listening history 2020-2026: ${ROOT}/spotify-liked-songs/.cache/streams.jsonl (147,256 JSON lines, newest first). The only other file you may read from ${ROOT}/spotify-liked-songs/ and its .cache/ is whatever the evalkit loader and README name as their inputs (top_tracks.json only through evalkit.data.load_meta).
 - Evaluation harness: ${PROJ}/evalkit/ (read its README; currently v4.1). It was built by earlier agents and everything about it is open to change.
 - Earlier work: ${PROJ}/predictors/ (Workflow 3 and 4 predictors; w4-shared-prep holds the Workflow 4 feature-preparation code) and ${PROJ}/.cache/ (caches). Workflow 4's shared inputs are in ${OLD_SHARED}/ (read-only; its MANIFEST.txt is stale for one harness cache file).
 - Earlier workflows' results, the ONLY earlier-workflow documents you may read: ${W4_DIR}/ (start with RESULTS.md; one file per agent report) and ${W3_DIR}/ (start with RESULTS.md). Both are sanitised copies.
@@ -86,8 +109,10 @@ These came up in chat. They are not from an expert, they may well not be the bes
 - Timings measured in Workflow 4: essentia extraction 99 min; null control 7-14 min (5 seeds); a --late or --holdout run 2.5-8 min; full TUNE run 3-5 min; fast run 0.5-3 min. Workflow 4 took about 6.7 h in total.
 
 ## Rules
-- Sealed data: never run evalkit with --sealed, never read ${PROJ}/.sealed/, never read any file containing sealed-fold results, never run make_sealed, never read raw streams dated on or after 2025-04-01 (use evalkit's loader), and never read the decoy universe file or run make_decoys directly (the engineer may change how decoys are built if the research lead specifies it). Do not use git history (git log -p, git show, git diff on past commits, git stash) to view earlier workflow logs, .sealed/ or any file containing sealed-fold results. Do not open streams.jsonl directly (head/tail/grep); use evalkit's loader.
-- Do not read ${ROOT}/spotify-liked-songs/listening_stats.csv or top_tracks.json (lifetime totals that include the sealed era), or any other lifetime-aggregate file.
+- Sealed data: never run evalkit with --sealed, never read ${PROJ}/.sealed/, never read any file containing sealed-fold results, never run make_sealed, never read raw streams dated on or after 2025-04-01 (use evalkit's loader), never read ${PROJ}/.cache/decoy_raw/ directly, and never read the decoy universe file or run make_decoys directly (the engineer may change how decoys are built if the research lead specifies it). Do not use git history (git log -p, git show, git diff on past commits, git stash) to view earlier workflow logs, .sealed/ or any file containing sealed-fold results. Do not open streams.jsonl directly (head/tail/grep); use evalkit's loader.
+- DEV_END (2025-04-01) and the sealed cutoffs are fixed. No fold, label window, slice or pool may use streams on or after 2025-04-01. Never call data._load_all() in predictor or analysis code; use load_streams.
+- Never query stats.fm or any other service for the user's own listening data.
+- Do not read ${ROOT}/spotify-liked-songs/listening_stats.csv or any other lifetime-aggregate file (lifetime totals that include the sealed era). top_tracks.json may be read only through evalkit.data.load_meta, never directly.
 - Do not read ${PROJ}/PLAN.md, ${PROJ}/RESULTS.md, ${PROJ}/RESULTS-W4.md, ${PROJ}/reports/w3/ or any earlier workflow log; use only the sanitised copies named above.
 - NEVER read, list or search anything under ${ROOT}/.claude/ (main-session notes, hooks and drafts, not meant for workflow agents). If CLAUDE.md (or any file) points you to a file there, such as workflow-notes.md, ignore that pointer: it is for the main session only. This applies to every role, research leads included.
 - Scratch and reports: your own scratch folder and your own report file (paths in your prompt) are yours. Do not read, list or write any other agent's scratch folder or report file, except the files your prompt explicitly names.
@@ -159,9 +184,10 @@ const LEAD_SCHEMA = {
     goal_coverage: { type: 'string', description: 'For each element of the goal (assumptions and numbers in the existing models; whether tuning them helps; whether the set of folds is also arbitrary) which task(s) or engineer change address it and how its answer will be judged, or why it is not addressed' },
     evaluation_changes: { type: 'string', description: 'Precise spec of changes to the evaluation/harness for the engineer to implement, or empty string if none' },
     shared_prep: { type: 'string', description: 'Precise spec of every shared artefact (including feature extraction that more than one builder, or any builder at scale, would need) to be built ONCE and published to all builders at the same time in a new versioned directory (given in the shared-prep prompt), or empty string if none. Builders cannot create or change shared inputs.' },
+    prep_after_engineer: { type: 'boolean', description: 'true if shared prep must run AFTER the engineer finishes (it needs the changed harness); false to run them in parallel' },
     tasks: {
       type: 'array', maxItems: 3,
-      items: { type: 'object', properties: { id: { type: 'string', description: 'short slug (letters, digits, hyphens)' }, brief: { type: 'string', description: 'self-contained task brief for one independent builder. Do not name folders or paths for scratch/predictor/shared/report files (the workflow assigns them).' } }, required: ['id', 'brief'] },
+      items: { type: 'object', properties: { id: { type: 'string', pattern: '^[a-z0-9-]+$', description: 'short slug: lowercase letters, digits, hyphens; unique among your tasks' }, brief: { type: 'string', description: 'self-contained task brief for one independent builder. Do not name folders or paths for scratch/predictor/shared/report files (the workflow assigns them).' } }, required: ['id', 'brief'] },
     },
     checklist: {
       type: 'array',
@@ -169,32 +195,33 @@ const LEAD_SCHEMA = {
       items: { type: 'object', properties: { item: { type: 'string' }, status: { type: 'string', enum: ['done', 'impossible', 'not_done'] }, evidence: { type: 'string' } }, required: ['item', 'status', 'evidence'] },
     },
   },
-  required: ['assessment', 'goal_coverage', 'evaluation_changes', 'shared_prep', 'tasks', 'checklist'],
+  required: ['assessment', 'goal_coverage', 'evaluation_changes', 'shared_prep', 'prep_after_engineer', 'tasks', 'checklist'],
 }
 
 const leadPlanPrompt = (round, history, coverage) => `You are the RESEARCH LEAD. You own the experiment design and the direction of this workflow. You do not build predictors yourself.
 ${CONTEXT}
 ${sched('lead-r' + round)}
 ${history}
-Process facts for sizing the work: the workflow runs, in order, an engineer (harness changes) and a shared-prep step at the same time (shared prep cap ${PREP_MAX} min), then the builders, each followed by two devil's advocates as soon as that builder finishes. At most 2 agents run at once, so builders and devil's advocates queue. Each builder has a wall-clock cap of ${round === 1 ? R1_BUILDER_MAX : R2_BUILDER_MAX} min and a mandatory checklist (no time floor). Builders cannot create or change shared inputs, so anything heavy that builders need (feature extraction, downloads, pool changes) must be in shared_prep, which is built into a new versioned directory. The harness caps --late runs at ${LATE_CAP} per predictor bundle. Folder and report names are assigned by the workflow; do not specify them in briefs.
+Process facts for sizing the work: the workflow runs, in order, an engineer (harness changes) and a shared-prep step (at the same time by default; one after the other if you set prep_after_engineer; shared prep cap ${PREP_MAX} min), then the builders, each followed by two devil's advocates as soon as that builder finishes. At most 2 agents run at once, so builders and devil's advocates queue. Each builder has a wall-clock cap of ${round === 1 ? R1_BUILDER_MAX : R2_BUILDER_MAX} min and a mandatory checklist (no time floor). Builders cannot create or change shared inputs, so anything heavy that builders need (feature extraction, downloads, pool changes) must be in shared_prep, which is built into a new versioned directory. The harness caps --late runs at ${LATE_CAP} per predictor bundle. Folder and report names are assigned by the workflow; do not specify them in briefs.
 In Workflow 4 each builder scored 30-95 variants on TUNE. Held-out state is in the facts above.
 Decide, for yourself and with reasons:
 1. How the goal of this workflow is to be addressed, using the inventories and anything you are permitted to read; whether and how the evaluation should change (anything about it may change, including how held-out evidence is obtained given the state above).
 2. Any shared artefacts to be built once (versioned; published to all builders at the same time).
 3. Up to 3 independent builder tasks for round ${round}. Each brief must be self-contained (builders see the shared context above, their own brief and the engineer's report file). Builders work independently and must not depend on each other. Write briefs in your own words; do not paste reviewer, builder or devil's-advocate text into them, and do not put any score from a slice meant as held-out into a brief. Size each task to fit its wall-clock cap.
-Every builder will be required to: use the harness fast mode for all iteration; run a null control on its final predictor; give paired comparisons against every harness baseline (including pool_artist_siblings and artist_recent); report held-out slices separately from the slice it iterated on; investigate, not drop, below-chance results; count every variant it scored; and state the strongest case against its own result. Whether held-out evidence is obtained, and which, is your decision (the builders' held_out_slices_reported_separately item is satisfied by 'none available' with harness evidence). Specify in evaluation_changes anything else the harness must provide.
+Every builder will be required to: use the harness fast mode for all iteration; run a null control on its final predictor; give paired comparisons against every harness baseline (including artist_recent) and, as a diagnostic that is not a harness baseline, pool_artist_siblings; report held-out slices separately from the slice it iterated on; investigate, not drop, below-chance results; count every variant it scored; and state the strongest case against its own result. Whether held-out evidence is obtained, and which, is your decision (the builders' held_out_slices_reported_separately item is satisfied by 'none available' with harness evidence). Specify in evaluation_changes anything else the harness must provide.
 Verify claims you rely on by reading code or running quick dev-only checks.
 Coverage list (fill the checklist, one entry per line, with evidence; flags below are passed to you by the script and are facts, not verdicts):
 ${coverage}`
 
 // ---------- Engineer / prep ----------
-const engineerPrompt = (round, plan) => `You are the ENGINEER (round ${round}). Implement exactly the research lead's specification below, plus the standing harness-hygiene requirements, no more. A shared-prep agent works at the same time on feature inputs; do not touch its directory, and it does not touch evalkit.
+const engineerPrompt = (round, plan) => `You are the ENGINEER (round ${round}). Implement exactly the research lead's specification below, plus the standing harness-hygiene requirements, no more. A shared-prep agent works on feature inputs (at the same time as you, or after you if the plan says so); do not touch its directory, and it does not touch evalkit.
 ${CONTEXT}
 ${sched('engineer-r' + round)}
 ## Evaluation changes to implement (research lead)
 ${plan.evaluation_changes || '(none)'}
 ## Standing harness-hygiene requirements (every round)
-- Version the harness: bump its version, add a changelog entry to the README, and state which earlier numbers remain comparable. Any change that alters existing numbers must be selectable (flag or version) so the previous version's numbers can still be regenerated; label every table the harness prints with the harness version.
+- DEV_END (2025-04-01) and the sealed cutoffs are fixed: no fold, label window, slice or pool you build may use streams on or after 2025-04-01. Never call data._load_all() in harness, predictor or analysis code; use load_streams.
+- Version the harness: only bump its version if code changed (if nothing changed, say so and leave the version alone); when you bump it, add a changelog entry to the README, and state which earlier numbers remain comparable. Any change that alters existing numbers must be selectable (flag or version) so the previous version's numbers can still be regenerated; label every table the harness prints with the harness version.
 - Fit/feature cache keys must include the random seed and any relabelled or shuffled label identities. The selftest must assert that 3 null-control seeds give different results and must fail otherwise.
 - Keep the --late cap (${LATE_CAP} per predictor bundle), logging, and read-only per-run output tables. Do not add or reset any held-out budget unless the specification asks for it; any counter or state file you add must be regenerable from code or documented in the README.
 - Harness caches go under ${PROJ}/.cache/evalkit-cache/, never in any shared directory.
@@ -202,7 +229,7 @@ ${plan.evaluation_changes || '(none)'}
 - Run the selftest and all baselines (dev only) after your changes.
 Report facts only: what you changed, how to use it, current dev baseline scores with the harness version, whether earlier scores remain comparable, how long each job took, and anything in the spec you could not do and why. Do not build shared artefacts.`
 
-const prepPrompt = (round, plan) => `You are the SHARED-PREP agent (round ${round}). Build exactly the shared artefacts specified below, once, in a NEW directory, so that every builder starts from identical inputs. An engineer works at the same time on evalkit; do not touch evalkit.
+const prepPrompt = (round, plan) => `You are the SHARED-PREP agent (round ${round}). Build exactly the shared artefacts specified below, once, in a NEW directory, so that every builder starts from identical inputs. An engineer works on evalkit (at the same time as you, or before you if the plan says so); do not touch evalkit.
 ${CONTEXT}
 ${sched('prep-r' + round)}
 ## Shared artefacts to build and publish in ${sharedOf(round)}/ (research lead)
@@ -235,11 +262,13 @@ const BUILDER_SCHEMA = {
   required: ['summary', 'start_utc', 'end_utc', 'null_control_result', 'late_runs_used', 'headline_claims', 'checklist'],
 }
 
-const builderPrompt = (round, task, engDoc, prepDoc, label) => `You are a BUILDER (round ${round}, task "${task.id}"). Other builders work independently; do not read or edit their folders, scratch or report files.
+const builderPrompt = (round, task, engDoc, shared, label) => `You are a BUILDER (round ${round}, task "${task.id}"). Other builders work independently; do not read or edit their folders, scratch or report files.
 ${CONTEXT}
 ${sched(label)}
 Your predictor code folder is ${predOf(round, task.id)}/ (entry file the harness accepts). Use only these folders.
-Files you may read in addition to the sanitised reports: the latest engineer's report ${engDoc || '(no engineer report)'} (when there is no engineer step this round it is the round-1 report and the harness is unchanged) and the shared-prep report ${prepDoc || '(no shared artefacts this round)'}${prepDoc ? ` (frozen inputs in ${sharedOf(round)}/, with MANIFEST.txt)` : ''}. Read them before you start.
+Files you may read in addition to the sanitised reports: the latest engineer's report ${engDoc || '(no engineer report)'} (when there is no engineer step this round it is the earlier round's report and the harness is unchanged), and every shared-input directory with its prep report:
+${sharedBlock(shared)}
+Read the reports before you start.
 ## Your task (from the research lead)
 ${task.brief}
 
@@ -250,7 +279,7 @@ Mandatory before you report; return one checklist entry per id, each with eviden
 - full_run_final_scores: final scores from a full harness run
 - held_out_slices_reported_separately: whether held-out evidence is obtained at all is the research lead's decision in your brief (given the held-out state in the facts). If your brief calls for it, report each held-out slice the harness provides separately from the slice you iterated on. If no held-out evidence is available or your brief does not call for it, state 'none available' with harness evidence (README, logs, remaining budget); that satisfies this item. Evidence strings point to the report file; no held-out numbers in them
 - null_control: the null control for your final predictor (also put its result in null_control_result)
-- paired_baselines_incl_artist_siblings_and_artist_recent: paired comparisons against every harness baseline, including pool_artist_siblings and artist_recent
+- paired_baselines_incl_artist_siblings_and_artist_recent: paired comparisons against every harness baseline, including artist_recent, and against pool_artist_siblings as a diagnostic (it is not a harness baseline)
 - below_chance_investigated: any score that comes out below chance is investigated, not dropped
 - variants_counted_and_selection_accounted: every variant you scored is counted, and how much selection could have inflated your final score is stated with evidence
 - strongest_case_against: the strongest case against your own result
@@ -277,12 +306,12 @@ const DA_SCHEMA = {
     checklist_rechecked: { type: 'array', items: { type: 'string', enum: CHECK_IDS }, description: 'The ids of the builder checklist items you checked against code and output files (all of them are expected)' },
     code_files_read: { type: 'array', items: { type: 'string' }, description: 'Paths of the builder code files and evalkit code files you actually read' },
     null_control_rerun: { type: 'string', description: 'The builder\'s null-control check as YOU re-ran it: command and result' },
-    shared_inputs_unchanged: { type: 'string', description: 'Result of checking the shared inputs against their MANIFEST.txt (or why there are none)' },
+    shared_inputs_unchanged: { type: 'string', description: 'Result of checking every shared directory the builder used against its MANIFEST.txt (name each directory), or why there are none' },
   },
   required: ['summary', 'claim_verdicts', 'checklist_rechecked', 'code_files_read', 'null_control_rerun', 'shared_inputs_unchanged'],
 }
 
-const daPrompt = (round, dir, task, b, bLabel, engDoc, prepDoc, plan, label) => `You are a DEVIL'S ADVOCATE (round ${round}, direction: ${dir.id}) for the builder of task "${task.id}". Another devil's advocate covers the opposite direction for the same builder; other builders have their own.
+const daPrompt = (round, dir, task, b, bLabel, engDoc, shared, plan, label) => `You are a DEVIL'S ADVOCATE (round ${round}, direction: ${dir.id}) for the builder of task "${task.id}". Another devil's advocate covers the opposite direction for the same builder; other builders have their own.
 ${CONTEXT}
 ${sched(label)}
 ${dir.text}
@@ -292,13 +321,14 @@ Your work is judged on coverage, not on duration; there is no time floor, so fin
 - re-check every builder checklist item below against code and files (list the ids in checklist_rechecked), including any duration or effort it reports against file timestamps and its TIMING.txt in ${scratchOf(bLabel)}/ (read-only for you);
 - re-run the builder's null-control check yourself and report the command and result;
 - independently re-run every headline score on the iteration slice that you assess (full runs allowed for that). Do NOT run --late or --holdout yourself: verify those claims from the harness's read-only per-run tables and run logs, which you may only read;
-- check the shared inputs against their MANIFEST.txt.
+- check every shared directory listed below that the builder used (and has a DONE file) against its MANIFEST.txt.
 Write your full report, led by a per-claim verification table, to your report file.
 ## Research lead's specification
 ${JSON.stringify({ evaluation_changes: plan.evaluation_changes, shared_prep: plan.shared_prep }, null, 1)}
 ## Reports (read these files)
 - Engineer: ${engDoc || '(none)'}
-- Shared prep: ${prepDoc || '(none)'}${prepDoc ? ` (inputs in ${sharedOf(round)}/)` : ''}
+- Shared inputs and prep reports (use a directory only if its DONE file exists):
+${sharedBlock(shared)}
 - Builder: ${docOf(bLabel)}
 ## Builder's numbered headline claims
 ${(b.headline_claims || []).map((c, i) => `${i + 1}. ${c}`).join('\n') || '(none listed)'}
@@ -356,35 +386,42 @@ const runRound = async (round, plan, prev) => {
   const engLabel = 'engineer-r' + round, prepLabel = 'prep-r' + round
   const doEng = round === 1 || !!plan.evaluation_changes
   const doPrep = !!plan.shared_prep
-  // engineer and shared prep run at the same time (they touch different folders)
-  const [eng, prep] = await parallel([
-    () => doEng ? agent(engineerPrompt(round, plan), { label: engLabel, phase: ph, model: S }) : Promise.resolve(null),
-    () => doPrep ? agent(prepPrompt(round, plan), { label: prepLabel, phase: ph, model: S }) : Promise.resolve(null),
-  ])
+  const runEng = () => doEng ? agent(engineerPrompt(round, plan), { label: engLabel, phase: ph, model: S }) : Promise.resolve(null)
+  const runPrep = () => doPrep ? agent(prepPrompt(round, plan), { label: prepLabel, phase: ph, model: S }) : Promise.resolve(null)
+  let eng, prep
+  if (plan.prep_after_engineer && doEng && doPrep) {
+    // the lead asked for prep to see the engineer's finished harness
+    eng = await runEng()
+    prep = await runPrep()
+  } else {
+    // engineer and shared prep run at the same time (they touch different folders)
+    ;[eng, prep] = await parallel([runEng, runPrep])
+  }
   if (doEng && !eng) log(`WARNING: ${engLabel} failed; builders proceed without an engineer report`)
-  if (doPrep && !prep) log(`WARNING: ${prepLabel} failed; builders start without the new shared inputs`)
-  const engDoc = doEng ? docOf(engLabel) : (prev && prev.eng ? docOf('engineer-r1') : null)
-  const prepDoc = doPrep ? docOf(prepLabel) : null
+  if (doPrep && !prep) log(`WARNING: ${prepLabel} failed; builders are told its report is (failed) and may use its directory only if DONE exists`)
+  const engDoc = doEng ? (eng ? docOf(engLabel) : '(failed)') : (prev ? prev.engDoc : null)
+  const shared = (prev ? prev.shared : []).slice()
+  if (doPrep) shared.push({ round, dir: sharedOf(round), doc: prep ? docOf(prepLabel) : '(failed)' })
   const tasks = plan.tasks || []
-  if (!tasks.length) return { eng, prep, builders: '(no builder tasks)', das: '(none)' }
+  if (!tasks.length) return { eng, prep, engDoc, shared, builders: '(no builder tasks)', das: '(none)' }
   const cap = round === 1 ? R1_BUILDER_MAX : R2_BUILDER_MAX
   // each builder, then its two devil's advocates as soon as it finishes (no barrier across builders); no retries
   const out = await pipeline(
     tasks,
-    (t) => agent(builderPrompt(round, t, engDoc, prepDoc, 'builder-r' + round + '-' + t.id), { label: 'builder-r' + round + '-' + t.id, phase: ph, model: S, schema: BUILDER_SCHEMA }),
+    (t) => agent(builderPrompt(round, t, engDoc, shared, 'builder-r' + round + '-' + t.id), { label: 'builder-r' + round + '-' + t.id, phase: ph, model: S, schema: BUILDER_SCHEMA }),
     async (b, t) => {
       if (!b) { log(`WARNING: builder-r${round}-${t.id} failed; no devil's advocates for it`); return { b: null, das: [] } }
       const bLabel = 'builder-r' + round + '-' + t.id
       const flags = builderFlags(b, cap)
       if (flags.length) log(`builder ${bLabel} flags: ${flags.join('; ')}`)
-      const das = await parallel(DA_DIRECTIONS.map(d => () => agent(daPrompt(round, d, t, b, bLabel, engDoc, prepDoc, plan, 'devils-advocate-r' + round + '-' + t.id + '-' + d.id), { label: 'devils-advocate-r' + round + '-' + t.id + '-' + d.id, phase: ph, model: S, schema: DA_SCHEMA })))
+      const das = await parallel(DA_DIRECTIONS.map(d => () => agent(daPrompt(round, d, t, b, bLabel, engDoc, shared, plan, 'devils-advocate-r' + round + '-' + t.id + '-' + d.id), { label: 'devils-advocate-r' + round + '-' + t.id + '-' + d.id, phase: ph, model: S, schema: DA_SCHEMA })))
       das.forEach((d, j) => { const f = daFlags(d, b); if (f.length) log(`devil's advocate r${round}-${t.id}-${DA_DIRECTIONS[j].id} flags: ${f.join('; ')}`) })
       return { b, das }
     },
   )
   const builders = tasks.map((t, i) => `Task ${t.id}\nBrief: ${t.brief}\n${fmtBuilder(out[i] && out[i].b, 'builder-r' + round + '-' + t.id, cap)}`).join('\n\n')
   const das = tasks.map((t, i) => DA_DIRECTIONS.map((d, j) => fmtDA(out[i] && out[i].das[j], 'devils-advocate-r' + round + '-' + t.id + '-' + d.id, out[i] && out[i].b)).join('\n\n')).join('\n\n')
-  return { eng, prep, builders, das }
+  return { eng, prep, engDoc, shared, builders, das }
 }
 
 // ===================== run =====================
@@ -403,7 +440,7 @@ const coverage1 = [
   'verified at least one claim you rely on by a quick dev-only check, or stated why not',
   'goal_coverage addresses every element of the goal',
 ].map(x => '- ' + x).join('\n')
-const plan1 = await agent(leadPlanPrompt(1, invText, coverage1), { label: 'research-lead-plan', phase: 'Plan', schema: LEAD_SCHEMA, model: O })
+const plan1 = normPlan(await agent(leadPlanPrompt(1, invText, coverage1), { label: 'research-lead-plan', phase: 'Plan', schema: LEAD_SCHEMA, model: O }))
 if (!plan1) return { error: 'research lead failed', invText }
 log(`Round 1: ${(plan1.tasks || []).length} task(s); engineer changes: ${plan1.evaluation_changes ? 'yes' : 'standing hygiene only'}; shared prep: ${plan1.shared_prep ? 'yes' : 'no'}`)
 
@@ -416,11 +453,11 @@ const coverage2 = [
   'read every builder report file and every devil\'s advocate report file of round 1 (one entry each)',
   'for each builder, re-ran or re-derived at least one headline score from its code and outputs, or stated why not',
   'weighed every flag listed above',
-  'spot-checked at least one devil\'s advocate re-run (a verdict or its null-control rerun) against its files, or stated why not',
+  'for each builder, spot-checked one of its devil\'s advocates\' re-runs (a verdict or its null-control rerun) against its files, or stated why not',
   'goal_coverage states for each element of the goal what the evidence so far does and does not support',
   'if you plan round 2: decided whether evaluation changes are needed, and if so wrote the spec so that numbers of both harness versions stay comparable',
 ].map(x => '- ' + x).join('\n')
-const plan2 = await agent(leadPlanPrompt(2, '## This workflow so far\n' + hist1 + '\n\nRound 2 may be empty (tasks = []) if the goal is answered as far as the data allows. Round-2 briefs must not contain any score from a slice meant as held-out.', coverage2), { label: 'research-lead-review', phase: 'Lead review', schema: LEAD_SCHEMA, model: O })
+const plan2 = normPlan(await agent(leadPlanPrompt(2, '## This workflow so far\n' + hist1 + '\n\nRound 2 may be empty (tasks = []) if the goal is answered as far as the data allows. Round-2 briefs must not contain any score from a slice meant as held-out.', coverage2), { label: 'research-lead-review', phase: 'Lead review', schema: LEAD_SCHEMA, model: O }))
 let r2 = null
 if (plan2 && (plan2.tasks || []).length) {
   log(`Round 2: ${plan2.tasks.length} task(s); builder cap ${R2_BUILDER_MAX} min`)

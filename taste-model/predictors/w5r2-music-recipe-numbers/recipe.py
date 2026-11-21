@@ -12,6 +12,7 @@ COMPACT = ROOT + ".cache/w4r1-what-in-the-music/compact.npz"
 SH = ROOT + ".cache/shared-w5r1/"
 CACHE = ROOT + ".cache/w5r2-music-recipe-numbers/"
 _F = {}
+PERM = None   # null-calibration only: seed; training target is randomly permuted (same permutation for all members/variants of one cutoff and seed)
 DEFAULT = dict(eps=1e-4, alphaA=1e4, alphaS=1e4, seg=(3, 4, 5), gbm=(80, 0.05, 3, 30, 5.0), w=(1.0, 1.0, 1.5), wm=1.0, fill="median", mfill=None)
 
 def _md5(u): return hashlib.md5(u.encode()).hexdigest() if isinstance(u, str) else None
@@ -84,6 +85,7 @@ def _fit_score(train, cands, meta, cutoff, mk, th):
     mat = ((st["first"] < cutoff - pd.Timedelta(days=90)).values) & ok
     qa = st["first"].dt.to_period("Q").astype(str).values
     yr = pd.Series(st.plays90.values[mat]).groupby(qa[mat]).rank(pct=True).values
+    if PERM is not None: yr = np.random.default_rng([PERM, int(pd.Timestamp(cutoff).value // 86400000000000), len(yr)]).permutation(yr)
     Xc, okc = _view(cands.trackId.values, meta, mk)
     with threadpool_limits(2):
         Xo = X[ok]; mu = Xo.mean((0, 1)); sd = Xo.std((0, 1)) + 1e-6
@@ -120,9 +122,9 @@ def _fit_score(train, cands, meta, cutoff, mk, th):
 
 _C = {}
 def member(train, cands, meta, cutoff, mk, th=None):
-    th = th or _train_hash(train, cutoff, cands); key = (th, repr(mk))
+    th = th or _train_hash(train, cutoff, cands); key = (th, repr(mk), PERM)
     if key in _C: return _C[key]
-    use = not os.environ.get("EVALKIT_NO_FIT_CACHE")
+    use = not os.environ.get("EVALKIT_NO_FIT_CACHE") and PERM is None
     fn = CACHE + "m_" + hashlib.md5(repr(key).encode()).hexdigest() + ".pkl"
     if use and os.path.exists(fn):
         try:

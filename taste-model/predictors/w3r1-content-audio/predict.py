@@ -15,7 +15,7 @@ import numpy as np, pandas as pd
 
 ROOT = "/home/user/Listener/taste-model/"
 FEATDIR = ROOT + ".cache/shared/w3r1-mert-v1/"
-CFG = dict(layers=(4, 8), ncomp=64, C=0.05, hl=180, balance=False, agg="mean", miss="neutral", meta=False, windows=(0, 1, 2, 3), mature=90, mode="whole", target="love", alpha=300.0)
+CFG = dict(layers=(4, 8), ncomp=64, C=0.05, hl=None, balance=False, agg="mean", miss="neutral", meta=False, windows=(0, 1, 2, 3), mature=90, mode="whole", target="love", alpha=300.0)
 _F = {}
 
 def _store():

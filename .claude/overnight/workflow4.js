@@ -38,6 +38,7 @@ const CONTEXT = `
   6. On the "Best Songs" playlist as a signal: "That is the better subset but the strictness of the bar to get in there is not consistent over time. Listening frequency and statistics are THE MOST RELIABLE indicator of my taste AT ANY GIVEN TIME."
 - Later, on the gate before finding candidate songs: "there is no set "bar" as such"
 - After Workflow 2: "Is the score calculation good? In the next workflow a lot of things you've been treating as fixed need to be re-investigated. Because with the current scoring system let's be honest with the subjectivity you won't be going super super high"
+- On Workflow 3's research lead reading the link between being loved and the number of new songs in a song's first-listen session as "how a song was first heard": "Are you sure this is the right way round? Is it not more of if I find I really like it I'll listen to that more than everything else. I don't have a preselected \"listening session\""
 
 ## Facts
 - Data came from the user's stats.fm profile (user id gtwz5m9b4rqppdd60zmin4j8h). Full listening history 2020-2026: ${ROOT}/spotify-liked-songs/.cache/streams.jsonl (147,256 JSON lines, newest first; fields: id, endTime ISO UTC, playedMs, trackId, albumId, artistIds, trackName, contextId optional, importId). Other files from earlier exports are in ${ROOT}/spotify-liked-songs/ and its .cache/.

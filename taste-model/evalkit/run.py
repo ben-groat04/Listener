@@ -265,7 +265,7 @@ def main(argv):
     preds = dict(BASELINES)  # the fixed valid-baseline set is always scored alongside, so paired comparisons use identical resamples
     for p in mods:
         spec = importlib.util.spec_from_file_location("pred", p); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-        for k, f in (getattr(m, "PREDICTORS", None) or {p: m.predict}).items(): preds[k] = f
+        for k, f in (getattr(m, "PREDICTORS", None) or {Path(p).stem: m.predict}).items(): preds[k] = f
     n_looks = max(1, sealed_looks(hashes)) if sealed else 1
     cp = _cache_path(); cache = None
     if not sealed:   # baselines are deterministic functions of (code, data, cutoff, window, null): reuse across runs (keyed on a hash of evalkit code + data files)

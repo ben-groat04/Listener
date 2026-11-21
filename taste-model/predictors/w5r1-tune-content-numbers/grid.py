@@ -45,3 +45,7 @@ G_TUNE_NAMES = ["default", "layers_0_4", "layers_2_6", "layers_5_9", "layers_6_1
                 "alpha_x0.3", "alpha_x3", "alpha_x10", "only_E", "only_W32", "only_L37", "E_W32", "add_whole_low", "add_whole_high", "add_whole_all", "wins_23", "nowhiten"]
 G_TUNE = {k: OAT[k] for k in G_TUNE_NAMES}
 ALL = {**OAT, **RJ}
+
+# narrow inner-tuning grid (14 recipes: near-default neighbours only)
+G_NARROW_NAMES = ["default", "layers_3_7", "layers_5_9", "ncomp_32", "ncomp_none_local", "alpha_x0.3", "alpha_x3", "agg_max", "agg_top2", "pool_max", "only_E", "add_whole_high", "wins_12", "nowhiten"]
+G_NARROW = {k: OAT[k] for k in G_NARROW_NAMES}

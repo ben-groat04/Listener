@@ -7,7 +7,7 @@ import os, sys, hashlib, importlib.util
 import numpy as np, pandas as pd
 ROOT = "/home/user/Listener/taste-model/"
 COMPACT = ROOT + ".cache/w4r1-what-in-the-music/compact.npz"
-CFG = dict(feat="act", tf="logit", ncomp=0, alpha=300.0, seg=None, target="rank_plays", agg="mean", mature=90, hl=None, meta=False, learner="ridge", cols=None, k=50, temp=0.1)
+CFG = dict(feat="act", tf="logit", ncomp=0, alpha=300.0, seg=None, target="rank_plays", agg="mean", mature=90, hl=None, meta=False, learner="ridge", cols=None)
 _F = {}
 
 def _store():
@@ -63,17 +63,6 @@ def _design(res, X, tids, meta, cfg):
     if cfg["meta"]: Z = np.c_[Z, np.repeat((_meta_cols(tids, meta) - res["mm"]) / res["ms"], S, 0)]
     return Z
 
-class KNN:
-    """similarity-weighted mean target of the k nearest train songs (cosine on the PCA-whitened design)"""
-    def __init__(self, P, y, w, k, temp):
-        self.P = (P / (np.linalg.norm(P, axis=1, keepdims=True) + 1e-9)).astype(np.float32); self.y = y; self.w = w; self.k = k; self.t = temp
-    def predict(self, Q):
-        Q = (Q / (np.linalg.norm(Q, axis=1, keepdims=True) + 1e-9)).astype(np.float32); out = np.zeros(len(Q))
-        for a in range(0, len(Q), 2000):
-            S = Q[a:a + 2000] @ self.P.T; ix = np.argpartition(-S, self.k, axis=1)[:, :self.k]; ss = np.take_along_axis(S, ix, 1)
-            ww = np.exp((ss - ss.max(1, keepdims=True)) / self.t) * self.w[ix]; out[a:a + 2000] = (ww * self.y[ix]).sum(1) / ww.sum(1)
-        return out
-
 _CACHE = {}
 def _fit(train, meta, cutoff, cfg):
     key = (str(cutoff), len(train), int(train.t.values.astype("int64").sum() % (1 << 60)), int(pd.util.hash_pandas_object(train[["trackId", "song", "artist"]].astype(str), index=False).sum() % (1 << 60)), repr(sorted(cfg.items(), key=lambda kv: kv[0])))
@@ -107,7 +96,6 @@ def _fit(train, meta, cutoff, cfg):
                 if cfg["learner"] == "gbm":
                     from sklearn.ensemble import HistGradientBoostingRegressor
                     res["lr"] = HistGradientBoostingRegressor(max_iter=80, learning_rate=0.05, max_depth=3, min_samples_leaf=30, l2_regularization=5.0, random_state=0).fit(P, np.repeat(yr, S), sample_weight=np.repeat(w, S))
-                elif cfg["learner"] == "knn": res["lr"] = KNN(P, np.repeat(yr, S), np.repeat(w, S), cfg["k"], cfg["temp"])
                 else: res["lr"] = Ridge(alpha=cfg["alpha"]).fit(P, np.repeat(yr, S), sample_weight=np.repeat(w, S))
         sc = _raw(res, X[ok], st.trackId.values[ok], meta, cfg)
         res["tm"], res["ts"], res["neutral"] = float(sc.mean()), float(sc.std() + 1e-9), float(np.median(sc))
@@ -146,19 +134,14 @@ def blend(cfgs, wm=1.0, wts=None):
         return a + wm * b
     return predict
 
-G = dict(genre=list(range(0, 400)), mood=list(range(400, 456)), inst=list(range(456, 496)), mtg=list(range(496, 583)), misc=list(range(583, 605)))
-DUR = dict(feat="meta", learner="gbm")
-A = dict(alpha=10000.0)
 # ---- pre-declared final model and ablations (declared in the report before any --late run) ----
-DUR = dict(feat="meta", learner="gbm")                    # duration/explicit/popularity-missing GBM on rank_plays target (track metadata, no artist)
+DUR = dict(feat="meta", learner="gbm")                    # duration/explicit/popularity GBM on the rank_plays target (track metadata, no artist)
 A = dict(alpha=10000.0)                                   # essentia head activations (clip mean, logit), standardised, ridge alpha 1e4, rank_plays target
-SL = dict(feat="seg", seg=(3, 4, 5), alpha=10000.0)       # same heads, mean activation of 5-s segments 3-5 (15-30 s of the clip), one training row per segment, score = mean over the segments
-PREDICTORS_FINAL = None
+SL = dict(feat="seg", seg=(3, 4, 5), alpha=10000.0)       # same heads, mean activation of 5-s segments 3-5 (15-30 s of the clip); one training row per segment; score = mean over the segments
 PREDICTORS = {
-    "d_ridge_a100": make_ens([dict(feat="desc", tf="none", alpha=100.0)]), "d_ridge_a1000": make_ens([dict(feat="desc", tf="none", alpha=1000.0)]),
-    "d_gbm": make_ens([dict(feat="desc", tf="none", learner="gbm")]),
-    "dm_gbm": make_ens([dict(feat="descmeta", tf="none", learner="gbm")]),
-    "b_final_dm": blend([A, SL, dict(feat="descmeta", tf="none", learner="gbm")], 1.0, [1, 1, 1.5]),
-    "b_final_d": blend([A, SL, DUR, dict(feat="desc", tf="none", alpha=1000.0)], 1.0, [1, 1, 1.5, 0.5]),
-    "final_content": blend([A, SL, DUR], 1.0, [1, 1, 1.5]),
+    "final_content": blend([A, SL, DUR], 1.0, [1, 1, 1.5]),    # FINAL: standardised mean of essentia ridge (whole clip), essentia ridge (late segments), duration GBM, plus 1.0 x W3 MERT audio_final
+    "abl_no_mert": make_ens([A, SL, DUR], [1, 1, 1.5]),         # ablation: no MERT
+    "abl_no_dur": blend([A, SL], 1.0, [1, 1]),                  # ablation: no duration member
+    "abl_no_essentia": blend([DUR], 1.0, [1.5]),                # ablation: MERT + duration GBM only
+    "abl_act_only": make_ens([A]),                              # essentia head activations only (heavily regularised ridge)
 }

@@ -120,6 +120,7 @@ PREDICTORS = {
     "w4r1_final": make(*NEW, *PAN),
     "w4r1_final_noart": make(*_na(NEW), *_na(PAN)),     # own-artist training songs removed from the signal (artist-recognition check)
     "w4r1_newonly": make(*NEW),                          # ablation: new-song signal only (= Workflow 3 recipe on the same code)
+    "w4r1_newonly_noart": make(*_na(NEW)),
     "w4r1_panelonly": make(*PAN),                        # ablation: panel signal only
     "w4r1_panelonly_noart": make(*_na(PAN)),
 }

@@ -10,7 +10,7 @@ Config in CFG; variants in PREDICTORS (see bottom).
 import glob, hashlib
 import numpy as np, pandas as pd
 ROOT = "/home/user/Listener/taste-model/"
-CFG = dict(blocks=(("mert", 4, 8),), ncomp=64, mode="whole", agg="mean", target="love", C=0.05, alpha=300.0, hl=None, window=None, mature=90, meta=False, miss="neutral", pca=True)
+CFG = dict(blocks=(("mert", 4, 8),), ncomp=64, mode="whole", agg="mean", target="love", C=0.05, alpha=300.0, hl=None, window=None, mature=90, meta=False, miss="neutral", pca=True, learner="lin")
 _F = {}
 
 def _store():
@@ -94,7 +94,14 @@ def _fit(train, meta, cutoff, cfg):
                 yy = y[mat]
                 if 0 < yy.sum() < len(yy): res["lr"] = LogisticRegression(C=cfg["C"], max_iter=500).fit(P, np.repeat(yy, rep), sample_weight=np.repeat(w, rep))
             else:
-                r = Ridge(alpha=cfg["alpha"]).fit(P, np.repeat(yr, rep), sample_weight=np.repeat(w, rep)); r.decision_function = r.predict; res["lr"] = r
+                if cfg["learner"] == "gbm":
+                    from sklearn.ensemble import HistGradientBoostingRegressor
+                    r = HistGradientBoostingRegressor(max_iter=80, learning_rate=0.05, max_depth=3, min_samples_leaf=30, l2_regularization=5.0, random_state=0).fit(P, np.repeat(yr, rep), sample_weight=np.repeat(w, rep))
+                elif cfg["learner"] == "svr":
+                    from sklearn.svm import SVR
+                    r = SVR(C=cfg["C"], epsilon=0.1, gamma="scale").fit(P, np.repeat(yr, rep), sample_weight=np.repeat(w, rep))
+                else: r = Ridge(alpha=cfg["alpha"]).fit(P, np.repeat(yr, rep), sample_weight=np.repeat(w, rep))
+                r.decision_function = r.predict; res["lr"] = r
         sc = _raw(res, [X[ok] for X in blocks], st.trackId.values[ok], meta, cfg)
         res["tm"], res["ts"], res["neutral"] = float(sc.mean()), float(sc.std() + 1e-9), float(np.median(sc))
         res["lo"], res["hi"] = float(np.percentile(sc, 1)), float(np.percentile(sc, 99))
@@ -125,9 +132,16 @@ def make_ens(cfgs, wts=None):
 
 M = ("mert", 4, 8); CL = ("clap",)
 L3 = [dict(blocks=(("mert", 0, 3),)), dict(blocks=(("mert", 4, 7),)), dict(blocks=(("mert", 8, 11),))]
+R = dict(target="rank_plays")
 PREDICTORS = {
-    "t_love_mert": make_ens([dict()]),                                   # round-1-like baseline (whole clip, love, mert L4-8)
-    "t_rank_mert": make_ens([dict(target="rank_plays", alpha=300.0)]),
-    "t_rank_mert_clap": make_ens([dict(target="rank_plays", blocks=(M, CL))]),
-    "t_rank_l3": make_ens([dict(c, target="rank_plays") for c in L3]),
+    "t_rank_l2_6": make_ens([dict(R, blocks=(("mert", 2, 6),))]),
+    "t_rank_l3_7": make_ens([dict(R, blocks=(("mert", 3, 7),))]),
+    "t_rank_l5_9": make_ens([dict(R, blocks=(("mert", 5, 9),))]),
+    "t_rank_l4_6": make_ens([dict(R, blocks=(("mert", 4, 6),))]),
+    "t_rank_gbm": make_ens([dict(R, learner="gbm", ncomp=32)]),
+    "t_rank_svr": make_ens([dict(R, learner="svr", C=0.5, ncomp=32)]),
+    "t_rank_local_nc32": make_ens([dict(R, mode="local", alpha=600.0, ncomp=32)]),
+    "t_rank_local_clap": make_ens([dict(R, mode="local", alpha=1200.0, blocks=(M, CL))]),
+    "t_rank_ens_local_whole": make_ens([dict(R, mode="local", alpha=1200.0), dict(R, ncomp=32, alpha=150.0)]),
+    "t_rank_ens_love": make_ens([dict(R, mode="local", alpha=1200.0), dict(mode="local", target="love", C=0.01)]),
 }

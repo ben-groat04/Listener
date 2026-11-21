@@ -39,5 +39,8 @@ PREDICTORS = {
     "w2i_ha_meta_ar": blend([G, Ga, A_ens_meta, AR], [1, 1, 2, 1]),
     "w2i_ha_rank_ar": blend([G, Ga, A_ens_rank, AR], [1, 1, 2, 1]),
     "w2i_ha_ar2": blend([G, Ga, A_ens, AR], [1, 1, 2, 2]),
+    "w2i_ha_eq_ar": blend([G, Ga, A_ens, AR], [1, 1, 1, 1]),
+    "w2i_g_a_ar": blend([G, A_ens, AR], [1, 2, 1]),
+    "w2i_ga_a_ar": blend([Ga, A_ens, AR], [1, 2, 1]),
     "w2i_ha_a3_ar": blend([G, Ga, A_ens, AR], [1, 1, 3, 1]),
 }

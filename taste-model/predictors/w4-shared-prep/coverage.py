@@ -4,11 +4,12 @@ from pathlib import Path
 ROOT = Path("/home/user/Listener/taste-model"); SH = ROOT / ".cache/shared"; sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).parent))
 from universe import universe
 def groups():
-    U, G = universe(True); by = {}
+    U, G, urls = universe(True); by = {}
     for g in G:
         d = by.setdefault(g["c"], dict(train=[], tried=[], decoy=[]))
         for k in d: d[k] += list(g[k])
-    return U, by
+    for d in by.values(): d["train"] = sorted(set(d["train"]))
+    return U, by, urls
 def md5(u): return hashlib.md5(u.encode()).hexdigest() if isinstance(u, str) else None
 def table(by, cols):
     from evalkit import data
@@ -19,8 +20,7 @@ def table(by, cols):
             out.append(f"| {s} | {g} | {len(ids)} | " + " | ".join(f"{np.mean([cols[c](t) for t in ids]):.3f}" for c in cols) + " |")
     return "\n".join(out)
 if __name__ == "__main__":
-    U, by = groups(); from evalkit import data
-    meta = data.load_meta_all(); url = meta.previewUrl.to_dict()
+    U, by, url = groups()
     man = pd.read_csv(SH / "previews/manifest.csv"); ok = set(man.md5[man.ok.astype(str) == "True"])
     cuts = sorted(by); print("cutoffs", cuts)
     cols = {}

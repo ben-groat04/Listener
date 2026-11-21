@@ -1,6 +1,6 @@
 """W4 shared prep P1: Essentia pretrained-model outputs per preview clip -> .cache/shared/w4-essentia/shard_*.npz (resumable; a finished shard is never rewritten).
 Per clip, independent of other clips, no fitted cross-track transform.
-Usage: python3 build_essentia.py [--workers 3] [--shard 100] [--limit N --out DIR]   (models: .cache/shared/w4-essentia/models/, fetched by fetch_models.sh)"""
+Usage: python3 build_essentia.py [--workers 3] [--shard 100] [--limit N --out DIR]   (models: .cache/shared/w4-essentia/models/, fetched by fetch_models.sh; effnet patch 128 frames / hop 62 = essentia defaults)"""
 import os, sys, json, time, subprocess, argparse
 os.environ.setdefault("OMP_NUM_THREADS", "1"); os.environ.setdefault("TF_NUM_INTRAOP_THREADS", "1"); os.environ.setdefault("TF_NUM_INTEROP_THREADS", "1")
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
@@ -32,7 +32,7 @@ def decode(path, sr=SR):
 class Models:
     def __init__(self):
         import essentia.standard as es; self.es = es
-        self.eff = es.TensorflowPredictEffnetDiscogs(graphFilename=str(MD / "discogs-effnet-bs64-1.pb"), output="PartitionedCall:1", patchHopSize=EFF_HOP) if False else es.TensorflowPredictEffnetDiscogs(graphFilename=str(MD / "discogs-effnet-bs64-1.pb"), output="PartitionedCall:1")
+        self.eff = es.TensorflowPredictEffnetDiscogs(graphFilename=str(MD / "discogs-effnet-bs64-1.pb"), output="PartitionedCall:1")
         self.heads = []
         for h in HEADS:
             i, o, cl = head_info(h); self.heads.append((h, es.TensorflowPredict2D(graphFilename=str(MD / f"{h}-discogs-effnet-1.pb"), input=i, output=o), len(cl)))

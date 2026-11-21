@@ -40,6 +40,7 @@ def main():
     print("   (all songs, same score:", round(float(metrics.Block(df, "love", 2, 0).stats(df.exp_before.values.astype(float), False, ("sauc",))["sauc"][0]), 3), ")")
     print("\n== love rate by contextId at the song's first play")
     t = df.groupby("ctx").love.agg(["size", "sum", "mean"]).rename(columns={"size": "n", "sum": "loved", "mean": "love_rate"}); t["wilson95"] = [_wilson(k, n) for k, n in zip(t["loved"], t["n"])]; print(t.round(3).to_string())
+    print("share of ALL dev-era streams with a contextId, by year of the stream:", {int(y): round(float(g.contextId.notna().mean()), 3) for y, g in d.groupby(d.t.dt.year)})
     print("\n== love rate by contextId present/absent x exposure_before"); print(rate_table(df, ["present", "absent"], BUCKETS, "ctx", "xb").to_string())
 
 if __name__ == "__main__": main()

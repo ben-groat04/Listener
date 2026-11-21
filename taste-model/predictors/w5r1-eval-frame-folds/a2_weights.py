@@ -1,7 +1,8 @@
 """Item 1 (cont.): which quarters drive conclusions. On default TUNE folds (10 quarters): pair-weight share, per-quarter AUC, leave-one-quarter-out, alternative weightings
 (pooled pairs, macro over quarters, equal weight per half-year, equal weight per year), drop-first-k-quarters (start date), early/late halves and a time trend of the paired delta."""
-import lib, numpy as np, pandas as pd
-d = lib.dump(); g = lib.frame(d, "tune", "quarter"); NB = 300; W = lib.boot_W(g, NB, 0); y = g._lab.values; Q = g.fold.values
+import lib, numpy as np, pandas as pd, sys
+FS = sys.argv[1] if len(sys.argv) > 1 else "tune"; SUF = "" if FS == "tune" else "_" + FS
+d = lib.dump(); g = lib.frame(d, FS, "quarter"); NB = 300; W = lib.boot_W(g, NB, 0); y = g._lab.values; Q = g.fold.values
 qs = sorted(set(Q)); half = {q: q[:4] + "H" + str((int(q[-1]) - 1) // 2 + 1) for q in qs}; year = {q: q[:4] for q in qs}
 MOD = lib.MODELS
 NUM, DEN = {}, {}
@@ -46,7 +47,7 @@ for v in variants:
     for a, b, tag in (("w5r1_stack3", "artist_recent", "stack3-ar"), ("ref_w4r1_music", "artist_recent", "music-ar"), ("ref_w4r1_listening", "artist_recent", "listening-ar"), ("ref_audio_final", "artist_recent", "audio-ar"), ("w5r1_stack3", "ref_w4r1_listening", "stack3-listening")):
         x = r[a][1:] - r[b][1:]; x = x[np.isfinite(x)]; row[tag] = round(r[a][0] - r[b][0], 3); row[tag + "_lo80"] = round(float(np.percentile(x, 10)), 3)
     rows.append(row)
-T = pd.DataFrame(rows); T.to_csv(lib.OUT / "a2_weights.csv", index=False); pd.set_option("display.width", 300); pd.set_option("display.max_columns", 40)
+T = pd.DataFrame(rows); T.to_csv(lib.OUT / f"a2_weights{SUF}.csv", index=False); pd.set_option("display.width", 300); pd.set_option("display.max_columns", 40)
 out.append("\n=== weighting / leave-one-out variants (point; delta columns with lo80 of paired artist-cluster bootstrap, nboot 300)\n" + T.to_string(index=False))
 # pair share of the heavy quarters
 out.append(f"\npair share of 2023Q1 + 2023Q4 = {share[idx['2023Q1']] + share[idx['2023Q4']]:.3f}; max single-quarter share {share.max():.3f}")
@@ -63,4 +64,4 @@ for m in ("ref_audio_final", "ref_w4r1_listening", "ref_w4r1_music", "w5r1_stack
     s = slope(m, "artist_recent"); out.append(f"slope of ({m} - artist_recent) per quarter-year: {s[0]:+.3f} [80%: {s[1]:+.3f}, {s[2]:+.3f}]")
 # candidates and love rates per quarter
 out.append("\n=== love rate and new_artist share per quarter\n" + pd.DataFrame({"love_rate": g.groupby("fold")._lab.mean().round(3), "new_artist_share": g.groupby("fold").new_artist.mean().round(3)}).to_string())
-(lib.OUT / "a2_weights.txt").write_text("\n".join(out)); print("\n".join(out))
+(lib.OUT / f"a2_weights{SUF}.txt").write_text("\n".join(out)); print("\n".join(out))

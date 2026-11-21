@@ -1,6 +1,6 @@
-"""w5r1-eval-frame-folds final: untuned equal-weight rank average of the three harness references (stack through evalkit.refs.score).
-Declared before any --late/--holdout run. No hyper-parameters, no weights tuned."""
-import sys, numpy as np, pandas as pd
+"""w5r1-eval-frame-folds FINAL (declared before any --late/--holdout run): untuned equal-weight rank average of the three harness references
+(ref_audio_final, ref_w4r1_listening, ref_w4r1_music) through evalkit.refs.score. No hyper-parameter and no weight is tuned or selected."""
+import sys, numpy as np
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from evalkit import refs
@@ -12,8 +12,4 @@ def stack3(train, cands, meta, cutoff):
     s = [_r(refs.score(n, train, cands, meta, cutoff)) for n in ("ref_audio_final", "ref_w4r1_listening", "ref_w4r1_music")]
     return np.mean(s, axis=0)
 
-def stack2_content(train, cands, meta, cutoff):   # diagnostic: the two content-only references (listening ref excluded)
-    s = [_r(refs.score(n, train, cands, meta, cutoff)) for n in ("ref_audio_final", "ref_w4r1_music")]
-    return np.mean(s, axis=0)
-
-PREDICTORS = {"w5r1_stack3": stack3, "w5r1_stack2_content": stack2_content}
+PREDICTORS = {"w5r1_stack3": stack3}

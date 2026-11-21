@@ -20,6 +20,7 @@ def br_idx(yy, ss, g):
 def main():
     from threadpoolctl import threadpool_limits; threadpool_limits(2)
     if "--v41" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v41_checks(data._load_all(), P_, _tune_tried(P_)); return
+    if "--v5" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v5_checks(data._load_all(), P_); return
     d = data._load_all(); cuts = data.DEV_CUTOFFS; pub = data.anon_streams(d); meta_all = data.load_meta_all()
     assert data.TUNE_CUTOFFS + data.LATE_CUTOFFS == cuts and len(cuts) == 14
     # ---- metrics engine vs brute force
@@ -200,6 +201,7 @@ def main():
     k1 = bl._train_key("x", F["train"], F["c"]); os.environ["EVALKIT_NULL_SEED"] = "1"; k2 = bl._train_key("x", F["train"], F["c"]); del os.environ["EVALKIT_NULL_SEED"]
     tr_sh = F["train"].copy(); tr_sh["artist"] = tr_sh.artist.values[::-1]; assert k1 != k2 and k1 != bl._train_key("x", tr_sh, F["c"]), "fit-cache key ignores the seed / artist identities"
     v41_checks(d, P, T)
+    v5_checks(d, P)
     print("selftest OK")
 
 def _tune_tried(P):
@@ -252,7 +254,7 @@ def v41_checks(d, P, T):
     bj.write_text(json.dumps(dict(round="t", remaining=1))); run.holdout_budget_check(bj); assert run.holdout_budget_use(bj)["remaining"] == 0
     try: run.holdout_budget_check(bj); raise AssertionError("budget 0 accepted")
     except SystemExit as e: assert "REFUSED" in str(e)
-    assert json.load(open(run.HOLDOUT_BUDGET))["round"] == "w4r2" and json.load(open(run.HOLDOUT_BUDGET))["remaining"] >= 0
+    assert json.load(open(run.HOLDOUT_BUDGET))["remaining"] >= 0   # v5.0: the file is regenerable (python3 -m evalkit.holdout_budget); v5_checks asserts the round
     print("holdout budget: refused when the file is missing or remaining is 0; each use decrements")
     # ---- walk-forward vs brute force on 3 dummy members (7 folds, two folds too small to count)
     rngw = np.random.default_rng(11); fn_ = ["f%d" % i for i in range(7)]; rows_ = []

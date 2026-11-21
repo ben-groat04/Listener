@@ -120,7 +120,8 @@ Caches (all git-ignored, regenerable from code; changing data.py / metrics.py / 
 ## Shared preview-audio cache (`.cache/shared/previews/`, built by `evalkit/fetch_previews.py`)
 Every distinct previewUrl (incl. iTunes fallbacks) in the meta of any DEV fold (train tracks + tried and decoy pool tracks of all 14 dev cutoffs): `audio/<md5(previewUrl)>.<ext>` = the original
 downloaded bytes (mp3/m4a), unchanged; `manifest.csv` columns md5, previewUrl, ext, bytes, duration_s (ffprobe), source (spotify / itunes_meta / itunes_fallback), ok, error. Previews are keyed
-by the RAW url; look a track's file up through `meta.previewUrl` (md5 of the url string). No features/embeddings are shared.
+by the RAW url; look a track's file up through `meta.previewUrl` (md5 of the url string). The manifest lists exactly the urls needed by the current dev pools (10288 ok rows; v3.1 rebuilt it after the 2021-07 / 2021-10 pools were regenerated).
+Per-track feature caches built from these previews (round 1) are documented in `.cache/shared/FEATURES.md` (read-only shared inputs).
 
 ## History-length / drift ablation (ablate.py)
 `--window 730|365|sub365` trains on the last 2y / 1y / a random subsample of ALL history with the same number of streams as the last year. Compare 365 vs sub365 per fold. Dev only.

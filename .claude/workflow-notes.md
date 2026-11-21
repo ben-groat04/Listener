@@ -42,3 +42,7 @@
 8. One source of truth for folder names (lead brief vs template conflicted).
 - User declined the sealed test after W3: "No it's not good enough". No sealed run before W4.
 - W4 injects sanitised W3 copies (taste-model/reports/w3-sanitised/): user-attributed method ideas and W3's next-step recommendations removed. Future workflows: inject sanitised copies of prior results the same way.
+
+## For W5: new suggestion from chat (unvetted; present unattributed in "Unvetted ideas raised in discussion", audit on merits)
+- Verbatim (for the audit only, never paste attributed into a brief): "For wf5: it should think about how people listen to and discover music"
+- Neutral paraphrase candidate: "It may help to consider how people actually listen to and discover music (e.g. how songs reach a listener and how listening behaviour forms around them) when designing labels, evaluation and models." Audit must check this paraphrase adds no method hints beyond the original.

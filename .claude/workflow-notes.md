@@ -46,3 +46,4 @@
 ## For W5: new suggestion from chat (unvetted; present unattributed in "Unvetted ideas raised in discussion", audit on merits)
 - Verbatim (for the audit only, never paste attributed into a brief): "For wf5: it should think about how people listen to and discover music"
 - Neutral paraphrase candidate: "It may help to consider how people actually listen to and discover music." Audit must check this paraphrase adds no method hints beyond the original.
+- W4 lesson: the builder time floor (40 min) auto-retried a builder that had legitimately finished its pre-declared design in 36 min after using its one HOLDOUT run. Floors must not trigger retries once the checklist is complete / HOLDOUT is used; flag only.

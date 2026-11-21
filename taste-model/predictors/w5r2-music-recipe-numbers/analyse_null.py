@@ -9,11 +9,11 @@ OUT = os.environ["W5R2_OUT"]; pools = pickle.load(open(run._pool_path(), "rb"))
 def pooled(U, Pn): return U / Pn
 data_by_fold = {}; scores = {}
 for c in data.TUNE_CUTOFFS:
-    fn = f"{OUT}/null_{c}.pkl"
-    if not os.path.exists(fn): continue
-    z = pickle.load(open(fn, "rb")); t = pools[c]; t = t[t.is_decoy == 0].copy(); t["anon"] = data.anon_song(t.song).values
-    pos = {s: i for i, s in enumerate(z["song"])}; ii = np.array([pos.get(s, -1) for s in t.anon.values]); assert (ii >= 0).all(), (c, (ii < 0).sum())
-    data_by_fold[c] = t.love.values.astype(int); scores[c] = {k: v[ii] for k, v in z["scores"].items()}
+    fns = [f for f in sorted(glob.glob(f"{OUT}/null*_{c}.pkl"))]
+    if not fns: continue
+    zs = [pickle.load(open(f, "rb")) for f in fns]; z = dict(song=zs[0]["song"], scores={k: v for q in zs for k, v in q["scores"].items()}); assert all((q["song"] == z["song"]).all() for q in zs); t = pools[c]; t = t[t.is_decoy == 0].copy(); t["anon"] = data.anon_song(t.song).values
+    pos = {s: i for i, s in enumerate(z["song"])}; ii = np.array([pos.get(s, -1) for s in t.anon.values]); keep = ii >= 0   # HOLDOUT-artist rows are removed from cands before predictors are called
+    data_by_fold[c] = t.love.values[keep].astype(int); scores[c] = {k: v[ii[keep]] for k, v in z["scores"].items()}
 folds = list(data_by_fold); keys = list(next(iter(scores.values())).keys()); R = sorted({k[0] for k in keys}); names = sorted({k[1] for k in keys})
 def sauc(r, n):
     U = Pn = 0.0

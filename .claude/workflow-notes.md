@@ -51,7 +51,7 @@
 
 ## Plan stated by user (after W4 round 1)
 - "Ok after W5 I think w6 needs to be looking through everything to make the best test. Then testing it on sealed"
-- W6 = whole-project review aimed at designing the best evaluation, then a sealed test. Sealed run still needs the user's explicit go after seeing W6's dev results; only the main session registers/runs it (CLAUDE.md). Fix the evaluation and the models to be tested BEFORE any sealed scoring; sealed is single-use.
+- W6 goal (user, verbatim, latest): "Next workflow simply needs to assemble a model or groundwork capable of answering the question: what new songs should I listen to?" Earlier on W6: "Best test was supposed to be final yes" (final model(s) + final evaluation design, then the sealed test). Sealed run needs the user's explicit go after seeing W6 dev results; only the main session registers/runs it; fix evaluation and models before any sealed scoring (single-use).
 - Pre-launch audit requirement (from W4 floor failures): for every gate/check/retry in the script, ask how an agent could satisfy it without doing the intended work (gaming, idling, padding) and walk through edge cases (finished early legitimately, single-use run already spent, near-miss thresholds). Prefer gates on coverage/outputs over gates on time.
 - For W5, suggestion from chat (unvetted; unattributed). Verbatim for drafter/audit only: "Remember the data is very noisy so you'll need to act more on loose trends and correlation, expecting a clear result is foolish"
 - User's evidence threshold (a risk-tolerance preference, theirs to set): "95% interval jesus I'm ok with 80ish". Use ~80% intervals / P(better) ≈ 0.8+ as the working bar for dev decisions and for how results are described to the user. W5 brief: state this as the project's decision threshold (it is the user's call, not a method hint); the sealed run's pass criteria are still to be fixed before scoring.
@@ -65,7 +65,6 @@
 5. ~30-35 KB prompt repeated per agent; long reports pasted into builder prompts. Trim; point to files instead.
 6. Shared prep 1 h 50 min; start overlapping extraction during the review phase. W4 total ~6.7 h.
 7. Reproducibility: holdout_budget.json not regenerable; nets builder overwrote configs; dead panel-weight code.
-- User clarification: "Best test was supposed to be final yes" — W6 produces the FINAL model(s) and the final evaluation design, then the sealed test (sealed run still needs the user's explicit go; main session runs it). W5's main goal stays: re-examine assumptions/fixed numbers and whether tuning them helps.
 
 
 ## Rule for paraphrasing user input in briefs (after W5 draft was polluted)

@@ -138,7 +138,7 @@ AUC with 95% interval. ALL = all 14 folds.
 - The LATE slice is no longer fully unseen. Round-1 LATE results were shared with round-2 builders, and the artist-flip fact came from LATE. Auditors and the engineer ran extra LATE runs, all logged in `.cache/late_runs.log`.
 - Only the sealed folds are a clean test. No one ran them.
 - Folder names differ from the briefs. Code is in `predictors/w3r1-*` and `predictors/w3r2-*`.
-- Older folders from Workflow 2 (`A-*`, `B-*`, `C-*`) are still present.
+- The obsolete Workflow 2 folders (`A-*`, `B-*`, `C-*`) and their old-pool caches were removed in the post-workflow cleanup (nothing current imported them).
 
 ## 7. What I would do next
 

@@ -30,3 +30,13 @@
 - Verbatim: "I still disagree with one score summarising everything. Surely each test will be different levels of good at different times/listening frequencies/etc. but that's again for an agent to weigh as it's just my idea"
 - Added to W4 CONTEXT with the "my suggestions… might not be the best" caveat; the pre-launch audit must merit-check it.
 - User (after W3): do NOT present their method suggestions as "the user said" — agents over-weight them. Briefs list them unattributed, neutrally paraphrased, under "Unvetted ideas raised in discussion" (may well be wrong, weigh on evidence only). This supersedes the verbatim-quote framing for method suggestions; the audit checks paraphrase fidelity and neutrality instead of quote accuracy.
+
+## Lessons from W3 post-review (apply in W4 before launch)
+1. Shared inputs (iTunes fill, previews, pools, needed-clip feature extraction) must be complete and frozen before builders start; no cache/pool changes mid-round; brief asks for runtime estimate with go/no-go. (W3: one builder ran 7.5 h extracting MERT; ~2.5k clips extracted for nothing.)
+2. Don't make a round wait on the slowest builder: per-builder wall-clock cap; start each DA as its builder finishes, or make heavy extraction its own shared step.
+3. Both W3 Opus leads read .claude/workflow-notes.md. Every prompt must forbid reading /home/user/Listener/.claude/ and CLAUDE.md pointers for leads.
+4. DAs ignored the 20-min floor (6.9-14.4 min) and one skipped reading evalkit code; enforce with timing/rejection, require re-running builders' null-control checks.
+5. Fit-cache keys must include seed/relabelled identities; selftest should assert 3 null seeds differ (3 cache bugs found only by DAs).
+6. LATE hygiene: 16 late runs logged; cap per predictor hash in run.py; DAs get read-only LATE tables; LATE is no longer clean after W3 — consider a new held-out slice.
+7. Round 2 was shallow (~19 min/builder); give round 2 a time floor/checklist.
+8. One source of truth for folder names (lead brief vs template conflicted).

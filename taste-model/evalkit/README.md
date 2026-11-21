@@ -114,8 +114,7 @@ PLAINLY: `exposure_after` and `replays_first_session` can be CONSEQUENCES of lik
     python3 -m evalkit.fetch_previews [--report]         # shared preview-audio cache, see below
 Predictor: `predict(train, cands, meta, cutoff) -> one finite score per candidate row` or a dict `PREDICTORS = {name: fn}`.
 Caches (all git-ignored, regenerable from code; changing data.py / metrics.py / baselines.py changes the hashes and rebuilds them): pools `.cache/shared/evalkit-pools-<hash>.pkl`, baseline scores `evalkit-baseline-scores-<hash>.pkl`, permutation bands, `.cache/album_release.json`,
-`.cache/itunes_fallback.csv`, `.cache/decoy_raw`, `.cache/decoy_universe.csv.gz`. The Workflow-2 feature caches in `.cache/shared/` (`clap-preview-emb`, `hand-audio-feat-v1`, `C-textemb-v1`) cover the OLD pools only
-(old preview coverage, old tracks); they are untouched and are not valid for the new pools.
+`.cache/itunes_fallback.csv`, `.cache/decoy_raw`, `.cache/decoy_universe.csv.gz`. The Workflow-2 predictors and their feature caches were removed in the Workflow-3 cleanup (they covered the old pools only); current per-track caches are listed in `.cache/shared/FEATURES.md`.
 
 ## Shared preview-audio cache (`.cache/shared/previews/`, built by `evalkit/fetch_previews.py`)
 Every distinct previewUrl (incl. iTunes fallbacks) in the meta of any DEV fold (train tracks + tried and decoy pool tracks of all 14 dev cutoffs): `audio/<md5(previewUrl)>.<ext>` = the original

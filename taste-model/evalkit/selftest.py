@@ -297,4 +297,143 @@ def v41_checks(d, P, T):
     print("refs: strong identity key sees row permutations and the null seed; missing compact caches are rebuilt from their build scripts; refs.score fits on the given train (permuted identities give other scores)")
     print("v4.1 checks OK")
 
+def _cell(x):
+    if isinstance(x, (tuple, list)): return [float(v) for v in x]
+    if hasattr(x, "item") and not isinstance(x, str): x = x.item()
+    return None if isinstance(x, float) and x != x else x
+
+def _quiet_main(argv):
+    import io, contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf): r = run.main(argv)
+    return r, buf.getvalue()
+
+def v5_checks(d, P):
+    """v5.0 checks (python3 -m evalkit.selftest --v5 runs only these; target < 3 min once the caches exist)."""
+    from threadpoolctl import threadpool_limits; threadpool_limits(2)
+    import pathlib, time
+    from . import folds as fs, inner, holdout_budget
+    t0 = time.time(); tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v5_")); ds = run._dev_streams()
+    # ---- fold-set definitions
+    want = dict(tune=10, tune_q1=11, tune_q2=11, tune_m=30, tune_h=5, tune_y=3)
+    for n, k in want.items():
+        w = fs.windows(n); assert len(w) == k, (n, len(w)); assert w[0][0] == pd.Timestamp("2021-07-01") and w[-1][1] == pd.Timestamp("2024-01-01")
+        assert all(a < b for a, b in w) and all(w[i][1] == w[i + 1][0] for i in range(len(w) - 1)), f"{n}: windows must be contiguous"
+        assert all(b <= pd.Timestamp("2024-01-01") for a, b in w) and not any(a >= pd.Timestamp(data.LATE_CUTOFFS[0]) for a, b in w), f"{n}: a window reaches the LATE era"
+    assert [str(a.date()) for a, b in fs.windows("tune")] == data.TUNE_CUTOFFS
+    assert [str(b.date()) for a, b in fs.windows("tune_q1")][:3] == ["2021-08-01", "2021-11-01", "2022-02-01"] and [str(b.date()) for a, b in fs.windows("tune_q2")][:3] == ["2021-09-01", "2021-12-01", "2022-03-01"]
+    assert [str(a.date()) for a, b in fs.windows("tune_y")] == ["2021-07-01", "2022-07-01", "2023-07-01"] and [str(a.date()) for a, b in fs.windows("tune_h")] == ["2021-07-01", "2022-01-01", "2022-07-01", "2023-01-01", "2023-07-01"]
+    try: fs.parse("tune_m,nope"); raise AssertionError("unknown fold set accepted")
+    except KeyError: pass
+    print("folds: tune 10, tune_q1 11, tune_q2 11, tune_m 30, tune_h 5, tune_y 3 folds; contiguous, inside [2021-07-01, 2024-01-01), tune == the 10 default cutoffs")
+    # ---- refusals (checked before any work is done)
+    for bad in (["--folds", "tune_m", "--late"], ["--folds", "tune_m", "--holdout", "x.py"], ["--folds", "tune_m", "--sealed"], ["--folds", "tune_m", "--null-control"], ["--dump-scores", "x.pkl", "--late"], ["--dump-scores", "x.pkl", "--holdout", "x.py"],
+                ["--dump-scores", "x.pkl", "--sealed"], ["--dump-scores", "x.pkl", "--null-control"], ["--pair-group", "quarter", "--late"], ["--walkforward", "--fast", "--folds", "tune"], ["--walkforward", "--fast", "--folds", "tune_m,tune_h"]):
+        try: run.main(bad); raise SystemExit("accepted: " + " ".join(bad))
+        except AssertionError: pass
+    print("refusals: --folds / --dump-scores / --pair-group quarter with --late / --holdout / --sealed / --null-control; --walkforward needs exactly one non-default set")
+    # ---- default run reproduces v4.1: fast TUNE tried_within_group table and VERDICT point values identical to the recorded v4.1 output
+    ref = json.load(open(pathlib.Path(__file__).parent / "v41_fast_reference.json")); (sc0, out0), txt0 = _quiet_main(["--fast"]); t_ = out0["TUNE"]
+    got = dict(columns=list(t_["tried_within_group"].columns), data=[[_cell(v) for v in r] for r in t_["tried_within_group"].astype(object).values.tolist()])
+    assert got == ref["tried_within_group"], "fast TUNE tried_within_group differs from v4.1"
+    V = t_["VERDICT"]; vc = ref["verdict_point"]["columns"]; gotv = [[_cell(v) for v in r] for r in V[vc].astype(object).values.tolist()]
+    assert gotv == ref["verdict_point"]["data"], "VERDICT point values differ from v4.1"
+    assert "evidence80_sauc" in V.columns and "lo80_sauc" in V.columns and "[v5.0]" in txt0
+    print("default fast run: tried_within_group (20 rows, point values and CIs) and VERDICT point values are identical to the recorded v4.1 output; version label in every table heading")
+    # ---- the alternative-fold builder reproduces the default tried rows of the default folds (digest per fold), HOLDOUT artists absent, no row beyond 2024-01-01
+    F_alt = run.prepare_alt(["tune_m", "tune_h", "tune_y", "tune_q1", "tune_q2", "tune"]); byc = {F["c"]: F for F in F_alt}
+    cols = ["song", "trackId", "albumId", "artist", "is_decoy", "love", "plays90", "rb", "exp_before", "first"]
+    for Fd in P[:10]:
+        c = Fd["c"]; a = byc[c]["pool"]; a = a[a["first"] < c + pd.DateOffset(months=3)]; b = Fd["pool"]; b = b[b.is_decoy == 0]
+        assert len(a) == len(b) and run._pool_digest(a[cols].astype({"exp_before": float})) == run._pool_digest(b[cols]), f"alt builder != default tried rows at {c.date()}"
+        assert (a.keep.values[np.argsort(a.song.values)] == b.keep.values[np.argsort(b.song.values)]).all(), "keep differs"
+    assert all(not data.is_holdout(F["pool"].artist.values).any() and F["pool"]["first"].max() < pd.Timestamp("2024-01-01") and F["pool"]["first"].min() >= F["c"] and F["train"].t.max() < F["c"] and (F["pool"].is_decoy == 0).all() for F in F_alt)
+    assert len(F_alt) == 30 and all(F["pool"].keep.notna().all() for F in F_alt)
+    Fm = byc[pd.Timestamp("2022-03-01")]; pm = Fm["pool"][Fm["pool"]["first"] < pd.Timestamp("2022-04-01")]; assert len(pm) > 20   # brute force labels of a monthly fold from the raw dev streams
+    for _, r_ in pm.sample(25, random_state=2).iterrows():
+        dd = ds[ds.song == r_.song]; assert dd.t.min() == r_["first"] and r_["first"] >= pd.Timestamp("2022-03-01")
+        w = dd[dd.t < r_["first"] + pd.Timedelta(days=90)]; nd = w.t.dt.normalize().nunique(); assert len(w) == r_.plays90 and nd == r_.days90 and int(len(w) >= 6 and nd >= 3) == r_.love
+    print("alt folds: tried rows of fold set 'tune' equal the default pools' tried rows (digest per fold, 10 folds); 30 monthly cutoffs prepared; labels of 25 monthly-fold songs equal a brute-force recomputation from raw dev streams; no HOLDOUT artist, no first play >= 2024-01-01")
+    # ---- one call per distinct cutoff on the union, then split; a pool-independent scorer gives the same scores when a set is scored alone
+    calls = []
+    def counting(train, cands, meta, cutoff): calls.append(str(cutoff.date())); return ((cands.trackId.values % 1000003) / 1000003.0) + 0.001 * np.array([len(a) for a in cands.artistIds])
+    un = run.score_predictor(counting, None, "cnt", 0, None, None, None, "", "main", F_alt); assert len(calls) == 30 == len(set(calls)), "one call per distinct cutoff on the union"
+    sh = run.split_alt(un, "tune_h", F_alt); sy = run.split_alt(un, "tune_y", F_alt); assert len(sh) == len(sy) == len(run.split_alt(un, "tune", F_alt)) == len(sc0["popularity"][sc0["popularity"].is_decoy == 0])
+    solo = run.prepare_alt(["tune_h"]); us = run.score_predictor(counting, None, "cnt", 0, None, None, None, "", "main", solo); sh2 = run.split_alt(us, "tune_h", solo)
+    m_ = sh.merge(sh2, on="trackId", suffixes=("", "_2")); assert len(m_) == len(sh) and np.allclose(m_.score, m_.score_2), "score of a candidate depends on the union"
+    print("union scoring: 30 distinct cutoffs for 6 sets -> 30 predictor calls; split sets have identical rows (same tried songs); a pool-independent scorer gives the same scores when the set is scored alone")
+    # ---- alternative-fold run with a builder file: score dump, FILE_DELTAS80, --refs none, --pair-group quarter, macro count
+    pf = tmp / "pair.py"; pf.write_text("import numpy as np\nfrom evalkit import baselines as B\ndef a(train, cands, meta, cutoff): return B.artist_recent(train, cands, meta, cutoff) + 0.01 * meta.popularity.reindex(cands.trackId).fillna(0).values\n"
+                                        "def b(train, cands, meta, cutoff): return B.duration(train, cands, meta, cutoff)\nPREDICTORS = {'mod_a': a, 'mod_b': b}\n")
+    dp = tmp / "dump.pkl"; (sc1, out1), txt1 = _quiet_main(["--fast", "--folds", "tune,tune_q1,tune_h", "--refs", "none", "--dump-scores", str(dp), str(pf)])
+    dmp = pd.read_pickle(dp); assert set(dmp.fold_set) == {"tune", "tune_q1", "tune_h"} and all(c in dmp.columns for c in ["fold_set", "fold", "cutoff", "month", "artist", "song", "new_artist", "exposure_before", "exposure_after", "replays_s1", "love", "strong", "love_4_2", "love_10_4", "keep", "plays90", "days90", "share90",
+        "plays_h30", "days_h30", "plays_h60", "days_h60", "plays_h180", "days_h180", "plays_h365", "days_h365", "score__mod_a", "score__popularity", "score__nonaudio_gbm", "score__exposure_before", "score__oracle_7d"])
+    assert "ref_audio_final" not in sc1["tune"] and "FILE_DELTAS80" in txt1 and len(out1["tune"]["FILE_DELTAS80"]) == 1 and "computed among the SCORED references only" in txt1 and "macro_sauc keeps min_each 10" in txt1
+    assert (dmp.love == ((dmp.plays90 >= 6) & (dmp.days90 >= 3)).astype(int)).all()
+    sub_ = dmp[dmp.fold_set == "tune_q1"].reset_index(drop=True); fr = out1["tune_q1"]["_P"]["mod_a"]; fr = fr[fr.is_decoy == 0].reset_index(drop=True)
+    assert (fr.love.values == sub_.love.values).all() and np.allclose(fr.score.values, sub_["score__mod_a"].values)
+    for h in run.HORIZONS: assert (sub_[f"plays_h{h}"] >= 1).all() and (sub_[f"plays_h{h}"] <= sub_["plays_h365"]).all() and (sub_[f"days_h{h}"] <= sub_[f"plays_h{h}"]).all()
+    pool_ = run.prepare_alt(["tune_q1"]); wq = dict(fs.windows("tune_q1")); up = pd.concat([F["pool"].iloc[F["order"]] for F in pool_]); up = up[up["first"] < up.cutoff.map(wq)]
+    h90 = run.horizon_counts(up.set_index("song")["first"], (90,)); assert (h90.plays_h90.values == up.plays90.values).all() and (h90.days_h90.values == up.days90.values).all(), "horizon counts differ from plays90 / days90"
+    chk = run.horizon_counts(up.set_index("song")["first"])
+    for song, f0 in list(up.set_index("song")["first"].items())[:15]:
+        dd = ds[ds.song == song]; assert (dd.t < data.DEV_END).all()
+        for h in run.HORIZONS: w = dd[dd.t < f0 + pd.Timedelta(days=h)]; assert chk.loc[song, f"plays_h{h}"] == len(w) and chk.loc[song, f"days_h{h}"] == w.t.dt.normalize().nunique()
+    S_ = out1["tune_q1"]["_S"]["mod_a"]["all"]["sauc"][0]; assert abs(metrics.dump_sauc(dmp, "tune_q1", "mod_a", nboot=20)[0] - S_) < 1e-12   # dump_sauc == harness sauc (point); brute force pooled AUC for both groupings
+    g_ = metrics.dump_frame(dmp, "tune_q1", "quarter"); assert abs(metrics.dump_sauc(dmp, "tune_q1", "mod_a", "quarter", nboot=20)[0] - br_idx(g_.love.values, g_["score__mod_a"].values, pd.factorize(g_.fold.values)[0])) < 1e-12
+    assert abs(S_ - br_idx(sub_.love.values, sub_["score__mod_a"].values, pd.factorize(sub_.fold.values)[0])) < 1e-12
+    e_ = metrics.dump_sauc_delta(dmp, "tune_q1", "mod_a", "mod_b", nboot=60); assert e_["lo80"] <= e_["hi80"]
+    (sc2, out2), txt2 = _quiet_main(["--fast", "--folds", "tune,tune_q1", "--refs", "none", "--pair-group", "quarter", str(pf)])
+    sa1 = lambda o, k: o[k]["tried_within_group"].set_index("model").sauc["mod_a"]
+    assert sa1(out2, "tune") == sa1(out1, "tune"), "tune with quarter pairing must equal fold pairing"
+    sq = sa1(out2, "tune_q1"); assert abs(sq - metrics.dump_sauc(dmp, "tune_q1", "mod_a", "quarter", nboot=20)[0]) < 1e-3 and sq != sa1(out1, "tune_q1")
+    mf = out2["tune_q1"]["_macro_folds"]; assert mf[1] in (10, 11), mf
+    print(f"alt run: dump {len(dmp)} rows x {dmp.shape[1]} cols (3 fold sets); horizon counts == plays90 / days90 at 90 d and == raw streams at 30/60/180/365; dump_sauc == harness sauc == brute force (fold and quarter pairing); "
+          f"--pair-group quarter: tune == fold pairing, tune_q1 sauc {sq:.4f} != fold pairing {sa1(out1, 'tune_q1'):.4f}; FILE_DELTAS80, --refs none, macro count OK")
+    # ---- 80% grade columns
+    V = out1["tune"]["VERDICT"].set_index("model"); assert (V["evidence80_sauc"].isin(["TUNE80+", "TUNE80-"])).all() and ((V["lo80_sauc"] > 0) == (V["evidence80_sauc"] == "TUNE80+")).all()
+    def fake(lo, d):
+        e = {k: dict(d=d, lo95=lo - .02, lo80=lo, hi80=lo + .1, P=.9) for k in run.GRADED_KEYS}; kn = [run.KEY_NAME.get(k, k) for k in run.GRADED_KEYS]
+        return dict(VERDICT=pd.DataFrame([dict(model="m", **{f"evidence80_{k}": "" for k in kn}, **{f"evidence_{k}": "" for k in kn})]), _evidence={"m": e})
+    o = {"TUNE": fake(.01, .02), "LATE": fake(-.01, .03), "ALL": fake(.01, .02)}; run.finish_verdicts(o, True); assert o["ALL"]["VERDICT"].evidence80_sauc[0] == "SUPPORTED80" and o["TUNE"]["VERDICT"].evidence80_sauc[0] == "see ALL"
+    o = {"TUNE": fake(.01, .02), "LATE": fake(-.01, -.03), "ALL": fake(.01, .02)}; run.finish_verdicts(o, True); assert o["ALL"]["VERDICT"].evidence80_wx[0] == "NOT80"
+    o = {"TUNE": fake(-.01, .02), "LATE": fake(-.01, .03), "ALL": fake(-.01, .02)}; run.finish_verdicts(o, True); assert o["ALL"]["VERDICT"].evidence80_gc[0] == "NOT80"
+    print("80% grade: TUNE80+ / TUNE80- from lo80; with --late SUPPORTED80 needs ALL lo80 > 0 and LATE point delta > 0 (3 synthetic cases)")
+    # ---- walk-forward on a non-default set
+    (sc3, out3), txt3 = _quiet_main(["--fast", "--folds", "tune_h", "--refs", "none", "--walkforward", str(pf)]); assert "WALK-FORWARD walkforward[" in txt3 and "walkforward[" + pf.parent.name + "]" in sc3["tune_h"]
+    print("walk-forward with --folds tune_h: composite scored on the set's own earlier folds")
+    # ---- inner folds
+    F = P[5]; tr, me, c = F["train"], F["meta"], F["c"]; tr_copy = tr.copy(); real_load = (data._load_all, data.load_streams)
+    def boom(*a, **k): raise AssertionError("inner folds touched raw data")
+    data._load_all = boom; data.load_streams = boom
+    try: fl = inner.make_inner_folds(tr, me, c)
+    finally: data._load_all, data.load_streams = real_load
+    assert tr.equals(tr_copy) and len(fl) >= 3, "train mutated / too few inner folds"
+    dtab = data.song_table(d[d.t < data.DEV_END]); dtab = dtab.assign(anon=data.anon_song(pd.Series(dtab.index, index=dtab.index)).values).set_index("anon"); songs_tr = set(tr.song)
+    for f in fl:
+        ic = f["inner_cutoff"]; assert f["train_streams"].t.max() < ic and ic + pd.DateOffset(months=3) + pd.Timedelta(days=90) <= c and len(f["cands"]) >= 20 and len(f["cands"]) == len(f["labels"])
+        assert set(f["cands"].song) <= songs_tr and list(f["cands"].columns) == list(F["cands"].columns), "inner cands: songs outside train / columns differ from the harness cands"
+        assert not set(f["cands"].song) & set(f["train_streams"].song), "an inner candidate was played before the inner cutoff"
+        lab = dtab.loc[f["cands"].song.values]; assert (lab[["love", "plays90", "days90"]].values == f["labels"][["love", "plays90", "days90"]].values).all() and np.allclose(lab.share90.values, f["labels"].share90.values), "inner labels != harness labels from raw dev data"
+        assert (lab["first"].values >= np.datetime64(ic)).all() and (lab["first"].values < np.datetime64(ic + pd.DateOffset(months=3))).all()
+    sv = [np.random.default_rng(i).random(len(f["cands"])) for i, f in enumerate(fl)]; ia = inner.inner_sauc(sv, fl); yy = np.concatenate([f["labels"].love.values for f in fl]); gg = np.concatenate([np.full(len(f["cands"]), i) for i, f in enumerate(fl)])
+    assert abs(ia - br_idx(yy, np.concatenate(sv), gg)) < 1e-12; a2, lo2, hi2 = inner.inner_sauc(sv, fl, nboot=40); assert abs(a2 - ia) < 1e-12 and lo2 <= hi2
+    fl2 = inner.make_inner_folds(tr, me, c, n_folds=2, spacing_months=2, horizon_days=60, min_tried=5); assert len(fl2) == 2 and fl2[0]["inner_cutoff"] + pd.DateOffset(months=2) + pd.Timedelta(days=60) <= c
+    print(f"inner folds: {len(fl)} folds (sizes {[len(f['cands']) for f in fl]}); only the given train is touched (raw loaders disabled during the call, train unchanged); labels equal the harness labels from raw dev data; inner_sauc == brute force; parameters vary the geometry")
+    ip = tmp / "inner_pred.py"; ip.write_text("import numpy as np\nfrom evalkit import inner, baselines as B\ndef predict(train, cands, meta, cutoff):\n    fl = inner.make_inner_folds(train, meta, cutoff, n_folds=2)\n    best = max((30.0, 400.0), key=lambda h: inner.inner_sauc([B._artist_score(f['train_streams'], f['cands'], f['inner_cutoff'], h) for f in fl], fl))\n    return B._artist_score(train, cands, cutoff, best)\n")
+    spec = __import__("importlib.util").util.spec_from_file_location("inner_pred", ip); im = __import__("importlib.util").util.module_from_spec(spec); spec.loader.exec_module(im)
+    r_ = run.score_predictor(im.predict, None, "innerp", 4, None, None, None, "all", "main", [F]); assert r_.attrs["indep_p90"] < 1e-9, f"inner-fold predictor fails the independence check: {r_.attrs['indep_p90']}"
+    rn = run.score_predictor(im.predict, None, "innerp", 0, ("v2", 0), None, None, "all", "main", [F]); assert np.isfinite(rn.score.values).all()
+    tn, am, bm = run._null_control(tr, F["cands"], np.random.default_rng(5)); mn = run._null_meta(me, tr, F["cands"], tn, am, bm); fn_ = inner.make_inner_folds(tn, mn, c); stn = data.song_table(tn)
+    assert len(fn_) >= 2 and all(np.array_equal(f["labels"].love.values, stn.loc[f["cands"].song.values].love.values) for f in fn_), "under the null control the inner labels must come from the null train"
+    print("inner folds: a predictor choosing its config with evalkit.inner passes the independence check (p90 %.1e) and runs under the null control (inner labels from the null train: %d folds)" % (r_.attrs["indep_p90"], len(fn_)))
+    # ---- HOLDOUT budget module
+    bj = tmp / "b.json"; assert holdout_budget.write("x1", 3, bj)["remaining"] == 3
+    try: holdout_budget.write("x1", 3, bj); raise AssertionError("same round overwritten")
+    except SystemExit as e: assert "REFUSED" in str(e)
+    assert holdout_budget.write("x2", 2, bj) == dict(round="x2", remaining=2)
+    live = json.load(open(run.HOLDOUT_BUDGET)); assert live["round"] == "w5r1" and 0 <= live["remaining"] <= 3, live
+    print(f"holdout budget module: writes, refuses to reset the same round, replaces another round; live budget file: {live}")
+    print(f"v5.0 checks OK ({time.time() - t0:.0f}s)")
+
 if __name__ == "__main__": main()

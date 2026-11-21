@@ -153,11 +153,12 @@ A = dict(alpha=10000.0)
 DUR = dict(feat="meta", learner="gbm")                    # duration/explicit/popularity-missing GBM on rank_plays target (track metadata, no artist)
 A = dict(alpha=10000.0)                                   # essentia head activations (clip mean, logit), standardised, ridge alpha 1e4, rank_plays target
 SL = dict(feat="seg", seg=(3, 4, 5), alpha=10000.0)       # same heads, mean activation of 5-s segments 3-5 (15-30 s of the clip), one training row per segment, score = mean over the segments
+PREDICTORS_FINAL = None
 PREDICTORS = {
-    "final_content": blend([A, SL, DUR], 1.0, [1, 1, 1.5]),    # FINAL: standardised mean of essentia ridge (whole), essentia ridge (late segments), duration GBM, plus 1.0 x W3 MERT audio_final
-    "abl_no_mert": make_ens([A, SL, DUR], [1, 1, 1.5]),         # ablation: no MERT
-    "abl_no_dur": blend([A, SL], 1.0, [1, 1]),                  # ablation: no duration member
-    "abl_no_essentia": blend([DUR], 1.0, [1.5]),                # ablation: MERT + duration GBM only
-    "abl_act_only": make_ens([A]),                              # essentia head activations only (heavily regularised ridge)
-    "abl_late_only": make_ens([SL]),                            # essentia late segments only
+    "d_ridge_a100": make_ens([dict(feat="desc", tf="none", alpha=100.0)]), "d_ridge_a1000": make_ens([dict(feat="desc", tf="none", alpha=1000.0)]),
+    "d_gbm": make_ens([dict(feat="desc", tf="none", learner="gbm")]),
+    "dm_gbm": make_ens([dict(feat="descmeta", tf="none", learner="gbm")]),
+    "b_final_dm": blend([A, SL, dict(feat="descmeta", tf="none", learner="gbm")], 1.0, [1, 1, 1.5]),
+    "b_final_d": blend([A, SL, DUR, dict(feat="desc", tf="none", alpha=1000.0)], 1.0, [1, 1, 1.5, 0.5]),
+    "final_content": blend([A, SL, DUR], 1.0, [1, 1, 1.5]),
 }

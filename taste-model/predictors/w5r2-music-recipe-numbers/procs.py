@@ -20,13 +20,14 @@ def avg_family(fam=None):
     return predict
 
 _INNER = {}
+MIN_TRAIN_SONGS = 300
 def nchanged(P): return sum(1 for k, v in P.items() if grid.D[k] != v and not (k == "mfill" and v is None))
 
 def inner_table(train, meta, cutoff, names, n_folds=4):
     key = (str(cutoff), len(train), int(train.t.values.astype("int64").sum() % (1 << 60)), tuple(names), n_folds)
     if key in _INNER: return _INNER[key]
     folds = inner.make_inner_folds(train, meta, cutoff, n_folds=n_folds)
-    folds = [f for f in folds if f["labels"]["love"].sum() >= 3 and (1 - f["labels"]["love"]).sum() >= 3]
+    folds = [f for f in folds if f["labels"]["love"].sum() >= 3 and (1 - f["labels"]["love"]).sum() >= 3 and f["train_streams"].song.nunique() >= MIN_TRAIN_SONGS]   # tiny inner trains (earliest cutoffs) break song_table / are meaningless: such folds are dropped
     res = {}
     if len(folds) >= 2:
         for nm in names:

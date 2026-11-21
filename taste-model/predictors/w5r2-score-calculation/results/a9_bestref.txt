@@ -1,0 +1,4 @@
+bootstrap share where each ref is best (listening/music/audio order = REFS): [0.01, 0.53, 0.46] ['ref_audio_final', 'ref_w4r1_listening', 'ref_w4r1_music']
+point best ref sauc 0.651 mean over resamples of best-of-3 0.653 mean of fixed ref_w4r1_listening 0.646
+pair_z minus fixed listening: mean 0.0107 80% [-0.0012  0.022 ]
+pair_z minus best-of-3 per resample: mean 0.0042 80% [-0.004   0.0107]

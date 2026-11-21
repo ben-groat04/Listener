@@ -1,0 +1,7 @@
+2021-07-01 n 35 pos 26 artists 27 default AUC 0.494 80%CI [0.33 0.69] mean AUC of 20 family cfgs 0.514 | new-artist frac 0.77; love rate new-art 0.70 known 0.88 | corr(default,artist_recent) 0.04
+2021-10-01 n 39 pos 22 artists 24 default AUC 0.492 80%CI [0.38 0.61] mean AUC of 20 family cfgs 0.462 | new-artist frac 0.49; love rate new-art 0.42 known 0.70 | corr(default,artist_recent) 0.16
+2022-01-01 n 45 pos 27 artists 31 default AUC 0.564 80%CI [0.43 0.69] mean AUC of 20 family cfgs 0.585 | new-artist frac 0.33; love rate new-art 0.33 known 0.73 | corr(default,artist_recent) 0.38
+2022-04-01 n 31 pos 12 artists 21 default AUC 0.535 80%CI [0.37 0.7 ] mean AUC of 20 family cfgs 0.543 | new-artist frac 0.39; love rate new-art 0.25 known 0.47 | corr(default,artist_recent) 0.34
+2022-07-01 n 81 pos 35 artists 19 default AUC 0.587 80%CI [0.52 0.68] mean AUC of 20 family cfgs 0.608 | new-artist frac 0.14; love rate new-art 0.27 known 0.46 | corr(default,artist_recent) 0.17
+2022-10-01 n 77 pos 37 artists 9 default AUC 0.577 80%CI [0.42 0.65] mean AUC of 20 family cfgs 0.586 | new-artist frac 0.10; love rate new-art 0.75 known 0.45 | corr(default,artist_recent) 0.21
+2023-04-01 n 110 pos 29 artists 27 default AUC 0.588 80%CI [0.5  0.66] mean AUC of 20 family cfgs 0.588 | new-artist frac 0.10; love rate new-art 0.00 known 0.29 | corr(default,artist_recent) 0.45

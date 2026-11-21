@@ -212,5 +212,34 @@ V = {   # every variant scored on TUNE is listed here (counted)
     "v32_both_krr_mert3": dict(signal="both", learner="krr", blocks=MERT3, ncomp=32),
     "v33_both_hl90_nc64": dict(signal="both", hl=90.0, ncomp=64),
 }
+
+def make_ens(members, noart=False, refs=()):
+    """standardised mean of several member configs (each member's score is already standardised with its own train-row scores);
+    refs: names of evalkit.refs references whose scores are standardised with their scores on the train songs and averaged in (stacking; secondary)"""
+    ms = [make(**{**m, **({"noart": True} if noart else {})}) for m in members]
+    def predict(train, cands, meta, cutoff):
+        out = np.mean([f(train, cands, meta, cutoff) for f in ms], 0)
+        if refs:
+            from evalkit import refs as R
+            from evalkit.data import song_table
+            st = song_table(train); st = st[st.trackId.isin(meta.index)].reset_index()
+            zs = []
+            for nm in refs:
+                a = np.asarray(R.score(nm, train, cands, meta, cutoff), float); b = np.asarray(R.score(nm, train, st, meta, cutoff), float)
+                zs.append((a - b.mean()) / (b.std() + 1e-9))
+            out = (out * len(ms) + sum(zs)) / (len(ms) + len(zs))
+        return out
+    return predict
+
+H = dict(signal="both", hl=90.0)
+E_RIDGE = [dict(H, ncomp=64), dict(H, blocks=MERT3, ncomp=32), dict(H, blocks=MERT3 + ("eact", "eemb"), combine="trust"), dict(signal="both", P=60, K=3, hl=120.0, ncomp=64)]
+E_KRR = E_RIDGE + [dict(H, learner="krr", ncomp=64)]
+V2 = {
+    "f1_ens_ridge": make_ens(E_RIDGE),
+    "f2_ens_ridge_noart": make_ens(E_RIDGE, noart=True),
+    "f3_ens_ridge_krr": make_ens(E_KRR),
+    "f4_stack_refs": make_ens(E_RIDGE, refs=("ref_audio_final", "ref_w4r1_music")),
+}
 _only = os.environ.get("W4R2_ONLY")
 PREDICTORS = {k: make(**v) for k, v in V.items() if not _only or any(t in k for t in _only.split(","))}
+PREDICTORS.update({k: v for k, v in V2.items() if not _only or any(t in k for t in _only.split(","))})

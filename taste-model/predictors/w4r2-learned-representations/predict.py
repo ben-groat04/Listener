@@ -151,11 +151,24 @@ def make(**kw):
         return (s - res["tm"]) / res["ts"]
     return predict
 
+def ens(*fns):
+    def predict(train, cands, meta, cutoff):
+        o = 0
+        for f in fns:
+            x = f(train, cands, meta, cutoff); o = o + (x - x.mean()) / (x.std() + 1e-9) if False else o + x
+        return o / len(fns)
+    return predict
+
+M_PR = make(model="patchridge", feat="mert", alpha=1200.0, nc=64)
+A_RM = make(model="ridge", feat="act")
+E_PR = make(model="patchridge", feat="emb")
+M_MLP = make(model="mean", feat="mert", nc=32)
+M_ATT = make(model="attn", feat="mert", nc=32, pdrop=0.25)
 PREDICTORS = {
-    "ridge_mean_act": make(model="ridge", feat="act"),
-    "attn_act": make(model="attn", feat="act"),
-    "ridge_mean_mert": make(model="ridge", feat="mert", alpha=150.0, nc=32),
-    "patchridge_mert": make(model="patchridge", feat="mert", alpha=1200.0, nc=64),
-    "mlp_mert": make(model="mean", feat="mert", nc=32),
-    "attn_mert": make(model="attn", feat="mert", nc=32, pdrop=0.25),
+    "mlp_mert_reg": make(model="mean", feat="mert", nc=32, h=16, ep=30, drop=0.5, wd=0.1),
+    "attn_mert_rank": make(model="attn", feat="mert", nc=32, loss="rank", pdrop=0.25),
+    "attn_mertL": make(model="attn", feat="mertL", nc=32, pdrop=0.25),
+    "ens_lin3": ens(M_PR, A_RM, E_PR),
+    "ens_lin2": ens(M_PR, A_RM),
+    "ens_lin3_nets": ens(M_PR, A_RM, E_PR, M_MLP, M_ATT),
 }

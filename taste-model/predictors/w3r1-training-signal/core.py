@@ -48,17 +48,23 @@ def build(train, cutoff, meta):
     tf = rows["first"].values.astype("datetime64[ns]")
     Xe = FT.extra_features(S, rows.artist.values, rows.albumId.values, tf, meta.durationMs.reindex(rows.trackId).values.astype(float),
                            meta.popularity.reindex(rows.trackId).values.astype(float))
-    ctx = dict(S=S, st=st, train=train, tf=tf)
-    if FT.emb_table():
+    ctx = dict(S=S, st=st, train=train, tf=tf, rows=rows, meta=meta)
+    _BUILD[k] = [rows, X, hist, prior, float(rows.love.mean()) if len(rows) else .5, Xe, None, ctx]
+    return _BUILD[k]
+
+
+def audio_train(b):
+    """lazily computed audio features of the training rows (only for variants that use audio)."""
+    rows, ctx, meta, train = b[0], b[7], b[7]["meta"], b[7]["train"]; st, S, tf = ctx["st"], ctx["S"], ctx["tf"]
+    if b[6] is None and "E_song" not in ctx:
         trk, tc = np.unique(train.trackId.values, return_inverse=True)
         ctx.update(E_song=FT.track_emb(st.trackId.values, meta), E_trk=FT.track_emb(trk, meta), trk_codes=tc, trk_t=train.t.values.astype("datetime64[ns]"),
                    song_first=st["first"].values.astype("datetime64[ns]"), song_grade=grade(st), song_love=st.love.values)
         Er = FT.track_emb(rows.trackId.values, meta)
         Xa = FT.audio_features(S, Er, tf, ctx["E_song"], ctx["song_first"], ctx["song_grade"], ctx["song_love"], ctx["E_trk"], tc, ctx["trk_t"])
-        Xa["au_missing"] = (~np.isfinite(Er[:, 0])).astype(float)
-    else: Xa = None
-    _BUILD[k] = (rows, X, hist, prior, float(rows.love.mean()) if len(rows) else .5, Xe, Xa, ctx)
-    return _BUILD[k]
+        Xa["au_missing"] = (~np.isfinite(Er[:, 0])).astype(float); b[6] = Xa
+    return b[6]
+
 
 
 # ---------------------------------------------------------------- targets
@@ -100,11 +106,11 @@ def exposure_adjust(r, y, kind):
 
 def fit_variant(train, cutoff, meta, o):
     """o: dict of options. Returns scorer(cands)->scores."""
-    rows, X, hist, prior, base, Xe, Xa, ctx = build(train, cutoff, meta)
+    bd = build(train, cutoff, meta); rows, X, hist, prior, base, Xe, Xa, ctx = bd
     rep = o.get("rep", "base")
     rep = {"plus": "base+x", "audio": "base+x+a"}.get(rep, rep); useX, useA = "+x" in rep, "+a" in rep
     if useX: X = pd.concat([X, Xe], axis=1)
-    if useA and Xa is not None: X = pd.concat([X, Xa], axis=1)
+    if useA and FT.emb_table(): X = pd.concat([X, audio_train(bd)], axis=1)
     csec = int(B._sec(np.array([np.datetime64(cutoff)]))[0])
     keep = np.ones(len(rows), bool)
     if o.get("window"):   # window in days, but never fewer than min_rows training songs (the window widens in the early folds)
@@ -188,7 +194,7 @@ def _cand_extra(ctx, cands, meta, cutoff, audio, extra=True):
         tf = np.full(len(cands), np.datetime64(cutoff), dtype="datetime64[ns]")
         Z = FT.extra_features(ctx["S"], cands.artist.values, cands.albumId.values, tf, meta.durationMs.reindex(cands.trackId).values.astype(float),
                               meta.popularity.reindex(cands.trackId).values.astype(float)) if extra else pd.DataFrame(index=range(len(cands)))
-        if audio and "E_song" in ctx:
+        if audio and FT.emb_table():
             Er = FT.track_emb(cands.trackId.values, meta)
             Za = FT.audio_features(ctx["S"], Er, tf, ctx["E_song"], ctx["song_first"], ctx["song_grade"], ctx["song_love"], ctx["E_trk"], ctx["trk_codes"], ctx["trk_t"])
             Za["au_missing"] = (~np.isfinite(Er[:, 0])).astype(float); Z = pd.concat([Z, Za], axis=1)

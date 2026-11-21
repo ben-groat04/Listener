@@ -50,7 +50,7 @@ def main(argv):
     done = set(pd.read_csv(data.FALLBACK).trackId) if data.FALLBACK.exists() else set()
     todo = [x for x in tg if x[0] not in done][:mx]
     print(len(tg), "targets,", len(done), "done,", len(todo), "to do", flush=True)
-    delay, buf, n_ok, t0 = 3.0, [], 0, time.time()
+    delay, buf, n_ok, n403, t0 = 3.0, [], 0, 0, time.time()
     def flush():
         if buf:
             pd.DataFrame(buf).to_csv(data.FALLBACK, mode="a", header=not data.FALLBACK.exists(), index=False); buf.clear()
@@ -62,7 +62,7 @@ def main(argv):
             try:
                 res = json.load(urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "taste-eval-research/0.1"}), timeout=30))["results"]; break
             except Exception as e:
-                if "403" in str(e) or "429" in str(e): delay = min(delay + 0.5, 12.0); time.sleep(20)
+                if "403" in str(e) or "429" in str(e): n403 += 1; delay = min(delay + 0.5, 12.0); time.sleep(20)
                 else: time.sleep(5)
         if res is None: continue   # retried on the next run
         a = accept(res, artist, title, dur)
@@ -70,8 +70,8 @@ def main(argv):
                         itunes_trackId=a["trackId"] if a else None, itunes_artist=a["artistName"] if a else None, itunes_title=a["trackName"] if a else None,
                         itunes_durationMs=a["trackTimeMillis"] if a else None))
         n_ok += 1
-        if len(buf) >= 20: flush()
-        if i % 50 == 0: print(i, len(todo), "delay", round(delay, 1), "elapsed", int(time.time() - t0), flush=True)
+        if len(buf) >= 5: flush()
+        if i % 10 == 0: print(i, len(todo), "delay", round(delay, 1), "n403", n403, "elapsed", int(time.time() - t0), flush=True)
         time.sleep(delay); delay = max(2.2, delay - 0.02)
     flush(); print("done")
 

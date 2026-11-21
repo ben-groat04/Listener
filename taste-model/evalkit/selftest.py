@@ -53,14 +53,14 @@ def main():
     p = score_predictor(_random, cuts, "random", indep_n=3); a = metrics.auc(p[p.is_decoy == 0].love, p[p.is_decoy == 0].score)
     assert p.attrs["indep"] < 1e-6, "random scorer must be pool independent"
     dg = run.score_diagnostics(cuts); o7 = dg["oracle_7d"]; ao = metrics.auc(o7[o7.is_decoy == 0].love, o7[o7.is_decoy == 0].score)
-    dep = score_predictor(lambda tr, cs, me, k: cs.groupby("artist").artist.transform("size").values.astype(float), cuts[:2], "x", indep_n=5)
+    dep = score_predictor(lambda tr, cs, me, k: cs.groupby("artist").artist.transform("size").values.astype(float), cuts[6:8], "x", indep_n=5)
     print(f"random AUC {a:.3f} (expect ~0.5), 7-day oracle AUC {ao:.3f} (expect >0.85), pool-dependent predictor indep stat {dep.attrs['indep']:.2f} (expect >0.1)")
     assert abs(a - .5) < .05 and ao > .85 and dep.attrs["indep"] > .1
     def meta_leaker(tr, cs, me, k):
         nm = me.artistNames.map(lambda l: l[0] if isinstance(l, list) and len(l) else "").reindex(cs.trackId).values
         vc = pd.Series(me.artistNames.map(lambda l: l[0] if isinstance(l, list) and len(l) else "").values).value_counts()
         return np.array([vc.get(x, 0) for x in nm], float)
-    ml = score_predictor(meta_leaker, cuts[:2], "y", indep_n=6)
+    ml = score_predictor(meta_leaker, cuts[6:8], "y", indep_n=6)
     print(f"meta-composition leaker indep p90 {ml.attrs['indep_p90']:.2f} (expect >0.1)"); assert ml.attrs["indep_p90"] > .1
     # valid baselines pass the independence gate (GBM ones are the risky ones)
     for nm in ("meta_gbm", "nonaudio_gbm", "duration", "artist_love_rate"):

@@ -67,7 +67,7 @@ def _train(train, cutoff, meta):
     return mt, S, M, ok, mt.love.values.astype(float), mt.love.values - loo, w
 
 def _build(kind, train, cutoff, meta):
-    key = (kind, str(cutoff), len(train), float(train.t.astype("int64").sum() % 1e12))
+    key = (kind, str(cutoff), len(train), float(train.t.astype("int64").sum() % 1e12), int(pd.util.hash_array(train.trackId.values).sum() % (1 << 60)))
     if key in _FIT: return _FIT[key]
     from sklearn.decomposition import PCA
     from sklearn.linear_model import LogisticRegression, Ridge

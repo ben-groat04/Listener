@@ -22,13 +22,13 @@ first = next(iter(sc.values())); tm = (first.is_decoy == 0).values
 T = metrics.Block(first[tm].reset_index(drop=True), "love", 300, 0)
 ctm = cov[tm]
 print("tried n", tm.sum(), "covered", ctm.sum(), "love rate covered", first.love.values[tm][ctm].mean().round(3), "uncovered", first.love.values[tm][~ctm].mean().round(3))
-def ci(x): return tuple(np.nanpercentile(x, [2.5, 97.5]).round(3))
-for lab, blk in (("ALL tried songs", T), ("COVERED only", T.sub(ctm)), ("UNCOVERED only", T.sub(~ctm))):
+def ci(x): return tuple(float(v) for v in np.nanpercentile(x, [2.5, 97.5]).round(3))
+for lab, blk, nmask in (("ALL tried songs", T, T.new), ("COVERED only", T.sub(ctm), T.new & ctm), ("UNCOVERED only", T.sub(~ctm), None)):
     print("==", lab, "n", blk.n)
     st = {}
     for n, df in sc.items():
         s = df.score.values[tm]; r = blk.stats(s, True, ("sauc", "wa", "ws")); st[n] = r
-        nw = blk.sub(blk.new) if lab != "UNCOVERED only" else None
+        nw = T.sub(nmask) if nmask is not None else None
         print(f"{n:18s} sauc {r['sauc'][0]:.3f} {ci(r['sauc_b'])}  wa {r['wa'][0]:.3f} {ci(r['wa_b'])}  ws {r['ws'][0]:.3f} {ci(r['ws_b'])}" + (f"  new {nw.stats(s, True, ('sauc',))['sauc'][0]:.3f}" if nw is not None else ""))
     for n in ("lyr_resid_nodur", "lyr_resid_orth"):
         for b in ("nonaudio_gbm", "meta_gbm", "duration"):

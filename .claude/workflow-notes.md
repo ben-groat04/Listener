@@ -60,3 +60,12 @@
   Neutral paraphrase candidate: "The data is very noisy; clear-cut results may be unrealistic, and loose but consistent trends may be worth acting on." Audit: relates to the earlier evidence-strictness idea; weigh against the W3/W4 cases where dev trends reversed on held-out data, and say how 'acting on loose trends' can be done without being fooled (e.g. consistency across slices/folds rather than single-slice significance).
 - User's evidence threshold (a risk-tolerance preference, theirs to set): "95% interval jesus I'm ok with 80ish". Use ~80% intervals / P(better) ≈ 0.8+ as the working bar for dev decisions and for how results are described to the user, together with consistency across slices. W5 brief: state this as the project's decision threshold (it is the user's call, not a method hint); the sealed run's pass criteria are still to be fixed before scoring.
 - W4 lesson: round-2 shared-prep was told to build only if FROZEN was lifted, but the script has no way to lift it (scripts can't touch files) — a dead step; the lead's round-2 prep plan was silently dropped. W5: if a later prep step is wanted, have the prep agent itself version inputs (new dirs + new manifest) rather than gating on a file the script can't change. Audit must trace every conditional step to something that can actually satisfy it.
+
+## Lessons from W4 post-review (apply in W5)
+1. Floor retry produced new post-hoc modelling (predict_secondary.py with artist history, TUNE-selected, spent a LATE run). Confirms: no time floors, no auto-retry of finished agents.
+2. R1 HOLDOUT numbers were pasted into R2 builder prompts → HOLDOUT no longer clean for R2; --holdout also prints DEV+HOLDOUT pooled. Don't relay held-out numbers between rounds; don't print pooled dev in held-out runs.
+3. Harness changed between rounds (engineer-r2 added refs, new null band, best_ref moved) → R1/R2 grades not comparable. Freeze/version the harness before builders; label numbers with harness version.
+4. Leads/reviewers too short (reviewers 2-5 min, lead-review 2 min, final lead 2 min, re-ran nothing). Give leads a coverage checklist instead.
+5. ~30-35 KB prompt repeated per agent; long reports pasted into builder prompts. Trim; point to files instead.
+6. Shared prep 1 h 50 min; start overlapping extraction during the review phase. W4 total ~6.7 h.
+7. Reproducibility: holdout_budget.json not regenerable; nets builder overwrote configs; dead panel-weight code.

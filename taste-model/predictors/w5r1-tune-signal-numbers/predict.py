@@ -182,6 +182,7 @@ def _log(rec):
 
 def tuned(label, spec, margin=0.0, grid=None):
     grid = list(grid or G.TUNER_GRID)
+    for _g in grid: assert _g in G.TUNER_GRID
     def predict(train, cands, meta, cutoff):
         P = _prep(train, meta, cutoff); tab, nf = _inner_table(P, train, meta, cutoff, spec, grid)
         best = "default"
@@ -200,6 +201,9 @@ SPEC_A = dict(n_folds=4, spacing_months=3, horizon_days=90)      # inner geometr
 SPEC_B = dict(n_folds=6, spacing_months=2, horizon_days=90)      # inner geometry B (more, shorter windows)
 SPEC_C = dict(n_folds=4, spacing_months=3, horizon_days=60)      # inner geometry C (shorter label horizon)
 
+SPEC_D = dict(n_folds=8, spacing_months=1, horizon_days=90)      # inner geometry D (monthly windows)
+SPEC_E = dict(n_folds=2, spacing_months=6, horizon_days=90)      # inner geometry E (two half-year windows)
+
 def build():
     sel = os.environ.get("W5_SET", "base,oat,stale,rj,tuned").split(","); out = {}
     if "base" in sel: out["w5_default"] = fixed({})
@@ -208,6 +212,13 @@ def build():
     if "rj" in sel: out.update({k: fixed(v) for k, v in G.random_configs().items()})
     if "tuned" in sel:
         out["tunedA"] = tuned("A", SPEC_A); out["tunedA_m02"] = tuned("A", SPEC_A, 0.02)
-        out["tunedB"] = tuned("B", SPEC_B); out["tunedC"] = tuned("C", SPEC_C)
+        out["tunedA_m05"] = tuned("A", SPEC_A, 0.05)
+        out["tunedB"] = tuned("B", SPEC_B); out["tunedB_m02"] = tuned("B", SPEC_B, 0.02); out["tunedC"] = tuned("C", SPEC_C)
+        out["tunedD"] = tuned("D", SPEC_D); out["tunedE"] = tuned("E", SPEC_E)
+        out["tunedS"] = tuned("S", SPEC_A, 0.0, G.SMALL_GRID); out["tunedS_m02"] = tuned("S", SPEC_A, 0.02, G.SMALL_GRID)
     return out
 PREDICTORS = build()
+if os.environ.get("W5_ONLY"): PREDICTORS = {k: v for k, v in PREDICTORS.items() if k in os.environ["W5_ONLY"].split(",")}
+_wf = os.environ.get("W5_WF", "")
+if _wf == "oat": WALKFORWARD_FAMILY = ["w5_default"] + [k for k in PREDICTORS if k.startswith("oat_") and not k.startswith("oat_stale")]
+elif _wf == "procs": WALKFORWARD_FAMILY = [k for k in PREDICTORS if k == "w5_default" or k.startswith("tuned")]

@@ -37,3 +37,4 @@ def random_configs(n=40, seed=20261121):
         out["rj%02d" % i] = c
     return out
 TUNER_GRID = dict(default={}, **OAT)   # the grid the nested tuner chooses from
+SMALL_GRID = ["default", "grp_roll91", "grp_roll182", "grp_all", "mat60", "mat60_scale", "mat0_scale", "pop_audio"]   # the issues named in the brief (quarter stub M12, population M13, maturity/partial horizon)

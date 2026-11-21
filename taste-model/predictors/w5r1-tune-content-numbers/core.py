@@ -47,7 +47,7 @@ def _pool(Z, cfg, local):
 def member(train, cands, meta, cutoff, cfg):
     """standardised-scale raw scores of `cands` plus (neutral, lo, hi) in that scale, ok mask. Cached."""
     key = train_key(train, cutoff); ck = (key, mkey(cfg), len(cands), int(pd.util.hash_pandas_object(cands[["trackId"]].astype(str), index=False).sum() % (1 << 60)), PERM)
-    if ck in _SC and not os.environ.get("EVALKIT_NO_FIT_CACHE"): return _SC[ck]
+    if ck in _SC: return _SC[ck]   # in-process only; key holds train identity hash + perm seed
     from sklearn.decomposition import PCA
     from sklearn.linear_model import Ridge
     from threadpoolctl import threadpool_limits

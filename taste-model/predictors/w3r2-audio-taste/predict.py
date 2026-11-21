@@ -10,7 +10,7 @@ Config in CFG; variants in PREDICTORS (see bottom).
 import glob, hashlib
 import numpy as np, pandas as pd
 ROOT = "/home/user/Listener/taste-model/"
-CFG = dict(blocks=(("mert", 4, 8),), ncomp=64, mode="whole", agg="mean", target="love", C=0.05, alpha=300.0, hl=None, window=None, mature=90, meta=False, miss="neutral", pca=True, learner="lin")
+CFG = dict(blocks=(("mert", 4, 8),), ncomp=64, mode="whole", agg="mean", target="love", C=0.05, alpha=300.0, hl=None, window=None, mature=90, meta=False, miss="neutral", pca=True, learner="lin", adem=0.0)
 _F = {}
 
 def _store():
@@ -86,6 +86,10 @@ def _fit(train, meta, cutoff, cfg):
             yr = pd.Series(col.values[mat]).groupby(qa[mat]).rank(pct=True).values
         elif cfg["target"] == "rank_mix":   # mean of the two period-normalised ranks and the love label
             yr = (pd.Series(st.plays90.values[mat]).groupby(qa[mat]).rank(pct=True).values + pd.Series(st.share90.values[mat]).groupby(qa[mat]).rank(pct=True).values) / 2
+        if cfg["adem"] and cfg["target"] != "love":   # target only: subtract (shrunk) mean target of the song's primary artist among mature train songs (artist never an input)
+            ar = pd.Series(st.artist.values[mat]); g = pd.Series(yr).groupby(ar.values); mn = g.transform("sum").values; ct = g.transform("size").values
+            loo = (mn - yr) / np.maximum(ct - 1, 1) * (ct - 1) / (ct - 1 + 2.0) + yr.mean() * 2.0 / (ct - 1 + 2.0)   # leave-one-out shrunk artist mean
+            yr = yr - cfg["adem"] * (loo - yr.mean())
         w = np.ones(mat.sum())
         if cfg["hl"]: w *= 0.5 ** ((cutoff - st["first"][mat]).dt.days.values / cfg["hl"])
         if mat.sum() > 20:
@@ -133,15 +137,13 @@ def make_ens(cfgs, wts=None):
 M = ("mert", 4, 8); CL = ("clap",)
 L3 = [dict(blocks=(("mert", 0, 3),)), dict(blocks=(("mert", 4, 7),)), dict(blocks=(("mert", 8, 11),))]
 R = dict(target="rank_plays")
+E = dict(R, mode="local", alpha=1200.0)
+W32 = dict(R, ncomp=32, alpha=150.0)
+L37 = dict(R, blocks=(("mert", 3, 7),), mode="local", alpha=1200.0)
+FINAL = [E, W32, L37]   # pre-declared final: three rank_plays members (local L4-8, whole L4-8 nc32, local L3-7), standardised mean
+def _ab(**kw): return make_ens([dict(c, **kw) for c in FINAL])
 PREDICTORS = {
-    "t_rank_l2_6": make_ens([dict(R, blocks=(("mert", 2, 6),))]),
-    "t_rank_l3_7": make_ens([dict(R, blocks=(("mert", 3, 7),))]),
-    "t_rank_l5_9": make_ens([dict(R, blocks=(("mert", 5, 9),))]),
-    "t_rank_l4_6": make_ens([dict(R, blocks=(("mert", 4, 6),))]),
-    "t_rank_gbm": make_ens([dict(R, learner="gbm", ncomp=32)]),
-    "t_rank_svr": make_ens([dict(R, learner="svr", C=0.5, ncomp=32)]),
-    "t_rank_local_nc32": make_ens([dict(R, mode="local", alpha=600.0, ncomp=32)]),
-    "t_rank_local_clap": make_ens([dict(R, mode="local", alpha=1200.0, blocks=(M, CL))]),
-    "t_rank_ens_local_whole": make_ens([dict(R, mode="local", alpha=1200.0), dict(R, ncomp=32, alpha=150.0)]),
-    "t_rank_ens_love": make_ens([dict(R, mode="local", alpha=1200.0), dict(mode="local", target="love", C=0.01)]),
+    "audio_final": make_ens(FINAL),
+    "audio_final_meta": _ab(meta=True),                 # ablation 1: separate metadata variant
+    "audio_missing_indicator": _ab(miss="indicator"),   # ablation 2: NO audio content, only the 'no audio' flag
 }

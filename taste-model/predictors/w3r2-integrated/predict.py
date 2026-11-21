@@ -3,7 +3,7 @@ Each member is standardised with statistics of its OWN scores over TRAINING song
 gets the train-derived neutral value (median train score); audio-bearing GBM member gets NaN audio features (explicit au_missing flag as in round 1).
 Usage (from /home/user/Listener/taste-model):  python3 -W ignore -m evalkit.run predictors/w3r2-integrated/predict.py --fast
 Entries in PREDICTORS: see bottom. Members: H = history GBM (rank_plays target, 365 d window, 120 d half-life), HA = H + CLAP similarity features,
-A = MERT audio-only ensemble (ca_ens), AR = artist_recent (frequency statistic), Am = A with meta (duration etc.) columns.
+A = MERT audio-only ensemble (ca_ens), AR = artist_recent (frequency statistic).
 """
 import sys, importlib.util
 HERE = __file__.rsplit("/", 1)[0]; R1 = HERE.rsplit("/", 1)[0]
@@ -17,8 +17,6 @@ Ga = dict(G, rep="base+a")
 AR = dict(fn="artist_recent")
 _L3 = (dict(layers=(0, 3)), dict(layers=(4, 7)), dict(layers=(8, 11)))
 A_ens = CA.make_ens(*_L3, mode="local")
-A_ens_meta = CA.make_ens(*_L3, mode="local", meta=True)
-A_ens_rank = CA.make_ens(*_L3, mode="local", target="rank", hl=365)
 
 def blend(members, weights):
     """members: dict specs (history members, core.make_blend format) or callables (audio predict fns, already train-standardised)."""
@@ -31,16 +29,10 @@ def blend(members, weights):
         return tot
     return predict
 
+A_missing_only = CA.make(miss="indicator")   # diagnostic: uses ONLY whether a preview exists (sign from train love rates of songs with / without audio)
 PREDICTORS = {
-    "w2i_hist_audio": blend([G, Ga, A_ens], [1, 1, 2]),             # history GBMs + audio-only, no plain artist-frequency member
-    "w2i_hist_audio_ar": blend([G, Ga, A_ens, AR], [1, 1, 2, 1]),
-    "w2i_audio": blend([A_ens], [1]),
-    "w2i_hist": blend([G, Ga], [1, 1]),
-    "w2i_ha_meta_ar": blend([G, Ga, A_ens_meta, AR], [1, 1, 2, 1]),
-    "w2i_ha_rank_ar": blend([G, Ga, A_ens_rank, AR], [1, 1, 2, 1]),
-    "w2i_ha_ar2": blend([G, Ga, A_ens, AR], [1, 1, 2, 2]),
-    "w2i_ha_eq_ar": blend([G, Ga, A_ens, AR], [1, 1, 1, 1]),
-    "w2i_g_a_ar": blend([G, A_ens, AR], [1, 2, 1]),
-    "w2i_ga_a_ar": blend([Ga, A_ens, AR], [1, 2, 1]),
-    "w2i_ha_a3_ar": blend([G, Ga, A_ens, AR], [1, 1, 3, 1]),
+    "w2i_final": blend([G, Ga, A_ens, AR], [1, 1, 1, 1]),   # FINAL (equal weights, chosen as the least tuned of the near-tied TUNE variants)
+    "w2i_noaudio": blend([G, AR], [1, 1]),                   # ablation 1: audio inputs removed (no CLAP features, no MERT member)
+    "w2i_nohist": blend([A_ens], [1]),                       # ablation 2: history inputs removed (artist-free MERT audio only)
+    "w2i_missing_only": A_missing_only,                      # diagnostic: audio-missingness indicator alone
 }

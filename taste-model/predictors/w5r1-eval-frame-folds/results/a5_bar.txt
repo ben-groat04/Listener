@@ -1,0 +1,52 @@
+tune: best artist-history bar (artist_recent or hl variants) = bar_hl30 0.627; best of all 7 refs + variants = ref_w4r1_listening 0.651; default best_ref = ref_w4r1_listening
+tune_m: best artist-history bar (artist_recent or hl variants) = bar_hl30 0.619; best of all 7 refs + variants = ref_w4r1_listening 0.656; default best_ref = ref_w4r1_listening
+tune_q1: best artist-history bar (artist_recent or hl variants) = bar_hl730 0.613; best of all 7 refs + variants = ref_w4r1_listening 0.657; default best_ref = ref_w4r1_listening
+tune_q2: best artist-history bar (artist_recent or hl variants) = bar_hl730 0.587; best of all 7 refs + variants = ref_w4r1_music 0.643; default best_ref = ref_w4r1_music
+tune_h: best artist-history bar (artist_recent or hl variants) = bar_hl730 0.611; best of all 7 refs + variants = ref_w4r1_music 0.641; default best_ref = ref_w4r1_music
+ set            bar  sauc    wx  w5r1_stack3-bar  w5r1_stack3-bar_lo80  ref_w4r1_mus-bar  ref_w4r1_mus-bar_lo80  ref_w4r1_lis-bar  ref_w4r1_lis-bar_lo80  ref_audio_fi-bar  ref_audio_fi-bar_lo80
+tune  artist_recent 0.619 0.602            0.034                 0.008             0.028                 -0.002             0.032                  0.010             0.013                 -0.018
+tune       bar_hl30 0.627 0.611            0.026                 0.002             0.019                 -0.009             0.024                 -0.003             0.005                 -0.022
+tune       bar_hl60 0.620 0.602            0.033                 0.006             0.027                 -0.003             0.032                  0.007             0.012                 -0.020
+tune       bar_hl90 0.618 0.601            0.035                 0.008             0.029                 -0.001             0.033                  0.010             0.014                 -0.017
+tune      bar_hl365 0.616 0.599            0.036                 0.009             0.030                 -0.001             0.035                  0.011             0.015                 -0.016
+tune      bar_hl730 0.617 0.599            0.036                 0.008             0.029                 -0.003             0.034                  0.010             0.014                 -0.019
+tune bar_gbm_w_none 0.529 0.532            0.124                 0.057             0.117                  0.056             0.122                  0.063             0.102                  0.036
+tune    bar_gbm_w90 0.582 0.579            0.071                 0.005             0.064                  0.001             0.069                  0.008             0.049                 -0.017
+tune   bar_gbm_w365 0.539 0.543            0.114                 0.032             0.108                  0.024             0.112                  0.034             0.093                  0.010
+tune bar_gbm_nomono 0.516 0.527            0.137                 0.036             0.131                  0.028             0.135                  0.030             0.116                  0.011
+tune    bar_gbm_big 0.545 0.545            0.108                 0.050             0.101                  0.042             0.106                  0.052             0.086                  0.025
+tune  bar_gbm_small 0.584 0.575            0.069                 0.010             0.063                  0.003             0.067                  0.009             0.048                 -0.014
+tune   nonaudio_gbm 0.555 0.557            0.098                 0.033             0.091                  0.024             0.096                  0.034             0.076                  0.008
+
+-- the same for the monthly set
+   set            bar  sauc    wx  w5r1_stack3-bar  w5r1_stack3-bar_lo80  ref_w4r1_mus-bar  ref_w4r1_mus-bar_lo80  ref_w4r1_lis-bar  ref_w4r1_lis-bar_lo80  ref_audio_fi-bar  ref_audio_fi-bar_lo80
+tune_m  artist_recent 0.614 0.610            0.049                 0.026             0.042                  0.018             0.043                  0.019             0.024                 -0.000
+tune_m       bar_hl30 0.619 0.612            0.043                 0.018             0.036                  0.013             0.037                  0.013             0.018                 -0.007
+tune_m       bar_hl60 0.615 0.610            0.048                 0.024             0.041                  0.017             0.042                  0.017             0.023                 -0.002
+tune_m       bar_hl90 0.614 0.609            0.049                 0.024             0.041                  0.017             0.042                  0.017             0.024                 -0.002
+tune_m      bar_hl365 0.617 0.610            0.046                 0.023             0.039                  0.016             0.040                  0.014             0.021                 -0.002
+tune_m      bar_hl730 0.618 0.612            0.044                 0.022             0.037                  0.013             0.038                  0.013             0.019                 -0.003
+tune_m bar_gbm_w_none 0.544 0.551            0.119                 0.052             0.111                  0.051             0.112                  0.047             0.094                  0.026
+tune_m    bar_gbm_w90 0.583 0.583            0.080                 0.022             0.072                  0.021             0.073                  0.014             0.055                 -0.000
+tune_m   bar_gbm_w365 0.556 0.561            0.107                 0.022             0.100                  0.017             0.101                  0.015             0.082                 -0.001
+tune_m bar_gbm_nomono 0.550 0.565            0.112                 0.033             0.105                  0.040             0.106                  0.026             0.087                  0.014
+tune_m    bar_gbm_big 0.555 0.555            0.108                 0.059             0.100                  0.053             0.101                  0.054             0.083                  0.035
+tune_m  bar_gbm_small 0.592 0.593            0.070                 0.022             0.063                  0.021             0.064                  0.019             0.045                 -0.001
+tune_m   nonaudio_gbm 0.571 0.578            0.092                 0.032             0.084                  0.028             0.085                  0.024             0.067                  0.006
+
+-- sauc of each bar across fold sets
+set              tune  tune_h  tune_m  tune_q1  tune_q2
+bar                                                    
+artist_recent   0.619   0.604   0.614    0.608    0.573
+bar_gbm_big     0.545   0.540   0.555    0.552    0.550
+bar_gbm_nomono  0.516   0.521   0.550    0.526    0.568
+bar_gbm_small   0.584   0.566   0.592    0.591    0.566
+bar_gbm_w365    0.539   0.524   0.556    0.518    0.554
+bar_gbm_w90     0.582   0.562   0.583    0.577    0.573
+bar_gbm_w_none  0.529   0.522   0.544    0.513    0.547
+bar_hl30        0.627   0.608   0.619    0.603    0.566
+bar_hl365       0.616   0.610   0.617    0.608    0.575
+bar_hl60        0.620   0.600   0.615    0.607    0.568
+bar_hl730       0.617   0.611   0.618    0.613    0.587
+bar_hl90        0.618   0.601   0.614    0.608    0.573
+nonaudio_gbm    0.555   0.544   0.571    0.555    0.562

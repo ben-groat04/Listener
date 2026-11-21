@@ -11,7 +11,7 @@ rng = np.random.default_rng(0)
 for c in ("2022-10-01", "2023-10-01"):
     F = run.prepare_folds([c])[0]; train, meta, cutoff = F["train"], F["meta"], F["c"]
     assert train.t.max() < cutoff
-    rows, X, hist, prior, base, Xe, Xa, ctx = core.build(train, cutoff, meta)
+    bd = core.build(train, cutoff, meta); rows, X, hist, prior, base, Xe, Xa, ctx = bd; Xa = core.audio_train(bd)
     assert (rows["first"] < cutoff - pd.Timedelta(days=90)).all()
     bad = 0; n = 0
     for i in rng.choice(len(rows), 12, replace=False):

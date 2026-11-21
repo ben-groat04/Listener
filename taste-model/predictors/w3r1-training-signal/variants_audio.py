@@ -8,3 +8,6 @@ PREDICTORS = {"a_base": make_predictor(G), "a_base+a": make_predictor(dict(G, re
               "a_ridge_base+a": make_predictor(dict(hl=120, window=365, model="ridge", alpha=100, target="rank_plays", rep="base+a")),
               "a_blend+a+ar": make_blend([dict(G, rep="base+a"), dict(fn="artist_recent")], [1, 1]),
               "a_blend_ar": make_blend([G, dict(fn="artist_recent")], [1, 1])}
+Ga = dict(G, rep="base+a")
+PREDICTORS["a_blend3"] = make_blend([G, Ga, dict(fn="artist_recent")], [1, 1, 2])
+PREDICTORS["a_blend3_resid"] = make_blend([dict(G, exposure="resid"), dict(Ga, exposure="resid"), dict(fn="artist_recent")], [1, 1, 2])

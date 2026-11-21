@@ -1,8 +1,11 @@
 """w3r1 song-content: predicts love from public LYRICS of the song (lrclib.net) only. Artist identity/history is never an input.
 Inputs per track: (a) hand lyric statistics (features.NAMES), (b) multilingual MiniLM embedding of the lyrics (mean of chunk embeddings), PCA fit on train songs only.
 Training: train songs first played before cutoff-90d WITH lyrics, label = love (data.song_table), 180-day recency weights. Songs without lyrics get the neutral (intercept) score.
-Models: lyr_all (logistic on stats+PCA emb), lyr_stats (logistic, stats only), lyr_emb (logistic, emb only), lyr_gbm (HGB on stats+PCA), lyr_resid (ridge on artist-residualised target; artist used ONLY to build the training target).
-Variants reported separately: lyr_meta (+duration, explicit, popularity), lyr_ind (+has-lyrics indicator)."""
+Models (all on lyrics only; no artist/meta input):
+ lyr_resid_nodur  PRIMARY: ridge on lyric statistics WITHOUT duration-derived columns; target = love minus leave-one-out smoothed artist love rate (artist used ONLY to build the training target).
+ lyr_resid_orth   stats residualised on log duration (slope fit on train songs; meta duration used only to remove it) + PCA(24) of lyric embedding; same ridge target.
+ lyr_all          logistic on all stats (incl. duration-derived) + PCA emb, plain love target.   lyr_stats / lyr_emb: ablations of lyr_all.
+ cov_only         has-lyrics indicator alone (missing-information control)."""
 import os, sys, pickle
 import numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(__file__))
@@ -18,6 +21,25 @@ def _cache():
         except Exception: E = {}
         _D["F"], _D["E"] = F, E
     return _D["F"], _D["E"]
+
+DURCOLS = ["n_words", "n_lines", "words_per_sec", "first_lyric_frac", "lyric_span_frac", "n_stanzas", "line_gap_mean", "gap_long_frac"]
+def _prep(kind, S, ids, meta, ref=None):
+    """nodur: drop duration-derived columns; orth: residualise every stat on log duration (slope fit on train songs only, `ref`)."""
+    if kind == "lyr_resid_nodur":
+        S = S.copy(); S[:, [NAMES.index(c) for c in DURCOLS]] = np.nan; return S, None
+    if kind in ("lyr_resid_orth",):
+        ld = np.log1p(meta.durationMs.astype(float).reindex(list(ids)).values)
+        if ref is None:
+            ok = ~np.isnan(S) & ~np.isnan(ld)[:, None]; ref = []
+            for j in range(S.shape[1]):
+                o = ok[:, j]
+                if o.sum() < 20 or np.std(ld[o]) == 0: ref.append((0.0, 0.0, 0.0)); continue
+                b = np.polyfit(ld[o], S[o, j], 1); ref.append((b[0], b[1], 1.0))
+        S = S.copy()
+        for j, (a, b, f) in enumerate(ref):
+            if f: S[:, j] = S[:, j] - (a * ld + b)
+        return S, ref
+    return S, None
 
 def _mats(ids):
     F, E = _cache()
@@ -50,59 +72,45 @@ def _build(kind, train, cutoff, meta):
     from sklearn.decomposition import PCA
     from sklearn.linear_model import LogisticRegression, Ridge
     from sklearn.preprocessing import StandardScaler
-    from sklearn.ensemble import HistGradientBoostingClassifier
     from threadpoolctl import threadpool_limits
     mt, S, M, ok, y, yres, w = _train(train, cutoff, meta)
-    use_s = kind in ("lyr_all", "lyr_stats", "lyr_gbm", "lyr_resid", "lyr_meta", "lyr_ind"); use_e = kind in ("lyr_all", "lyr_emb", "lyr_gbm", "lyr_resid", "lyr_meta", "lyr_ind")
+    S, ref = _prep(kind, S, mt.trackId.values, meta)
+    use_s = kind in ("lyr_all", "lyr_stats", "lyr_resid_nodur", "lyr_resid_orth"); use_e = kind in ("lyr_all", "lyr_emb", "lyr_resid_orth")
     hasE = ok & ~np.isnan(M).any(1)
     tr = ok & (hasE if use_e else True)
     if tr.sum() < 40 or y[tr].sum() < 5 or (1 - y[tr]).sum() < 5: _FIT[key] = None; return None
-    med = np.nanmedian(S[tr], 0)
+    import warnings; warnings.simplefilter("ignore"); med = np.nan_to_num(np.nanmedian(S[tr], 0))
     def design(S, M, X0):
         Sx = np.where(np.isnan(S), med, S); cols = []
         if use_s: cols.append(sc.transform(Sx))
         if use_e: cols.append(pca.transform(np.nan_to_num(M)) / ps)
-        if kind == "lyr_meta": cols.append(X0)
-        if kind == "lyr_ind": cols.append(np.zeros((len(S), 0)))
         return np.hstack(cols)
     sc = StandardScaler().fit(np.where(np.isnan(S[tr]), med, S[tr])) if use_s else None
     if use_e: pca = PCA(24, random_state=0).fit(M[tr]); ps = np.sqrt(pca.explained_variance_[0])
-    X0tr = None
-    if kind == "lyr_meta":
-        X0tr = _meta_x(mt.trackId.values, meta); mu, sd = np.nanmean(X0tr[tr], 0), np.nanstd(X0tr[tr], 0) + 1e-6
-        X0n = lambda X: np.nan_to_num((X - mu) / sd)
-        X0tr = X0n(X0tr)
-    X = design(S[tr], M[tr], X0tr[tr] if X0tr is not None else None)
+    X = design(S[tr], M[tr], None)
     with threadpool_limits(2):
-        if kind == "lyr_gbm":
-            m = HistGradientBoostingClassifier(max_depth=3, learning_rate=0.05, max_iter=150, min_samples_leaf=40, l2_regularization=5.0, random_state=0).fit(X, y[tr], sample_weight=w[tr])
-        elif kind == "lyr_resid":
+        if kind.startswith("lyr_resid"):
             m = Ridge(alpha=300.0).fit(X, yres[tr], sample_weight=w[tr])
         else:
             m = LogisticRegression(C=0.02, max_iter=500).fit(X, y[tr], sample_weight=w[tr])
-    out = (m, design, med, X0n if kind == "lyr_meta" else None, kind)
+    out = (m, design, med, None, ref)
     _FIT[key] = out; return out
 
-def _meta_x(ids, meta):
-    m = meta.reindex(list(ids))
-    return np.c_[np.log1p(m.durationMs.astype(float)), m.explicit.astype(float), m.popularity.astype(float) / 100.0]
-
 def _score(kind, train, cands, meta, cutoff):
+    if kind == "cov_only":
+        F, _ = _cache(); return np.array([0.0 if F.get(i) is None else 1.0 for i in cands.trackId.values])
     fit = _build(kind, train, cutoff, meta)
     if fit is None: return np.zeros(len(cands))
-    m, design, med, X0n, _ = fit
-    ids = cands.trackId.values; S, M = _mats(ids)
-    cov = ~np.isnan(S).all(1) & (~np.isnan(M).any(1) if kind in ("lyr_all", "lyr_emb", "lyr_gbm", "lyr_resid", "lyr_meta", "lyr_ind") else True)
-    X0 = X0n(_meta_x(ids, meta)) if X0n else None
-    X = design(S, M, X0)
-    if kind in ("lyr_gbm",): s = m.predict_proba(X)[:, 1]; neutral = np.mean(m.predict_proba(design(np.tile(med, (1, 1)), np.zeros((1, 384)), None if X0 is None else np.zeros((1, 3))))[:, 1])
-    elif kind == "lyr_resid": s = m.predict(X); neutral = float(m.intercept_)
+    m, design, med, X0n, ref = fit
+    ids = cands.trackId.values; S, M = _mats(ids); S0 = S; S, _ = _prep(kind, S, ids, meta, ref)
+    cov = ~np.isnan(S0).all(1) & (~np.isnan(M).any(1) if kind in ("lyr_all", "lyr_emb", "lyr_resid_orth") else True)
+    X = design(S, M, None)
+    if kind.startswith("lyr_resid"): s = m.predict(X); neutral = float(m.intercept_)
     else: s = m.decision_function(X); neutral = float(m.intercept_[0])
-    if kind == "lyr_ind": pass
     return np.where(cov, s, neutral)
 
 def _mk(kind):
     return lambda train, cands, meta, cutoff: _score(kind, train, cands, meta, cutoff)
 
-KINDS = os.environ.get("W3R1_KINDS", "lyr_all,lyr_stats,lyr_emb,lyr_gbm,lyr_resid").split(",")
+KINDS = os.environ.get("W3R1_KINDS", "lyr_resid_nodur,lyr_resid_orth,lyr_all,cov_only").split(",")
 PREDICTORS = {k: _mk(k) for k in KINDS}

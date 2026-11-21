@@ -5,7 +5,7 @@ d = load("tune"); folds = sorted(d.fold.unique()); NB = 300
 comp = d.groupby("fold").agg(n=("love", "size"), loved=("love", "sum"), love_rate=("love", "mean"), new_artist=("new_artist", "mean"), med_plays90=("plays90", "median")).round(3)
 hist = {}
 print(comp.to_string())
-cols = ["artist_recent", "artist_plays", "ref_audio_final", "ref_w4r1_listening", "ref_w4r1_music", "pair_z", "pool_artist_siblings", "duration"]
+cols = ["artist_recent", "artist_plays", "ref_audio_final", "ref_w4r1_listening", "ref_w4r1_music", "pair_z", "pairz_trunc12", "pool_artist_siblings", "duration"]
 rng = np.random.default_rng(11); cut = pd.to_datetime(d.groupby("fold").cutoff.first().reindex(folds)).values; x = cut.astype("datetime64[D]").astype(float) / 365.25
 def fa(dd):
     A = np.full((len(folds), len(cols)), np.nan)

@@ -9,7 +9,8 @@ dump = sys.argv[1] if len(sys.argv) > 1 else lib.DUMP; tag = sys.argv[2] if len(
 lib.DUMP = dump
 SETS = sys.argv[3].split(",") if len(sys.argv) > 3 else ["tune", "tune_q1", "tune_q2", "tune_h", "tune_m"]
 PAIRS = [("pair_z", "artist_recent"), ("ref_w4r1_listening", "artist_recent"), ("ref_w4r1_music", "artist_recent"), ("ref_audio_final", "artist_recent"),
-         ("ref_w4r1_listening", "ref_w4r1_music"), ("ref_w4r1_listening", "ref_audio_final"), ("ref_w4r1_music", "ref_audio_final"), ("pair_z", "ref_w4r1_listening"), ("pair_z", "ref_w4r1_music")]
+         ("ref_w4r1_listening", "ref_w4r1_music"), ("ref_w4r1_listening", "ref_audio_final"), ("ref_w4r1_music", "ref_audio_final"), ("pair_z", "ref_w4r1_listening"), ("pair_z", "ref_w4r1_music"),
+         ("pairz_trunc12", "artist_recent"), ("pairz_trunc12", "pair_z"), ("pairz_trunc12", "ref_w4r1_listening"), ("pairz_trunc12", "ref_w4r1_music")]
 PAIRS = [p for p in PAIRS if p[0] in MODELS and p[1] in MODELS]
 rows = []
 def fold_aucs(dd, cols, folds):
@@ -22,7 +23,10 @@ def fold_aucs(dd, cols, folds):
             r = rankdata(dd[c].values[m]); A[i, j] = (r[y == 1].sum() - n1 * (n1 + 1) / 2) / (n1 * n0)
     return A, N1, N0
 for fs in SETS:
-    d = load(fs); d = d.copy(); folds = sorted(d.fold.unique()); cuts = pd.to_datetime(d.groupby("fold").cutoff.first().reindex(folds)).values
+    d = load(fs); d = d.copy()
+    DROP = int(os.environ.get("W5R2_DROPFIRST", "0"))
+    if DROP: d = d[d.fold.isin(sorted(d.fold.unique())[DROP:])].reset_index(drop=True)   # drop the first DROP folds (earliest cutoffs)
+    folds = sorted(d.fold.unique()); cuts = pd.to_datetime(d.groupby("fold").cutoff.first().reindex(folds)).values
     xyr = (cuts.astype("datetime64[D]").astype(float) / 365.25)
     cols = ["score__" + m for m in MODELS]; rng = np.random.default_rng(7)
     A0, P0, N0_ = fold_aucs(d, cols, folds); elig = (P0 >= MIN) & (N0_ >= MIN)

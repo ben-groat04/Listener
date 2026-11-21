@@ -1,0 +1,20 @@
+fold sizes {'2021-07-01': 35, '2021-10-01': 39, '2022-01-01': 45, '2022-04-01': 31, '2022-07-01': 81, '2022-10-01': 77, '2023-01-01': 283, '2023-04-01': 110, '2023-07-01': 138, '2023-10-01': 235}
+pair-weight shares {'2021-07-01': 0.007, '2021-10-01': 0.011, '2022-01-01': 0.014, '2022-04-01': 0.007, '2022-07-01': 0.047, '2022-10-01': 0.043, '2023-01-01': 0.41, '2023-04-01': 0.069, '2023-07-01': 0.109, '2023-10-01': 0.282} heavy ['2023-01-01', '2023-10-01']
+drop 2 heaviest folds        pair_z              -artist_recent        d=+0.063 80% [+0.031,+0.120]
+drop 2 heaviest folds        ref_w4r1_listening  -artist_recent        d=+0.041 80% [+0.008,+0.095]
+drop 2 heaviest folds        ref_w4r1_music      -artist_recent        d=+0.061 80% [+0.025,+0.124]
+drop 2 heaviest folds        ref_audio_final     -artist_recent        d=+0.051 80% [+0.017,+0.112]
+drop 2 heaviest folds        ref_w4r1_listening  -ref_w4r1_music       d=-0.020 80% [-0.061,+0.018]
+drop 2 heaviest folds        ref_w4r1_music      -ref_audio_final      d=+0.010 80% [-0.012,+0.031]
+drop 2 heaviest folds        pair_z              -ref_w4r1_listening   d=+0.022 80% [+0.002,+0.048]
+drop 2 heaviest folds        pair_z              -ref_w4r1_music       d=+0.002 80% [-0.016,+0.023]
+ONLY the 2 heaviest folds    pair_z              -artist_recent        d=+0.032 80% [-0.008,+0.091]
+ONLY the 2 heaviest folds    ref_w4r1_listening  -artist_recent        d=+0.028 80% [-0.012,+0.089]
+ONLY the 2 heaviest folds    ref_w4r1_music      -artist_recent        d=+0.013 80% [-0.029,+0.074]
+ONLY the 2 heaviest folds    ref_audio_final     -artist_recent        d=-0.004 80% [-0.047,+0.056]
+ONLY the 2 heaviest folds    ref_w4r1_listening  -ref_w4r1_music       d=+0.016 80% [-0.010,+0.039]
+ONLY the 2 heaviest folds    ref_w4r1_music      -ref_audio_final      d=+0.017 80% [-0.001,+0.037]
+ONLY the 2 heaviest folds    pair_z              -ref_w4r1_listening   d=+0.004 80% [-0.009,+0.016]
+ONLY the 2 heaviest folds    pair_z              -ref_w4r1_music       d=+0.019 80% [+0.004,+0.032]
+leave-one-fold-out ('pair_z', 'artist_recent') range 0.01 0.091
+leave-one-fold-out ('ref_w4r1_listening', 'artist_recent') range -0.004 0.081

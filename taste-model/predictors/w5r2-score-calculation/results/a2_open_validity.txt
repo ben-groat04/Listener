@@ -1,0 +1,74 @@
+== OPEN POOL (Spotify-CDN subset; decoys): delta 80% intervals, row minus column
+-- open_dSAUC_80ci
+   pair_z               - artist_recent        (-0.049, 0.115) undecided
+   ref_w4r1_listening   - artist_recent        (-0.06, 0.095) undecided
+   ref_w4r1_music       - artist_recent        (-0.063, 0.111) undecided
+   ref_audio_final      - artist_recent        (-0.089, 0.062) undecided
+   ref_w4r1_listening   - ref_w4r1_music       (-0.029, 0.015) undecided
+   ref_w4r1_listening   - ref_audio_final      (0.017, 0.046) POS80
+   ref_w4r1_music       - ref_audio_final      (0.021, 0.057) POS80
+   pair_z               - ref_w4r1_listening   (0.007, 0.028) POS80
+   pair_z               - ref_w4r1_music       (-0.002, 0.022) undecided
+-- open_dSAUC_new_80ci
+   pair_z               - artist_recent        (0.21, 0.325) POS80
+   ref_w4r1_listening   - artist_recent        (0.207, 0.321) POS80
+   ref_w4r1_music       - artist_recent        (0.187, 0.31) POS80
+   ref_audio_final      - artist_recent        (0.16, 0.283) POS80
+   ref_w4r1_listening   - ref_w4r1_music       (-0.02, 0.042) undecided
+   ref_w4r1_listening   - ref_audio_final      (0.018, 0.076) POS80
+   ref_w4r1_music       - ref_audio_final      (0.0, 0.06) undecided
+   pair_z               - ref_w4r1_listening   (-0.012, 0.023) undecided
+   pair_z               - ref_w4r1_music       (0.004, 0.034) POS80
+-- open_dSAUC_known_80ci
+   pair_z               - artist_recent        (-0.129, -0.05) NEG80
+   ref_w4r1_listening   - artist_recent        (-0.155, -0.078) NEG80
+   ref_w4r1_music       - artist_recent        (-0.141, -0.032) NEG80
+   ref_audio_final      - artist_recent        (-0.178, -0.104) NEG80
+   ref_w4r1_listening   - ref_w4r1_music       (-0.052, 0.016) undecided
+   ref_w4r1_listening   - ref_audio_final      (0.004, 0.047) POS80
+   ref_w4r1_music       - ref_audio_final      (0.02, 0.072) POS80
+   pair_z               - ref_w4r1_listening   (0.009, 0.042) POS80
+   pair_z               - ref_w4r1_music       (-0.011, 0.027) undecided
+-- open_dP20_80ci
+   pair_z               - artist_recent        (-0.156, -0.033) NEG80
+   ref_w4r1_listening   - artist_recent        (-0.142, -0.016) NEG80
+   ref_w4r1_music       - artist_recent        (-0.179, -0.047) NEG80
+   ref_audio_final      - artist_recent        (-0.168, -0.07) NEG80
+   ref_w4r1_listening   - ref_w4r1_music       (-0.01, 0.075) undecided
+   ref_w4r1_listening   - ref_audio_final      (-0.011, 0.076) undecided
+   ref_w4r1_music       - ref_audio_final      (-0.035, 0.036) undecided
+   pair_z               - ref_w4r1_listening   (-0.035, 0.005) undecided
+   pair_z               - ref_w4r1_music       (-0.015, 0.045) undecided
+
+== Spearman of model ranking (13 models, point values, full TUNE) vs pooled sauc; and on the 7 top models
+S1_sauc                all13 +1.00   top7 +1.00
+S3_macro               all13 +0.83   top7 +0.54
+S2_ivlevel             all13 +0.99   top7 +0.96
+S5_lift_top10pct       all13 +0.84   top7 +0.93
+S6_recall_top20pct     all13 +0.88   top7 +0.93
+S7_prec_at10_lift      all13 +0.92   top7 +0.93
+S8_gc_plays90          all13 +0.85   top7 +0.11
+S9_gc_share90          all13 +0.95   top7 +0.86
+S10_auc_keep           all13 +0.95   top7 +0.79
+S11_auc_love_4_2       all13 +0.97   top7 +0.86
+S12_auc_love_10_4      all13 +0.99   top7 +1.00
+S13_auc_strong         all13 +0.99   top7 +1.00
+S14_auc_love_h180      all13 +0.99   top7 +0.96
+S15_auc_love_h365      all13 +0.90   top7 +0.46
+
+== sign of key deltas per metric (z = delta / bootstrap SE)
+                metric pair_z-artist_recen ref_w4r1_lis-artist_recen ref_w4r1_mus-artist_recen ref_audio_fi-artist_recen ref_w4r1_lis-ref_w4r1_mus ref_w4r1_lis-ref_audio_fi ref_w4r1_mus-ref_audio_fi pair_z-ref_w4r1_lis pair_z-ref_w4r1_mus
+0              S1_sauc        +0.042(+1.5)              +0.032(+1.2)              +0.028(+0.9)              +0.013(+0.4)              +0.005(+0.3)              +0.020(+1.6)              +0.015(+1.3)        +0.009(+1.0)        +0.014(+1.4)
+1             S3_macro        +0.007(+0.3)              -0.014(-0.5)              +0.001(+0.0)              -0.015(-0.5)              -0.015(-0.7)              +0.001(+0.1)              +0.016(+1.1)        +0.021(+1.8)        +0.006(+0.5)
+2           S2_ivlevel        +0.036(+1.5)              +0.021(+0.9)              +0.027(+1.0)              +0.012(+0.5)              -0.006(-0.3)              +0.008(+0.7)              +0.015(+1.4)        +0.015(+1.6)        +0.009(+0.9)
+3     S5_lift_top10pct        +0.138(+0.7)              +0.138(+0.8)              +0.028(+0.1)              +0.055(+0.3)              +0.111(+0.7)              +0.083(+0.6)              -0.028(-0.2)        +0.000(+0.0)        +0.111(+1.2)
+4   S6_recall_top20pct        +0.026(+0.9)              +0.032(+1.1)              +0.018(+0.6)              +0.003(+0.1)              +0.015(+0.8)              +0.029(+1.3)              +0.015(+0.7)        -0.006(-0.3)        +0.009(+0.6)
+5    S7_prec_at10_lift        +0.048(+0.3)              +0.072(+0.5)              +0.048(+0.3)              +0.024(+0.2)              +0.024(+0.2)              +0.048(+0.4)              +0.024(+0.2)        -0.024(-0.3)        +0.000(+0.0)
+6        S8_gc_plays90        -0.004(-0.2)              -0.012(-0.6)              -0.008(-0.3)              -0.026(-1.2)              -0.005(-0.3)              +0.014(+1.2)              +0.018(+2.0)        +0.008(+1.3)        +0.004(+0.5)
+7        S9_gc_share90        +0.007(+0.4)              +0.001(+0.1)              +0.006(+0.3)              -0.008(-0.5)              -0.005(-0.4)              +0.009(+1.1)              +0.014(+1.8)        +0.006(+1.2)        +0.001(+0.2)
+8         S10_auc_keep        +0.021(+0.6)              +0.002(+0.0)              +0.016(+0.5)              +0.004(+0.1)              -0.015(-0.8)              -0.002(-0.2)              +0.013(+1.0)        +0.019(+2.2)        +0.004(+0.4)
+9     S11_auc_love_4_2        +0.023(+0.7)              +0.011(+0.4)              +0.017(+0.5)              -0.009(-0.3)              -0.006(-0.3)              +0.020(+1.6)              +0.027(+2.3)        +0.012(+1.4)        +0.006(+0.6)
+10   S12_auc_love_10_4        +0.045(+1.5)              +0.036(+1.3)              +0.032(+1.0)              +0.017(+0.6)              +0.004(+0.2)              +0.019(+1.6)              +0.015(+1.2)        +0.009(+1.0)        +0.013(+1.3)
+11      S13_auc_strong        +0.051(+1.8)              +0.040(+1.4)              +0.037(+1.2)              +0.023(+0.8)              +0.002(+0.1)              +0.017(+1.5)              +0.015(+1.2)        +0.011(+1.3)        +0.013(+1.4)
+12   S14_auc_love_h180        +0.027(+1.0)              +0.019(+0.7)              +0.010(+0.3)              +0.001(+0.0)              +0.009(+0.4)              +0.018(+1.2)              +0.009(+0.7)        +0.008(+0.8)        +0.017(+1.5)
+13   S15_auc_love_h365        +0.009(+0.3)              -0.002(-0.1)              -0.002(-0.1)              -0.012(-0.4)              +0.000(+0.0)              +0.011(+0.8)              +0.010(+0.9)        +0.011(+1.4)        +0.011(+1.1)

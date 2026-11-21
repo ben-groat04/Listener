@@ -1,0 +1,8 @@
+pair_z - ref_w4r1_listening nboot=300: d=+0.0094 lo80 mean -0.0018 sd over 8 seeds 0.0009 range [-0.0033,-0.0004]; hi80 sd 0.0014
+pair_z - ref_w4r1_listening nboot=1000: d=+0.0094 lo80 mean -0.0016 sd over 8 seeds 0.0006 range [-0.0025,-0.0008]; hi80 sd 0.0006
+ref_w4r1_listening - artist_recent nboot=300: d=+0.0323 lo80 mean +0.0068 sd over 8 seeds 0.0019 range [+0.0042,+0.0095]; hi80 sd 0.0036
+ref_w4r1_listening - artist_recent nboot=1000: d=+0.0323 lo80 mean +0.0073 sd over 8 seeds 0.0014 range [+0.0055,+0.0101]; hi80 sd 0.0011
+pair_z - artist_recent nboot=300: d=+0.0417 lo80 mean +0.0156 sd over 8 seeds 0.0011 range [+0.0137,+0.0170]; hi80 sd 0.0051
+pair_z - artist_recent nboot=1000: d=+0.0417 lo80 mean +0.0165 sd over 8 seeds 0.0018 range [+0.0144,+0.0195]; hi80 sd 0.0021
+ref_w4r1_music - ref_audio_final nboot=300: d=+0.0149 lo80 mean +0.0007 sd over 8 seeds 0.0008 range [-0.0010,+0.0018]; hi80 sd 0.0010
+ref_w4r1_music - ref_audio_final nboot=1000: d=+0.0149 lo80 mean +0.0001 sd over 8 seeds 0.0009 range [-0.0012,+0.0010]; hi80 sd 0.0007

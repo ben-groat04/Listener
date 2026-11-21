@@ -10,7 +10,7 @@ lib.DUMP = dump
 SETS = sys.argv[3].split(",") if len(sys.argv) > 3 else ["tune", "tune_q1", "tune_q2", "tune_h", "tune_m"]
 PAIRS = [("pair_z", "artist_recent"), ("ref_w4r1_listening", "artist_recent"), ("ref_w4r1_music", "artist_recent"), ("ref_audio_final", "artist_recent"),
          ("ref_w4r1_listening", "ref_w4r1_music"), ("ref_w4r1_listening", "ref_audio_final"), ("ref_w4r1_music", "ref_audio_final"), ("pair_z", "ref_w4r1_listening"), ("pair_z", "ref_w4r1_music")]
-PAIRS = [p for p in PAIRS]
+PAIRS = [p for p in PAIRS if p[0] in MODELS and p[1] in MODELS]
 rows = []
 def fold_aucs(dd, cols, folds):
     """returns (F, M) AUC, (F,) npos, nneg, U-parts"""

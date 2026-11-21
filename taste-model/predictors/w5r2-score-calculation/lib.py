@@ -5,7 +5,7 @@ SCR = "/tmp/claude-0/-home-user-Listener/22c975e6-58fa-522d-b17b-f92c7924f862/sc
 DUMP = os.environ.get("W5R2_DUMP", SCR + "/dumps/d1.pkl")
 BASE = ["popularity","artist_plays","artist_recent","artist_love_rate","duration","meta_gbm","nonaudio_gbm","has_preview","preview_source_itunes"]
 REFS = ["ref_audio_final","ref_w4r1_listening","ref_w4r1_music"]
-MODELS = BASE + REFS + ["pair_z"]
+MODELS = BASE + REFS + ["pair_z"] + [x for x in os.environ.get("W5R2_EXTRA", "").split(",") if x]
 DIAG = ["pool_artist_siblings","pool_album_siblings","exposure_before","exposure_after","exposure_session","replays_first_session","oracle_day1","oracle_7d"]
 
 def load(fold_set="tune"):

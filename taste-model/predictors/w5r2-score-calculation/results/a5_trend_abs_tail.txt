@@ -1,0 +1,8 @@
+artist_recent          abs-AUC trend/yr (IV weighted) -0.028  80% [-0.055,+0.006]
+artist_plays           abs-AUC trend/yr (IV weighted) -0.031  80% [-0.057,+0.002]
+ref_audio_final        abs-AUC trend/yr (IV weighted) +0.075  80% [+0.036,+0.114]
+ref_w4r1_listening     abs-AUC trend/yr (IV weighted) +0.081  80% [+0.037,+0.125]
+ref_w4r1_music         abs-AUC trend/yr (IV weighted) +0.057  80% [+0.016,+0.104]
+pair_z                 abs-AUC trend/yr (IV weighted) +0.066  80% [+0.025,+0.113]
+pool_artist_siblings   abs-AUC trend/yr (IV weighted) -0.037  80% [-0.073,+0.012]
+duration               abs-AUC trend/yr (IV weighted) +0.051  80% [+0.005,+0.097]

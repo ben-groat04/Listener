@@ -69,3 +69,4 @@
 5. ~30-35 KB prompt repeated per agent; long reports pasted into builder prompts. Trim; point to files instead.
 6. Shared prep 1 h 50 min; start overlapping extraction during the review phase. W4 total ~6.7 h.
 7. Reproducibility: holdout_budget.json not regenerable; nets builder overwrote configs; dead panel-weight code.
+- User clarification: "Best test was supposed to be final yes" — W6 produces the FINAL model(s) and the final evaluation design, then the sealed test (sealed run still needs the user's explicit go; main session runs it). W5's main goal stays: re-examine assumptions/fixed numbers and whether tuning them helps.

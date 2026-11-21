@@ -106,7 +106,8 @@ per-artist song counts, which is real history information. A null run replaces t
 before cutoff-90 d, labels from song_table(train)):
 `duration` (durationMs alone), `meta_gbm` (duration, explicit, popularity, preview present, #artists, title length, album==title, title keyword flags), `nonaudio_gbm` (meta_gbm + point-in-time artist
 history: artist plays all-time and 180-d half-life, smoothed love rate of matured songs, #earlier songs, days since last played, featured artist known, new-artist flag; training songs use only
-streams before their own first play). **nonaudio_gbm is the reference any music/content claim must beat.** No noise is added to baseline scores (ties stay ties). `random` is no longer a scored model: chance = 0.5
+streams before their own first play). **v4 references**: the VERDICT compares against five references: nonaudio_gbm, artist_recent, duration, meta_gbm and `ref_audio_final` (Workflow 3's audio_final from `predictors/w3r2-audio-taste/predict.py`, MERT cache only, scored by the harness itself; its scores are cached per (code hash, cutoff, slice part) in `.cache/shared/evalkit-ref-audio_final-*.pkl`
+so builders do not pay for it on every run; exempt from the independence check and from the null control). The evidence grade is based on `best_ref` (the reference with the highest TUNE point sauc). Open-pool SHORTCUT rows `has_preview` and `preview_source_itunes` are scored next to the baselines (they carry no taste information). No noise is added to baseline scores (ties stay ties). `random` is no longer a scored model: chance = 0.5
 (plus the permutation band). 
 DIAGNOSTICS (computed inside the harness from raw pool data; they use post-cutoff information, are not valid predictors, are exempt from independence checks, reported as references):
 `pool_artist_siblings`, `pool_album_siblings`, `exposure_before` (minus the number of distinct songs first played EARLIER in the same session than the candidate's first play), `exposure_after` (minus the number first played LATER in that session),
@@ -121,17 +122,21 @@ PLAINLY: `exposure_after` and `replays_first_session` can be CONSEQUENCES of lik
 * Any fitted transform (scaler, PCA, clustering, vocabulary, normaliser, embedding post-processing, model) must be fit only on tracks that appear in the train streams for that cutoff,
   never on pool, decoy or later tracks. A cache of per-track features is fine only if each track's features are computed independently of other tracks.
 * Missing-preview handling must be explicit and reported.
-* `--null-control` (null v2, below; TUNE slice) must be run on the final predictor and must PASS.
+* `--null-control` (null v3, above; TUNE slice) must be run on the final predictor; the label is PASS or FLAG and a FLAG on a content model has to be explained (see "Null control v3"). Disk caches of a predictor must be keyed on a hash of the train identities or be skipped when `EVALKIT_NO_FIT_CACHE` is set.
+* HOLDOUT: a builder runs `--holdout` ONCE, on its final pre-declared predictor, after writing the declaration in its report. Devil's advocates never run `--holdout` and never re-run `--late` beyond the cap: read `.cache/holdout_runs.log` and `.cache/late_tables/<sha256>.txt` instead.
 * Registration + hash logging (`register.py`, `late_runs.log`, sealed `runs.log`) is an audit trail, not a cryptographic lock.
 
 ## Commands (run from /home/user/Listener/taste-model)
     python3 -m evalkit.selftest                          # leakage/sanity checks
     python3 -W ignore -m evalkit.run --fast [pred.py ...]  # iteration: TUNE slice, nboot 100, no independence check, no LATE output
     python3 -W ignore -m evalkit.run [pred.py ...]         # TUNE slice, nboot 300, independence check on  (baselines are always included)
-        --late          also score the LATE slice; tables printed separately for TUNE, LATE and ALL (logged in .cache/late_runs.log)
-        --null-control            null control v2 (3 seeds, gated); with --late also scores LATE and ALL
+        --late          also score the LATE slice; tables printed separately for TUNE, LATE and ALL (max 2 runs per predictor hash; logged in .cache/late_runs.log; table in .cache/late_tables/<sha256>.txt, mode 444)
+        --holdout       score ONLY the HOLDOUT rows (14 folds); VERDICT for HOLDOUT-ALL / -early / -late; one run per predictor hash; logged in .cache/holdout_runs.log; not with --fast / --null-control / --late / --sealed
+        --null-control            null control v3 (N seeds, each in a fresh process, PASS / FLAG); with --late also scores LATE and ALL
+        --null-seeds N            number of null seeds (default 3; the band is that of an N-seed mean)
         --null-control-identity   old identity-only shuffle, diagnostic only (can be combined with --null-control)
         --nboot N  --indep-n N  --window all|730|365|sub365
+    python3 -m evalkit.describe                          # label descriptives (exposure_before x exposure_after, replays_first_session, contextId): TUNE non-HOLDOUT, facts only
     python3 -m evalkit.register pred.py name             # MAIN SESSION ONLY: pre-register final model(s)
     python3 -W ignore -m evalkit.run --sealed pred.py    # MAIN SESSION ONLY: one look per registered file, logged with its hash
     python3 -m evalkit.make_sealed [--write-manifest]    # MAIN SESSION: regenerate .sealed/labels.csv, verify against sealed_manifest.json
@@ -139,7 +144,7 @@ PLAINLY: `exposure_after` and `replays_first_session` can be CONSEQUENCES of lik
     python3 -m evalkit.fetch_itunes                      # build-time, rate limited (~20 requests/min): iTunes preview fallback lookups (resumable)
     python3 -m evalkit.fetch_previews [--report]         # shared preview-audio cache, see below
 Predictor: `predict(train, cands, meta, cutoff) -> one finite score per candidate row` or a dict `PREDICTORS = {name: fn}`.
-Caches (all git-ignored, regenerable from code; changing data.py / metrics.py / baselines.py changes the hashes and rebuilds them): pools `.cache/shared/evalkit-pools-<hash>.pkl`, baseline scores `evalkit-baseline-scores-<hash>.pkl`, permutation bands, `.cache/album_release.json`,
+Caches (all git-ignored, regenerable from code; changing data.py / metrics.py / baselines.py / run.py changes the hashes and rebuilds them; an edit of data.py renames the pool cache file: copy the old pool pickle to the new name instead of rebuilding when the pool-building code did not change): pools `.cache/shared/evalkit-pools-<hash>.pkl`, baseline scores `evalkit-baseline-scores-<hash>.pkl`, permutation bands, `.cache/album_release.json`,
 `.cache/itunes_fallback.csv`, `.cache/decoy_raw`, `.cache/decoy_universe.csv.gz`. The Workflow-2 predictors and their feature caches were removed in the Workflow-3 cleanup (they covered the old pools only); current per-track caches are listed in `.cache/shared/FEATURES.md`.
 
 ## Shared preview-audio cache (`.cache/shared/previews/`, built by `evalkit/fetch_previews.py`)
@@ -149,19 +154,24 @@ by the RAW url; look a track's file up through `meta.previewUrl` (md5 of the url
 Per-track feature caches built from these previews (round 1) are documented in `.cache/shared/FEATURES.md` (read-only shared inputs).
 
 ## History-length / drift ablation (ablate.py)
-`--window 730|365|sub365` trains on the last 2y / 1y / a random subsample of ALL history with the same number of streams as the last year. Compare 365 vs sub365 per fold. Dev only.
+`--window 730|365|sub365` (v4: filters TRAINING SONGS by first-play time; all streams of a song are kept or dropped together; before v4 the stream log was truncated, which made old songs replayed inside the window look new) trains on the songs first played in the last 2y / 1y, or a random subsample
+of the songs of ALL history with about as many streams as the last-year songs. Compare 365 vs sub365 per fold. Dev only. Not exercised by the selftest.
 
 ## Late slice (seen-once-per-design) and the sealed folds
-`.cache/late_runs.log` holds one line per `--late` run. Its lines timestamped 09:00-09:05 UTC on 2026-11-21 are devil's-advocate audit looks at the round-1 predictors (the lead's brief counts 3 looks; the log has 4 lines in that window, 2 for the same file), and the round-1 LATE results are public. LATE is therefore a 'seen-once-per-design' slice, not an untouched one;
+`.cache/late_runs.log` holds one line per `--late` run (append only; v4 caps the runs at 2 per predictor file hash, counting every earlier line that lists the hash, and writes each run's table to `.cache/late_tables/`). Its lines timestamped 09:00-09:05 UTC on 2026-11-21 are devil's-advocate audit looks at the round-1 predictors (the lead's brief counts 3 looks; the log has 4 lines in that window, 2 for the same file), and the round-1 LATE results are public. LATE is therefore a 'seen-once-per-design' slice, not an untouched one;
 the sealed folds are the only untouched test.
 
 ## Comparability
+**v4 vs v3.1: NOT comparable (any number).** Rows: HOLDOUT (about 30% of the tried songs, by artist) is removed from TUNE / LATE / ALL. Bootstrap: global artist clusters (CIs, lower bounds, P(d>0), 80% intervals differ; wa / gc_wa weights are products of draw counts). Open pool: primary metrics on the Spotify-preview subset. Baseline cache keys, null control (fresh processes, seeds, labels) and evidence grades (vs best_ref) changed.
+The dev pools are bit-identical (digests in `pool_reference.json`, asserted by the selftest). Timing / README facts of v4: see the engineer report.
 v3.1 vs v3: folds, labels, decoy draws (for 8 of the 10 TUNE folds bit-identical; the 2021-07 and 2021-10 pools were rebuilt and ~20-27% of their decoys differ from the cached pools of round 1, see the report) and the baselines' scores are unchanged, so v3 sauc / wa / p20 are comparable
 (except those two small folds). New in v3.1: gc, gc_wa, evidence grades, null v2 (v3 null-control results are NOT comparable: use `--null-control-identity` for the old shuffle), exposure_before / exposure_after / replays_first_session.
 v2.x scores (8 dev folds 2023-01..2024-10, old decoys seeded by lifetime artist plays, old baselines with noise, thresholded bar) are not comparable to v3 numbers. For a like-for-like check use
 the per-fold AUC table: folds 2023-01..2024-10 exist in both, but the decoy pools, preview fill and (for baselines) tie handling changed.
 
 ## Known limitations
+* HOLDOUT is artist-disjoint from TUNE / LATE rows but not time-disjoint (the same time period, other artists) and the history of holdout artists stays in train; a model that learned the HOLDOUT artists' history can still use it. HOLDOUT is a single, small look (about 740 tried songs in 14 folds).
+* The harness reference rows and best_ref are chosen from TUNE; the LATE slice is partly used up (see above).
 * Pools are shaped by the user's choices; decoys are an approximation of an open catalogue (stats.fm tracks of seed artists, <=200 per artist, spotifyPopularity measured in 2026).
 * spotifyPopularity is measured in 2026 (mild look-ahead; public prior). 27% of user tracks have popularity 0 (missing).
 * Pretrained audio models may have seen sealed-era songs (unavoidable). Preview availability may correlate with taste (untested); iTunes lookups are rate limited (~20/min).

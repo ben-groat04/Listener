@@ -25,3 +25,7 @@
 - User on stats strictness (pass verbatim to Opus leads): "you're being very strict on confidence intervals etc, not sure if this is a good idea given how subjective music is" / "Yes get the harness to think about whether it needs to be less strict based on what's come so far wrt stats." Also: W3 works-DA spent 6m50s but claimed ~15 min; DA time must be checked from transcript timestamps.
 - User: "my suggestions in chat about how to work might not be the best" -> audit each in-chat suggestion on merit before it reaches a workflow; present as suggestions to weigh.
 - LEAK: W3 round-1 review lead read .claude/workflow-notes.md (CLAUDE.md tells briefs-drafters to read it), so it saw un-audited chat notes (e.g. the session question). Future briefs must forbid reading .claude/.
+
+## User suggestion after W3 results (to weigh, not an instruction)
+- Verbatim: "I still disagree with one score summarising everything. Surely each test will be different levels of good at different times/listening frequencies/etc. but that's again for an agent to weigh as it's just my idea"
+- Added to W4 CONTEXT with the "my suggestions… might not be the best" caveat; the pre-launch audit must merit-check it.

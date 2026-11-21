@@ -43,22 +43,18 @@
 - User declined the sealed test after W3: "No it's not good enough". No sealed run before W4.
 - W4 injects sanitised W3 copies (taste-model/reports/w3-sanitised/): user-attributed method ideas and W3's next-step recommendations removed. Future workflows: inject sanitised copies of prior results the same way.
 
-## For W5: new suggestion from chat (unvetted; present unattributed in "Unvetted ideas raised in discussion", audit on merits)
-- Verbatim (for the audit only, never paste attributed into a brief): "For wf5: it should think about how people listen to and discover music"
-- Neutral paraphrase candidate: "It may help to consider how people actually listen to and discover music." Audit must check this paraphrase adds no method hints beyond the original.
+## For W5: suggestion from chat (unvetted; unattributed)
+- Verbatim (for drafter/audit only): "For wf5: it should think about how people listen to and discover music"
 - W4 lesson: the builder time floor (40 min) auto-retried a builder that had legitimately finished its pre-declared design in 36 min after using its one HOLDOUT run. Floors must not trigger retries once the checklist is complete / HOLDOUT is used; flag only.
-- For W5, new suggestion from chat (unvetted; unattributed in "Unvetted ideas raised in discussion"; audit on merits). Verbatim for the audit only: "Next workflow should consider the huge amount of assumptions and arbitrary numbers used in the existing models and if tuning them helps. I think you're very stuck in your ways"
-  Neutral paraphrase candidate: "The existing setup rests on many assumptions and fixed numbers chosen early (in the models and possibly elsewhere); it is open whether revisiting or tuning them helps. The project may have settled into habits that deserve re-examination." Audit: check fidelity, add no method hints, and weigh the risk that broad tuning overfits dev folds.
-  Follow-up from chat (same suggestion, unvetted): "Ok well is the set of folds also arbitrary?" → include evaluation design (fold dates/spacing, start date, TUNE/LATE/HOLDOUT split, label window) within the "assumptions and fixed numbers" idea; paraphrase neutrally. Audit must weigh that changing evaluation design after seeing results risks fitting the evaluation to the models.
+- W5 MAIN GOAL (user's stated goal for W5; present as the workflow's goal, unattributed). Verbatim for drafter/audit only: "Next workflow should consider the huge amount of assumptions and arbitrary numbers used in the existing models and if tuning them helps. I think you're very stuck in your ways" — plus the user's follow-up question, verbatim: "Ok well is the set of folds also arbitrary?"
 - W4 lesson: DA 20-min floor was gamed — DAs that had finished idled in sleep loops (e.g. until date >= 14:35) to pass the timing check. Drop wall-clock floors entirely in W5; judge DAs on coverage (claims reproduced, code read, checks run), not duration.
 
 ## Plan stated by user (after W4 round 1)
 - "Ok after W5 I think w6 needs to be looking through everything to make the best test. Then testing it on sealed"
 - W6 = whole-project review aimed at designing the best evaluation, then a sealed test. Sealed run still needs the user's explicit go after seeing W6's dev results; only the main session registers/runs it (CLAUDE.md). Fix the evaluation and the models to be tested BEFORE any sealed scoring; sealed is single-use.
 - Pre-launch audit requirement (from W4 floor failures): for every gate/check/retry in the script, ask how an agent could satisfy it without doing the intended work (gaming, idling, padding) and walk through edge cases (finished early legitimately, single-use run already spent, near-miss thresholds). Prefer gates on coverage/outputs over gates on time.
-- For W5, suggestion from chat (unvetted; unattributed; audit on merits). Verbatim for the audit only: "Remember the data is very noisy so you'll need to act more on loose trends and correlation, expecting a clear result is foolish"
-  Neutral paraphrase candidate: "The data is very noisy; clear-cut results may be unrealistic, and loose but consistent trends may be worth acting on." Audit: relates to the earlier evidence-strictness idea; weigh against the W3/W4 cases where dev trends reversed on held-out data, and say how 'acting on loose trends' can be done without being fooled (e.g. consistency across slices/folds rather than single-slice significance).
-- User's evidence threshold (a risk-tolerance preference, theirs to set): "95% interval jesus I'm ok with 80ish". Use ~80% intervals / P(better) ≈ 0.8+ as the working bar for dev decisions and for how results are described to the user, together with consistency across slices. W5 brief: state this as the project's decision threshold (it is the user's call, not a method hint); the sealed run's pass criteria are still to be fixed before scoring.
+- For W5, suggestion from chat (unvetted; unattributed). Verbatim for drafter/audit only: "Remember the data is very noisy so you'll need to act more on loose trends and correlation, expecting a clear result is foolish"
+- User's evidence threshold (a risk-tolerance preference, theirs to set): "95% interval jesus I'm ok with 80ish". Use ~80% intervals / P(better) ≈ 0.8+ as the working bar for dev decisions and for how results are described to the user. W5 brief: state this as the project's decision threshold (it is the user's call, not a method hint); the sealed run's pass criteria are still to be fixed before scoring.
 - W4 lesson: round-2 shared-prep was told to build only if FROZEN was lifted, but the script has no way to lift it (scripts can't touch files) — a dead step; the lead's round-2 prep plan was silently dropped. W5: if a later prep step is wanted, have the prep agent itself version inputs (new dirs + new manifest) rather than gating on a file the script can't change. Audit must trace every conditional step to something that can actually satisfy it.
 
 ## Lessons from W4 post-review (apply in W5)
@@ -70,3 +66,7 @@
 6. Shared prep 1 h 50 min; start overlapping extraction during the review phase. W4 total ~6.7 h.
 7. Reproducibility: holdout_budget.json not regenerable; nets builder overwrote configs; dead panel-weight code.
 - User clarification: "Best test was supposed to be final yes" — W6 produces the FINAL model(s) and the final evaluation design, then the sealed test (sealed run still needs the user's explicit go; main session runs it). W5's main goal stays: re-examine assumptions/fixed numbers and whether tuning them helps.
+
+
+## Rule for paraphrasing user input in briefs (after W5 draft was polluted)
+- Paraphrases must stay faithful to the verbatim quote and add nothing: no examples, no lists of candidate parameters, no "do not include X" exclusions, no suggested methods. Neither the main session nor the drafter adds its own content. The audit compares each paraphrase to the verbatim quote.

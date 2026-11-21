@@ -132,7 +132,7 @@ Pooled AUC on tried songs. TUNE = 2021-07 to 2023-10, LATE = 2024, DEV+HOLDOUT =
 - Reproducibility:
   - The R2 nets builder overwrote most of its exploration configs, so most of its variant numbers cannot be regenerated from the folder.
   - Neural-net training varies by about 0.004 between runs.
-- The round-2 engineer's tightened cap rule now refuses a --late run of the R1 music predictor, because it imports the Workflow 3 file that already has 3 LATE lines. Future models should stack it through `evalkit.refs.score` instead of importing it.
+- The round-2 engineer's tightened cap rule now refuses a --late run of the R1 music predictor, because it imports the Workflow 3 file that already has 3 LATE lines.
 - `.cache/holdout_budget.json` lives in a git-ignored folder and cannot be regenerated from code. It reads remaining 0.
 
 ## 7. State of the held-out slices

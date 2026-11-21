@@ -213,9 +213,4 @@ DEVIATIONS TO NOTE
 - Two null-control runs instead of one: the second was needed to isolate the learned part and was run before the LATE run.
 - One of the two permitted --late runs used.
 
-RECOMMENDATIONS
-- Keep the graded target and a recent window (180-365 days) for any future predictor.
-- Replace or drop the monotone constraint and the plain artist_recent member if the familiarity relation can flip. Consider fitting familiarity effects on the recent window only, with the sign free; do not tune that on LATE.
-- Evaluate on LATE slices separately; TUNE alone misleads here.
-
 Files: /home/user/Listener/taste-model/predictors/w3r1-training-signal/ (predict.py, core.py, feats.py, build_clap.py, audit.py, diag_flip.py, variants_*.py); logs in /tmp/claude-0/-home-user-Listener/22c975e6-58fa-522d-b17b-f92c7924f862/scratchpad/wf3/w3r1/final/.

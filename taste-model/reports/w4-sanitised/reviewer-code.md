@@ -55,7 +55,7 @@ I did NOT run: any predictor through `evalkit.run`, the full (slow) run, `--late
 - Fast-run TUNE sauc: nonaudio_gbm 0.559, artist_recent 0.619, artist_plays 0.619, artist_love_rate 0.550, duration 0.559.
 - The README calls nonaudio_gbm "THE reference any music/content claim must beat". It loses to a frequency statistic. The VERDICT's `best_valid` column compensates only partly.
 - Cause (README comment in baselines.py): training rows are confounded with calendar time, so the GBM needs monotone constraints and recency weights. I did not re-derive this.
-- "Beats nonaudio_gbm" evidence grades therefore flatter. Evidence against `artist_recent` and `duration` should be shown by default.
+- "Beats nonaudio_gbm" evidence grades therefore flatter.
 - Within-artist, artist baselines are exactly 0.500 by construction, so only duration (0.607) and meta/nonaudio GBMs carry information there.
 
 **B5. [Believed from reading, not run] `ablate.py --window` damages labels.**
@@ -111,16 +111,7 @@ I did NOT run: any predictor through `evalkit.run`, the full (slow) run, `--late
 - `data.decoy_presample` (never called; see B2).
 - `predictors/w3r1-song-content-beyond-audio/null_seeds.py` (broken; see B1).
 - `predictors/w3r2-audio-taste/ref_ca_local.py` (only a workaround for B1).
-- `predictors/w3r1-training-signal/variants_*.py` (9 files), `audit.py`, `diag_flip.py`, `predictors/w3r1-content-audio/{ablations,analyze_missing,investigate}.py`, `predictors/w3r1-song-content-beyond-audio/analysis.py`: scripts behind reported analyses. They compile; I did not run them. If no reported score depends on them they could be removed.
+- `predictors/w3r1-training-signal/variants_*.py` (9 files), `audit.py`, `diag_flip.py`, `predictors/w3r1-content-audio/{ablations,analyze_missing,investigate}.py`, `predictors/w3r1-song-content-beyond-audio/analysis.py`: scripts behind reported analyses. They compile; I did not run them.
 - `__pycache__` directories inside predictors (git-ignored).
-
-## E. Suggested fixes (not applied)
-1. Add identity (trackId and song) hash to the w3r1-content-audio fit-cache key (and to any predictor cache); consider a harness assert that a null-seed run does not reuse a fit built on different identities.
-2. Make the lyrics cache complete: rerun `fetch_lyrics.py`.
-3. Make decoy preview eligibility and sources comparable (look up all preview-less decoys in the stage-1 sample, or condition tried songs the same way). Report a preview-source flag as an open-pool shortcut baseline next to the missing-preview flag.
-4. Report per-fold and macro metrics next to pooled sauc; resample artists across folds for the bootstrap; show `artist_recent` and `duration` deltas in the default VERDICT.
-5. Fix `ablate.py` to filter by first-play time, or label as "recent-history view only".
-6. Add pool/hash invalidation for `itunes_fallback.csv`, `decoy_raw` and `album_release.json` content.
-7. Add loud failure for empty or absent feature caches.
 
 Paths: /home/user/Listener/taste-model/evalkit/{data,run,metrics,baselines,fetch_itunes,fetch_previews,ablate}.py; predictors under /home/user/Listener/taste-model/predictors/; scratch scripts under /tmp/claude-0/-home-user-Listener/22c975e6-58fa-522d-b17b-f92c7924f862/scratchpad/wf4/reviewer-code/.

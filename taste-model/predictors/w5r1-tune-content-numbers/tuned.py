@@ -14,6 +14,7 @@ def make_tuned(name, n_folds=4, spacing=3, margin=0.0, grid=None, min_folds=2):
     grid = grid or G_TUNE
     def predict(train, cands, meta, cutoff):
         folds = inner.make_inner_folds(train, meta, cutoff, n_folds=n_folds, spacing_months=spacing)
+        folds = [f for f in folds if len(f["train_streams"]) >= 2000]   # too little earlier history to fit anything: drop the inner fold
         best, info = "default", {}
         if len(folds) >= min_folds:
             for k, rc in grid.items():

@@ -55,3 +55,13 @@ for nm, mask in (("audio rows only", ~d.miss_any.values), ("new-artist rows", ne
     print("%-18s n=%d default sauc %.4f fill_high sauc %.4f delta %.4f 80%% [%.4f, %.4f]" % (nm, len(sub), f1(a["sauc"]), f1(b["sauc"]), f1(b["sauc"]) - f1(a["sauc"]), np.percentile(x, 10), np.percentile(x, 90)))
 # 'missing' indicator as a stand-alone scorer
 d["score__ind"] = d.miss_any.astype(float); Bi = B.stats(d.score__ind.values, True, ("sauc", "wa", "wx")); print("indicator alone: sauc %.4f wa %.4f wx %.4f" % (f1(Bi["sauc"]), f1(Bi["wa"]), f1(Bi["wx"])))
+# --- extra: heterogeneity of the fill-high gain (fold_meta), exclusion of the artists with most missing songs, indicator CI
+for v in ("oat_fill_2",):
+    fm = metrics.fold_meta(d, "tune", v, "default"); print(v, "fold_meta mean %.4f 80%% [%.4f, %.4f] Q %.1f/%d p %.2f I2 %.2f trend/yr %.4f [%.4f, %.4f]" % (fm["mean"], fm["lo80"], fm["hi80"], fm["Q"], fm["df"], fm["p"], fm["I2"], fm["trend"], fm["trend_lo80"], fm["trend_hi80"]))
+    print(fm["table"].round(4).to_string())
+top = d[d.miss_any].artist.value_counts().index[:3]; sub = d[~d.artist.isin(top)]; Bm = metrics.dump_block(sub, "tune", "fold", nboot=500)
+a = Bm.stats(sub.score__default.values, True, ("sauc",)); b = Bm.stats(sub.score__oat_fill_2.values, True, ("sauc",)); x = b["sauc_b"] - a["sauc_b"]; x = x[np.isfinite(x)]
+print("excluding the 3 artists with most missing songs (%d rows removed): default %.4f fill_high %.4f delta %.4f 80%% [%.4f, %.4f]" % (len(d) - len(sub), f1(a["sauc"]), f1(b["sauc"]), f1(b["sauc"]) - f1(a["sauc"]), np.percentile(x, 10), np.percentile(x, 90)))
+for k in ("sauc", "wa", "wx"):
+    x = Bi[k + "_b"]; x = x[np.isfinite(x)]; print("indicator alone %s %.4f 80%% [%.4f, %.4f]" % (k, f1(Bi[k]), np.percentile(x, 10), np.percentile(x, 90)))
+print("missing songs per artist (n artists with >=1 missing, with also >=1 audio song):", d[d.miss_any].artist.nunique(), d[d.miss_any].artist.isin(d[~d.miss_any].artist).sum())

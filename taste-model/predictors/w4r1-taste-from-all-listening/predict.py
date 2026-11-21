@@ -179,9 +179,12 @@ def PM(**kw): return make(dict(E, **kw), dict(W32, **kw))
 PN = [dict(E, **N0), dict(W32, **N0)]
 def PK(extra=None, **kw): return [dict(E, K=2, minplays=2, **kw), dict(W32, K=2, minplays=2, **kw)]
 def blk(ms, bl, nc): return [dict(m, blocks=bl, ncomp=nc if m is E else nc // 2) for m in ms]
+def PB(nc, a, ncw, aw, **kw): return [dict(E, **{"K": 2, "minplays": 2, "ncomp": nc, "alpha": a, **kw}), dict(W32, **{"K": 2, "minplays": 2, "ncomp": ncw, "alpha": aw, **kw})]
+PB0 = PB(128, 2400.0, 64, 300.0)
 PREDICTORS = {
- "ens_pan_nc128": make(*PN, dict(E, K=2, minplays=2, ncomp=128, alpha=2400.0), dict(W32, K=2, minplays=2, ncomp=64, alpha=300.0)),
- "ens_pan_nc32": make(*PN, dict(E, K=2, minplays=2, ncomp=32, alpha=600.0), dict(W32, K=2, minplays=2, ncomp=16, alpha=75.0)),
- "ens_new_nc128": make(dict(E, ncomp=128, alpha=2400.0, **N0), dict(W32, ncomp=64, alpha=300.0, **N0), *PK()),
- "ens_all128": make(dict(E, ncomp=128, alpha=2400.0, **N0), dict(W32, ncomp=64, alpha=300.0, **N0), dict(E, K=2, minplays=2, ncomp=128, alpha=2400.0), dict(W32, K=2, minplays=2, ncomp=64, alpha=300.0)),
+ "pan128_ess_w32only": make(*PN, PB0[0], dict(PB0[1], blocks=("mert", "ess"), ncomp=64)),
+ "pan128_base": make(*PN, *PB0),
+ "pan128_plus_essmember": make(*PN, *PB0, dict(blocks=("ess",), ncomp=64, alpha=300.0, K=2, minplays=2, wt=0.5)),
+ "pan128_plus_clapmember": make(*PN, *PB0, dict(blocks=("clap",), ncomp=64, alpha=300.0, K=2, minplays=2, wt=0.5)),
+ "pan128_plus_lyrmember": make(*PN, *PB0, dict(blocks=("lyr",), ncomp=32, alpha=300.0, K=2, minplays=2, wt=0.5)),
 }

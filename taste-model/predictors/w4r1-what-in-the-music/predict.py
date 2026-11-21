@@ -18,6 +18,16 @@ def _store():
         for k in ("act_mean", "act_max", "emb_mean", "emb_std", "seg"): _F[k] = z[k]
     return _F
 
+def _desc():
+    """librosa descriptors (build_desc.py): md5 -> row; glob [n,10], seg [n,6,8]"""
+    if "didx" not in _F:
+        import glob as g
+        ks, gl, sg = [], [], []
+        for f in sorted(g.glob(ROOT + ".cache/w4r1-what-in-the-music/desc/shard_*.npz")):
+            z = np.load(f); ks += list(z["md5"]); gl.append(z["glob"]); sg.append(z["seg"])
+        _F["didx"] = {k: i for i, k in enumerate(ks)}; _F["dglob"] = np.concatenate(gl); _F["dseg"] = np.concatenate(sg)
+    return _F
+
 def _lg(a):
     a = np.clip(a.astype(np.float32), 1e-4, 1 - 1e-4); return np.log(a / (1 - a))
 
@@ -26,6 +36,11 @@ def _view(tids, meta, cfg):
     F = _store(); u = meta.previewUrl.reindex(tids).values
     ii = np.array([F["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); ok = ii >= 0
     f = cfg["feat"]; ii2 = np.where(ok, ii, 0)
+    if f in ("desc", "descmeta"):
+        _desc(); jj = np.array([_F["didx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); okd = jj >= 0
+        X = _F["dglob"][np.where(okd, jj, 0)].astype(np.float32)
+        if f == "descmeta": X = np.c_[X, _meta_cols(tids, meta)]
+        X = X[:, None]; return X, okd & np.isfinite(X).all((1, 2))
     if f == "meta": return _meta_cols(tids, meta)[:, None].astype(np.float32), np.ones(len(tids), bool)
     if f == "seg": X = F["seg"][ii2].astype(np.float32); X = X[:, list(cfg["seg"])] if cfg["seg"] is not None else X
     elif f == "act": X = F["act_mean"][ii2].astype(np.float32)[:, None]
@@ -128,14 +143,21 @@ def blend(cfgs, wm=1.0, wts=None):
     e = make_ens(cfgs, wts)
     def predict(train, cands, meta, cutoff):
         a = e(train, cands, meta, cutoff); b = mert_final()(train, cands, meta, cutoff)
-        return (a / max(a.std(), 1e-9) + wm * b / max(b.std(), 1e-9)) if False else a + wm * b
+        return a + wm * b
     return predict
 
 G = dict(genre=list(range(0, 400)), mood=list(range(400, 456)), inst=list(range(456, 496)), mtg=list(range(496, 583)), misc=list(range(583, 605)))
 DUR = dict(feat="meta", learner="gbm")
 A = dict(alpha=10000.0)
+# ---- pre-declared final model and ablations (declared in the report before any --late run) ----
+DUR = dict(feat="meta", learner="gbm")                    # duration/explicit/popularity-missing GBM on rank_plays target (track metadata, no artist)
+A = dict(alpha=10000.0)                                   # essentia head activations (clip mean, logit), standardised, ridge alpha 1e4, rank_plays target
+SL = dict(feat="seg", seg=(3, 4, 5), alpha=10000.0)       # same heads, mean activation of 5-s segments 3-5 (15-30 s of the clip), one training row per segment, score = mean over the segments
 PREDICTORS = {
-    "p8_a300": make_ens([dict(ncomp=8, alpha=300.0)]), "p16_a1000": make_ens([dict(ncomp=16, alpha=1000.0)]), "p32_a3000": make_ens([dict(ncomp=32, alpha=3000.0)]),
-    "pe16_a1000": make_ens([dict(feat="emb", ncomp=16, alpha=1000.0)]), "pe8_a300": make_ens([dict(feat="emb", ncomp=8, alpha=300.0)]),
-    "cat_act_emb_a20000": make_ens([dict(feat="embstd", alpha=30000.0)]),
+    "final_content": blend([A, SL, DUR], 1.0, [1, 1, 1.5]),    # FINAL: standardised mean of essentia ridge (whole), essentia ridge (late segments), duration GBM, plus 1.0 x W3 MERT audio_final
+    "abl_no_mert": make_ens([A, SL, DUR], [1, 1, 1.5]),         # ablation: no MERT
+    "abl_no_dur": blend([A, SL], 1.0, [1, 1]),                  # ablation: no duration member
+    "abl_no_essentia": blend([DUR], 1.0, [1.5]),                # ablation: MERT + duration GBM only
+    "abl_act_only": make_ens([A]),                              # essentia head activations only (heavily regularised ridge)
+    "abl_late_only": make_ens([SL]),                            # essentia late segments only
 }

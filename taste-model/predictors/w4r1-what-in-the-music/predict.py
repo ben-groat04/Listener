@@ -7,7 +7,7 @@ import os, sys, hashlib, importlib.util
 import numpy as np, pandas as pd
 ROOT = "/home/user/Listener/taste-model/"
 COMPACT = ROOT + ".cache/w4r1-what-in-the-music/compact.npz"
-CFG = dict(feat="act", tf="logit", ncomp=0, alpha=300.0, seg=None, target="rank_plays", agg="mean", mature=90, hl=None, meta=False, learner="ridge", cols=None)
+CFG = dict(feat="act", tf="logit", ncomp=0, alpha=300.0, seg=None, target="rank_plays", agg="mean", mature=90, hl=None, meta=False, learner="ridge", cols=None, k=50, temp=0.1)
 _F = {}
 
 def _store():
@@ -48,6 +48,17 @@ def _design(res, X, tids, meta, cfg):
     if cfg["meta"]: Z = np.c_[Z, np.repeat((_meta_cols(tids, meta) - res["mm"]) / res["ms"], S, 0)]
     return Z
 
+class KNN:
+    """similarity-weighted mean target of the k nearest train songs (cosine on the PCA-whitened design)"""
+    def __init__(self, P, y, w, k, temp):
+        self.P = (P / (np.linalg.norm(P, axis=1, keepdims=True) + 1e-9)).astype(np.float32); self.y = y; self.w = w; self.k = k; self.t = temp
+    def predict(self, Q):
+        Q = (Q / (np.linalg.norm(Q, axis=1, keepdims=True) + 1e-9)).astype(np.float32); out = np.zeros(len(Q))
+        for a in range(0, len(Q), 2000):
+            S = Q[a:a + 2000] @ self.P.T; ix = np.argpartition(-S, self.k, axis=1)[:, :self.k]; ss = np.take_along_axis(S, ix, 1)
+            ww = np.exp((ss - ss.max(1, keepdims=True)) / self.t) * self.w[ix]; out[a:a + 2000] = (ww * self.y[ix]).sum(1) / ww.sum(1)
+        return out
+
 _CACHE = {}
 def _fit(train, meta, cutoff, cfg):
     key = (str(cutoff), len(train), int(train.t.values.astype("int64").sum() % (1 << 60)), int(pd.util.hash_pandas_object(train[["trackId", "song", "artist"]].astype(str), index=False).sum() % (1 << 60)), repr(sorted(cfg.items(), key=lambda kv: kv[0])))
@@ -81,6 +92,7 @@ def _fit(train, meta, cutoff, cfg):
                 if cfg["learner"] == "gbm":
                     from sklearn.ensemble import HistGradientBoostingRegressor
                     res["lr"] = HistGradientBoostingRegressor(max_iter=80, learning_rate=0.05, max_depth=3, min_samples_leaf=30, l2_regularization=5.0, random_state=0).fit(P, np.repeat(yr, S), sample_weight=np.repeat(w, S))
+                elif cfg["learner"] == "knn": res["lr"] = KNN(P, np.repeat(yr, S), np.repeat(w, S), cfg["k"], cfg["temp"])
                 else: res["lr"] = Ridge(alpha=cfg["alpha"]).fit(P, np.repeat(yr, S), sample_weight=np.repeat(w, S))
         sc = _raw(res, X[ok], st.trackId.values[ok], meta, cfg)
         res["tm"], res["ts"], res["neutral"] = float(sc.mean()), float(sc.std() + 1e-9), float(np.median(sc))
@@ -122,12 +134,8 @@ def blend(cfgs, wm=1.0, wts=None):
 G = dict(genre=list(range(0, 400)), mood=list(range(400, 456)), inst=list(range(456, 496)), mtg=list(range(496, 583)), misc=list(range(583, 605)))
 DUR = dict(feat="meta", learner="gbm")
 A = dict(alpha=10000.0)
-DUR = dict(feat="meta", learner="gbm")
-A = dict(alpha=10000.0)
-PREDICTORS = {f"seg{k}": make_ens([dict(feat="seg", seg=(k,), alpha=3000.0)]) for k in range(6)}
-PREDICTORS.update({
-    "seg_all_mean": make_ens([dict(feat="seg", alpha=20000.0)]),
-    "seg_all_max": make_ens([dict(feat="seg", alpha=20000.0, agg="max")]),
-    "seg_early": make_ens([dict(feat="seg", seg=(0, 1, 2), alpha=10000.0)]), "seg_late": make_ens([dict(feat="seg", seg=(3, 4, 5), alpha=10000.0)]),
-    "seg_mid": make_ens([dict(feat="seg", seg=(1, 2, 3, 4), alpha=15000.0)]),
-})
+PREDICTORS = {
+    "p8_a300": make_ens([dict(ncomp=8, alpha=300.0)]), "p16_a1000": make_ens([dict(ncomp=16, alpha=1000.0)]), "p32_a3000": make_ens([dict(ncomp=32, alpha=3000.0)]),
+    "pe16_a1000": make_ens([dict(feat="emb", ncomp=16, alpha=1000.0)]), "pe8_a300": make_ens([dict(feat="emb", ncomp=8, alpha=300.0)]),
+    "cat_act_emb_a20000": make_ens([dict(feat="embstd", alpha=30000.0)]),
+}

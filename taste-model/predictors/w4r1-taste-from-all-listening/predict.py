@@ -23,8 +23,8 @@ def _store():
         _S["lyr"] = pickle.load(open(ROOT + ".cache/shared/w4-lyrics/emb.pkl", "rb"))
     return _S
 
-CFG = dict(blocks=("mert",), ncomp=64, alpha=300.0, signal="panel", K=8, P=91, hl=180.0, newhl=120.0, w_new=1.0, w_panel=1.0, valid_ms=0,
-           tgt="rank", minplays=1, prune=0, noart=False, mode="whole", learner="ridge", k=50, tau=0.1, wt=1.0, zw=0.0)
+CFG = dict(blocks=("mert",), ncomp=64, alpha=300.0, signal="panel", K=8, P=91, hl=180.0, newhl=120.0, w_new=1.0, w_panel=1.0, compl=0.0,
+           tgt="rank", minplays=1, prune=0, noart=False, mode="whole", learner="ridge", k=50, tau=0.1, wt=1.0, zw=0.0, oldw=1.0, r0=90, r1=270)
 
 def _raw_block(name, tids, meta):
     S = _store(); n = len(tids)
@@ -61,11 +61,12 @@ def _design(res, tids, meta, cfg):
 def _pct(vals, groups):
     return pd.Series(vals).groupby(groups).rank(pct=True).values
 
-def _signal(train, st, cutoff, cfg):
+def _signal(train, st, cutoff, cfg, meta):
     """per-song sufficient statistics: W (weight sum) and Y (weight*target sum) over rows of the chosen signals."""
     idx = {s: i for i, s in enumerate(st.index)}; n = len(st); W = np.zeros(n); Y = np.zeros(n)
     d = train
-    if cfg["valid_ms"]: d = d[d.playedMs >= cfg["valid_ms"]]
+    if cfg["compl"]:   # count only plays that reached `compl` of the track duration (partial listens dropped)
+        dur = meta.durationMs.reindex(d.trackId.values).values; d = d[(d.playedMs.values >= cfg["compl"] * np.where(np.isfinite(dur) & (dur > 0), dur, 0))]
     si = d.song.map(idx).values; ok = ~pd.isna(si); si = si[ok].astype(int); tt = d.t.values[ok]
     if cfg["signal"] in ("panel", "both"):
         for k in range(cfg["K"]):
@@ -79,18 +80,23 @@ def _signal(train, st, cutoff, cfg):
                 w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * (pl + cfg["zw"] * (act & ~pl)); W += w; Y += w * y; continue
             if cfg["tgt"] == "rank": y = np.zeros(n); y[pl] = _pct(cnt[pl], np.zeros(pl.sum()))
             else: y = np.zeros(n); y[pl] = np.log1p(cnt[pl]); y[pl] = (y[pl] - y[pl].mean()) / (y[pl].std() + 1e-9) * 0.29 + 0.5
-            w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * pl
+            w = cfg["w_panel"] * 0.5 ** (cfg["P"] * (k + 0.5) / cfg["hl"]) * pl * np.where(st["first"].values >= np.datetime64(s0), 1.0, cfg["oldw"])
             W += w; Y += w * y
     if cfg["signal"] in ("new", "both"):
         fi = st["first"]; mat = (fi < cutoff - pd.Timedelta(days=90)).values
         p90 = st.plays90.values
-        if cfg["valid_ms"]:   # valid plays inside 90 days of first play
+        if cfg["compl"]:   # complete plays inside 90 days of first play
             first = st["first"].reindex(d.song).values; dd = d[(d.t.values < first + np.timedelta64(90, "D"))]
             p90 = dd.groupby("song").size().reindex(st.index).fillna(0).values
         qa = fi.dt.to_period("Q").astype(str).values
         y = np.zeros(n); y[mat] = _pct(p90[mat], qa[mat])
         w = cfg["w_new"] * (0.5 ** ((cutoff - fi).dt.days.values / cfg["newhl"]) if cfg["newhl"] else 1.0) * mat
         W += w; Y += w * y
+    if cfg["signal"] == "ret":   # retention: plays in days r0..r1 after first play (does the song stay in rotation?), rank within the quarter of first play
+        fi = st["first"]; mat = (fi < cutoff - pd.Timedelta(days=cfg["r1"])).values
+        rel = (d.t.values[ok] - fi.values[si]) / np.timedelta64(1, "D"); m = (rel >= cfg["r0"]) & (rel < cfg["r1"])
+        cnt = np.bincount(si[m], minlength=n); qa = fi.dt.to_period("Q").astype(str).values
+        y = np.zeros(n); y[mat] = _pct(cnt[mat], qa[mat]); w = (0.5 ** ((cutoff - fi).dt.days.values / cfg["newhl"]) if cfg["newhl"] else 1.0) * mat; W += w; Y += w * y
     return W, Y
 
 def _fit(train, meta, cutoff, cfg):
@@ -108,7 +114,7 @@ def _fit(train, meta, cutoff, cfg):
             mu = Xo.mean(0); sd = Xo.std(0) + 1e-6
             nc = min(cfg["ncomp"], max(2, has.sum() - 1)); pca = PCA(nc, whiten=True, random_state=0).fit((Xo - mu) / sd); tf.append((mu, sd, pca))
         res = dict(tf=tf); P, has = _design(res, tids, meta, cfg)
-        W, Y = _signal(train, st, cutoff, cfg)
+        W, Y = _signal(train, st, cutoff, cfg, meta)
         keep = has & (W > 0)
         if cfg["prune"]: keep &= W > np.quantile(W[W > 0], cfg["prune"])
         rep = 4 if cfg["mode"] == "local" else 1; kr = np.repeat(keep, rep)
@@ -174,12 +180,8 @@ PN = [dict(E, **N0), dict(W32, **N0)]
 def PK(extra=None, **kw): return [dict(E, K=2, minplays=2, **kw), dict(W32, K=2, minplays=2, **kw)]
 def blk(ms, bl, nc): return [dict(m, blocks=bl, ncomp=nc if m is E else nc // 2) for m in ms]
 PREDICTORS = {
- "ens3_k1": make(*PN, *PK(), dict(E, K=1, minplays=2), dict(W32, K=1, minplays=2)),
- "joint_k2m2": make(dict(E, signal="both", newhl=None, K=2, minplays=2), dict(W32, signal="both", newhl=None, K=2, minplays=2)),
- "ens_pan_ess": make(*PN, *blk(PK(), ("mert", "ess"), 48)),
- "ens_pan_clap": make(*PN, *blk(PK(), ("mert", "clap"), 48)),
- "ens_pan_w2": make(*PN, *[dict(m, wt=2.0) for m in PK()]),
- "ens_pan_hl90": make(*PN, *PK(hl=90.0)),
- "ens_new_ess": make(*blk(PN, ("mert", "ess"), 48), *PK()),
- "ens_pan_lyr": make(*PN, *blk(PK(), ("mert", "lyr"), 48)),
+ "ens_pan_nc128": make(*PN, dict(E, K=2, minplays=2, ncomp=128, alpha=2400.0), dict(W32, K=2, minplays=2, ncomp=64, alpha=300.0)),
+ "ens_pan_nc32": make(*PN, dict(E, K=2, minplays=2, ncomp=32, alpha=600.0), dict(W32, K=2, minplays=2, ncomp=16, alpha=75.0)),
+ "ens_new_nc128": make(dict(E, ncomp=128, alpha=2400.0, **N0), dict(W32, ncomp=64, alpha=300.0, **N0), *PK()),
+ "ens_all128": make(dict(E, ncomp=128, alpha=2400.0, **N0), dict(W32, ncomp=64, alpha=300.0, **N0), dict(E, K=2, minplays=2, ncomp=128, alpha=2400.0), dict(W32, K=2, minplays=2, ncomp=64, alpha=300.0)),
 }

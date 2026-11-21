@@ -285,12 +285,14 @@ def _open_parts(cutoffs, d):
     Release age of tried songs comes from stats.fm album dates (tracks with no date: bucket 4 'unknown'; decoys always have a date)."""
     u = _decoys(); played_songs = set(d.song); played_tracks = set(d.trackId)
     u = u[~u.song.isin(played_songs) & ~u.trackId.isin(played_tracks)].drop_duplicates("song")
+    resolved = set(fallback_table().trackId)
     mraw = load_meta_all(fill=False)   # stage 1 does not depend on the (slow, rate-limited) iTunes preview lookups
     for c, f in make_folds(cutoffs, d):
         end = c + pd.DateOffset(months=3)
         seeds, rel = fold_seed_artists(d, c); S = set(seeds) | set(rel)
         seen = set(d.loc[d.t < c, "artist"])
         elig = u[(u.release < end) & u.src.map(lambda s: not s.isdisjoint(S))].copy(); elig["new_artist"] = ~elig.artist.isin(seen)
+        elig = elig[elig.previewUrl.notna() | elig.trackId.isin(resolved)]   # iTunes lookups are rate limited: a decoy without preview is eligible only if it was looked up
         elig["rb"] = release_bucket(elig.release, c); f = f.assign(rb=release_bucket(tried_release(f), c))
         pre = _draw(f, elig, mraw, PRESAMPLE * len(f), int(c.strftime("%Y%m%d")))
         yield c, f, pre

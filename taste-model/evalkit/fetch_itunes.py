@@ -3,7 +3,7 @@ For every user track and every pool decoy WITHOUT a previewUrl, query the iTunes
 normalised title (data.song_key + accent/punctuation stripping) and the primary artist (whole iTunes artist name or one of its '&', ',', 'feat', 'x' parts) match and
 |duration difference| <= 5 s. data.load_meta_all fills meta.previewUrl from the accepted matches, for tried songs and decoys alike.
 Resumable (rows already in the csv are skipped; HTTP errors are retried later); rate limit: the API answers 403 after ~20 requests/minute, so the loop
-adapts its delay. Decoys looked up = the stage-1 decoy pre-sample of every DEV fold (data.decoy_presample), i.e. the only decoys that can enter a pool.
+adapts its delay. Decoys: only a seeded sample (N_DECOY_LOOKUPS) of preview-less decoys is looked up; preview-less decoys that were not looked up are not eligible for pools.
 Run order: user tracks first, then decoys. --sealed (MAIN SESSION, after make_decoys --sealed) adds the sealed folds' decoy pre-samples."""
 import sys, re, json, time, unicodedata, urllib.request, urllib.parse
 import pandas as pd
@@ -31,17 +31,19 @@ def accept(res, artist, title, dur):
         if dd <= 5000: ok.append((dd, r))
     return min(ok, key=lambda x: x[0])[1] if ok else None
 
+N_DECOY_LOOKUPS = 250   # rate limit (~15 requests/min) => only a seeded sample of preview-less decoys is looked up; the others are not eligible (data._open_parts)
+
 def targets(user_only=False, sealed=False):
+    """1) preview-less user tracks that are tried songs of a dev (or, with --sealed, sealed) fold (other preview-less train-only tracks are NOT looked up: rate limit), 2) a seeded sample of preview-less decoys."""
+    import numpy as np
+    d = data._load_all(); cuts = data.DEV_CUTOFFS + (data.SEALED_CUTOFFS if sealed else [])
+    tried = set(pd.concat([f.trackId for c, f in data.make_folds(cuts, d)]))
     m = data.load_meta(); t = m[m.previewUrl.isna()]
-    seen = set(); out = []
-    for tid, r in t.iterrows(): out.append((tid, r.artistNames[0] if r.artistNames else "", r["name"], r.durationMs)); seen.add(tid)
+    row = lambda tid, r: (tid, r.artistNames[0] if r.artistNames else "", r["name"], r.durationMs)
+    out = [row(i, r) for i, r in t.iterrows() if i in tried]
     if not user_only:
-        mm = data.load_meta_all(fill=False)
-        ids = []
-        for c, l in data.decoy_presample(data.DEV_CUTOFFS + (data.SEALED_CUTOFFS if sealed else [])).items(): ids += l
-        for tid in dict.fromkeys(ids):
-            if tid in seen or tid not in mm.index or pd.notna(mm.previewUrl[tid]): continue
-            r = mm.loc[tid]; out.append((tid, r.artistNames[0] if r.artistNames else "", r["name"], r.durationMs))
+        u = data._decoys().drop_duplicates("trackId"); u = u[u.previewUrl.isna() & ~u.trackId.isin(set(m.index))].sort_values("trackId")
+        for _, r in u.iloc[np.random.default_rng(0).permutation(len(u))[:N_DECOY_LOOKUPS]].iterrows(): out.append((r.trackId, r.artistNames[0], r.trackName, r.durationMs))
     return out
 
 def main(argv):

@@ -1,0 +1,3 @@
+w5r1_stack3: sauc 0.653 wx 0.647 wa 0.637 new 0.639; vs artist_recent sauc +0.034 lo80 +0.008
+zglobal: sauc 0.652 wx 0.647 wa 0.636 new 0.639; vs artist_recent sauc +0.033 lo80 +0.007
+raw: sauc 0.651 wx 0.648 wa 0.632 new 0.635; vs artist_recent sauc +0.032 lo80 +0.005

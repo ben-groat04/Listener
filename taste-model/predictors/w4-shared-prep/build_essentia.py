@@ -13,7 +13,6 @@ HEADS = ["genre_discogs400", "mtg_jamendo_moodtheme", "mtg_jamendo_instrument", 
          "approachability_regression", "engagement_regression"]
 SR = 16000; HOP = 256
 EFF_PATCH, EFF_HOP = 128, 62      # frames; 2.048 s patches every 0.992 s
-MN_PATCH, MN_HOP = 187, 93        # musicnn: 187 frames (~3.0 s) every 93 frames (~1.49 s)
 
 def head_info(name):
     j = json.load(open(MD / f"{name}-discogs-effnet-1.json")); s = j["schema"]
@@ -21,7 +20,7 @@ def head_info(name):
     return inp, out["name"], j["classes"]
 
 def labels():
-    L = {"heads": [], "av_heads": ["emomusic_valence", "emomusic_arousal", "deam_valence", "deam_arousal"]}
+    L = {"heads": [], "patch_len_s": EFF_PATCH * HOP / SR, "patch_hop_s": EFF_HOP * HOP / SR, "patch_act_columns": "concatenation of the heads in order, each head contributing len(classes) columns"}
     for h in HEADS:
         _, _, cl = head_info(h); L["heads"].append(dict(name=h, model=f"{h}-discogs-effnet-1", classes=cl))
     return L
@@ -37,33 +36,27 @@ class Models:
         self.heads = []
         for h in HEADS:
             i, o, cl = head_info(h); self.heads.append((h, es.TensorflowPredict2D(graphFilename=str(MD / f"{h}-discogs-effnet-1.pb"), input=i, output=o), len(cl)))
-        self.mn = es.TensorflowPredictMusiCNN(graphFilename=str(MD / "msd-musicnn-1.pb"), output="model/dense/BiasAdd")
-        self.av = [es.TensorflowPredict2D(graphFilename=str(MD / f"{n}-msd-musicnn-2.pb"), input="model/Placeholder", output="model/Identity") for n in ("emomusic", "deam")]
     def run(self, x):
         E = self.eff(x)                                   # [P,1280]
         A = np.concatenate([np.asarray(h(E)).reshape(len(E), -1) for _, h, _ in self.heads], 1)   # [P, 605+]
         t = (np.arange(len(E)) * EFF_HOP + EFF_PATCH / 2) * HOP / SR
-        M = self.mn(x)                                    # [Q,200]
-        AV = np.concatenate([np.asarray(a(M)).reshape(len(M), -1) for a in self.av], 1)   # [Q,4]
-        tq = (np.arange(len(M)) * MN_HOP + MN_PATCH / 2) * HOP / SR
-        return E, A, t, AV, tq
+        return E, A, t
 
 def build_shard(models, rows, path):
-    md5s, off, offq = [], [0], [0]; A_, T_, AV_, TQ_, E_ = [], [], [], [], []; am, ax, em, es_, vm, vx, failed = [], [], [], [], [], [], []
+    md5s, off = [], [0]; A_, T_, E_ = [], [], []; am, ax, em, es_, failed = [], [], [], [], []
     for m, f in rows:
         x = decode(f); ok = len(x) >= SR * 3
         if ok:
-            try: E, A, t, AV, tq = models.run(x); ok = len(E) > 0 and len(AV) > 0
+            try: E, A, t = models.run(x); ok = len(E) > 0
             except Exception as e: ok = False
         if not ok: failed.append(m); continue
-        md5s.append(m); A_.append(A.astype(np.float16)); T_.append(t.astype(np.float32)); AV_.append(AV.astype(np.float16)); TQ_.append(tq.astype(np.float32)); E_.append(E.astype(np.float16))
-        off.append(off[-1] + len(A)); offq.append(offq[-1] + len(AV))
-        am.append(A.mean(0)); ax.append(A.max(0)); em.append(E.mean(0)); es_.append(E.std(0)); vm.append(AV.mean(0)); vx.append(AV.max(0))
+        md5s.append(m); A_.append(A.astype(np.float16)); T_.append(t.astype(np.float32)); E_.append(E.astype(np.float16))
+        off.append(off[-1] + len(A))
+        am.append(A.mean(0)); ax.append(A.max(0)); em.append(E.mean(0)); es_.append(E.std(0))
     f16 = lambda l: np.asarray(l, np.float32).astype(np.float16)
     tmp = str(path) + ".tmp.npz"
     np.savez(tmp, md5=np.array(md5s, dtype="<U32"), patch_off=np.array(off, np.int64), patch_t=np.concatenate(T_), patch_act=np.concatenate(A_), patch_emb=np.concatenate(E_),
-             av_off=np.array(offq, np.int64), av_t=np.concatenate(TQ_), av_act=np.concatenate(AV_),
-             act_mean=f16(am), act_max=f16(ax), emb_mean=f16(em), emb_std=f16(es_), av_mean=f16(vm), av_max=f16(vx), failed=np.array(failed, dtype="<U32"))
+             act_mean=f16(am), act_max=f16(ax), emb_mean=f16(em), emb_std=f16(es_), failed=np.array(failed, dtype="<U32"))
     os.replace(tmp, path)
     return len(md5s), len(failed)
 

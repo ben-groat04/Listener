@@ -179,6 +179,9 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, null_control=False, va
         orows.append(r)
     tabs["open_love"] = pd.DataFrame(orows)
     tabs["open_dSAUC_lower_bound"] = pd.DataFrame({r: {n: round(float(np.nanpercentile(SO[n]["all"]["sauc_b"] - SO[r]["all"]["sauc_b"], 100 * alpha / 2)), 3) if n != r else np.nan for n in P} for r in refs})
+    for k in ("new", "known"):
+        tabs[f"open_dSAUC_{k}_lower_bound"] = pd.DataFrame({r: {n: round(float(np.nanpercentile(SO[n][k]["sauc_b"] - SO[r][k]["sauc_b"], 100 * alpha / 2)), 3) if n != r else np.nan for n in P} for r in refs})
+    tabs["open_dP20_lower_bound"] = pd.DataFrame({r: {n: round(float(np.nanpercentile(SO[n]["all"]["p20_b"] - SO[r]["all"]["p20_b"], 100 * alpha / 2)), 3) if n != r else np.nan for n in P} for r in refs})
     tabs["open_dWA_lower_bound"] = pd.DataFrame({r: {n: round(float(np.nanpercentile(SO[n]["wa"]["wa_b"] - SO[r]["wa"]["wa_b"], 100 * alpha / 2)), 3) if n != r else np.nan for n in P} for r in refs})
     # label variants, continuous outcomes (tried pool, within-fold Spearman)
     sens = []

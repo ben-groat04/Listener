@@ -145,6 +145,25 @@ These came up in chat. They are not from an expert, they may well not be the bes
 - Write your full report to your own report file; the structured result carries a short summary and the requested fields. Report what you ran separately from what you only believe.
 `
 
+// Copy of CONTEXT for agents after engineer-r0/catalogue-scout (those two keep CONTEXT byte-identical for resume caching).
+// Old dated Q&A quotes about methods/definitions are removed; goal, constraint, ambition and W6 quotes stay.
+const CONTEXT_LATER = (() => {
+  const drop = [
+    '- "Use all the music there then."\n',
+    '- On the Last.fm API key (offered as an option): "Id skip it because this is exactly the type of oversimplified analysis I warned about"\n',
+    '  2. On building an open-catalogue test: "I will not answer this, it\'s for the agent to decide. No steering."\n',
+    '  4. On which parts of songs: "It varies. Again, I will not steer."\n',
+    '  5. On the "Best Songs" playlist as a signal: "That is the better subset but the strictness of the bar to get in there is not consistent over time."\n',
+    '- After Workflow 2: "Ah ok. Is the score calculation good? In the next workflow a lot of things you\'ve been treating as fixed need to be re-investigated. Because with the current scoring system let\'s be honest with the subjectivity you won\'t be going super super high"\n',
+    '- The "loved" definition may be arbitrary but probably does a good job; like everything of this kind, it can be varied if performance plateaus.\n',
+  ]
+  let t = CONTEXT
+  for (const d of drop) { if (!t.includes(d)) throw new Error('CONTEXT_LATER: text not found: ' + d.slice(0, 40)); t = t.replace(d, '') }
+  const r = [['  3. On allowing models that need trust_remote_code', '  2. On allowing models that need trust_remote_code']]
+  for (const [a, b] of r) { if (!t.includes(a)) throw new Error('CONTEXT_LATER: renumber failed'); t = t.replace(a, b) }
+  return t
+})()
+
 const sched = (label) => `Your own scratch folder is ${scratchOf(label)}/ (create it). Your own report file is ${docOf(label)} (write your full report there).`
 
 // ---------- Foundations: harness engineer ----------
@@ -160,7 +179,7 @@ const ENG0_SPEC = `Standing harness pass (everything below is required in this o
 - default_output_unchanged: a default run without new flags reproduces v5.1 numbers; the selftest asserts it (selftest --v52) and the selftest also runs all new checks.`
 
 const engineerPrompt = (label, spec, priorDocs) => `You are the HARNESS ENGINEER (${label}). Implement exactly the specification below plus the standing hygiene requirements, no more.
-${CONTEXT}
+${label === 'engineer-r0' ? CONTEXT : CONTEXT_LATER}
 ${sched(label)}
 ${priorDocs ? 'Earlier engineer report(s) of this workflow (the harness state you start from): ' + priorDocs + '\n' : ''}## Specification
 ${spec}
@@ -249,7 +268,7 @@ const REVIEW_SCHEMA = {
 const leadRules = (round) => `Process facts: after you, ${round === 1 ? 'an optional engineer addendum and an optional shared-prep step (at the same time, or prep after the addendum if you set prep_after_engineer; soft prep cap ' + PREP_MAX + ' min), then' : 'an optional shared-prep step (soft cap ' + PREP_MAX + ' min), then'} up to ${MAX_TASKS} independent builders (soft wall-clock cap ${round === 1 ? R1_BUILDER_MAX : R2_BUILDER_MAX} min each, mandatory checklist, no time floor), each followed by two devil's advocates (soft cap ${DA_MAX} min each). At most 2 agents run at once. Builders cannot create shared inputs, so anything heavy they need must be in shared_prep. The harness caps --late at ${LATE_CAP} runs per predictor bundle; the HOLDOUT budget is 0. Folder and report names are assigned by the workflow; do not name them in briefs. Builders and devil's advocates do not read your report file: your evaluation_design field and the task briefs reach them inline, so neither may contain a held-out number. Write briefs in your own words; do not paste reviewer, builder or devil's-advocate text. Every builder must: use fast mode for iteration; declare its final predictor(s) with the harness declaration command before the first full scored run; run the null control; give paired comparisons against the comparators and baselines your evaluation design names; count every variant; investigate below-chance results; state the strongest case against its result. Whether held-out (LATE) evidence is looked at is your decision. Soft caps: ${round === 1 ? 'the plan lead' : 'the review lead'} ${LEAD_MAX} min, final lead ${FINAL_MAX} min, package auditor ${AUDIT_MAX} min (flag-only, no minimum). Script flags are facts for you to weigh, not verdicts.`
 
 const leadPlanPrompt = (foundations, coverage) => `You are the RESEARCH LEAD. You own the experiment design and the direction of this workflow. You do not build predictors yourself.
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched('research-lead-plan')}
 ${foundations}
 ${leadRules(1)}
@@ -260,7 +279,7 @@ ${coverage}`
 
 // ---------- Prep ----------
 const prepPrompt = (round, plan) => `You are the SHARED-PREP agent (round ${round}). Build exactly the shared artefacts specified below, once, in a NEW directory, so that every builder starts from identical inputs.
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched('prep-r' + round)}
 ## Artefacts to build in ${sharedOf(round)}/ (research lead)
 ${plan.shared_prep}
@@ -290,7 +309,7 @@ Reports and inputs you may read in addition to the sanitised reports:
 ${sharedBlock(c.shared)}`
 
 const builderPrompt = (round, task, c, label) => `You are a BUILDER (round ${round}, task "${task.id}"). Other builders work independently; do not read or edit their folders, scratch or report files.
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched(label)}
 Your predictor code folder is ${predOf(round, task.id)}/ (entry file the harness accepts). Use only these folders.
 ${contextFiles(c)}
@@ -330,7 +349,7 @@ const DA_SCHEMA = {
   required: ['summary', 'claim_verdicts', 'not_rerun_claims', 'checklist_rechecked', 'code_files_read', 'null_control_rerun', 'declaration_check', 'shared_inputs_unchanged', 'start_utc', 'end_utc'],
 }
 const daPrompt = (round, dir, task, b, bLabel, c, label) => `You are a DEVIL'S ADVOCATE (round ${round}, direction: ${dir.id}) for the builder of task "${task.id}". Another devil's advocate covers the opposite direction for the same builder.
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched(label)}
 ${dir.text}
 Judged on coverage, not duration. ${softCap(DA_MAX)} Finish when every item is covered with evidence:
@@ -474,6 +493,7 @@ const coverage1 = [
   'read the engineer-r0 and catalogue-scout report files and weighed their flags',
   'verified at least one claim you rely on from an earlier workflow by reading its report or code, or by a quick dev-only check, or stated why not',
   'goal_coverage addresses every element of the goal and says how catalogue discovery is addressed; evaluation_design is complete enough that two readers would apply it identically and states the decision rule exactly as the owner set it',
+  'state how the primary evaluation measure was chosen (the current binary "loved" label versus graded or listening-frequency-based measures), weighed against the end goal (finding new songs the user will like), with the evidence for the choice; it must be decided on evidence, not by default, and either outcome is acceptable',
 ].map(x => '- ' + x).join('\n')
 const plan1 = normPlan(await agent(leadPlanPrompt(foundations, coverage1), { label: 'research-lead-plan', phase: 'Plan', schema: PLAN_SCHEMA, model: O }))
 if (!plan1) return { error: 'research lead plan failed', foundations }
@@ -495,7 +515,7 @@ const coverage2 = [
   'for every round-2 task, could_change names a specific round-1 conclusion; if tasks is empty, said why the goal is answered as far as the data allows',
 ].map(x => '- ' + x).join('\n')
 const review = normPlan(await agent(`You are the RESEARCH LEAD reviewing round 1 and deciding round 2. Round 2 may be empty. The evaluation design in your plan above stays in force and the harness is frozen. Final models can only be chosen later among predictors built, declared and evaluated in this workflow, so if combining or finishing models is needed it must be a round-2 task.
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched('research-lead-review')}
 ## This workflow so far
 ${hist1}
@@ -516,13 +536,14 @@ if (review && review.tasks.length) {
 phase('Final')
 const hist2 = `${hist1}\n\n## Research lead review\n${review ? JSON.stringify({ assessment: review.assessment, goal_coverage: review.goal_coverage, evaluation_design: review.evaluation_design, shared_prep: review.shared_prep, tasks: review.tasks }, null, 1) : '(failed)'}\n\n${r2 ? `## Shared prep round 2\n${r2.prep ? 'report file: ' + docOf('prep-r2') + ' (inputs in ' + sharedOf(2) + '/)' : '(none or failed)'}\n\n## Round 2 builders\n${r2.builders}\n\n## Round 2 devil's advocates\n${r2.das}` : '(no round 2)'}`
 const final = await agent(`You are the RESEARCH LEAD writing the final report and the sealed-test package. You do not build or change predictors: you may only select among predictors that were built, declared and evaluated in this workflow. ${softCap(FINAL_MAX)}
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched('research-lead-final')}
 ## This workflow
 ${hist2}
 Coverage list (read every builder and devil's advocate report file of both rounds first; weigh every flag above):
 - list the files you read and the headline scores you re-derived from code and outputs; spot-check at least one devil's advocate re-run
 - say how you weighed each flag
+- say whether the final evaluation measure was weighed against the end goal (finding new songs the user will like), how, and on what evidence; either outcome is acceptable, but it must not have been left as a default
 ## Deliverables
 1. ${PROJ}/RESULTS-W6.md, plain English for a non-specialist, concise: what was assembled and what it can and cannot do toward "what new songs should I listen to?" (including what the catalogue scout found reachable); the final model(s) with dev results, devil's advocate findings and the harness version each number comes from; decisions by the owner's 80% rule; what the evidence does and does not support; state of the held-out slices in words only (no held-out numbers); process problems. Anything you would recommend doing next goes ONLY in a final section "Next steps (kept separate)".
 2. The sealed-test package in ${PKG}/ (create it): PREREG.md plus FILES.sha256. PREREG.md fixes, before any sealed scoring: the exact final predictor file(s) and every file of their bundles with sha256; the comparators and baselines; the evaluation design and decision rule exactly as they would be applied; a proposed pass criterion for the owner to approve (nobody applies it until approved); every input the final model(s) need when scored on the sealed folds and how each is produced without looking at sealed labels or results; the expected runtime; what the sealed run will and will not tell the owner. Do not run --sealed, do not register anything, do not read .sealed/.
@@ -530,7 +551,7 @@ Write your own report file with everything you read and re-derived; held-out num
 
 phase('Package check')
 const pkgCheck = final ? await agent(`You are the PACKAGE AUDITOR. A research lead produced ${PROJ}/RESULTS-W6.md and the sealed-test package ${PKG}/. The sealed test is single-use, so you check that the package is ready before the owner sees it. You change nothing except your own report. ${softCap(AUDIT_MAX)} Report start_utc and end_utc from the date command.
-${CONTEXT}
+${CONTEXT_LATER}
 ${sched('package-check')}
 Check, each with evidence (command and output):
 - every file in the package exists and every sha256 in FILES.sha256 / PREREG.md matches the file now; the bundle listed equals what the final predictor(s) actually import or load (trace it)

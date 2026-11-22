@@ -90,7 +90,7 @@ def _pool_hash():   # pools depend on data.py, make_decoys.py and the data files
     return _hash([data.ROOT / "evalkit" / "data.py", data.ROOT / "evalkit" / "make_decoys.py"] + _data_files())
 def _manifest_file(): return data.ROOT / ".cache" / "shared" / "previews" / "manifest.csv"
 def _code_hash():   # v4: run.py is included (a change of the harness' own logic changes the cache key of baseline / reference scores)
-    return _hash(sorted(p for p in glob.glob(str(data.ROOT / "evalkit" / "*.py")) if not p.endswith(("selftest.py", "selftest_builder.py", "register.py", "fetch_previews.py", "fetch_itunes.py", "sealed_prep.py", "selftest_v53.py"))   # v5.3: the sealed-era prep script and its selftest do not score anything) + _data_files() + [_manifest_file()])
+    return _hash(sorted(p for p in glob.glob(str(data.ROOT / "evalkit" / "*.py")) if not p.endswith(("selftest.py", "selftest_builder.py", "register.py", "fetch_previews.py", "fetch_itunes.py", "sealed_prep.py", "selftest_v53.py"))) + _data_files() + [_manifest_file()])   # v5.3: the sealed-era prep script and its selftest do not score anything
 def _pool_path():   # the dev pools are READ from the frozen shared folder; if absent they are built into the evalkit cache folder
     p = data.ROOT / ".cache" / "shared" / f"evalkit-pools-{_pool_hash()}.pkl"; return p if p.exists() else CACHE_DIR / p.name
 

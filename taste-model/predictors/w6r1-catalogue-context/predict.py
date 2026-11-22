@@ -170,3 +170,5 @@ def _raw(name):
         return np.where(has, x, m) + 1e-9 * np.arange(len(x))
     return fn
 for _k in ("has", "age", "g1", "g2", "g3", "rank", "fan", "wa", "fam"): PREDICTORS["raw_" + _k] = _raw(_k)
+
+WALKFORWARD_FAMILY = ["blend_inv", "blend_all", "blend_inv_half", "blend_inv_q", "blend_all_q", "blend_graph_q", "blend_all_half"]

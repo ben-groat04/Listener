@@ -59,3 +59,4 @@ numbers outside reports/sealed-w6; commits end with the session's attribution li
 - 2026-11-22T22:42Z: stage 1 resumed (detached, pid 164; log scratchpad/sealedprep/build.log); data caches intact.
 - Rule (owner concern): every long job started overnight gets a background watcher (Bash run_in_background, loop until the process exits or the log shows Traceback/error) so the session is woken immediately on finish or failure and moves to the next stage at once; the hourly firing is only a fallback. Agents are already notified on completion.
 - 2026-11-22T22:5xZ: first detached resume died silently after 100 clips (no traceback; memory fine). Restarted with setsid (pid 238) + background watcher.
+- 2026-11-22T23:42Z: stage 1 running (mert 1600/2056 of the resume, ~15 min left); watcher armed.

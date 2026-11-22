@@ -9,11 +9,11 @@ Options: --fast (TUNE, nboot 100, no independence check, no LATE)  --late  --hol
 import sys, os, json, hashlib, importlib.util, datetime, pickle, glob, subprocess, tempfile, io, time
 from pathlib import Path
 import numpy as np, pandas as pd
-from . import data, metrics, refs, bundle, cmpset, declare, sanity
+from . import data, metrics, refs, bundle, cmpset, declare, sanity, sealedout, features
 from . import folds as foldsets
 from .baselines import BASELINES, DIAGNOSTIC, SHORTCUTS, REFERENCES, _manifest_source
 
-VERSION = "v5.2"
+VERSION = "v5.3"
 REGISTRY = data.ROOT / "evalkit" / "registry.json"
 LATE_LOG = data.ROOT / ".cache" / "late_runs.log"
 LATE_TABLES = data.ROOT / ".cache" / "late_tables"
@@ -270,7 +270,7 @@ def _dstat(S, na, nb, alpha=0.05):
         out[key] = dict(d=_f(a[k]) - _f(b[k]), lo95=float(np.nanpercentile(d, 100 * alpha / 2)), P=float(np.mean(f > 0)), lo80=float(np.nanpercentile(d, 10)), hi80=float(np.nanpercentile(d, 90)))
     return out
 
-def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True, part="main", open_pool=True, pair_group="fold", tune_era=False, fixed_cmp=False, fd_ref=None):
+def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=None, graded=True, part="main", open_pool=True, pair_group="fold", tune_era=False, fixed_cmp=False, fd_ref=None, sealed_style=False):
     """Tables for ONE slice (list of fold names). Bootstrap CIs resample whole primary artists GLOBALLY (all rows of an artist in every fold of the slice are drawn together; pair weights =
     products of the two rows' draw counts; resamples shared by all models => paired differences). CI level 95% (Bonferroni-widened to 1-0.05/n_looks for several sealed looks).
     best_ref: the reference (REFERENCES) with the highest TUNE point sauc, fixed outside this function; the evidence grade is based on it. graded=False (HOLDOUT): deltas and P only.
@@ -361,19 +361,20 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
         r["sp_days90"] = round(metrics.spearman_cont(P[n], "days90"), 3); r["sp_log_plays90"] = round(metrics.spearman_cont(P[n], "plays90", np.log1p), 3)
         r["sp_share90"] = round(metrics.spearman_cont(P[n], "share90"), 3); sens.append(r)
     tabs["label_variants_sauc_and_spearman"] = pd.DataFrame(sens)
-    if tune_era or (part == "main" and list(folds) == list(data.TUNE_CUTOFFS)):   # LABEL VARIANTS (TUNE only): sauc [95% CI] of every model against each label definition; `keep` needs a year of follow-up (n/a where it is not computed)
+    labs_ = [l_ for l_ in LABEL_VARIANTS if not (sealed_style and l_ == "keep")]   # v5.3: sealed-style output omits `keep` (needs a year of follow-up, not computable for the sealed folds)
+    if tune_era or sealed_style or (part == "main" and list(folds) == list(data.TUNE_CUTOFFS)):   # LABEL VARIANTS (TUNE only): sauc [95% CI] of every model against each label definition; `keep` needs a year of follow-up (n/a where it is not computed)
         lb = {}
-        for lab in LABEL_VARIANTS:
+        for lab in labs_:
             ok = ft[lab].notna().values
             lb[lab] = (metrics.Block(ft[ok].reset_index(drop=True), lab, nboot, seed), ok) if ok.any() else None
-        lt = {"n (loved/tried)": {lab: (f"{int(ft[lab][ft[lab].notna()].sum())}/{int(ft[lab].notna().sum())}" if lb[lab] else "n/a") for lab in LABEL_VARIANTS}}
+        lt = {"n (loved/tried)": {lab: (f"{int(ft[lab][ft[lab].notna()].sum())}/{int(ft[lab].notna().sum())}" if lb[lab] else "n/a") for lab in labs_}}
         for n in P:
             if n in DIAGNOSTIC: continue
             lt[n] = {}
-            for lab in LABEL_VARIANTS:
+            for lab in labs_:
                 if lb[lab] is None: lt[n][lab] = "n/a"; continue
                 B_, ok = lb[lab]; b = B_.stats(P[n].score.values[tried_m][ok], True, ("sauc",)); lo_, hi_ = _ci(b["sauc_b"], alpha); lt[n][lab] = _fmt(_f(b["sauc"]), lo_, hi_)
-        tabs["LABEL VARIANTS (sauc [95% CI]; TUNE only; keep = >= 6 plays in days [90, 365) after the first play, never a training or prediction label)"] = pd.DataFrame(lt).T
+        tabs["LABEL VARIANTS (sauc [95% CI]; sealed slice; strong = >= 15 plays on >= 5 days, love_4_2 / love_10_4 = neighbouring love definitions; keep omitted)" if sealed_style else "LABEL VARIANTS (sauc [95% CI]; TUNE only; keep = >= 6 plays in days [90, 365) after the first play, never a training or prediction label)"] = pd.DataFrame(lt).T
     fa, fci, flags, fci_raw = {}, {}, [], {}
     for n in P:
         for f, (a, lo, hi) in T.fold_auc_ci(P[n].score.values[tried_m]).items():
@@ -453,7 +454,7 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
             st = S[n]["all"]; LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wx=round(_f(st["wx"]), 4), wx_ci=_ci(st["wx_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
                                            new_artist_sauc=round(_f(S[n]["new"]["sauc"]), 4), new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha))
     bm_ = [n for n in P if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]; FD = []   # FILE_DELTAS80: every pair of the builder's own models, a minus b, with its 80% interval
-    fd_refs = list(dict.fromkeys(([fd_ref] if fd_ref else []) + ([c_ for c_ in COMPARATORS if c_ in P] if len(bm_) == 1 else [])))   # v5.2: a file with ONE model gets rows vs the comparator set (and the --best-ref reference); before, it printed nothing
+    fd_refs = list(dict.fromkeys(([fd_ref] if fd_ref else []) + ([c_ for c_ in COMPARATORS if c_ in P] if (len(bm_) == 1 or sealed_style) else [])))   # v5.3: sealed-style output gives comparator rows to every model of a multi-model file as well   # v5.2: a file with ONE model gets rows vs the comparator set (and the --best-ref reference); before, it printed nothing
     if len(bm_) >= 2 or (fd_refs and bm_):   # v5.1: own bootstrap of FILE_DELTAS80 with FD_NBOOT resamples and a FIXED seed (independent of --nboot / --fast / the slice seed); point values are unchanged
         T1 = metrics.Block(ft, "love", FD_NBOOT, FD_SEED); T1n = T1.sub(T1.new)
         S1 = {n: dict(all=T1.stats(P[n].score.values[tried_m], True, ("sauc", "wa", "wx", "gc")), new=T1n.stats(P[n].score.values[tried_m], True, ("sauc",))) for n in bm_ + [c_ for c_ in fd_refs if c_ in P]}
@@ -500,7 +501,8 @@ def finish_verdicts(out, late):
             for key in GRADED_KEYS:
                 kn = KEY_NAME.get(key, key); col = f"evidence_{kn}"
                 c80 = f"evidence80_{kn}"
-                if not late: V.at[i, col] = f"TUNE only (P={ev[key]['P']:.2f})"; V.at[i, c80] = "TUNE80+" if ev[key]["lo80"] > 0 else "TUNE80-"   # v5.0: 80% grade (owner's risk preference): lo80 = 10th percentile of the paired delta vs best_ref
+                if nm.startswith("SEALED"): V.at[i, col] = f"{nm.split()[0]} only (P={ev[key]['P']:.2f})"; V.at[i, c80] = "SEALED80+" if ev[key]["lo80"] > 0 else "SEALED80-"   # v5.3: the sealed slice is graded as itself (the TUNE label would mislead)
+                elif not late: V.at[i, col] = f"TUNE only (P={ev[key]['P']:.2f})"; V.at[i, c80] = "TUNE80+" if ev[key]["lo80"] > 0 else "TUNE80-"   # v5.0: 80% grade (owner's risk preference): lo80 = 10th percentile of the paired delta vs best_ref
                 elif nm != "ALL": V.at[i, col] = "see ALL"; V.at[i, c80] = "see ALL"
                 else:
                     t, l, a = out["TUNE"]["_evidence"][r["model"]][key], out["LATE"]["_evidence"][r["model"]][key], ev[key]
@@ -1028,6 +1030,8 @@ def main(argv):
     threadpool_limits(2)
     if "--_null-worker" in argv: return _worker_main(argv)
     sealed = "--sealed" in argv; late = "--late" in argv; holdout = "--holdout" in argv; walk = "--walkforward" in argv
+    synth = "--synthetic-sealed" in argv   # v5.3: dev-only format test of the sealed output (TUNE folds under a synthetic slice name)
+    sealed_style = sealed or synth
     opt = lambda k, dflt: type(dflt)(argv[argv.index(k) + 1]) if k in argv else dflt
     fast = "--fast" in argv   # TUNE slice only, nboot 100, no independence check, no LATE
     nboot, indep_n, nulls, win = opt("--nboot", 100 if fast else 300), opt("--indep-n", 0 if fast else 8), [md for md, fl in (("v2", "--null-control"), ("identity", "--null-control-identity")) if fl in argv], opt("--window", "all")
@@ -1045,6 +1049,7 @@ def main(argv):
     assert not (walk and not fast), "--walkforward is allowed only with --fast (TUNE only)"
     assert not (walk and (late or sealed or holdout or nulls)), "--walkforward is a fast TUNE option and cannot be combined with --late / --sealed / --holdout / --null-control"
     assert not (holdout and not mods), "--holdout needs a predictor file"
+    assert not (synth and (sealed or late or holdout or nulls or walk or "--folds" in argv or "--dump-scores" in argv)), "--synthetic-sealed is a dev format test of the sealed output: TUNE folds only, refused with --sealed / --late / --holdout / --null-control / --walkforward / --folds / --dump-scores"
     assert pair in ("fold", "quarter"), "--pair-group is fold or quarter"
     assert not (sets and (late or holdout or sealed or nulls)), "--folds (alternative TUNE-era fold sets) is refused with --late / --holdout / --sealed / --null-control (the null control stays on the default set)"
     assert not (dump and (late or holdout or sealed or nulls)), "--dump-scores is a TUNE-era option: refused with --late / --holdout / --sealed / --null-control"
@@ -1062,7 +1067,7 @@ def main(argv):
     if sets: return _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel, fixed_ref, LP, argv)
     part = "all" if sealed else "holdout" if holdout else "main"
     cutoffs = data.SEALED_CUTOFFS if sealed else data.DEV_CUTOFFS if (late or holdout) else data.TUNE_CUTOFFS
-    slices = ([("SEALED", list(map(str, cutoffs)))] if sealed else [("HOLDOUT-ALL", data.DEV_CUTOFFS), ("HOLDOUT-early", data.TUNE_CUTOFFS), ("HOLDOUT-late", data.LATE_CUTOFFS)] if holdout
+    slices = ([("SEALED", list(map(str, cutoffs)))] if sealed else [("SEALED (synthetic: the TUNE folds, harness format test)", list(map(str, cutoffs)))] if synth else [("HOLDOUT-ALL", data.DEV_CUTOFFS), ("HOLDOUT-early", data.TUNE_CUTOFFS), ("HOLDOUT-late", data.LATE_CUTOFFS)] if holdout
               else [("TUNE", data.TUNE_CUTOFFS)] + ([("LATE", data.LATE_CUTOFFS), ("ALL", data.DEV_CUTOFFS)] if late else []))
     hashes = [_sha(p) for p in mods]
     if sealed:
@@ -1140,9 +1145,17 @@ def main(argv):
     print(f"best_ref ({'FIXED by --best-ref' if fixed_ref else 'fixed from TUNE point sauc of the references, non-HOLDOUT rows' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only (' + ', '.join(r for r in REFERENCES if r in scored) + '), fixed from TUNE point sauc'}): {best_ref}   " + ("(TUNE reference scores not printed in a --holdout run)" if holdout else "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items())))
     if not sealed: declaration_report(mods, LP, "late" if late else "holdout" if holdout else "fast" if fast else "default", argv)   # v5.2
     for w in _tied_warnings({k: v for k, v in scored.items()}): print(w)
+    cov_stop = False
+    if sealed_style:   # v5.3: feature coverage per fold FIRST; interpretation stops if a registered model's tried-song coverage is below 90%
+        mo = [m_ for _, m_ in mod_objs]; needs = {n_: sealedout.needs_of(n_, mo) for n_ in list(REF_NAMES) + list(cand_preds)}
+        ct = sealedout.coverage_table(prepare_folds(cutoffs, part), list(map(str, cutoffs)), sorted({k_ for v_ in needs.values() for k_ in v_}))
+        print(f"\n== [{VERSION}] FEATURE COVERAGE per fold (share of tracks with each feature kind; features read through evalkit.features: dev caches, then the sealed-era caches; no labels)"); print(ct.to_string(index=False))
+        cl, cov_stop = sealedout.coverage_verdicts(ct, needs)
+        for l_ in cl: print(l_)
+        if cov_stop: print("*** INTERPRETATION STOPPED: tried-song feature coverage is below 90% for at least one model (see COVERAGE lines). Tables below are printed for the record only. ***")
     out = {}
     for si, (nm, fl) in enumerate(slices):
-        tabs, flags = summarize(scored, fl, nboot, n_looks, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=not holdout, part=part, pair_group=pair, fd_ref=fixed_ref or None); out[nm] = (tabs, flags)
+        tabs, flags = summarize(scored, fl, nboot, n_looks, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=not holdout, part=part, pair_group=pair, fd_ref=fixed_ref or None, sealed_style=sealed_style); out[nm] = (tabs, flags)
     if holdout:   # one JSON line per --holdout run (and one budget unit) BEFORE anything is printed, so devil's advocates can read the result without re-running and a crash cannot leak an unlogged look
         rec = dict(ts=now_iso(), files=[str(Path(p).resolve()) for p in mods], sha256=hashes, bundle_sha256=bundles, member_sha256=members, models=list(preds), best_ref=best_ref, window=win, nboot=nboot,
                    holdout_all={n: v for n, v in out["HOLDOUT-ALL"][0]["_log"].items() if n not in DIAGNOSTIC})
@@ -1151,13 +1164,20 @@ def main(argv):
         for h in hashes: fingerprint_record(LP["fp_holdout"], h, fps[h])
         b = holdout_budget_use(LP["budget"]); print(f"holdout budget: {b['remaining']} run(s) remaining in round {b.get('round')}")
     flags_of = {nm: f for nm, (t, f) in out.items()}; out = {nm: t for nm, (t, f) in out.items()}
-    if not holdout and not sealed:
+    if sealed_style:   # v5.3: COMPARATOR_SET (pooled / IV / heaviest-out) on the sealed slice for every registered model
+        for nm, fl in slices: out[nm]["COMPARATOR_SET"], _, out[nm]["_cmp_note"] = comparator_set_table(scored, fl, "sealed")
+    if not holdout and not sealed_style:
         out["TUNE"]["FOLD_META"] = fold_meta_table(scored, list(data.TUNE_CUTOFFS), "tune", _fm_comps(best_ref, fixed_ref))   # v5.1: TUNE folds only
         out["TUNE"]["COMPARATOR_SET"], _, out["TUNE"]["_cmp_note"] = comparator_set_table(scored, list(data.TUNE_CUTOFFS), "tune")   # v5.2: TUNE folds only (never held-out rows), default / --fast / --late alike
     for si, (nm, fl) in enumerate(slices): _print_slice(nm, fl, out[nm], flags_of[nm])
     finish_verdicts(out, late)
     for si, (nm, fl) in enumerate(slices): _print_verdict(nm, out[nm], holdout)
     for name, fam, ch in wf: print_walkforward(name, fam, ch, out["TUNE"])
+    if sealed_style:   # v5.3: sauc with its 80% interval per model and the lo80 > 0.5 line
+        for nm, fl in slices:
+            print(f"\n== [{VERSION}] {nm} SAUC 80% (decision rule: lo80 of the interval above the reference value; lo80 > 0.5 = better than chance by the 80% rule)")
+            for l_ in sealedout.sauc80_lines(out[nm]["_S"], [n_ for n_ in out[nm]["_S"] if n_ not in DIAGNOSTIC], nboot): print(l_)
+        if cov_stop: print("*** INTERPRETATION STOPPED (feature coverage < 90%, see the top of this output) ***")
     rt = {n: df.attrs.get("runtime") for n, df in scored.items() if n not in DIAGNOSTIC}
     if dump:   # v5.0: score dump of the default TUNE folds (tried songs; baselines, references, diagnostics and the builder's models as score__<model> columns)
         dd = write_dump(dump, [dump_rows("tune", {n: v for n, v in scored.items() if not n.startswith("walkforward[")}, list(data.TUNE_CUTOFFS))]); print(f"\nscore dump written: {dump} ({len(dd)} rows, {dd.shape[1]} columns, fold set tune)")

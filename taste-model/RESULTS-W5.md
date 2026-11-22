@@ -162,7 +162,7 @@ The project's standing position is unchanged: a real but modest content signal (
 
 ## 7. Process problems
 
-- **Timing.** About 6 hours in total (lead plan at 18:11 UTC, this report about 00:10 UTC; the inventories ran before that). Builders used 35, 99, 44 / 61, 47 and 23 minutes of 120 / 90-minute caps. Devil's advocates noted under-use: unrun items that cost minutes, and a calibration stopped at 10 of 12 seeds with time to spare. No job broke its cap.
+- **Timing.** About 6 hours in total (lead plan at 18:11 UTC, this report about 00:00 UTC; the inventories ran before that). Builders used 35, 99, 44 / 61, 47 and 23 minutes of 120 / 90-minute caps. Devil's advocates noted under-use: unrun items that cost minutes, and a calibration stopped at 10 of 12 seeds with time to spare. No job broke its cap.
 - **Reproducibility is good.** Every builder's headline numbers were regenerated bit-for-bit from the project folders. Gaps:
   - some scratch-only dumps and null-refit pickles are regenerable only by re-running;
   - one analysis output file (score-calculation a5_trend_abs.txt) is all NaN; the real numbers are in a "_tail" file;

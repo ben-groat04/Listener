@@ -44,7 +44,7 @@ def main():
     while True:
         T.d = F.Cache(str(D / "p1_user" / "dz_tracks.jsonl")).d      # reload
         pairs = [(int(t), v["dz_id"]) for t, v in T.d.items() if int(t) in ids and v.get("status") == "match" and v.get("dz_has_preview")]
-        F.run_previews(str(D), [p for p in pairs], threads=1)
+        if "--no-download" not in sys.argv: F.run_previews(str(D), [p for p in pairs], threads=1)
         pm = pd.read_csv(D / "previews_manifest.csv") if (D / "previews_manifest.csv").exists() else pd.DataFrame(columns=["md5", "trackId", "ok"])
         pm = pm[pm.ok.astype(bool)]; todo = [r for r in pm.to_dict("records") if r["md5"] not in done]; 
         for r in todo:

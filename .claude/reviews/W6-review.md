@@ -12,7 +12,7 @@ Run wf_c23e4981-6d1: 21 agents (2 foundations, 1 plan lead, engineer, 2 preps, 4
 7. No held-out (LATE) number reached RESULTS-W6.md or prereg-w6 (grep + package check); it did reach the review lead and final lead via the journal summary (allowed, leads write only to their own reports).
 8. Round-2 preview builder's final file is a duplicate of `avg21_dev` and has NO fallback code despite the docstring claiming one.
 9. Package check: ready, 5 minor wording gaps in PREREG.md, all worth fixing before the sealed run (section 4).
-10. Cleanup done, 38/38 FILES.sha256 hashes still match, selftest --v53 result at the end of this file.
+10. Cleanup done, 38/38 FILES.sha256 hashes still match, selftest --v53 passed (v52 part 92 s, v53 part 128 s).
 
 ## 1. Improvements (concrete)
 - Add a data-acquisition budget block to the brief as FACTS: Deezer search ~85/min at 3 threads (hard gap 0.25 s in `catalogue.MIN_GAP` = 240/min max), iTunes ~12-17/min (3.5 s gap, measured 4-8 s), MERT ~2.2 s/clip, essentia 2.3 s/clip. Plan lead must output a fetch table (source, rows, rate, minutes) and the full scope up front; reject plans whose total exceeds the cap.

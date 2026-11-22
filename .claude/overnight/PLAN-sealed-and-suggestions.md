@@ -56,3 +56,4 @@ numbers outside reports/sealed-w6; commits end with the session's attribution li
   - If the full-history data are unavailable or a re-fetch would not be ready in time, train on whatever history exists (the existing dev-era data / existing caches, i.e. "the old model") and say so.
   - Deadline rule: if at any firing after 03:00 UTC the sealed stages (1-4) are not finished, start stage 5 immediately in parallel (or instead), so the list is ready by 07:00 UTC; finish the sealed stages afterwards if possible.
   - If something blocks the full pipeline, fall back to the best model that can run in time (e.g. score candidates whose preview features can be computed in time; reduce the candidate count) and state the shortcut in the message. Never end the night without a list.
+- 2026-11-22T22:42Z: stage 1 resumed (detached, pid 164; log scratchpad/sealedprep/build.log); data caches intact.

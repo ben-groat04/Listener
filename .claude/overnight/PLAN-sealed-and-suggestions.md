@@ -3,6 +3,7 @@
 Owner's words: "you must run the sealed test too. I will wake up to new song suggestions."
 The owner has seen the dev results; this message is the explicit go for the sealed run and for suggestions.
 The proposed pass rule (PREREG.md section 5: S1 and S2 both decided positive) is applied as written.
+Owner, verbatim, before sleeping: "To clarify so that you don't stop - I give my GO for the sealed test and anything else". This is standing approval for every stage below, including any owner go-ahead the PREREG asks for (e.g. a single fold under 90% coverage). Do not stop to ask; if the harness itself refuses (pooled coverage STOP), try the documented --retry, fix the cause if possible, and continue.
 
 Each hourly firing of the scheduled task reads this file, finds the first unfinished stage (check the
 STATE lines at the bottom), works on it, appends a STATE line, commits + pushes, and ends the turn while

@@ -49,3 +49,4 @@ numbers outside reports/sealed-w6; commits end with the session's attribution li
 
 ## STATE (append one line per stage change)
 - 2026-11-22: stage 1 in progress (~2,850/5,056 MERT rows; tried + train done; ~2,200 decoy clips left).
+- Owner, verbatim: "Including getting my stats.fm data if something goes wrong". If spotify-liked-songs/.cache/{streams.jsonl,top_tracks.json} are lost (container replaced), re-fetch them with `python3 spotify-liked-songs/statsfm_export.py` (owner-approved; the owner's own account). Caveat: a re-fetch can differ from the 2026-11-20 data (window, new plays), so re-run `evalkit.make_sealed` and check "matches manifest: True" before the sealed run; if it does not match, the sealed test is not valid as pre-registered — say so in the final message, skip stage 3, and still produce suggestions (stage 5) from avg21_dev trained on the re-fetched history, flagged "no valid sealed test".

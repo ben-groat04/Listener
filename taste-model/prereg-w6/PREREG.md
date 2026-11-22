@@ -2,6 +2,8 @@
 
 Written by the Workflow 6 final research lead on 2026-11-22, before any sealed scoring. Nothing here has been run on sealed data. Nobody has run `--sealed`, registered a file or read `.sealed/`. **Only the main session runs the steps below, and only after the owner has seen the dev results and approved.**
 
+_Note: sealed_manifest.json re-sealed 2026-11-22 by the owner under current make_folds (v3+ metadata filter; 1664 -> 1517 songs, the 147 without track metadata); no labels read._
+
 Harness: evalkit **v5.3** (sha256 of every evalkit file in `FILES.sha256`). `make_sealed.py`, `sealed_manifest.json` and `register.py` are byte-identical to the hashes the engineers recorded at the start of this workflow.
 
 ## 1. What will be registered

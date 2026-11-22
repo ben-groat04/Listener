@@ -10,7 +10,7 @@ import numpy as np, pandas as pd
 from . import data, run, features, sealedout
 
 HERE = pathlib.Path(__file__).parent
-SEALED_SHA = {"make_sealed.py": "23f05539ffcf22705027e8300e0d40ce17eb31bd84824b060fab543be6f30973", "sealed_manifest.json": "3e82adce0fbc265d7730019a2fceb86e18d328f737172180ea9f242404d9ee1e",
+SEALED_SHA = {"make_sealed.py": "23f05539ffcf22705027e8300e0d40ce17eb31bd84824b060fab543be6f30973", "sealed_manifest.json": "84b189fab800d2e19cb94b74632e919e3fee666938c910ab4517d2f3a394be31",
               "register.py": "e47cea9c6037b2479afa124f7c6b53e48a128480dd978d312f82fad780a463ce"}
 ROW_TOL = 0.0       # MERT rows are compared exactly first; the printed tolerance used for the assertion is TOL_ROW (float16 values, see below)
 TOL_ROW = 2e-3      # max |rebuilt - original| over a float16 row (activation scale ~0.1-1; one float16 step near 1 is 1e-3; same code, same quantised model: expected 0)

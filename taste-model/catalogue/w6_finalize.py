@@ -22,7 +22,7 @@ def main():
     C = pd.DataFrame(rows); C.to_csv(D / "p1_coverage.csv", index=False)
     pm = pd.read_csv(D / "previews_manifest.csv"); al = pd.read_csv(D / "align.csv")
     P = pm.merge(al.drop(columns=["trackId"], errors="ignore"), on="md5", how="left")
-    P["same_excerpt"] = (P.align_offset_s.abs() <= SAME_OFFSET_S) & (P.align_score >= SAME_SCORE); P.loc[P.align_score.isna(), "same_excerpt"] = np.nan
+    P["same_excerpt"] = ((P.align_offset_s.abs() <= SAME_OFFSET_S) & (P.align_score >= SAME_SCORE)).astype(float); P.loc[P.align_score.isna(), "same_excerpt"] = np.nan
     mk = set(); [mk.update(np.load(f)["md5"]) for f in glob.glob(str(D / "mert_deezer/shard_*.npz"))]; P["mert_ok"] = P.md5.isin(mk); P.to_csv(D / "p2_clips.csv", index=False)
     print(C.to_string(index=False)); print(P.ok.sum(), P.mert_ok.sum(), P.same_excerpt.value_counts(dropna=False).to_dict())
 if __name__ == "__main__": main()

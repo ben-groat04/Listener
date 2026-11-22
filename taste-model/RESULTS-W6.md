@@ -110,7 +110,7 @@ Proposed pass, for you to approve: **S1 and S2 both decided positive.** A decide
 
 ## 7. Process problems
 
-- **The round-2 builder for the "correct" music-model ensemble stopped after about 7 minutes of a 60-minute budget.** It thought its first test run was unfinished. In fact the run had finished, showing three candidates POS against the incumbent with the independence check passed. It declared nothing and wrote no report file. Under the rules only declared models can be chosen, so the final is the smaller `avg21_dev` gain, and a probably stronger candidate (+0.014 to +0.015) was lost to this workflow.
+- **The round-2 builder for the "correct" music-model ensemble was forced to return about 10 seconds before its fast run finished.** It ended its turn to wait on a monitor, and the turn ended the builder's work after about 7 minutes of a 60-minute budget. It did not misread an unfinished run. The run then finished, showing three candidates POS against the incumbent with the independence check passed. The builder declared nothing and wrote no report file. Under the rules only declared models can be chosen, so the final is the smaller `avg21_dev` gain, and the three undeclared candidates (+0.014 to +0.015 vs the incumbent) could not be used in this workflow.
 - The round-2 preview-source builder declared, as its required final, a file that duplicates `avg21_dev`. So it added no new candidate.
 - Two report files were missing: one devil's advocate (catalogue context, "works" direction) and the round-2 ensemble builder. In both cases other agents re-ran the same headlines.
 - One devil's advocate put held-out (LATE) numbers in its summary text. It was caught, and they appear nowhere in this file or the sealed package.
@@ -128,3 +128,15 @@ These are recommendations only; none of them has been acted on.
 - For suggestions: generate candidates from a 1-2 hop Deezer related-artist walk plus genre charts. Score them with the final model, preferring Spotify-embed previews and falling back to iTunes or Deezer with the source flagged. Then collect your feedback on specific songs, as you planned.
 - Loosen the Deezer duration rule (about 15 s), which a devil's advocate estimated would lift matching from 75% to about 85%. Add a popularity control to the reachability map.
 - Try training the model with Deezer and iTunes clips of training songs as extra examples, which is the untested fix for the preview-source gap.
+
+## Addendum after W6: the two flaws fixed, two combos scored, candidate kept
+
+After W6 the two flaws of the music-model ensemble were fixed: (1) the model file now lists every feature kind its members read (`mert` and `essentia`); (2) the scaling constants now come from out-of-fold scores of songs the member was not trained on, so a song's score no longer depends on the other songs scored with it. Two combos were then declared and scored on the development folds (full default run, harness v5.3): `combo_mean_oof` and `combo_max_oof`. Selection spent: 2 more variants on the same folds.
+
+- **Against the incumbent, pooled:** mean +0.014 [+0.003, +0.026] POS; max +0.015 [+0.003, +0.028] POS. Precision-weighted: mean POS, max POS. Two heaviest folds left out: mean +0.024 [+0.004, +0.048] POS; max +0.032 [+0.011, +0.055] POS. (`avg21_dev` is UNDECIDED in that last column.)
+- **Against `avg21_dev`:** mean -0.007 [-0.021, +0.005] and max -0.007 [-0.024, +0.006] (avg21_dev minus combo), both UNDECIDED.
+- **New-artist songs:** `avg21_dev` 0.668, incumbent 0.667, `combo_mean_oof` 0.656, `combo_max_oof` 0.653. The combos have no gain on new artists, and the point values are lower.
+- **Checks:** independence passed (median 0.0, p90 0.0); null control PASS for both (sauc 0.568 and 0.564, inside their bands).
+- **Caveats:** more selection on the same folds, an extra essentia pipeline that the sealed pipeline would have to build, and the sealed package was already built around `avg21_dev`.
+
+**Decision (the owner's):** `avg21_dev` stays the single sealed candidate, because of its new-artist score, which is the quantity closest to the goal of finding new songs. The combos are not registered. The sealed package in `prereg-w6/` is unchanged in content in this respect (wording fixes only).

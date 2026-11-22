@@ -4,7 +4,7 @@ ROOT = "/home/user/Listener/taste-model/"
 import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, ROOT)
 import grid as G
 from evalkit import features as FT
-FEATURES = ("mert",)
+FEATURES = ("mert", "essentia")   # combo members call ref_w4r1_music (essentia) as well as MERT
 DAY = 86400 * 10**9
 def _raw(tids, meta, src="dev"):
     assert src == "dev"
@@ -28,7 +28,7 @@ def _prep(train, meta, cutoff):
              tt_all=np.sort(train.t.values.astype("datetime64[ns]").astype(np.int64)), first=st["first"].values.astype("datetime64[ns]").astype(np.int64),
              firstdt=st["first"], X=X, has=has, pca={}, Ptr={}, Pc={}, counts={}, fits={}, cutoff=pd.Timestamp(cutoff), meta=meta)
     _PREP[key] = P
-    while len(_PREP) > 4: _PREP.popitem(last=False)
+    while len(_PREP) > 8: _PREP.popitem(last=False)
     return P
 
 def _pcaf(P, mode, ncomp):
@@ -167,14 +167,29 @@ def one(names, src="dev", pool="mean"):
     return predict
 
 
-# ---------------- round 2: pool-independent scaling from TRAINING songs only ----------------
+# ---------------- round 3: pool-independent scaling from OUT-OF-FOLD scores of training songs ----------------
 A21 = G.ALL21
+NF = 3
 _TS = collections.OrderedDict()
-def _trainstats(train, meta, cutoff, tag, fn):
-    """mean / sd of member score `tag` over the fold's TRAINING songs that have a MERT clip (song table of train; candidates never enter). fn(tids)->scores. cached per train identity."""
-    P = _prep(train, meta, cutoff); k = (P["key"], tag)
+def _sfold(song): return int(hashlib.md5(str(song).encode()).hexdigest(), 16) % NF
+
+def _oof_stats(train, meta, ce, tag, fn, need=None):
+    """mean / sd of member score `tag` over TRAINING songs scored OUT-OF-FOLD: songs are split into NF folds by a hash of the song id; fold k's songs are scored by a model fitted on the
+    other folds' plays only (fn(train_sub, tids) -> scores), so no score is in-sample, and the spread matches what unseen catalogue songs get. Candidates never enter. Cached per train identity."""
+    k = (_tkey(train, ce), tag)
     if k not in _TS:
-        t = P["tids"][P["has"]]; s = np.asarray(fn(t), float); assert np.isfinite(s).all() and len(s) > 50
+        from evalkit.data import song_table
+        st = song_table(train); st = st[st.trackId.isin(meta.index)]
+        tid = st.trackId.values; fo = np.array([_sfold(x) for x in st.index])
+        has = FT.mert(meta, tid, layers=(4, 4))[1]
+        if need is not None: has = has & need(tid)
+        sf = train.song.map(pd.Series(fo, index=st.index)).values; vals = []
+        for j in range(NF):
+            sel = has & (fo == j)
+            if sel.sum() == 0: continue
+            sub = train[(sf != j) & ~pd.isna(sf)]
+            vals.append(np.asarray(fn(sub, tid[sel]), float))
+        s = np.concatenate(vals); assert np.isfinite(s).all() and len(s) > 50
         _TS[k] = (float(s.mean()), float(s.std() + 1e-9))
         while len(_TS) > 64: _TS.popitem(last=False)
     return _TS[k]
@@ -184,16 +199,16 @@ def avg21(pool="mean"):
     def predict(train, cands, meta, cutoff): return f(train, cands, meta, cutoff)[0]
     return predict
 
-def combo_ts(pool="mean", w=1.0):
-    """avg21 (MERT, pooling `pool`) + w * ref_w4r1_music, each centred and scaled by its mean/sd over the training songs (fixed constants for the call; no candidate statistic)."""
+def combo_oof(pool="mean", w=1.0):
+    """avg21 (MERT, pooling `pool`) + w * ref_w4r1_music, each centred and scaled by mean/sd of its OUT-OF-FOLD scores over the training songs (fixed constants per call; no candidate statistic)."""
     from evalkit import refs
     fa = _avg(A21, "dev", pool)
     def predict(train, cands, meta, cutoff):
-        ce = pd.Timestamp(cutoff); P = _prep(train, meta, ce)
-        ma, sa = _trainstats(train, meta, ce, "a21" + pool, lambda t: fa(train, pd.DataFrame({"trackId": t}), meta, ce)[0])
-        mm, sm = _trainstats(train, meta, ce, "music", lambda t: refs.score("ref_w4r1_music", train, pd.DataFrame({"trackId": t}), meta, ce))
+        ce = pd.Timestamp(cutoff)
+        ma, sa = _oof_stats(train, meta, ce, "a21" + pool, lambda sub, t: fa(sub, pd.DataFrame({"trackId": t}), meta, ce)[0])
+        mm, sm = _oof_stats(train, meta, ce, "music", lambda sub, t: refs.score("ref_w4r1_music", sub, pd.DataFrame({"trackId": t}), meta, ce), need=lambda t: FT.essentia_has(meta, t))
         a = fa(train, cands, meta, ce)[0]; m = refs.score("ref_w4r1_music", train, cands, meta, ce)
         return (a - ma) / sa + w * (m - mm) / sm
     return predict
 
-PREDICTORS = {"avg21_dev": avg21("mean"), "avg21_max": avg21("max"), "combo_mean_ts": combo_ts("mean"), "combo_max_ts": combo_ts("max")}
+PREDICTORS = {"avg21_dev": avg21("mean"), "combo_mean_oof": combo_oof("mean"), "combo_max_oof": combo_oof("max")}

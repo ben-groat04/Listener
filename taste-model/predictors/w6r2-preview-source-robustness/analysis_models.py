@@ -88,6 +88,8 @@ def mix(kind):
 def diag(field):
     def predict(train, cands, meta, cutoff):
         t = cands.trackId.values; out = np.zeros(len(t))
+        if field == "devsrc":   # 1 = the dev clip's stored URL is iTunes (fallback fill), 0 = other stored URL, -1 = no clip
+            u = meta.reindex(t)["previewUrl"].values; return np.array([(-1.0 if not isinstance(x, str) or not x else (1.0 if "itunes.apple.com" in x or "mzstatic" in x else 0.0)) for x in u])
         if field == "hasdev": return core._raw(t, meta, "dev")[1].astype(float)
         if field == "hasdz": return alt_raw(t, "dz")[1].astype(float)
         if field == "hasit": return alt_raw(t, "it")[1].astype(float)
@@ -100,5 +102,5 @@ PREDICTORS = {"a_dev": model_src("dev")}
 for s in ("dz", "it"):
     for k in ("", "_mu", "_std", "_coral", "_ridge"): PREDICTORS["a_" + s + k] = model_src(s + k)
 PREDICTORS.update({"a_mix_raw": mix(""), "a_mix_mu": mix("_mu"), "a_mix_std": mix("_std")})
-for f in ("hasdev", "hasdz", "hasit", "dz_off", "dz_aln", "dz_same", "it_off", "it_aln", "it_same"): PREDICTORS["diag_" + f] = diag(f)
+for f in ("devsrc", "hasdev", "hasdz", "hasit", "dz_off", "dz_aln", "dz_same", "it_off", "it_aln", "it_same"): PREDICTORS["diag_" + f] = diag(f)
 if os.environ.get("W6R2_ONLY"): PREDICTORS = {k: v for k, v in PREDICTORS.items() if k in os.environ["W6R2_ONLY"].split(",")}

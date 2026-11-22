@@ -34,25 +34,34 @@ def main():
     lp, mp = D / "itunes_lookup.csv", D / "previews_manifest.csv"
     done = set(pd.read_csv(lp).trackId) if lp.exists() else set()
     todo = [t for t in ids if t not in done][:mx]; print(len(ids), "scope", len(done), "done", len(todo), "todo", flush=True)
+    import threading; from concurrent.futures import ThreadPoolExecutor
+    lk = threading.Lock(); pool = ThreadPoolExecutor(2)
+    def fetch_clip(t, a):   # download + ffprobe in a worker thread (different host from the search API), then append the manifest and the lookup row
+        row = dict(trackId=t, status="match", itunes_trackId=a["trackId"], previewUrl=a["previewUrl"], itunes_artist=a["artistName"], itunes_title=a["trackName"], itunes_durationMs=a["trackTimeMillis"], md5=None)
+        b = download(a["previewUrl"]); m = dict(md5=None, trackId=t, itunes_track_id=a["trackId"], bytes=0, duration_s=np.nan, ok=False, error="", url_md5=hashlib.md5(a["previewUrl"].encode()).hexdigest())
+        if isinstance(b, bytes) and len(b) > 1000:
+            h = hashlib.md5(b).hexdigest(); p = D / "previews_itunes" / f"{h}.m4a"; p.write_bytes(b)
+            try:
+                du = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)], capture_output=True, text=True).stdout.strip())
+                m.update(md5=h, bytes=len(b), duration_s=du, ok=du > 5); row["md5"] = h
+            except Exception as e: m.update(md5=h, bytes=len(b), error="ffprobe " + str(e)[:50])
+        else: m["error"] = str(b)[:80]
+        with lk:
+            pd.DataFrame([m]).to_csv(mp, mode="a", header=not mp.exists(), index=False); pd.DataFrame([row]).to_csv(lp, mode="a", header=not lp.exists(), index=False)
+    futs = []; tnext = time.time()
     for i, t in enumerate(todo):
-        r = U.loc[t]; row = dict(trackId=t, status="skipped_no_title", itunes_trackId=None, previewUrl=None, itunes_artist=None, itunes_title=None, itunes_durationMs=None, md5=None)
-        if isinstance(r["name"], str) and r["artist"] == r["artist"] and r["artist"]:
-            res = search(r["artist"], r["name"])
-            if res is None: continue
-            a = FI.accept(res, r["artist"], r["name"], r["durationMs"]); row["status"] = "nomatch"
-            if a:
-                row.update(status="match", itunes_trackId=a["trackId"], previewUrl=a["previewUrl"], itunes_artist=a["artistName"], itunes_title=a["trackName"], itunes_durationMs=a["trackTimeMillis"])
-                b = download(a["previewUrl"]); m = dict(md5=None, trackId=t, itunes_track_id=a["trackId"], bytes=0, duration_s=np.nan, ok=False, error="", url_md5=hashlib.md5(a["previewUrl"].encode()).hexdigest())
-                if isinstance(b, bytes) and len(b) > 1000:
-                    h = hashlib.md5(b).hexdigest(); p = D / "previews_itunes" / f"{h}.m4a"; p.write_bytes(b)
-                    try:
-                        du = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)], capture_output=True, text=True).stdout.strip())
-                        m.update(md5=h, bytes=len(b), duration_s=du, ok=du > 5); row["md5"] = h
-                    except Exception as e: m.update(md5=h, bytes=len(b), error="ffprobe " + str(e)[:50])
-                else: m["error"] = str(b)[:80]
-                pd.DataFrame([m]).to_csv(mp, mode="a", header=not mp.exists(), index=False)
-            time.sleep(DELAY)
-        pd.DataFrame([row]).to_csv(lp, mode="a", header=not lp.exists(), index=False)
+        r = U.loc[t]
+        if not (isinstance(r["name"], str) and r["artist"] == r["artist"] and r["artist"]):
+            with lk: pd.DataFrame([dict(trackId=t, status="skipped_no_title")]).to_csv(lp, mode="a", header=not lp.exists(), index=False)
+            continue
+        time.sleep(max(0, tnext - time.time())); tnext = time.time() + DELAY      # one search per 3.5 s (the download runs concurrently on the CDN host)
+        res = search(r["artist"], r["name"])
+        if res is None: continue
+        a = FI.accept(res, r["artist"], r["name"], r["durationMs"])
+        if a: futs.append(pool.submit(fetch_clip, t, a))
+        else:
+            with lk: pd.DataFrame([dict(trackId=t, status="nomatch")]).to_csv(lp, mode="a", header=not lp.exists(), index=False)
         if i % 20 == 0: print(i, len(todo), int(time.time()), flush=True)
-    print("lookup done", flush=True)
+    for f in futs: f.result()
+    (D / "lookup_finished.flag").write_text("done"); print("lookup done", flush=True)
 if __name__ == "__main__": main()

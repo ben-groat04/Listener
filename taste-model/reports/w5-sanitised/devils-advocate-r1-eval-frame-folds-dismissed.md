@@ -1,0 +1,46 @@
+# Devil's advocate r1 (dismissed direction) for builder eval-frame-folds
+Scratch: $S/devils-advocate-r1-eval-frame-folds-dismissed/ (null.txt, folds.txt, full.txt, y_alone.txt, selftest_v5.txt, own.py, stale.py).
+Start/end: TIMING.txt in the scratch folder (20:30:38Z start).
+
+## What I re-ran
+- Null control: `python3 -W ignore -m evalkit.run --null-control predictors/w5r1-eval-frame-folds/predict.py` -> the stack3 row is byte-identical to the builder's (PASS on the cluster band; seeds .517/.536/.550/.574/.464; seed-mean .528; gap .124).
+- Fast 6-fold-set run with dump (same command as README step 1): 243 s (score caches warm). Every score column of my dump equals the builder's dump (max abs diff 0.0 over 6444 rows x 22 score columns).
+- Full default run of predict.py: identical to the builder's full_run.txt except runtimes. stack3 sauc .653 (95% .605-.685), delta vs artist_recent +0.034 80%[+0.004,+0.084], vs best_ref ref_w4r1_listening +0.002 [-0.010,+0.016]; evidence TUNE80-.
+- Standalone `--fast --refs none --folds tune_y` for stack3: scores identical to the union-scored dump (max diff 0.0); so the "one call per cutoff on the union of candidates" shortcut did not change stack3 there. (Not a differential test for sets whose windows are shorter than the union; the default-set stack3 sauc .653 equals the standalone full run, which is the relevant evidence.)
+- selftest --v5: OK, 48 s.
+- Independent code (own.py, stale.py, from the dump, own bootstrap 500 reps, own seeds): pooled/macro/leave-out deltas, per-quarter slope, label-vs-keep AUCs, monthly-vs-quarterly paired delta, top-5 Kendall tau, wa artefact.
+- LATE/HOLDOUT: not re-run. Read only the harness late table (.cache/late_tables/50c6...txt): its TUNE block matches (stack3 .653); I did not audit section-8 numbers in detail (they are not headline claims).
+- Shared dirs: builder code never reads .cache/shared-w5r1 (DONE exists; not used). .cache/shared (W4): no file newer than MANIFEST.txt; 45 hashed manifest files re-hashed, 0 mismatches (shard globs are "not hashed" in the manifest; counts 131 and 202+2 files plausible). Nothing modified.
+
+## Per-claim verification table
+| # | verdict | what I checked | note |
+|---|---|---|---|
+| 1 | holds (weak support for "essentially unchanged") | a1 table; tau recomputed .85/.88/.85/.91, y .27 | Tau is over 12 models incl. 7 weak baselines and 2 stacks that are linear combos of refs: inflated by the easy baseline/content gap. Over the 5 models that matter (artist_recent, 3 refs, stack) tau vs tune is 1.0 (m), .8 (q1,q2), .4 (h), -.4 (y), and the best reference changes in 3 of 6 sets. |
+| 2 | holds numerically | recomputed: spread tune,q1,q2,h,m median .028 vs hw80 .033 (ratio .7); with y .043 (ratio 1.2 by median of ratios; report says 1.3) | The comparison is between spread of scores on the SAME songs across frames and an independent-sampling half-width: not like for like (a paired-noise yardstick would be needed). Descriptive only. |
+| 3 | holds | own pooled pair shares 0.410 and 0.282 | Share is quadratic in fold size by construction of pooled AUC. |
+| 4 | holds as defined, definition-sensitive | pooled +0.034 lo80 +0.006; macro over quarters -0.004 lo80 -0.036 (mine) | Builder's half-year/year weights average quarter-paired AUCs. If pairs are instead formed inside the half-year/year group (cutoffs mixed) I get macro-half +0.002, macro-year +0.009 (lo80 -0.025/-0.030). So the sign of the point delta under "equal weight per half-year/year" depends on pairing; only the lo80 < 0 (not different at 80%) is stable. The report's recommended rule "half-year equal-weight point delta >= 0" would flip on this choice (-0.007 vs +0.002). |
+| 5 | holds | drop 2023Q4 +0.004 lo80 -0.026; drop 2023Q1 +0.084 lo80 +0.047 | |
+| 6 | holds | per-quarter deltas identical to report; slope +0.108/yr unweighted, +0.126 pair-weighted, +0.092 from 2022Q3 only, +0.114 without 2023Q1; permutation p .007 | 10 autocorrelated points; the 80% interval was not recomputed. |
+| 7 | holds | a8 file; my paired bootstrap monthly-minus-quarterly cutoffs (quarter pairing): stack3 +0.004 80%[-0.005,+0.010], listening +0.007 [-0.008,+0.016], music +0.005 [-0.002,+0.012] | 1 vs 3 months is genuinely inside paired noise, 12 months not re-run (read from a8). |
+| 8 | holds | a1 grouping column: sauc -0.002..+0.006 | |
+| 9 | holds | own AUCs vs keep: love .870, strong .872, love_4_2 .860, love_10_4 .874, plays90 .927, share90 .933 | 60/30-day numbers read from a3. |
+| 10 | holds with corrections | a3 table | Range "+0.008 to +0.016" is not accurate: h30_3/2 +0.003, love_10_4 (90 d) +0.006, h60 +0.010..+0.012, h30 4/2 +0.014, 6/3 +0.016. Also love_4_2 is a 90-day label with lo80 -0.014, so the horizon is not the only driver (threshold laxity matters); h180_10/4 +0.002 and 15/5 -0.000 are borderline. |
+| 11 | holds | a4 table: 12 of 13 lo80 > 0, exception edges 0|1|2+ -0.002 | Only the 13 listed variants; no variants of exposure definition beyond gap and edges. |
+| 12 | holds narrowly | a5: hl30..730 .616-.627, gbm variants .516-.584, no best_ref change | Only one family (exponential artist recency) and GBM knobs were varied; hl30 shrinks the stack lead to +0.026 lo80 +0.002 (undecided). "Bar not sensitive" does not cover other history baselines (e.g. song-level replay, rolling artist rates). |
+| 13 | holds | a1 table: best_ref listening on tune,q1,m; music q2,h; artist_recent y; stack lo80 vs own best_ref all negative (-0.049..-0.005) | Consequence is partly built in: best_ref is the max over references on the same fold set (selected on the evaluated data) and the stack is an average of three of them. |
+| 14 | does not hold (inference) | a6 table | The observed sign stability for |lo80| > .01 holds. But the conclusion "nboot >= 300 is needed" is not supported: borderline deltas still cross zero across seeds at nboot 1000 (e.g. music-ar sauc lo80 -0.0053..+0.0012 at 1000; audio-ar wx -0.0049..+0.0006). The seed (resample draw), not nboot, is the noise; fix is averaging over seeds or treating |lo80| < .005 as undecided (which the report also says). |
+| 15 | holds | recomputed: wa artist_recent .427 (quarter pairing, tune_m), .500 with fold pairing; later-month alone vs love within (quarter, artist) .425 (3045 pairs) | |
+| 16 | holds (weak) | a1 csv popularity sauc .466-.494 | 80% interval includes .5 everywhere; correctly labelled weak. |
+| 17 | holds | full run re-run, identical | |
+| 18 | holds with caveats | null control re-run identical; a10 read (not re-run) | PASS statistic (seed-averaged null score) is .568, band .495-.579: 0.011 below the upper edge. The quoted "gap .124" is real minus the seed-mean of per-seed sauc (.528), a different quantity; real minus the gated statistic is .085. Z-score check (a10) uses one global mean/std over all folds of the dump, which is itself not candidate-independent; it shows only that normalisation does not matter. |
+| 19 | holds | a9 / full-run table: +0.002 lo80 -0.021 | pool_artist_siblings uses post-cutoff pool info; stack equal to it on pooled sauc. |
+
+## Other attacks (not numbered claims)
+- Effort: builder used 35 min of its cap (cap 20:51, ended 19:26); the code/time stamps are consistent with the report (analysis scripts 18:59-19:03, declaration 19:12, full 19:12, late 19:17, holdout 19:23). Not tried: earlier start dates, rolling-origin/expanding vs fixed-window training, non-chronological or artist-blocked folds, retuning of references per fold set, label definitions combined with monthly cutoffs, more than one candidate model (all fold-frame statements rest on 5 models, 3 of which are tuned on TUNE).
+- All fold sets re-use the same 1074 songs and artists (builder admits it): "frame choice" variance is a variance of re-slicing one small sample, not independent evidence; the effective evidence for the time trend is 10 quarters, dominated by 2 heavy ones.
+- Final declaration: an equal-weight average of three previously evaluated references adds no new model; one of 3 HOLDOUT units and 1 of 2 LATE runs were spent on a file whose components' LATE/HOLDOUT numbers were already known to Workflow 4. The final fails the harness independence gate (acknowledged), so it is not eligible as a valid predictor under the harness's own rule.
+- Selection: ~100 paired comparisons at 80%; builder says so. The recommended frame (monthly cutoffs, quarter pairing) was picked after seeing that it raises the stack's lo80 (+0.008 -> +0.026); but the paired difference 1-month vs 3-month is not significant (see claim 7), so the recommendation is a preference, not a finding.
+- Engineer spec: items checked: --folds, --pair-group, --dump-scores columns, 80% columns, --refs forced-all behaviour on late/holdout/full, holdout budget file (round w5r1, now remaining 0 = 3 runs logged), selftest --v5 pass. Default-run v4.1 reproduction is asserted in selftest (passed). I did not run --late/--holdout. One departure: in alternative-set runs best_ref is chosen on the evaluated set (documented).
+
+## Strongest remaining concern
+The headline "frame choices change conclusions" rests on the weighting result, which is driven by one 283-song quarter (2023Q1, where artist_recent AUC is .705 while content models are not better) and whose half-year/year variants are definition-dependent (claim 4).

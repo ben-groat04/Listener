@@ -1,0 +1,61 @@
+# Devil's advocate r1 (direction: dismissed) for builder tune-content-numbers
+
+Start 2026-11-21T21:17:24Z. Scratch: .../wf5/devils-advocate-r1-tune-content-numbers-dismissed/ (da_variants.py, an.py, ens.py, da_*.pkl/log, perm_*.pkl).
+Overall: the builder's numbers reproduce. Its "no change helps, tuning does not help" verdict survives every attack I could run, with three soft spots: (a) the miss_max (missing-audio policy) lead was dropped without follow-up although its sign is positive on all 6 fold sets, (b) the "shared noise draw" explanation of the below-chance null seed is not supported by 8 new seeds (seed 1 is a ~3 sd outlier), (c) grid.py was rewritten after the scored real run, so "pre-written" is only partly verifiable. Nothing here is a held-out number except in the claim 15 row (numbers only in this file).
+
+## Per-claim verification
+| # | verdict | what I did | result |
+|---|---|---|---|
+| 1 | holds | Ran my own fast TUNE run (da_variants.py: builder core.py, default FINAL recipe) alongside ref_audio_final in one call. | default 0.6315 = ref_audio_final 0.6315, delta exactly 0.0000 (cluster interval 0/0). Per-fold Spearman not recomputed but identical sauc to 4 d.p. and delta exactly 0. |
+| 2 | holds (with caveat) | Re-ran default, alpha_x0.1/0.03/0.01/0.003, miss_max, layers_3_7, agg_top2 (da_real.log); read grid_real.csv / analysis for all 91. Then ran the same variants on 5 alternative fold sets (da_alt.log). | alpha_x0.1 +0.0015, 80% [+0.0002,+0.0027] reproduced exactly; layers_3_7 -0.0047 reproduced; agg_top2 +0.0008. Only 1/50 OAT has lo80>0. Caveat: the grid.py file has mtime 19:12:13, AFTER the real grid run finished (grid_real.pkl 19:11); grid_run.py imported it from 18:53, so the OAT/RJ part was probably unchanged (the ones I re-ran match) but "written before scoring" cannot be verified from files; the G_TUNE/G_NARROW definitions were added or edited at 19:12 and G_NARROW was admittedly designed after seeing OAT. |
+| 3 | holds | grid_real_analysis.txt, plus my alt-fold runs of ncomp_32/256, layers_5_9, only_L37, wins_23. | All 13 layer blocks, window subsets, ncomp 16/32/128/256, miss_min below default; best RJ 0.6258 (rj05, d -0.0057), 0/40 beat default. Consistent on 5 alternative fold sets too: ncomp_256 -0.030..-0.052 everywhere, layers_5_9 -0.013..-0.019, layers_3_7 -0.003..-0.010; wins_23 is -0.015..-0.004 on 4 sets but +0.010 on tune_y (80% [-0.012,+0.025]). |
+| 4 | holds as arithmetic, weak as inference | Read perm_analysis.txt and the two permuted dumps; reran null sauc of the default under 8 new seeds. | 13/90 and 6/90 lo80>0, delta sd 0.0185/0.0175 reproduced. Weakness: the null recipes are independent refits on noise, unlike near-default neighbours, so the null spread says little about alpha-type neighbours (builder concedes this). Real per-recipe bootstrap intervals are the better yardstick, and replication on 5 other fold sets agrees: alpha_x0.1 is +0.0005, -0.0013, -0.0003, +0.0002, -0.0007 on tune_q1, q2, m, h, y, so its TUNE gain is noise. |
+| 5 | explanation not supported (outcome numbers hold) | perm seeds 1,2 from builder dumps; 8 new seeds (11-18) of the default recipe with W5_PERMSEED. | Builder's seed 1: default sauc 0.4417 (grid mean 0.446), seed 2: 0.515 (grid mean 0.508). My 8 new seeds: 0.488, 0.536, 0.502, 0.478, 0.520, 0.531, 0.530, 0.507, mean 0.512, sd 0.021. Seed 1 is about 3.3 sd below that mean (about 2.3 sd using all 10 draws), so "a shared noise draw" is possible but rare, not shown. No systematic below-chance bias exists (my mean is 0.512). Note per-fold AUC of the default is 0.374 on real labels in fold 2021-07 too: the earliest tiny fold is itself below chance. |
+| 6 | holds | Recomputed from tuned.pkl with metrics.dump_sauc_delta. | tunedA -0.0192 [-0.037,-0.010]; tunedA_m -0.0065 [-0.022,+0.002]; tunedB -0.0234 [-0.049,-0.002]; tunedC -0.0332 [-0.057,-0.015]; tunedN -0.0106 [-0.023,-0.002]. No interval above 0; four entirely below. |
+| 7 | holds | same | -0.019, -0.023, -0.033 as stated. |
+| 8 | holds | Recomputed Spearman(inner sauc over the 24 recipes, outer-fold AUC of the same recipe) from choices.jsonl + grid_real.pkl. | per fold 0.23, 0.14, 0.15, 0.81, 0.21, 0.43, -0.25; mean 0.245 (7 folds). Added observation: inner sauc of the default is only 0.437-0.509 at the first usable cutoffs (inner folds trained on very little data), so early picks (ncomp_256) are chosen in a data-starved regime unlike the outer fit. |
+| 9 | holds | tuned.log walk-forward block. | composite 0.623, vs default d -0.009, lo95 -0.024, P=0.01, optimism +0.009. |
+| 10 | holds | choices.jsonl. | default, default, default, ncomp_256 x3, only_L37, wins_23, ncomp_128, only_L37; n_inner 1,0,1 for the first three cutoffs. |
+| 11 | holds | final_full.log VERDICT_DELTAS (full run, nboot 300); builder's full run not repeated (385 s) because the tuned.pkl fast dump and its deltas were recomputed, and the null control (below) re-ran the final end to end. | 0.625 (0.568-0.660); vs ref_audio_final -0.006 [-0.021,+0.001]; artist_recent +0.006 [-0.026,+0.055]; listening -0.026 [-0.049,-0.004]; music -0.021 [-0.040,-0.007]. Fast dump of tunedA_m recomputed: sauc 0.625, artist_recent +0.006 [-0.023,+0.055]. |
+| 12 | holds | Recomputed from tuned.pkl; wa/new-artist read from final_full.log. | pool_artist_siblings 0.644, final minus it -0.019 [-0.051,+0.042] P=0.37; wa vs artist_recent +0.069 [+0.038,+0.121]; new-artist +0.120 (lo95 +0.042). |
+| 13 | holds | Re-ran `python3 -W ignore -m evalkit.run --null-control predictors/w5r1-tune-content-numbers/final.py` (2 threads, started 21:26, finished 21:41, about 15 min). | Output is identical to the builder's: real 0.625, seeds 0.523/0.532/0.509/0.521/0.493, mean 0.516, gap +0.109 (0.061, 0.157); cluster band PASS (sauc, wa, new in); song-level band FLAG (new OUT), informational. Caveat: the cluster band is wide; the null on a procedure that mostly equals the default says little beyond the default's own null result. |
+| 14 | holds, and the gap is larger than stated | Read grid.py, tuned.py, core.py. | G_TUNE_NAMES has no miss_* entry; essentia, training target (rank_plays within quarter, maturity 90 d), ridge learner family, alternative fold sets (builder) all untouched. See "what was left fixed" below. |
+| 15 | holds | Read the harness read-only late table late_tables/ddb519...txt and holdout_runs.log (not re-run). | Held-out numbers removed in this copy. In words: on LATE the tuned procedure was identical to ref_audio_final (the margin rule never switched on the 4 LATE folds, so LATE says nothing about tuning); on HOLDOUT the builder's reading that it cannot support "tuning helps" is judged fair, with a small difference of the opposite sign to TUNE that the builder did not investigate. |
+
+## What I ran (all fast TUNE unless stated; at most 2 threads)
+1. da_variants.py via `python3 -W ignore -m evalkit.run --fast --dump-scores ...` (10 variants, 55 s). 
+2. Same file with `--folds tune_q1,tune_q2,tune_m,tune_h,tune_y` (16 variants, 267 s).
+3. Null control on final.py (about 15 min).
+4. Eight permuted-label runs of the default recipe (W5_PERMSEED 11-18, about 30 s each).
+5. Analyses on the builder's dumps (read-only): rank-averaging ensembles of recipes, miss_max coverage, per-fold null AUCs, inner-vs-outer Spearman.
+Not run: --late, --holdout, selftest (engineer's, outside this builder's claims; not independently re-run).
+
+## New evidence against the dismissals
+- **Missing-audio policy (miss_max) was dropped without follow-up.** 79 of 1074 tried candidates (7.4%) have no MERT clip; their love rate is 44% vs 31% for the rest (+13 points, about 2.5 song-level standard errors; artist clustering not applied). Putting them at the top (miss_max) gives sauc +0.0097 (TUNE, 80% [-0.006,+0.029], P=0.78) and the sign is positive on all six fold sets: tune_q1 +0.012, tune_q2 +0.011, tune_m +0.014, tune_h +0.011, tune_y +0.018 (80% [+0.005,+0.038], P=0.96). These are the same 79 songs, not six independent confirmations, and 80% intervals include zero on five of six, so this is an unresolved lead rather than a finding. It is excluded from G_TUNE, so the inner-tuning test could never pick it. Caveat for the end goal: in a real candidate search this effect would reflect catalogue availability, not music taste, so it may not be a legitimate gain. Combining with lower alpha adds nothing beyond +0.001.
+- **alpha's only positive result is fold-set noise.** alpha x0.1 to x0.003 are identical to each other (the ridge penalty saturates with whitened PCA), and the gain vanishes or flips on 4 of 5 other fold sets. This supports the builder's dismissal.
+- **Averaging recipes does not rescue anything.** Within-fold rank-average of the 51 OAT recipes: delta -0.0097 [-0.016,-0.003]; of the 24 G_TUNE recipes: -0.0077 [-0.012,-0.002]; of the 40 random joint recipes: -0.031; of all 91: -0.018. A smooth/ensemble alternative to hard selection (which the builder listed as untried) does not beat the default either (post-hoc, on the same TUNE data).
+
+## What was left fixed or untried (builder's scope gaps)
+- Training target and time numbers (rank_plays within first-play quarter, maturity 90 d, rank vs raw, love target), ridge as the only learner, the PCA fit set, standardisation, essentia blocks: untouched (builder states this).
+- Alternative fold sets (the follow-up question on fold sets) were not run by the builder; I ran a subset: conclusions about layer, ncomp, alpha and window numbers do not change with fold set (details in the claim 3/4 rows). They do not test fold arbitrariness for tuned procedures (not run).
+- The tuned procedure with its inner folds was only judged on TUNE (and LATE, where it never departs from the default). With 4 inner folds of 20-100 songs and inner default sauc often below 0.5, the inner design was never made larger or shrunk toward the default beyond the 0.01 margin.
+- The default was itself tuned on TUNE earlier: a sharp optimum in layers (shifting 5-9 costs -0.019, shifting 3-7 costs -0.005) is what selection on this data would produce, so TUNE cannot show an improvement and can overstate the default; the builder says so.
+
+## Checklist re-check
+- fast_mode_for_iteration: holds (all grid/perm/tuned logs headed fast=True; final_full, null, late, holdout are not fast).
+- full_run_final_scores: holds (final_full.log: nboot=300, fast=False, indep check present; 385 s).
+- held_out_slices_reported_separately: holds; harness tables agree. LATE adds no information about tuning.
+- null_control: holds, re-run, identical.
+- paired_baselines_incl_artist_siblings_and_artist_recent: holds (all deltas recomputed).
+- below_chance_investigated: partly. Two seeds run; the stated explanation is not supported (see claim 5).
+- variants_counted_and_selection_accounted: holds (91 + 5 + 1); it is true that the final is the best of the 5 tuned procedures. Note grid.py was edited after the real run.
+- strongest_case_against: holds, adequate.
+- runtime_estimates_and_actuals: holds against TIMING.txt (start 18:51:31, end 20:30:11, 98.7 min) and file mtimes (base.log 18:52, final_holdout.log 20:29). Holdout and late took 13-14 min vs 10 estimated, disclosed.
+- code_behind_every_reported_score_kept: holds; core, grid, grid_run, analyze_grid, tuned, tuned_iter, final present. The permuted-label runs depend on env var W5_PERMSEED in core.py, kept.
+- ran_vs_believed_separated: holds; the "shared noise draw" belief remains untested by the builder.
+
+## Shared inputs
+.cache/shared-w5r1/ has DONE; sha256 of all 7 files in MANIFEST.txt matched (README.md, essentia_compact.npz, essentia_meta.json, fidelity_sample.npz, mert_full.npy, mert_layer_mean.npy, mert_md5.npy). The builder used only mert_full.npy and mert_md5.npy.
+
+## Engineer vs spec (spot checks only)
+folds.py boundaries match the spec (q1 11 folds first 1 month and last 2 months; q2 first 2 / last 1; m 30; h 5; y 3). inner.py follows the spec (inner_cutoff + spacing + horizon <= cutoff, labels from the given train, min_tried 20, windows contiguous, newest first). Builder ran --late and --holdout successfully, which also validates the engineer's untested code paths. Not covered: full selftest, --pair-group, FILE_DELTAS80.

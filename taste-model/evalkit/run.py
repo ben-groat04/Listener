@@ -86,13 +86,27 @@ def _hash(files):
     return h.hexdigest()[:16]
 
 def _data_files(): return [data.DECOYS, data.TOP_TRACKS, data.STREAMS, data.FALLBACK_DONE, data.ALBUM_REL]
-def _pool_hash():   # pools depend on data.py, make_decoys.py and the data files only (file SIZES of the data files; their CONTENT is checked by the selftest against pool_reference.json)
+def _frozen_pools():   # v5.3: the frozen, reference-verified dev pools (shared/FROZEN present + exactly one dev pools pickle); independent of the decoy-universe / album-release sizes that the sealed prep legitimately changes
+    d = data.ROOT / ".cache" / "shared"; g = sorted(d.glob("evalkit-pools-*.pkl")) if (d / "FROZEN").exists() else []
+    if len(g) > 1: raise RuntimeError(f"several frozen dev pools pickles: {g}")
+    return g[0] if g else None
+def _pool_hash():   # pools depend on data.py, make_decoys.py and the data files only (file SIZES of the data files; their CONTENT is checked by the selftest against pool_reference.json); with a frozen pools file the hash is that file's own
+    g = _frozen_pools()
+    if g is not None: return g.stem.split("evalkit-pools-")[1]
     return _hash([data.ROOT / "evalkit" / "data.py", data.ROOT / "evalkit" / "make_decoys.py"] + _data_files())
 def _manifest_file(): return data.ROOT / ".cache" / "shared" / "previews" / "manifest.csv"
 def _code_hash():   # v4: run.py is included (a change of the harness' own logic changes the cache key of baseline / reference scores)
     return _hash(sorted(p for p in glob.glob(str(data.ROOT / "evalkit" / "*.py")) if not p.endswith(("selftest.py", "selftest_builder.py", "register.py", "fetch_previews.py", "fetch_itunes.py", "sealed_prep.py", "selftest_v53.py"))) + _data_files() + [_manifest_file()])   # v5.3: the sealed-era prep script and its selftest do not score anything
-def _pool_path():   # the dev pools are READ from the frozen shared folder; if absent they are built into the evalkit cache folder
-    p = data.ROOT / ".cache" / "shared" / f"evalkit-pools-{_pool_hash()}.pkl"; return p if p.exists() else CACHE_DIR / p.name
+_POOLS_OK = []
+def _pool_path():   # the dev pools are READ from the frozen shared folder (verified once against pool_reference.json, fails loudly); if absent they are built into the evalkit cache folder
+    g = _frozen_pools()
+    if g is None: p = data.ROOT / ".cache" / "shared" / f"evalkit-pools-{_pool_hash()}.pkl"; return p if p.exists() else CACHE_DIR / p.name
+    if not _POOLS_OK:
+        ref = json.load(open(POOL_REFERENCE))["pool_rows"]; pk = pickle.load(open(g, "rb"))
+        bad = [k for k in ref if k not in pk or len(pk[k]) != ref[k]["n"] or _pool_digest(pk[k]) != ref[k]["digest"]]
+        if bad or set(pk) != set(ref): raise RuntimeError(f"frozen dev pools {g.name} do not match pool_reference.json (folds {bad})")
+        _POOLS_OK.append(1)
+    return g
 
 def _pool_digest(df):
     """Order-independent digest of the rows of a pool (identity, label, release bucket, exposure, first-play time); recorded in pool_reference.json before v4."""

@@ -243,7 +243,8 @@ def main(argv):
     opt = lambda k, d: type(d)(argv[argv.index(k) + 1]) if k in argv else d
     cut = opt("--cutoffs", ""); cutoffs = [c for c in cut.split(",") if c] or list(data.SEALED_CUTOFFS); sealed = any(pd.Timestamp(c) >= data.DEV_END for c in cutoffs)
     if sealed and "--main-session" not in argv: sys.exit("evalkit.sealed_prep enumerates the SEALED folds: MAIN SESSION ONLY. Re-run with --main-session (the main session only), or use --cutoffs <dev cutoffs> for tests.")
-    out = Path(opt("--out", "")) if "--out" in argv else features.sealed_root(); out.mkdir(parents=True, exist_ok=True)
+    out = Path(opt("--out", "")) if "--out" in argv else features.sealed_root()
+    if not ("--count" in argv or "--report" in argv): out.mkdir(parents=True, exist_ok=True)   # a dry run / report never creates the cache directory
     stages = opt("--stages", "fetch,mert,compact").split(","); stages += (["essentia"] if "--essentia" in argv else []) + (["deezer"] if "--deezer" in argv else [])
     threads = opt("--threads", 3); limit = opt("--limit", 0); spc = opt("--sec-per-clip", SEC_PER_CLIP); t0 = time.time()
     _log(f"sealed_prep (evalkit v5.3, feature cache {features.SEALED_VERSION}) cutoffs={','.join(cutoffs)} out={out}")

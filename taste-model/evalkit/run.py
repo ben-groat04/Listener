@@ -1,4 +1,4 @@
-"""Score predictors (evalkit v5.1).   Dev:  python -m evalkit.run [pred.py ...]      (no args = the baselines + references)      Sealed (final, gated, logged): python -m evalkit.run --sealed [pred.py ...]
+"""Score predictors (evalkit v5.2).   Dev:  python -m evalkit.run [pred.py ...]      (no args = the baselines + references)      Sealed (final, gated, logged): python -m evalkit.run --sealed [pred.py ...]
 A predictor module exposes `predict(train, cands, meta, cutoff) -> np.ndarray` (or a dict `PREDICTORS = {name: fn}`).
 The score of a candidate must depend only on (train, that candidate, its meta): the harness checks this (see score_predictor).
 Slices: TUNE = 10 folds 2021-07..2023-10 minus HOLDOUT (all iteration); LATE = 4 folds 2024-01..2024-10 minus HOLDOUT (`--late`, capped at 2 runs per predictor hash, logged in
@@ -9,11 +9,11 @@ Options: --fast (TUNE, nboot 100, no independence check, no LATE)  --late  --hol
 import sys, os, json, hashlib, importlib.util, datetime, pickle, glob, subprocess, tempfile, io, time
 from pathlib import Path
 import numpy as np, pandas as pd
-from . import data, metrics, refs, bundle
+from . import data, metrics, refs, bundle, cmpset, declare, sanity
 from . import folds as foldsets
 from .baselines import BASELINES, DIAGNOSTIC, SHORTCUTS, REFERENCES, _manifest_source
 
-VERSION = "v5.1"
+VERSION = "v5.2"
 REGISTRY = data.ROOT / "evalkit" / "registry.json"
 LATE_LOG = data.ROOT / ".cache" / "late_runs.log"
 LATE_TABLES = data.ROOT / ".cache" / "late_tables"
@@ -28,8 +28,10 @@ GRADED_KEYS = ("sauc", "wx", "new", "wa", "gc"); KEY_NAME = {"new": "new_artist"
 DEVHOLD = "DEV+HOLDOUT"
 FD_NBOOT, FD_SEED = 1000, 20260511   # v5.1: FILE_DELTAS80 bootstrap size and fixed seed (also in --fast runs)
 FIXED_CMP = "ref_w4r1_listening"       # v5.1: "fixed comparator" of the alternative-set runs
-DEC_EPS = 0.005                       # v5.1: decision80 = POS if lo80 > +0.005, NEG if hi80 < -0.005, else UNDECIDED (|lo80| < 0.005 flips with the bootstrap seed)
-def decision80(lo, hi): return "POS" if lo > DEC_EPS else "NEG" if hi < -DEC_EPS else "UNDECIDED"
+DEC_EPS = cmpset.MARGIN               # v5.1 margin; since v5.2 only the extra column decision80_margin005 uses it (never the leading decision column)
+decision80 = cmpset.plain80           # v5.2: the decision column is the plain 80% rule: POS if lo80 > 0, NEG if hi80 < 0, else UNDECIDED (no extra margin)
+decision_margin = cmpset.margin005
+COMPARATORS = ("artist_recent", "ref_w4r1_listening")   # v5.2: THE comparator set (one setting, the same in every run and every fold set); printed as COMPARATOR_SET in default, --fast, --late (TUNE slice) and --folds runs
 LABEL_VARIANTS = ("love", "strong", "love_4_2", "love_10_4", "keep")
 RB_LABEL = {0: "<3m", 1: "3-12m", 2: "1-3y", 3: ">3y", 4: "unknown"}
 XB_LABEL = {0: "0", 1: "1-2", 2: "3-8", 3: "9+"}
@@ -451,9 +453,10 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
             st = S[n]["all"]; LOG[n] = dict(sauc=round(sa(n), 4), sauc_ci=_ci(st["sauc_b"], alpha), wx=round(_f(st["wx"]), 4), wx_ci=_ci(st["wx_b"], alpha), wa=round(_f(st["wa"]), 4), wa_ci=_ci(st["wa_b"], alpha), gc=round(_f(st["gc"]), 4), gc_ci=_ci(st["gc_b"], alpha),
                                            new_artist_sauc=round(_f(S[n]["new"]["sauc"]), 4), new_artist_sauc_ci=_ci(S[n]["new"]["sauc_b"], alpha))
     bm_ = [n for n in P if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]; FD = []   # FILE_DELTAS80: every pair of the builder's own models, a minus b, with its 80% interval
-    if len(bm_) >= 2 or (fd_ref and bm_):   # v5.1: own bootstrap of FILE_DELTAS80 with FD_NBOOT resamples and a FIXED seed (independent of --nboot / --fast / the slice seed); point values are unchanged
+    fd_refs = list(dict.fromkeys(([fd_ref] if fd_ref else []) + ([c_ for c_ in COMPARATORS if c_ in P] if len(bm_) == 1 else [])))   # v5.2: a file with ONE model gets rows vs the comparator set (and the --best-ref reference); before, it printed nothing
+    if len(bm_) >= 2 or (fd_refs and bm_):   # v5.1: own bootstrap of FILE_DELTAS80 with FD_NBOOT resamples and a FIXED seed (independent of --nboot / --fast / the slice seed); point values are unchanged
         T1 = metrics.Block(ft, "love", FD_NBOOT, FD_SEED); T1n = T1.sub(T1.new)
-        S1 = {n: dict(all=T1.stats(P[n].score.values[tried_m], True, ("sauc", "wa", "wx", "gc")), new=T1n.stats(P[n].score.values[tried_m], True, ("sauc",))) for n in bm_ + ([fd_ref] if fd_ref and fd_ref in P else [])}
+        S1 = {n: dict(all=T1.stats(P[n].score.values[tried_m], True, ("sauc", "wa", "wx", "gc")), new=T1n.stats(P[n].score.values[tried_m], True, ("sauc",))) for n in bm_ + [c_ for c_ in fd_refs if c_ in P]}
         def d1(a_, b_, key):
             g_, k_ = ("new", "sauc") if key == "new" else ("all", key); x = S1[a_][g_][k_ + "_b"] - S1[b_][g_][k_ + "_b"]; f_ = x[np.isfinite(x)]
             return dict(d=_f(S1[a_][g_][k_]) - _f(S1[b_][g_][k_]), lo80=float(np.nanpercentile(x, 10)), hi80=float(np.nanpercentile(x, 90)), P=float(np.mean(f_ > 0)))
@@ -461,18 +464,19 @@ def summarize(preds, folds, nboot=300, n_looks=1, seed=0, valid=None, best_ref=N
             for b_ in bm_[i_ + 1:]:
                 row_ = dict(model_a=a_, minus_model_b=b_)
                 for key_, lab_ in (("sauc", "sauc"), ("wx", "wx"), ("new", "new_artist_sauc"), ("wa", "wa"), ("gc", "gc")): x_ = d1(a_, b_, key_); row_[lab_] = f"d={x_['d']:+.3f} 80%[{x_['lo80']:+.3f},{x_['hi80']:+.3f}] P={x_['P']:.2f}"
-                xs_ = d1(a_, b_, "sauc"); row_["decision80"] = decision80(xs_["lo80"], xs_["hi80"]); FD.append(row_)
-        for a_ in (bm_ if fd_ref in S1 else []):   # --best-ref: every builder model vs the fixed reference as well (same resamples, same columns)
-            row_ = dict(model_a=a_, minus_model_b=fd_ref)
-            for key_, lab_ in (("sauc", "sauc"), ("wx", "wx"), ("new", "new_artist_sauc"), ("wa", "wa"), ("gc", "gc")): x_ = d1(a_, fd_ref, key_); row_[lab_] = f"d={x_['d']:+.3f} 80%[{x_['lo80']:+.3f},{x_['hi80']:+.3f}] P={x_['P']:.2f}"
-            xs_ = d1(a_, fd_ref, "sauc"); row_["decision80"] = decision80(xs_["lo80"], xs_["hi80"]); FD.append(row_)
+                xs_ = d1(a_, b_, "sauc"); row_["decision80"] = decision80(xs_["lo80"], xs_["hi80"]); row_["decision80_margin005"] = decision_margin(xs_["lo80"], xs_["hi80"]); FD.append(row_)
+        for c_ in [c_ for c_ in fd_refs if c_ in S1]:   # --best-ref (and, for a one-model file, the comparator set): every builder model vs that reference as well (same resamples, same columns)
+          for a_ in bm_:
+            row_ = dict(model_a=a_, minus_model_b=c_)
+            for key_, lab_ in (("sauc", "sauc"), ("wx", "wx"), ("new", "new_artist_sauc"), ("wa", "wa"), ("gc", "gc")): x_ = d1(a_, c_, key_); row_[lab_] = f"d={x_['d']:+.3f} 80%[{x_['lo80']:+.3f},{x_['hi80']:+.3f}] P={x_['P']:.2f}"
+            xs_ = d1(a_, c_, "sauc"); row_["decision80"] = decision80(xs_["lo80"], xs_["hi80"]); row_["decision80_margin005"] = decision_margin(xs_["lo80"], xs_["hi80"]); FD.append(row_)
     tabs["FILE_DELTAS80"] = pd.DataFrame(FD)
     if fixed_cmp:   # v5.1 (alternative-set runs): each builder model's paired sauc delta vs the fixed comparator ref_w4r1_listening, whichever reference is best_ref of this fold set
         FC = []
         if FIXED_CMP in S:
             for n in bm_:
-                x_ = dstat(n, FIXED_CMP)["sauc"]; FC.append(dict(model=n, vs=FIXED_CMP, d_sauc=round(x_["d"], 3), lo80=round(x_["lo80"], 3), hi80=round(x_["hi80"], 3), P_gt0=round(x_["P"], 2), decision80=decision80(x_["lo80"], x_["hi80"])))
-        tabs["FIXED_COMPARATOR"] = pd.DataFrame(FC, columns=["model", "vs", "d_sauc", "lo80", "hi80", "P_gt0", "decision80"]); tabs["_fixed_cmp_scored"] = FIXED_CMP in S
+                x_ = dstat(n, FIXED_CMP)["sauc"]; FC.append(dict(model=n, vs=FIXED_CMP, d_sauc=round(x_["d"], 3), lo80=round(x_["lo80"], 3), hi80=round(x_["hi80"], 3), P_gt0=round(x_["P"], 2), decision80=decision80(x_["lo80"], x_["hi80"]), decision80_margin005=decision_margin(x_["lo80"], x_["hi80"])))
+        tabs["FIXED_COMPARATOR"] = pd.DataFrame(FC, columns=["model", "vs", "d_sauc", "lo80", "hi80", "P_gt0", "decision80", "decision80_margin005"]); tabs["_fixed_cmp_scored"] = FIXED_CMP in S
     n1_ = np.bincount(T.fold, weights=T.y); nn_ = np.bincount(T.fold); ok_ = (n1_ >= 10) & (nn_ - n1_ >= 10); tabs["_macro_folds"] = (int(ok_.sum()), int(len(nn_)))   # macro_sauc keeps min_each 10: folds that qualify
     tabs["VERDICT"] = pd.DataFrame(V); tabs["VERDICT_DELTAS"] = pd.DataFrame(VD); tabs["_evidence"] = EV; tabs["_log"] = LOG; tabs["_S"] = S; tabs["_P"] = P
     diag = tabs["tried_within_group"][tabs["tried_within_group"].model.isin(DIAGNOSTIC)]
@@ -665,6 +669,16 @@ def null_avg_stats(T, Tn, ft, null_scores, nperm=300):
     cb = metrics.cluster_band(ft, avg, nperm=nperm, seed=0)
     return vals, cb, [cb[k][0] <= v <= cb[k][1] for k, v in zip(("sauc", "wa", "new"), vals)], avg
 
+def null_lines(table, mode, nseeds):
+    """v5.2 NULLCTRL lines: one single-line, machine-readable (JSON) summary per model and slice of the GATED statistic (seed-averaged null score: sauc, wa_sauc, new-artist sauc), its cluster-aware 2.5-97.5% band and the label.
+    Quote these lines verbatim."""
+    out = []
+    for r in table.itertuples(index=False):
+        d = r._asdict() if hasattr(r, "_asdict") else dict(r)
+        st = {k: dict(value=float(d[f"avg_{k}"]), band=[float(x) for x in d[f"cluster_band_{k}"]], inside=bool(d[f"cluster_band_{k}"][0] <= d[f"avg_{k}"] <= d[f"cluster_band_{k}"][1])) for k in ("sauc", "wa", "new")}
+        out.append("NULLCTRL " + json.dumps(dict(version=VERSION, mode=mode, seeds=nseeds if mode == "v2" else 1, slice=d["slice"], model=d["model"], gated=st, label=d["label"] if mode == "v2" else "DIAGNOSTIC"), separators=(",", ":")))
+    return out
+
 def null_report(mods, preds, cutoff_set, slices, mode, nseeds, cache, nboot=100, part="main"):
     """Null control v4. Per seed k (seed = cutoff + k, run in a fresh process with EVALKIT_NULL_SEED=k and EVALKIT_NO_FIT_CACHE=1): identity shuffle + artist/album relabelling of the train
     (mode 'v2') or identity shuffle only (mode 'identity', one seed, diagnostic). Per model and slice: real, per-seed and mean sauc / wa_sauc / new-artist sauc, the real-minus-null gap with an
@@ -834,7 +848,7 @@ def _save_caches_fn(bcache, rcaches, cp, rps, n0):
             if len(c) > n0[1][r]: _save_pk(rps[r], {**_load_pk(rps[r]), **c})
     return save
 
-def _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel, fixed_ref=""):
+def _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel, fixed_ref="", LP=None, argv=()):
     """`--folds NAME[,NAME...]` (TUNE era only, tried pool only). See folds.py for the sets, prepare_alt for the shared-scoring scheme."""
     from .ablate import WINDOWS
     tee = _Tee(sys.stdout); sys.stdout = tee; t_start = time.time()
@@ -849,6 +863,7 @@ def _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel,
     union = _score_set(preds, None, "alt", indep_n, WINDOWS[win], win, bcache, rcaches, F_list); save_caches()
     pd.set_option("display.width", 300, "display.max_columns", 60, "display.max_colwidth", 60, "display.max_rows", 400)
     print(f"evalkit {VERSION}: ALTERNATIVE FOLD SETS {','.join(sets)}  fast={fast} walkforward={walk} pair_group={pair} window={win} nboot={nboot} refs_scored={','.join(refs_sel) or 'none'} (tried pool only; no open pool / decoys; TUNE era only; HOLDOUT artists removed)")
+    declaration_report(mods, LP, "folds:" + ",".join(sets) + (":fast" if fast else ""), argv)   # v5.2
     print(f"scoring: {len(F_list)} distinct cutoffs x {len(preds)} models, each model called ONCE per cutoff on the union of the cutoff's candidates over the requested sets, then split by set (scores may not depend on other candidates)")
     out, flags_of, dump_parts, wf, scored_all = {}, {}, [], [], {}
     for si, sname in enumerate(sets):
@@ -867,7 +882,7 @@ def _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel,
         print(f"best_ref ({'FIXED by --best-ref' if fixed_ref else 'among all seven references' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only: ' + ', '.join(r for r in REFERENCES if r in scored)}; point sauc of this fold set): {best_ref}   " + "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items()))
         for w in _tied_warnings(scored): print(w)
         tabs, flags = summarize(scored, fold_names, nboot, 1, seed=1000 * (si + 1), valid=list(BASELINES), best_ref=best_ref, graded=True, part=f"alt:{sname}:{pair}:{dg}", open_pool=False, pair_group=pair, tune_era=True, fixed_cmp=True, fd_ref=fixed_ref or None)
-        tabs["FOLD_META"] = fold_meta_table(scored, fold_names, sname, _fm_comps(best_ref, fixed_ref)); out[sname] = tabs; flags_of[sname] = flags; scored_all[sname] = scored
+        tabs["FOLD_META"] = fold_meta_table(scored, fold_names, sname, _fm_comps(best_ref, fixed_ref)); tabs["COMPARATOR_SET"], _, tabs["_cmp_note"] = comparator_set_table(scored, fold_names, sname); out[sname] = tabs; flags_of[sname] = flags; scored_all[sname] = scored
         if dump: dump_parts.append(dump_rows(sname, {n: v for n, v in scored.items() if not n.startswith("walkforward[")}, fold_names))
     finish_verdicts(out, False)
     for sname in sets:
@@ -888,10 +903,15 @@ def _print_verdict(nm, tabs, holdout):
             print(f"\n== [{VERSION}] {nm} VERDICT_DELTAS vs each reference ('*' = best_ref); d = point delta, lo95 = 2.5th percentile, P = P(d>0), 80% interval"); print(tabs["VERDICT_DELTAS"].to_string(index=False))
     if len(tabs.get("FILE_DELTAS80", [])):
         print(f"\n== [{VERSION}] {nm} FILE_DELTAS80: paired delta (model_a minus minus_model_b) of every pair of the builder's own models, with its 80% interval and P(d>0); {FD_NBOOT} artist-cluster resamples, fixed seed; "
-              f"decision80 (sauc) = POS if lo80 > {DEC_EPS}, NEG if hi80 < -{DEC_EPS}, else UNDECIDED (|lo80| < {DEC_EPS} flips with the bootstrap seed)"); print(tabs["FILE_DELTAS80"].to_string(index=False))
+              f"decision80 (sauc) = plain 80% rule: POS if lo80 > 0, NEG if hi80 < 0, else UNDECIDED; decision80_margin005 = the v5.1 label with a {DEC_EPS} margin (extra column, not the decision rule)"); print(tabs["FILE_DELTAS80"].to_string(index=False))
     if "FIXED_COMPARATOR" in tabs:
         if len(tabs["FIXED_COMPARATOR"]): print(f"\n== [{VERSION}] {nm} FIXED COMPARATOR: paired sauc delta (80% interval) of each builder model vs {FIXED_CMP} (the same comparator in every fold set; best_ref of the set may differ)"); print(tabs["FIXED_COMPARATOR"].to_string(index=False))
         elif not tabs.get("_fixed_cmp_scored", True): print(f"\n== [{VERSION}] {nm} FIXED COMPARATOR: {FIXED_CMP} was not scored in this run (--refs), table omitted")
+    if len(tabs.get("COMPARATOR_SET", [])):
+        print(f"\n== [{VERSION}] {nm} COMPARATOR_SET ({', '.join(COMPARATORS)}; the same set in every run): paired sauc difference (model minus comparator), pooled over folds with its 80% interval (decision80 = plain 80% rule, POS if lo80 > 0, NEG if hi80 < 0, else UNDECIDED), "
+              f"the same with inverse-variance fold weights (iv_folds = folds used / folds incl. excluded with < 5 loved or < 5 not-loved rows) and with the heaviest folds left out (the max(1, round({cmpset.DROP_FRAC} * k)) folds with the most loved x not-loved pairs; listed in folds_left_out); "
+              f"{FD_NBOOT} artist-cluster resamples, fixed seed; decision80_margin005 = the v5.1 label with a {DEC_EPS} margin on the pooled interval (extra column)"); print(tabs["COMPARATOR_SET"].to_string(index=False))
+    elif nm and tabs.get("_cmp_note"): print(f"\n== [{VERSION}] {nm} COMPARATOR_SET: {tabs['_cmp_note']}")
     if len(tabs.get("FOLD_META", [])):
         print(f"\n== [{VERSION}] {nm} FOLD_META (sauc only): per-fold paired within-fold AUC delta (model minus comparator), artist-cluster bootstrap SE per fold, inverse-variance mean with normal 80% interval; Q / df / p = Cochran heterogeneity, I2, "
               f"tau = DerSimonian-Laird; trend = IV-weighted linear trend of the delta per year of cutoff (fixed-effect SE); folds with < 5 loved or < 5 not-loved tried rows are excluded"); print(tabs["FOLD_META"].to_string(index=False))
@@ -918,6 +938,21 @@ def fold_meta_table(scored, fold_names, set_name, comps, models=None, nboot=400)
                              I2=f"{r['I2']:.2f}" if np.isfinite(r["I2"]) else "-", tau=f"{r['tau']:.3f}" if np.isfinite(r["tau"]) else "-", trend_per_year=f"{f(r['trend'])} 80%[{f(r['trend_lo80'])},{f(r['trend_hi80'])}]"))
     return pd.DataFrame(rows)
 
+def comparator_set_table(scored, fold_names, set_name, models=None):
+    """v5.2 COMPARATOR_SET (printable table, numeric table, note): every builder model (or the baselines / references themselves when no builder file is given) vs each comparator of COMPARATORS that is scored."""
+    models = models or [n for n in scored if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]
+    if not models: return pd.DataFrame(), pd.DataFrame(), "no builder model in this run (baselines / references only)"
+    miss = [c for c in COMPARATORS if c not in scored]
+    num, pr = cmpset.comparator_table(scored, fold_names, set_name, COMPARATORS, models, FD_NBOOT, FD_SEED)
+    if len(num) and num[["d", "lo80", "hi80", "drop_d", "drop_lo80", "drop_hi80"]].isna().any().any(): print(f"WARNING: NaN in the pooled columns of COMPARATOR_SET {set_name}")   # (iv_* may be NaN when every fold is excluded; shown as '-')
+    return pr, num, (f"comparator(s) not scored in this run (--refs): {', '.join(miss)}" if miss else "")
+
+def declaration_report(mods, LP, mode_tag, argv):
+    """v5.2: print, for every predictor file of a scored run, whether its sha256 matches a declaration (python3 -m evalkit.declare), and append the result with the UTC time to the run log (.cache/run_log.jsonl, mode 444)."""
+    sts = declare.run_status(mods, LP["decl_dir"]); print(declare.format_status(sts))
+    declare.append_run_log(dict(utc=declare.utc(), version=VERSION, mode=mode_tag, argv=[a for a in argv], files=[dict(file=s["file"], sha256=s["sha256"], status=s["status"], declaration=s["name"]) for s in sts]), LP["run_log_dir"])
+    return sts
+
 # ---------------------------------------------------------------- main
 class _Tee:
     def __init__(self, o): self.o = o; self.buf = io.StringIO()
@@ -929,7 +964,7 @@ def _print_slice(nm, fl, tabs, flags, nfold_total=None):
     if "_macro_folds" in tabs: print(f"macro_sauc keeps min_each 10 (>= 10 loved and >= 10 not-loved tried rows per fold / group): {tabs['_macro_folds'][0]} of {tabs['_macro_folds'][1]} folds (groups) qualify")
     print(f"\n== [{VERSION}] DIAGNOSTIC_REFERENCES (use post-cutoff information; NOT valid predictors; how much of the label is non-musical)"); print(tabs["DIAGNOSTIC_REFERENCES"].to_string(index=False))
     for k, t in tabs.items():
-        if k in ("DIAGNOSTIC_REFERENCES", "VERDICT", "VERDICT_DELTAS", "FILE_DELTAS80", "FIXED_COMPARATOR", "FOLD_META") or k.startswith("_") or k.startswith("BREAKDOWN"): continue
+        if k in ("DIAGNOSTIC_REFERENCES", "VERDICT", "VERDICT_DELTAS", "FILE_DELTAS80", "FIXED_COMPARATOR", "FOLD_META", "COMPARATOR_SET") or k.startswith("_") or k.startswith("BREAKDOWN"): continue
         if k.startswith("LABEL VARIANTS"): print(f"\n== [{VERSION}] {nm} {k}"); print(t.to_string()); continue
         print(f"\n== [{VERSION}] {nm} {k}"); print(t.to_string(index=k in ("fold_auc_tried", "fold_auc_ci", "independence", "null_band_95") or k.endswith(("lower_bound", "P_gt0", "80ci"))))
     for k, t in tabs.items():
@@ -986,7 +1021,7 @@ def print_walkforward(name, family, choices, tabs, nboot_alpha=0.05):
 def _paths(logdir=None):
     """Locations of the --late / --holdout cap logs, fingerprints, holdout budget and late tables: .cache/ (default) or --log-dir (tests)."""
     d = Path(logdir) if logdir else data.ROOT / ".cache"
-    return dict(late_log=d / "late_runs.log", holdout_log=d / "holdout_runs.log", late_tables=d / "late_tables", budget=d / "holdout_budget.json", fp_late=d / "late_fingerprints.pkl", fp_holdout=d / "holdout_fingerprints.pkl")
+    return dict(late_log=d / "late_runs.log", holdout_log=d / "holdout_runs.log", late_tables=d / "late_tables", budget=d / "holdout_budget.json", fp_late=d / "late_fingerprints.pkl", fp_holdout=d / "holdout_fingerprints.pkl", decl_dir=(d / "declarations") if logdir else declare.decl_dir(), run_log_dir=d)
 
 def main(argv):
     from threadpoolctl import threadpool_limits
@@ -1024,7 +1059,7 @@ def main(argv):
         for x in want: assert x in REF_NAMES, f"--refs: unknown reference {x!r}; choose from {', '.join(REF_NAMES)} or none"
         if late or holdout or sealed or not (fast or sets): print(f"NOTE: --refs is refused for --late / --holdout / --sealed and full default runs: all {len(REF_NAMES)} reference rows are scored (best_ref stays defined)")
         else: refs_sel = want
-    if sets: return _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel, fixed_ref)
+    if sets: return _alt_main(mods, sets, fast, nboot, indep_n, win, walk, pair, dump, refs_sel, fixed_ref, LP, argv)
     part = "all" if sealed else "holdout" if holdout else "main"
     cutoffs = data.SEALED_CUTOFFS if sealed else data.DEV_CUTOFFS if (late or holdout) else data.TUNE_CUTOFFS
     slices = ([("SEALED", list(map(str, cutoffs)))] if sealed else [("HOLDOUT-ALL", data.DEV_CUTOFFS), ("HOLDOUT-early", data.TUNE_CUTOFFS), ("HOLDOUT-late", data.LATE_CUTOFFS)] if holdout
@@ -1069,6 +1104,7 @@ def main(argv):
     pd.set_option("display.width", 300, "display.max_columns", 60, "display.max_colwidth", 60, "display.max_rows", 400)
     if nulls:   # null control runs INSTEAD of the normal tables (slow: N seeds x folds x models, one fresh process per seed)
         assert not sealed, "null control is a dev option"
+        declaration_report(mods, LP, "null-control", argv)   # v5.2
         cset = "dev" if late else "tune"
         nm_preds = {k: f for k, f in preds.items() if k in BASELINES or k in cand_preds}   # shortcuts and the reference rows are exempt from the null control (a predictor that CALLS evalkit.refs runs them on the null train like any other code)
         for md in nulls:
@@ -1079,6 +1115,7 @@ def main(argv):
             print("songlevel_label / songlevel_detail = the old v3 label against the N-seed-mean song-level permutation band: song-level (too narrow for feature models; for comparison).")
             for sn, r in res.items():
                 print(f"\n-- [{VERSION}] slice {sn}: song-level (too narrow for feature models; for comparison) 95% permutation band of the {nseeds if md == 'v2' else 1}-seed mean {r['band']}"); print(r["table"].drop(columns="slice").to_string(index=False))
+                for ln in null_lines(r["table"], md, nseeds): print(ln)
         save_caches(); sys.stdout = tee.o
         return res
     # best_ref is fixed from TUNE (point sauc of the references, non-HOLDOUT rows)
@@ -1101,6 +1138,7 @@ def main(argv):
             fh.write(json.dumps(dict(ts=now_iso(), models=list(preds), files=hashes, looks_after=n_looks)) + "\n")
     print(f"evalkit {VERSION}: fast={fast} late={late} holdout={holdout} walkforward={walk} pair_group={pair}{' (no-op on the default folds: fold == calendar quarter)' if pair == 'quarter' else ''} folds={len(cutoffs)} window={win} nboot={nboot} refs_scored={','.join(refs_sel) or 'none'} n_looks={n_looks} (CI level {100 * (1 - 0.05 / n_looks):.2f}%; two-sided: '95% lower bound' = 2.5th percentile)")
     print(f"best_ref ({'FIXED by --best-ref' if fixed_ref else 'fixed from TUNE point sauc of the references, non-HOLDOUT rows' if len(refs_sel) == len(REF_NAMES) else 'computed among the SCORED references only (' + ', '.join(r for r in REFERENCES if r in scored) + '), fixed from TUNE point sauc'}): {best_ref}   " + ("(TUNE reference scores not printed in a --holdout run)" if holdout else "  ".join(f"{k} {v:.3f}" for k, v in br_scores.items())))
+    if not sealed: declaration_report(mods, LP, "late" if late else "holdout" if holdout else "fast" if fast else "default", argv)   # v5.2
     for w in _tied_warnings({k: v for k, v in scored.items()}): print(w)
     out = {}
     for si, (nm, fl) in enumerate(slices):
@@ -1113,7 +1151,9 @@ def main(argv):
         for h in hashes: fingerprint_record(LP["fp_holdout"], h, fps[h])
         b = holdout_budget_use(LP["budget"]); print(f"holdout budget: {b['remaining']} run(s) remaining in round {b.get('round')}")
     flags_of = {nm: f for nm, (t, f) in out.items()}; out = {nm: t for nm, (t, f) in out.items()}
-    if not holdout and not sealed: out["TUNE"]["FOLD_META"] = fold_meta_table(scored, list(data.TUNE_CUTOFFS), "tune", _fm_comps(best_ref, fixed_ref))   # v5.1: TUNE folds only
+    if not holdout and not sealed:
+        out["TUNE"]["FOLD_META"] = fold_meta_table(scored, list(data.TUNE_CUTOFFS), "tune", _fm_comps(best_ref, fixed_ref))   # v5.1: TUNE folds only
+        out["TUNE"]["COMPARATOR_SET"], _, out["TUNE"]["_cmp_note"] = comparator_set_table(scored, list(data.TUNE_CUTOFFS), "tune")   # v5.2: TUNE folds only (never held-out rows), default / --fast / --late alike
     for si, (nm, fl) in enumerate(slices): _print_slice(nm, fl, out[nm], flags_of[nm])
     finish_verdicts(out, late)
     for si, (nm, fl) in enumerate(slices): _print_verdict(nm, out[nm], holdout)

@@ -24,6 +24,7 @@ def main():
     if "--v5" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v5_checks(data._load_all(), P_); return
     if "--v51" in sys.argv: v51_checks(); return
     if "--v52" in sys.argv: v52_checks(); return   # no raw-stream access (the harness builds / reads its pools itself)
+    if "--v53" in sys.argv: from . import selftest_v53; selftest_v53.v53_checks(); return   # v5.3: --v52 first, then the sealed-era pipeline / lookup / output checks (dev data and synthetic slices only)
     d = data._load_all(); cuts = data.DEV_CUTOFFS; pub = data.anon_streams(d); meta_all = data.load_meta_all()
     assert data.TUNE_CUTOFFS + data.LATE_CUTOFFS == cuts and len(cuts) == 14
     # ---- metrics engine vs brute force
@@ -450,7 +451,7 @@ def v51_checks():
     import pathlib, time
     from sklearn.metrics import roc_auc_score
     t0 = time.time(); here = pathlib.Path(__file__).parent; B = str(here / "selftest_builder.py"); tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v51_"))
-    assert run.VERSION in ("v5.1", "v5.2")
+    assert run.VERSION in ("v5.1", "v5.2", "v5.3")
     # ---- refusals
     live = json.load(open(run.HOLDOUT_BUDGET)); assert live == dict(round="w5r1", remaining=0), f"no new HOLDOUT budget in round w5r2: {live}"
     for bad in (["--best-ref", "artist_recent", "--late"], ["--best-ref", "artist_recent", "--holdout", B], ["--best-ref", "artist_recent", "--sealed"], ["--best-ref", "artist_recent", "--null-control"], ["--best-ref", "nope", "--fast"]):
@@ -516,7 +517,7 @@ def v52_checks():
     from sklearn.metrics import roc_auc_score
     from . import cmpset, declare, sanity
     t0 = time.time(); here = pathlib.Path(__file__).parent; B = str(here / "selftest_builder.py"); tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v52_"))
-    assert run.VERSION == "v5.2"
+    assert run.VERSION in ("v5.2", "v5.3")
     v51_checks()   # includes: --holdout refused (budget file untouched), --best-ref refusals, default fast run == v5.0 reference (tried_within_group, VERDICT, FILE_DELTAS80 point values)
     o1, tx1 = _V51["o1"], _V51["tx1"]; print("default_output_unchanged: the default --fast run (baselines only and with the test builder) equals the recorded v5.0 / v5.1 output (v51_checks above)")
     # ---- plain 80% rule

@@ -154,6 +154,8 @@ PREDICTORS.update({
     "blend_inv": _make("blend_inv", CFG["ctx_inv"], 1.0), "blend_all": _make("blend_all", CFG["ctx_all"], 1.0),
     "blend_inv_half": _make("blend_inv_half", CFG["ctx_inv"], 0.5), "blend_age": _make("blend_age", CFG["ctx_age"], 1.0),
     "blend_graph": _make("blend_graph", CFG["ctx_graph"], 1.0),
+    "blend_inv_q": _make("blend_inv_q", CFG["ctx_inv"], 0.25), "blend_all_q": _make("blend_all_q", CFG["ctx_all"], 0.25),
+    "blend_graph_q": _make("blend_graph_q", CFG["ctx_graph"], 0.25), "blend_all_half": _make("blend_all_half", CFG["ctx_all"], 0.5),
 })
 
 # ---- single-feature diagnostics (raw standardisation-free scores; sign = 'larger = more likely loved' only by convention, AUC < 0.5 means the opposite) ----

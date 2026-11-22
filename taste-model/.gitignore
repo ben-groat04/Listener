@@ -1,3 +1,9 @@
 .cache/
 .sealed/
 __pycache__/
+
+# regenerable analysis artefacts (W5 review)
+*.npz
+*.pkl
+*.npy
+predictors/*/results/*.log

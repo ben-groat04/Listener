@@ -142,3 +142,5 @@ It will not tell:
 - whether the owner will like the suggestions. That is the owner's own judgement, through the feedback planned for the next phase.
 
 A difference of about +0.008 between the final and the incumbent is very unlikely to be decided on 5 folds. An UNDECIDED S3 is the expected outcome and does not count against the model.
+
+Harness fix (2026-11-22, owner approved): evalkit/run.py now loads the frozen, reference-verified dev pools (`.cache/shared/evalkit-pools-*.pkl`, checked against pool_reference.json) independent of the decoy-universe / album-release file sizes; no change to pool construction, scoring or sealed folds. Dev scores unchanged.

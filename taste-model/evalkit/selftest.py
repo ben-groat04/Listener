@@ -565,7 +565,7 @@ def v52_checks():
     one.write_text(one.read_text() + "\n# edited after declaration\n"); s_ = declare.status(str(one), str(dd)); assert s_["status"] == "UNDECLARED" and "different hash" in s_["note"], s_
     one.write_text(one.read_text().replace("\n# edited after declaration\n", ""))   # restore
     (_, o3), tx3 = _quiet_main(["--fast", "--log-dir", str(ld), str(one)]); assert "DECLARED selftest-one" in tx3 and "UNDECLARED" not in tx3.split("declaration check:")[1].split("\n")[0]
-    lg = [json.loads(l) for l in open(ld / "run_log.jsonl")]; assert len(lg) == 2 and [x["files"][0]["status"] for x in lg] == ["UNDECLARED", "DECLARED"] and lg[1]["files"][0]["declaration"] == "selftest-one" and lg[0]["utc"].endswith("Z") and lg[0]["version"] == "v5.2"
+    lg = [json.loads(l) for l in open(ld / "run_log.jsonl")]; assert len(lg) == 2 and [x["files"][0]["status"] for x in lg] == ["UNDECLARED", "DECLARED"] and lg[1]["files"][0]["declaration"] == "selftest-one" and lg[0]["utc"].endswith("Z") and lg[0]["version"] in ("v5.2", "v5.3")
     assert oct(os.stat(ld / "run_log.jsonl").st_mode & 0o777) == "0o444"
     print("single_model_file_deltas: a file with one model prints FILE_DELTAS80 rows vs artist_recent and ref_w4r1_listening; declaration_hashing: UNDECLARED -> DECLARED after python -m evalkit.declare, overwrite refused, edited file reported, run log (UTC time, hashes) append-only mode 444")
     # ---- alternative sets print COMPARATOR_SET too (same comparators)
@@ -582,7 +582,7 @@ def v52_checks():
     tb = pd.DataFrame([dict(slice="TUNE", model="m1", avg_sauc=.52, avg_wa=.5, avg_new=.51, cluster_band_sauc=(.45, .55), cluster_band_wa=(.46, .54), cluster_band_new=(.44, .56), label="PASS"),
                        dict(slice="TUNE", model="m2", avg_sauc=.60, avg_wa=.5, avg_new=.51, cluster_band_sauc=(.45, .55), cluster_band_wa=(.46, .54), cluster_band_new=(.44, .56), label="FLAG")])
     ls = run.null_lines(tb, "v2", 5); assert len(ls) == 2 and all("\n" not in x and x.startswith("NULLCTRL {") for x in ls)
-    j = [json.loads(x[len("NULLCTRL "):]) for x in ls]; assert j[0]["label"] == "PASS" and j[1]["label"] == "FLAG" and j[1]["gated"]["sauc"]["inside"] is False and j[0]["gated"]["wa"]["band"] == [.46, .54] and j[0]["version"] == "v5.2"
+    j = [json.loads(x[len("NULLCTRL "):]) for x in ls]; assert j[0]["label"] == "PASS" and j[1]["label"] == "FLAG" and j[1]["gated"]["sauc"]["inside"] is False and j[0]["gated"]["wa"]["band"] == [.46, .54] and j[0]["version"] == run.VERSION
     # ---- three null seeds give three different results (fit / feature caches keyed on seed and relabelled identities); in-process, first TUNE fold, baseline artist_recent
     from . import baselines as bl
     F = run.prepare_folds(data.TUNE_CUTOFFS[:1])[0]; sc = []; keys = []

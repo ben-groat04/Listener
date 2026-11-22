@@ -1,7 +1,7 @@
 """Builds .cache/shared-w6r0/ sample (groundwork only; no scoring). python3 catalogue/make_sample.py   (cwd = taste-model). ~15 min.
  1. coverage_sample.csv: 60 seeded songs of evalkit.data.load_meta() looked up in Deezer / Spotify-embed / MusicBrainz / AcousticBrainz / LRCLIB / iTunes.
  2. catalogue_enum.json: what can be enumerated without a key (Deezer genres, charts per genre, artist top/related/albums, iTunes top songs).
- 3. catalogue_tracks.csv: ~600 Deezer tracks (chart per genre + top tracks of related artists) with preview URLs, isrc, rank, duration, release_date.
+ 3. catalogue_tracks.csv: ~3.7k Deezer tracks (chart per genre + top tracks of related artists) with preview URLs, isrc, rank, duration, release_date.
  4. previews/: 6 downloaded sample previews (deezer mp3, spotify mp3, itunes m4a) + sample_audio.csv (ffprobe durations)."""
 import sys, os, json, subprocess, random, csv
 sys.path = [p for p in sys.path if p != os.path.dirname(os.path.abspath(__file__))]

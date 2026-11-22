@@ -15,17 +15,16 @@ _F = {}
 
 def _store():
     if "mert" not in _F:
-        keys, arrs = [], []
-        for f in sorted(glob.glob(ROOT + ".cache/shared/w3r1-mert-v1/shard_*.npz")):
-            z = np.load(f); keys += list(z["md5"]); arrs.append(z["feat"])
-        _F["mert"] = ({k: i for i, k in enumerate(keys)}, np.concatenate(arrs))
+        import sys; sys.path.insert(0, ROOT[:-1]); from evalkit import features   # v5.3: dev shards, then the sealed-era shards (evalkit.features.mert_full)
+        _F["mert"] = features.mert_full()
         z = np.load(ROOT + ".cache/shared/w3r1-clap/emb.npz"); _F["clap"] = ({k: i for i, k in enumerate(z["k"])}, z["v"])
     return _F
 
 def _blocks(tids, meta, cfg):
     """list of [n, W, D] float32 blocks, ok mask (True = every block available)."""
-    F = _store(); u = meta.previewUrl.reindex(tids).values
-    md = [hashlib.md5(x.encode()).hexdigest() if isinstance(x, str) else None for x in u]
+    F = _store()
+    from evalkit import features
+    md = features.clip_keys(meta, tids)   # md5(previewUrl) as before; md5("spotify:"+id) only for rows without a previewUrl (sealed era)
     ok = np.ones(len(tids), bool); out = []
     for b in cfg["blocks"]:
         idx, arr = F[b[0]]; ii = np.array([idx.get(m, -1) if m else -1 for m in md]); has = ii >= 0

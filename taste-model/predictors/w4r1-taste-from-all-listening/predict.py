@@ -20,16 +20,18 @@ _S = {}
 
 def _store():
     if "c" not in _S:
-        z = np.load(ROOT + ".cache/w4r1/compact.npz")
-        _S["c"] = {k: z[k] for k in ("md5", "mert", "has_mert")}; _S["idx"] = {k: i for i, k in enumerate(_S["c"]["md5"])}
+        import sys; sys.path.insert(0, ROOT[:-1]); from evalkit import features   # v5.3: dev compact store + sealed-era rows
+        z = features.compact("w4r1")
+        _S["c"] = {k: z[k] for k in ("md5", "mert", "has_mert")}; _S["idx"] = features.compact_index("w4r1")
     return _S
 
 CFG = dict(ncomp=64, alpha=300.0, signal="panel", K=2, P=91, hl=180.0, newhl=None, minplays=2, noart=False, mode="whole", wt=1.0)
 
 def _raw(tids, meta):
     """[n, 4, 768] MERT windows and has-audio mask; per-clip features, independent of other tracks"""
-    S = _store(); n = len(tids); C = S["c"]; u = meta.previewUrl.reindex(tids).values
-    ii = np.array([S["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u])
+    S = _store(); n = len(tids); C = S["c"]
+    from evalkit import features
+    ii = np.array([S["idx"].get(k, -1) if k else -1 for k in features.clip_keys(meta, tids)])
     has = ii >= 0; X = np.zeros((n, 4, 768), np.float32); X[has] = C["mert"][ii[has]].astype(np.float32); has &= C["has_mert"][np.maximum(ii, 0)]
     has &= np.isfinite(X).reshape(n, -1).all(1); X[~has] = 0
     return X, has

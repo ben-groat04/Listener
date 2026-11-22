@@ -1,9 +1,10 @@
 """Compact per-clip store from the frozen essentia shards: act_mean, act_max, emb_mean, emb_std, 6 time segments (5 s each) of mean head activations.
 Output: .cache/w4r1-what-in-the-music/compact.npz (regenerable, ~1 min).  Run from /home/user/Listener/taste-model."""
 import glob, os, numpy as np
-ROOT = "/home/user/Listener/taste-model/"; OUT = ROOT + ".cache/w4r1-what-in-the-music/"; os.makedirs(OUT, exist_ok=True)
+ROOT = "/home/user/Listener/taste-model/"; OUT = os.environ.get("EVALKIT_COMPACT_OUT") or ROOT + ".cache/w4r1-what-in-the-music/"; os.makedirs(OUT, exist_ok=True)   # v5.3: env overrides = sealed-era rebuild (evalkit.sealed_prep)
+ESS = os.environ.get("EVALKIT_ESSENTIA_DIR") or ROOT + ".cache/shared/w4-essentia"
 md, am, ax, em, es, sg = [], [], [], [], [], []
-for f in sorted(glob.glob(ROOT + ".cache/shared/w4-essentia/shard_*.npz")):
+for f in sorted(glob.glob(ESS + "/shard_*.npz")):
     z = np.load(f); off = z["patch_off"]; t = z["patch_t"]; pa = z["patch_act"].astype(np.float32)
     md += list(z["md5"]); am.append(z["act_mean"]); ax.append(z["act_max"]); em.append(z["emb_mean"]); es.append(z["emb_std"])
     S = np.zeros((len(z["md5"]), 6, pa.shape[1]), np.float32)

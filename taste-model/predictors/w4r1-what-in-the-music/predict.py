@@ -14,7 +14,8 @@ def _store():
     if "idx" not in _F:
         if not os.path.exists(COMPACT):
             sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import build_compact  # noqa regenerate
-        z = np.load(COMPACT); _F["idx"] = {k: i for i, k in enumerate(z["md5"])}
+        sys.path.insert(0, ROOT[:-1]); from evalkit import features   # v5.3: dev compact store + sealed-era rows
+        z = features.compact("w4r1-what-in-the-music"); _F["idx"] = features.compact_index("w4r1-what-in-the-music")
         for k in ("act_mean", "act_max", "emb_mean", "emb_std", "seg"): _F[k] = z[k]
     return _F
 
@@ -33,8 +34,9 @@ def _lg(a):
 
 def _view(tids, meta, cfg):
     """float32 [n, S, D] (S = 1 for clip-level, else number of time segments) and ok mask."""
+    from evalkit import features
     F = _store(); u = meta.previewUrl.reindex(tids).values
-    ii = np.array([F["idx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); ok = ii >= 0
+    ii = np.array([F["idx"].get(k, -1) if k else -1 for k in features.clip_keys(meta, tids)]); ok = ii >= 0
     f = cfg["feat"]; ii2 = np.where(ok, ii, 0)
     if f in ("desc", "descmeta"):
         _desc(); jj = np.array([_F["didx"].get(hashlib.md5(x.encode()).hexdigest(), -1) if isinstance(x, str) else -1 for x in u]); okd = jj >= 0

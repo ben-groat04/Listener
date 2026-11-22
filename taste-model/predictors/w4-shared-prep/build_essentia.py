@@ -61,16 +61,18 @@ def build_shard(models, rows, path):
     return len(md5s), len(failed)
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("--workers", type=int, default=3); ap.add_argument("--shard", type=int, default=100); ap.add_argument("--limit", type=int); ap.add_argument("--out"); ap.add_argument("--worker-id", type=int)
+    ap = argparse.ArgumentParser(); ap.add_argument("--workers", type=int, default=3); ap.add_argument("--shard", type=int, default=100); ap.add_argument("--limit", type=int); ap.add_argument("--out"); ap.add_argument("--worker-id", type=int); ap.add_argument("--prev")   # v5.3: --prev DIR = a preview folder with manifest.csv (key column md5 or key) and audio/ (sealed-era clips)
     a = ap.parse_args()
     out = Path(a.out) if a.out else OUT; out.mkdir(parents=True, exist_ok=True)
-    man = pd.read_csv(PREV / "manifest.csv"); man = man[man.ok.astype(str) == "True"].sort_values("md5")
-    rows = [(r.md5, PREV / "audio" / f"{r.md5}.{r.ext}") for r in man.itertuples()]
+    pv = Path(a.prev) if a.prev else PREV; man = pd.read_csv(pv / "manifest.csv"); man = man[man.ok.astype(str) == "True"]
+    if "key" in man.columns: man = man.rename(columns={"key": "md5"})
+    man = man.sort_values("md5")
+    rows = [(r.md5, (PREV if (not a.prev or getattr(r, "source", "") == "dev_audio") else pv) / "audio" / f"{r.md5}.{r.ext}") for r in man.itertuples()]
     if a.limit: rows = rows[:a.limit]
     shards = [rows[i:i + a.shard] for i in range(0, len(rows), a.shard)]
     if a.worker_id is None:
         json.dump(labels(), open(out / "labels.json", "w"), indent=1)
-        procs = [subprocess.Popen([sys.executable, "-W", "ignore", __file__, "--workers", str(a.workers), "--shard", str(a.shard), "--worker-id", str(w)] + (["--limit", str(a.limit)] if a.limit else []) + (["--out", a.out] if a.out else [])) for w in range(a.workers)]
+        procs = [subprocess.Popen([sys.executable, "-W", "ignore", __file__, "--workers", str(a.workers), "--shard", str(a.shard), "--worker-id", str(w)] + (["--limit", str(a.limit)] if a.limit else []) + (["--out", a.out] if a.out else []) + (["--prev", a.prev] if a.prev else [])) for w in range(a.workers)]
         sys.exit(max(p.wait() for p in procs))
     models = Models(); t0 = time.time()
     for k, sh in enumerate(shards):

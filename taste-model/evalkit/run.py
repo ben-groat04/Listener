@@ -941,7 +941,7 @@ def fold_meta_table(scored, fold_names, set_name, comps, models=None, nboot=400)
 def comparator_set_table(scored, fold_names, set_name, models=None):
     """v5.2 COMPARATOR_SET (printable table, numeric table, note): every builder model (or the baselines / references themselves when no builder file is given) vs each comparator of COMPARATORS that is scored."""
     models = models or [n for n in scored if n not in BASELINES and n not in DIAGNOSTIC and n not in SHORTCUTS and n not in REF_NAMES]
-    if not models: return pd.DataFrame(), pd.DataFrame(), "no builder model in this run (baselines / references only)"
+    if not models: models = [n for n in scored if n in BASELINES or n in REF_NAMES]   # baselines / references only: those rows (a comparator is never compared with itself)
     miss = [c for c in COMPARATORS if c not in scored]
     num, pr = cmpset.comparator_table(scored, fold_names, set_name, COMPARATORS, models, FD_NBOOT, FD_SEED)
     if len(num) and num[["d", "lo80", "hi80", "drop_d", "drop_lo80", "drop_hi80"]].isna().any().any(): print(f"WARNING: NaN in the pooled columns of COMPARATOR_SET {set_name}")   # (iv_* may be NaN when every fold is excluded; shown as '-')
@@ -1021,7 +1021,7 @@ def print_walkforward(name, family, choices, tabs, nboot_alpha=0.05):
 def _paths(logdir=None):
     """Locations of the --late / --holdout cap logs, fingerprints, holdout budget and late tables: .cache/ (default) or --log-dir (tests)."""
     d = Path(logdir) if logdir else data.ROOT / ".cache"
-    return dict(late_log=d / "late_runs.log", holdout_log=d / "holdout_runs.log", late_tables=d / "late_tables", budget=d / "holdout_budget.json", fp_late=d / "late_fingerprints.pkl", fp_holdout=d / "holdout_fingerprints.pkl", decl_dir=(d / "declarations") if logdir else declare.decl_dir(), run_log_dir=d)
+    return dict(late_log=d / "late_runs.log", holdout_log=d / "holdout_runs.log", late_tables=d / "late_tables", budget=d / "holdout_budget.json", fp_late=d / "late_fingerprints.pkl", fp_holdout=d / "holdout_fingerprints.pkl", decl_dir=(d / "declarations") if logdir else declare.decl_dir(), run_log_dir=(d if logdir else Path(os.environ.get("EVALKIT_RUN_LOG_DIR") or d)))
 
 def main(argv):
     from threadpoolctl import threadpool_limits

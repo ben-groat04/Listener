@@ -19,9 +19,11 @@ def br_idx(yy, ss, g):
 
 def main():
     from threadpoolctl import threadpool_limits; threadpool_limits(2)
+    os.environ.setdefault("EVALKIT_RUN_LOG_DIR", tempfile.mkdtemp(prefix="evalkit_runlog_"))   # selftest runs must not append to the real run log
     if "--v41" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v41_checks(data._load_all(), P_, _tune_tried(P_)); return
     if "--v5" in sys.argv: P_ = run.prepare_folds(data.DEV_CUTOFFS); v5_checks(data._load_all(), P_); return
     if "--v51" in sys.argv: v51_checks(); return
+    if "--v52" in sys.argv: v52_checks(); return   # no raw-stream access (the harness builds / reads its pools itself)
     d = data._load_all(); cuts = data.DEV_CUTOFFS; pub = data.anon_streams(d); meta_all = data.load_meta_all()
     assert data.TUNE_CUTOFFS + data.LATE_CUTOFFS == cuts and len(cuts) == 14
     # ---- metrics engine vs brute force
@@ -204,6 +206,7 @@ def main():
     v41_checks(d, P, T)
     v5_checks(d, P)
     v51_checks()
+    v52_checks()
     print("selftest OK")
 
 def _tune_tried(P):
@@ -438,6 +441,7 @@ def v5_checks(d, P):
     print(f"holdout budget module: writes, refuses to reset the same round, replaces another round; live budget file: {live}")
     print(f"v5.0 checks OK ({time.time() - t0:.0f}s)")
 
+_V51 = {}
 def _pt(x): return float(x.split()[0][2:])   # "d=+0.118 80%[..." -> 0.118
 
 def v51_checks():
@@ -446,7 +450,7 @@ def v51_checks():
     import pathlib, time
     from sklearn.metrics import roc_auc_score
     t0 = time.time(); here = pathlib.Path(__file__).parent; B = str(here / "selftest_builder.py"); tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v51_"))
-    assert run.VERSION == "v5.1"
+    assert run.VERSION in ("v5.1", "v5.2")
     # ---- refusals
     live = json.load(open(run.HOLDOUT_BUDGET)); assert live == dict(round="w5r1", remaining=0), f"no new HOLDOUT budget in round w5r2: {live}"
     for bad in (["--best-ref", "artist_recent", "--late"], ["--best-ref", "artist_recent", "--holdout", B], ["--best-ref", "artist_recent", "--sealed"], ["--best-ref", "artist_recent", "--null-control"], ["--best-ref", "nope", "--fast"]):
@@ -460,11 +464,11 @@ def v51_checks():
         _eq([[_cell(v) for v in r] for r in t_["tried_within_group"].astype(object).values.tolist()], r_["tried_within_group"]["data"], tag + " tried_within_group"),
         _eq([[_cell(v) for v in r] for r in t_["VERDICT"][r_["verdict_point"]["columns"]].astype(object).values.tolist()], r_["verdict_point"]["data"], tag + " VERDICT"))
     (_, o0), tx0 = _quiet_main(["--fast"]); chk(o0["TUNE"], ref, "baselines only")
-    (_, o1), tx1 = _quiet_main(["--fast", B]); chk(o1["TUNE"], ref["builder"], "builder"); t1 = o1["TUNE"]; fd = t1["FILE_DELTAS80"]
+    (_, o1), tx1 = _quiet_main(["--fast", B]); _V51.update(o1=o1, tx1=tx1, tx0=tx0); chk(o1["TUNE"], ref["builder"], "builder"); t1 = o1["TUNE"]; fd = t1["FILE_DELTAS80"]
     assert [[r.model_a, r.minus_model_b, f"d={_pt(r.sauc):+.3f}"] for r in fd.itertuples()] == ref["builder"]["file_deltas80_point"], "FILE_DELTAS80 point deltas differ from v5.0"
-    assert "decision80" in fd.columns and set(fd.decision80) <= {"POS", "NEG", "UNDECIDED"} and "FOLD_META" in t1 and len(t1["FOLD_META"]) == 6 and "TUNE FOLD_META" in tx1 and "|lo80| < 0.005 flips" in tx1
+    assert "decision80" in fd.columns and set(fd.decision80) <= {"POS", "NEG", "UNDECIDED"} and "FOLD_META" in t1 and len(t1["FOLD_META"]) == 6 and "TUNE FOLD_META" in tx1 and "decision80_margin005" in tx1
     for r in fd.itertuples():   # decision80 follows the sauc interval
-        lo, hi = [float(v) for v in r.sauc.split("80%[")[1].split("]")[0].split(",")]; assert r.decision80 == ("POS" if lo > .005 else "NEG" if hi < -.005 else "UNDECIDED"), r
+        lo, hi = [float(v) for v in r.sauc.split("80%[")[1].split("]")[0].split(",")]; assert r.decision80 == ("POS" if lo > 0 else "NEG" if hi < 0 else "UNDECIDED") and r.decision80_margin005 == ("POS" if lo > .005 else "NEG" if hi < -.005 else "UNDECIDED"), r   # v5.2: plain 80% rule + margin column
     (_, o1b), _ = _quiet_main(["--fast", "--nboot", "60", B]); assert o1b["TUNE"]["FILE_DELTAS80"].astype(str).equals(fd.astype(str)), "FILE_DELTAS80 must not depend on --nboot (1000 resamples, fixed seed)"
     print("default fast run: tried_within_group and VERDICT point values identical to the recorded v5.0 output (baselines only, and with the test builder); FILE_DELTAS80 point deltas identical, decision80 present and consistent, "
           "independent of --nboot; FOLD_META printed (6 rows: 3 models x best_ref, artist_recent)")
@@ -504,6 +508,92 @@ def v51_checks():
     print(f"fold_meta: per-fold deltas equal sklearn AUC differences (< 1e-12) on both dump fold sets, IV mean / SE / 80% interval recomputed by hand; folds with < 5 positives excluded and counted; homogeneous synthetic case Q/df = {rs['Q'] / rs['df']:.2f} "
           f"(mean over 1500 simulated homogeneous sets {np.mean(Qs) / 11:.2f})")
     print(f"v5.1 checks OK ({time.time() - t0:.0f}s)")
+
+def v52_checks():
+    """v5.2 checks (python3 -m evalkit.selftest --v52; also run in the full selftest). Runs v51_checks first (a default run without new flags reproduces the recorded v5.0 / v5.1 numbers), then the v5.2 additions."""
+    from threadpoolctl import threadpool_limits; threadpool_limits(2)
+    import pathlib, time, stat
+    from sklearn.metrics import roc_auc_score
+    from . import cmpset, declare, sanity
+    t0 = time.time(); here = pathlib.Path(__file__).parent; B = str(here / "selftest_builder.py"); tmp = pathlib.Path(tempfile.mkdtemp(prefix="evalkit_v52_"))
+    assert run.VERSION == "v5.2"
+    v51_checks()   # includes: --holdout refused (budget file untouched), --best-ref refusals, default fast run == v5.0 reference (tried_within_group, VERDICT, FILE_DELTAS80 point values)
+    o1, tx1 = _V51["o1"], _V51["tx1"]; print("default_output_unchanged: the default --fast run (baselines only and with the test builder) equals the recorded v5.0 / v5.1 output (v51_checks above)")
+    # ---- plain 80% rule
+    assert [cmpset.plain80(*x) for x in ((0.001, 0.05), (-0.02, 0.03), (-0.05, -0.0001), (0.0, 0.04), (-0.04, 0.0))] == ["POS", "UNDECIDED", "NEG", "UNDECIDED", "UNDECIDED"]
+    assert cmpset.margin005(0.003, 0.05) == "UNDECIDED" and cmpset.plain80(0.003, 0.05) == "POS" and run.decision80 is cmpset.plain80
+    t1 = o1["TUNE"]; fd = t1["FILE_DELTAS80"]; cols = list(fd.columns); assert cols[-1] == "decision80_margin005" and cols.index("decision80") < cols.index("decision80_margin005")
+    cs = t1["COMPARATOR_SET"]; assert list(cs.columns)[-1] == "decision80_margin005" and list(cs.columns)[3] == "decision80"
+    print("plain_80_rule: decision80 = POS if lo80 > 0, NEG if hi80 < 0 else UNDECIDED in FILE_DELTAS80, FIXED_COMPARATOR and COMPARATOR_SET; the 0.005-margin label is the last column decision80_margin005")
+    # ---- COMPARATOR_SET in a default --fast run
+    assert run.COMPARATORS == ("artist_recent", "ref_w4r1_listening") and len(cs) == 6 and set(cs.vs) == set(run.COMPARATORS) and "COMPARATOR_SET" in tx1 and "heaviest folds left out" in tx1
+    for r in cs.itertuples():
+        for col, dec in (("pooled", r.decision80), ("iv_weighted", r.decision80_iv), ("heaviest_out", r.decision80_heaviest_out)):
+            lo, hi = [float(v) for v in getattr(r, col).split("80%[")[1].split("]")[0].split(",")]; assert dec == ("POS" if lo > 0 else "NEG" if hi < 0 else "UNDECIDED"), (col, r)
+        assert len(r.folds_left_out.split(",")) == 2 and r.iv_folds.endswith("/10"), r   # 10 TUNE folds -> the 2 heaviest left out
+    print("comparator_in_default_runs: the default --fast run prints COMPARATOR_SET (3 builder models x artist_recent, ref_w4r1_listening) with pooled, inverse-variance and heaviest-folds-out differences and plain labels")
+    # ---- numbers against brute force on a synthetic scored set (K=10 folds, two heavy ones)
+    rng = np.random.default_rng(11); K = 10; rows = []
+    for k in range(K):
+        n = 900 if k in (1, 6) else 300; y = (rng.random(n) < .3).astype(int)
+        rows.append(pd.DataFrame(dict(fold=f"2021-{k + 1:02d}-01", trackId=np.arange(n) + 10000 * k, artist=rng.integers(0, 80, n), new_artist=rng.random(n) < .5, is_decoy=0, love=y, plays90=rng.integers(1, 9, n),
+                                      exp_before=rng.integers(0, 12, n).astype(float), week=rng.integers(0, 30, n), sess=rng.integers(0, 90, n))))
+    base = pd.concat(rows, ignore_index=True); yv = base.love.values; fr = {nm_: base.assign(score=yv * sh + rng.normal(0, 1, len(base))) for nm_, sh in (("m", .9), ("c1", .3), ("c2", 0.))}
+    assert cmpset.heaviest_folds(base) == ["2021-02-01", "2021-07-01"], cmpset.heaviest_folds(base)
+    num, pr = cmpset.comparator_table(fr, list(pd.unique(base.fold)), "syn", ["c1", "c2"], ["m"], nboot=60, seed=3, nboot_fold=60); assert len(num) == 2 and len(pr) == 2
+    sanity.assert_no_nan(num.drop(columns=["dropped"]), "synthetic COMPARATOR_SET"); sanity.assert_no_nan(pr, "printable COMPARATOR_SET")
+    def pooled(sub, a, b):
+        def one(s):
+            return sum(roc_auc_score(g.love, s[g.index]) * g.love.sum() * (len(g) - g.love.sum()) for _, g in sub.groupby("fold")) / sum(g.love.sum() * (len(g) - g.love.sum()) for _, g in sub.groupby("fold"))
+        return one(fr[a].score.loc[sub.index]) - one(fr[b].score.loc[sub.index])
+    for r in num.itertuples():
+        assert abs(r.d - pooled(base, "m", r.vs)) < 1e-9 and abs(r.drop_d - pooled(base[~base.fold.isin(["2021-02-01", "2021-07-01"])], "m", r.vs)) < 1e-9, "pooled / heaviest-out point difference != brute force"
+        dmp = pd.DataFrame(dict(fold_set="syn", fold=base.fold, artist=base.artist, love=base.love, score__m=fr["m"].score, **{"score__" + r.vs: fr[r.vs].score})); fm = metrics.fold_meta(dmp, "syn", "m", r.vs, nboot=60, seed=0)
+        assert abs(r.iv_d - fm["mean"]) < 1e-12 and r.iv_folds == 10
+    print("fold_weight_sensitivity: pooled and heaviest-folds-out point differences equal a brute-force pooled AUC difference (< 1e-9); inverse-variance mean equals metrics.fold_meta; the two heaviest folds (most pairs) are the ones left out")
+    # ---- single-model file: FILE_DELTAS80 now has rows (vs the comparator set)
+    one = tmp / "one_model.py"; one.write_text("import numpy as np\nfrom evalkit import baselines as B\ndef predict(train, cands, meta, cutoff): return B.duration(train, cands, meta, cutoff)\n")
+    ld = tmp / "logs"; (_, o2), tx2 = _quiet_main(["--fast", "--log-dir", str(ld), str(one)]); f2 = o2["TUNE"]["FILE_DELTAS80"]
+    assert list(f2.model_a) == ["one_model"] * 2 and list(f2.minus_model_b) == list(run.COMPARATORS) and set(f2.decision80) <= {"POS", "NEG", "UNDECIDED"}, f2
+    # ---- declarations: UNDECLARED first, then declared; the run log is append-only, mode 444; a declaration cannot be overwritten
+    assert "UNDECLARED" in tx2 and "declaration check:" in tx2
+    dd = ld / "declarations"; rec = declare.declare("selftest-one", [str(one)], str(dd)); p_ = dd / "selftest-one.json"; assert oct(os.stat(p_).st_mode & 0o777) == "0o444" and rec["files"][str(one.resolve())] == declare.sha(str(one))
+    try: declare.declare("selftest-one", [str(one)], str(dd)); raise SystemExit("declaration overwritten")
+    except SystemExit as e: assert "REFUSED" in str(e), e
+    assert declare.status(str(one), str(dd))["status"] == "DECLARED"; one2 = tmp / "one_model2.py"; one2.write_text(one.read_text() + "\n# edited\n"); assert declare.status(str(one2), str(dd))["status"] == "UNDECLARED"
+    one.write_text(one.read_text() + "\n# edited after declaration\n"); s_ = declare.status(str(one), str(dd)); assert s_["status"] == "UNDECLARED" and "different hash" in s_["note"], s_
+    one.write_text(one.read_text().replace("\n# edited after declaration\n", ""))   # restore
+    (_, o3), tx3 = _quiet_main(["--fast", "--log-dir", str(ld), str(one)]); assert "DECLARED selftest-one" in tx3 and "UNDECLARED" not in tx3.split("declaration check:")[1].split("\n")[0]
+    lg = [json.loads(l) for l in open(ld / "run_log.jsonl")]; assert len(lg) == 2 and [x["files"][0]["status"] for x in lg] == ["UNDECLARED", "DECLARED"] and lg[1]["files"][0]["declaration"] == "selftest-one" and lg[0]["utc"].endswith("Z") and lg[0]["version"] == "v5.2"
+    assert oct(os.stat(ld / "run_log.jsonl").st_mode & 0o777) == "0o444"
+    print("single_model_file_deltas: a file with one model prints FILE_DELTAS80 rows vs artist_recent and ref_w4r1_listening; declaration_hashing: UNDECLARED -> DECLARED after python -m evalkit.declare, overwrite refused, edited file reported, run log (UTC time, hashes) append-only mode 444")
+    # ---- alternative sets print COMPARATOR_SET too (same comparators)
+    (_, o4), tx4 = _quiet_main(["--fast", "--log-dir", str(ld), "--folds", "tune_h", str(one)]); c4 = o4["tune_h"]["COMPARATOR_SET"]; assert set(c4.vs) == set(run.COMPARATORS) and len(c4) == 2 and len(c4.folds_left_out.iloc[0].split(",")) == 1
+    # ---- output sanity helpers
+    ok = pd.DataFrame(dict(fold=list("abc"), v=[.1, .2, .3])); sanity.assert_table(ok, "ok", 3)
+    for bad, kw in ((ok.assign(v=[.1, np.nan, .3]), dict(fold_set=3)), (ok, dict(fold_set=4)), (ok.assign(v=[.1, np.inf, .3]), {})):
+        try: sanity.assert_table(bad, "bad", **kw); raise SystemExit("sanity helper accepted a bad table")
+        except AssertionError: pass
+    assert sanity.expected_folds("tune") == 10 and sanity.expected_folds("late") == 4 and sanity.expected_folds("dev") == 14 and sanity.expected_folds("tune_m") == 30 and sanity.expected_folds("tune_h") == 5
+    sanity.assert_fold_count(pd.DataFrame(dict(fold=data.TUNE_CUTOFFS)), "tune")
+    print("output_sanity_helpers: assert_no_nan / assert_fold_count / assert_table refuse NaN, inf and a wrong fold count; expected counts tune 10, late 4, dev 14, tune_m 30, tune_h 5")
+    # ---- null control line: synthetic table -> one JSON line per model, gated values and bands
+    tb = pd.DataFrame([dict(slice="TUNE", model="m1", avg_sauc=.52, avg_wa=.5, avg_new=.51, cluster_band_sauc=(.45, .55), cluster_band_wa=(.46, .54), cluster_band_new=(.44, .56), label="PASS"),
+                       dict(slice="TUNE", model="m2", avg_sauc=.60, avg_wa=.5, avg_new=.51, cluster_band_sauc=(.45, .55), cluster_band_wa=(.46, .54), cluster_band_new=(.44, .56), label="FLAG")])
+    ls = run.null_lines(tb, "v2", 5); assert len(ls) == 2 and all("\n" not in x and x.startswith("NULLCTRL {") for x in ls)
+    j = [json.loads(x[len("NULLCTRL "):]) for x in ls]; assert j[0]["label"] == "PASS" and j[1]["label"] == "FLAG" and j[1]["gated"]["sauc"]["inside"] is False and j[0]["gated"]["wa"]["band"] == [.46, .54] and j[0]["version"] == "v5.2"
+    # ---- three null seeds give three different results (fit / feature caches keyed on seed and relabelled identities); in-process, first TUNE fold, baseline artist_recent
+    from . import baselines as bl
+    F = run.prepare_folds(data.TUNE_CUTOFFS[:1])[0]; sc = []; keys = []
+    for k in range(3):
+        os.environ["EVALKIT_NULL_SEED"] = str(k)
+        try:
+            tr, am, bm = run._null_control(F["train"], F["cands"], np.random.default_rng(int(F["c"].strftime("%Y%m%d")) + k), relabel=True); keys.append(bl._train_key("artist_recent", tr, F["c"]))
+            sc.append(np.asarray(bl.BASELINES["artist_recent"](tr.copy(), F["cands"], run._null_meta(F["meta"], F["train"], F["cands"], tr, am, bm), F["c"]), float))
+        finally: del os.environ["EVALKIT_NULL_SEED"]
+    assert len(set(keys)) == 3 and all(not np.array_equal(sc[i], sc[j_]) for i in range(3) for j_ in range(i + 1, 3)), "null seeds must give different fit keys and different scores"
+    print("null seeds: 3 null seeds (seed-keyed fit cache, relabelled identities) give 3 different fit keys and 3 different artist_recent score vectors; NULLCTRL line format checked on a synthetic table")
+    print(f"v5.2 checks OK ({time.time() - t0:.0f}s)")
 
 def _eq(a, b, what): assert a == b, f"{what} differs from the recorded v5.0 output"
 

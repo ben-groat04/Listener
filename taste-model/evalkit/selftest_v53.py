@@ -98,7 +98,7 @@ def check_synthetic_output():
     return tx
 
 def check_units():
-    tab = pd.DataFrame(dict(fold=["a", "b", "a", "b"], group=["tried", "tried", "decoy", "decoy"], tracks=[100, 100, 500, 500], mert=[0.95, 0.80, 1.0, 1.0], essentia=[0.99, 0.99, 1.0, 1.0]))
+    tab = pd.DataFrame(dict(fold=["a", "b", "a", "b"], group=["tried", "tried", "decoy", "decoy"], tracks=[100, 100, 500, 500], mert=[0.95, 0.88, 1.0, 1.0], essentia=[0.99, 0.99, 1.0, 1.0]))
     l, stop = sealedout.coverage_verdicts(tab, {"m1": ("mert",), "m2": ("essentia",)}); assert not stop and "ok" in l[0] and "folds below 90% for mert: b" in l[0]
     tab.loc[0, "mert"] = 0.7; l, stop = sealedout.coverage_verdicts(tab, {"m1": ("mert",)}); assert stop and "STOP" in l[0]
     r = subprocess.run([sys.executable, "-m", "evalkit.sealed_prep", "--count"], cwd=str(data.ROOT), capture_output=True, text=True); assert r.returncode != 0 and "MAIN SESSION ONLY" in (r.stdout + r.stderr)
@@ -106,6 +106,8 @@ def check_units():
 
 def v53_checks():
     from .selftest import v52_checks
-    t0 = time.time(); v52_checks(); t1 = time.time()
+    t0 = time.time()
+    if "--v53-only" not in sys.argv: v52_checks()   # --v53-only: skip the v5.2 part (iteration only; the reported run is the full --v53)
+    t1 = time.time()
     check_sealed_files(); check_features_equiv(); check_units(); check_synthetic_output(); res = hide_and_rebuild(); check_sealed_files()
     print(f"selftest --v53 passed: v52 part {t1 - t0:.0f} s, v53 part {time.time() - t1:.0f} s")

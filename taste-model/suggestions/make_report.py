@@ -10,8 +10,8 @@ def pick(x, n):
     return out
 new, old = pick(d[~d.known_artist], 20), pick(d[d.known_artist], 10)
 def sec(title, rows, start):
-    s = f"\n## {title}\n\n| # | Title | Artist | Deezer | Preview | Score pct |\n|---|---|---|---|---|---|\n"
-    for i, r in enumerate(rows, start): s += f"| {i} | {r.title} | {r.artist} | [link]({r.link}) | Deezer 30 s preview | {r.pct:.1f} |\n"
+    s = f"\n## {title}\n\n| # | Title | Artist | Deezer | Score pct |\n|---|---|---|---|---|\n"
+    for i, r in enumerate(rows, start): s += f"| {i} | {r.title} | {r.artist} | [link]({r.link}) | {r.pct:.1f} |\n"
     return s
 n = len(d); nn = (~d.known_artist).sum()
 hdr = (f"# Song suggestions 1 (2026-11-23)\n\nMade with model `avg21_dev` (w6r1-content-ranker-final, unchanged, no retuning): each song is scored from MERT features of its 30 s preview against a taste profile trained on the owner's full listening history through 2026-11-23 (cutoff = today, all streams). "

@@ -68,3 +68,4 @@ numbers outside reports/sealed-w6; commits end with the session's attribution li
 - 2026-11-23T00:35Z: container restarted; suggestion agent lost mid-MERT (candidates: 2,040 with audio after excluding played; MERT ~1,000/2,040 done, resumable). Main session resumed both MERT parts detached (setsid) with a watcher; when done, a new Sonnet agent finishes scoring (suggestions/score_cands.py) + report (make_report.py) -> SUGGESTIONS-1.md, then stage 6 DA.
 - 2026-11-23T00:5xZ: candidate MERT done (2,040). Sonnet agent finishing scoring + SUGGESTIONS-1.md; then stage 6 DA.
 - 2026-11-23T01:1xZ: stage 5 done: suggestions/SUGGESTIONS-1.md (30: 20 new artists, 10 known; 2,040 scored). Stage 6 DA launched.
+- 2026-11-23T01:3xZ: stage 6 DA signed off (no swaps; dedupe + header fixes). Stage 7: final message sent; sealed test waits for the owner's manifest command. Scheduled task disabled.

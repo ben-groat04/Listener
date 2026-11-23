@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/user/Listener/taste-model/evalkit/run.py", line 1205, in <module>
+    if __name__ == "__main__": main(sys.argv[1:])
+                               ~~~~^^^^^^^^^^^^^^
+  File "/home/user/Listener/taste-model/evalkit/run.py", line 1088, in main
+    from . import make_sealed; assert make_sealed.main(), "sealed labels do not match manifest (data changed?)"
+                                      ~~~~~~~~~~~~~~~~^^
+AssertionError: sealed labels do not match manifest (data changed?)
